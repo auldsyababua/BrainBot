@@ -58,5 +58,6 @@ htmlcov/
 .python-version
 
 # Notes folder - don't commit user data
-# Uncomment if you want to exclude notes from git
-# notes/
+# IMPORTANT: Company notes should NEVER be in git
+notes/
+!notes/index.md
