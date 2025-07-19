@@ -46,7 +46,7 @@ class VectorStore:
                 {
                     "indexed_at": datetime.now().isoformat(),
                     "content_preview": (
-                        content[:200] + "..." if len(content) > 200 else content
+                        content[:1500] + "..." if len(content) > 1500 else content
                     ),
                     "content_length": len(content),
                 }
