@@ -61,3 +61,21 @@ htmlcov/
 # IMPORTANT: Company notes should NEVER be in git
 notes/
 !notes/index.md
+
+# Temporary test files
+test_*.py
+*_test.py
+interactive_*.py
+
+*.local.toml
+.ruff.local.toml
+.black.local.toml
+pyproject.local.toml
+.venv
+.hypothesis/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+.pyre/
+.vscode/settings.json
