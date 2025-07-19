@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """
-Simple polling version for testing the bot locally.
+🧪 LOCAL DEVELOPMENT: Polling implementation for testing
+
+This module implements polling mode for local development.
+Used by run_bot.py when testing locally.
+
+DO NOT use this in production - use webhooks (main_webhook.py) instead!
 """
 
 import logging
