@@ -1,5 +1,5 @@
 services:
-  - type: web
+  - type: worker
     name: BrainBot
     env: python
     repo: git@github.com:auldsyababua/BrainBot.git
