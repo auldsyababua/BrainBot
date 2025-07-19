@@ -67,6 +67,12 @@ test_*.py
 *_test.py
 interactive_*.py
 
+# Sensitive documentation
+HANDOFF_DOC.md
+FUTURE_FEATURES.md
+*handoff*
+*HANDOFF*
+
 *.local.toml
 .ruff.local.toml
 .black.local.toml
