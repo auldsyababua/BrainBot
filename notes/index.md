@@ -4,7 +4,7 @@ This is the global index of all notes and folders in the system.
 
 ## 📁 Folders
 
-- [10NetZero](10NetZero/) - Company information and implementation guides for 10NetZero
+- [CompanyDocs](CompanyDocs/) - Company information and implementation guides
 - [development](development/) - Technical documentation, tools, and development notes
 - [hardware](hardware/) - Hardware specifications, build guides, and network infrastructure notes
 - [personal](personal/) - Personal notes and planning documents

@@ -20,7 +20,7 @@ services:
       - key: UPSTASH_VECTOR_REST_TOKEN
         sync: false
       - key: VECTOR_NAMESPACE
-        value: "10netzero"
+        sync: false
       - key: VECTOR_TOP_K
         value: "5"
     plan: free

@@ -53,13 +53,13 @@ TODO LIST FORMATTING RULES:
 
 Example todo list format:
 ```
-# Eagle Lake Site Tasks
+# Site Maintenance Tasks
 
-- [ ] Camera
-- [ ] Flashlight
-- [ ] Cross this item off the list
+- [ ] Equipment check
+- [ ] Safety inspection
+- [ ] Update documentation
 
-Completed: Duct tape, Lock, First aid kit
+Completed: Initial assessment, Inventory count
 ```
 
 Files may optionally contain frontmatter (YAML) with metadata like:

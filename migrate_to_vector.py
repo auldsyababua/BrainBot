@@ -15,7 +15,7 @@ from tools import read_file
 from config import NOTES_FOLDER
 
 # Target folder for migration
-TARGET_FOLDER = "10NetZero"
+TARGET_FOLDER = os.getenv("MIGRATION_FOLDER", "CompanyDocs")
 
 
 def extract_frontmatter(content: str) -> Tuple[Dict, str]:
@@ -168,11 +168,11 @@ async def test_search():
     print("\n🔍 Testing vector search...")
 
     test_queries = [
-        "Eagle Lake site information",
-        "10% markup",
-        "Flober LLC",
-        "waste management",
-        "financial data",
+        "site information",
+        "equipment maintenance",
+        "company policies",
+        "operational procedures",
+        "safety protocols",
     ]
 
     for query in test_queries:
