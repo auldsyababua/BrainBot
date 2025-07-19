@@ -10,10 +10,10 @@ from typing import List, Tuple, Dict
 import yaml
 from datetime import datetime
 
-from vector_store import vector_store
-from tools import read_file
-from config import NOTES_FOLDER
-from chunking import chunk_markdown_document
+from src.storage.vector_store import vector_store
+from src.core.tools import read_file
+from src.core.config import NOTES_FOLDER
+from src.core.chunking import chunk_markdown_document
 
 # Target folder for migration
 TARGET_FOLDER = os.getenv("MIGRATION_FOLDER", "CompanyDocs")

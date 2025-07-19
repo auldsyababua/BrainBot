@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional, Dict, Any, List
 import yaml
 
-from config import NOTES_FOLDER, INDEX_FILE, README_FILE
+from src.core.config import NOTES_FOLDER, INDEX_FILE, README_FILE
 
 
 def sanitize_filename(filename: str) -> str:

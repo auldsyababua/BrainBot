@@ -4,14 +4,10 @@ Test context awareness and organizational hierarchy.
 Focuses on proper folder placement based on organizational context.
 """
 
-import sys
-import os
 import time
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from tools import search_files, read_file  # noqa: E402
-from llm import process_message, reset_conversation  # noqa: E402
+from src.core.tools import search_files, read_file
+from src.core.llm import process_message, reset_conversation
 
 
 def test_10netzero_context():

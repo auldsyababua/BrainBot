@@ -62,19 +62,17 @@ htmlcov/
 notes/
 !notes/index.md
 
-# Temporary test files
-test_*.py
-*_test.py
+# Temporary test files (only in scratch directory)
+tests/scratch/
 interactive_*.py
+/tmp_test_*.py
+/quick_test_*.py
 
 # Sensitive documentation
 HANDOFF_DOC.md
 FUTURE_FEATURES.md
 *handoff*
 *HANDOFF*
-DEPLOYMENT_GUIDE.md
-*deployment*
-*DEPLOYMENT*
 
 *.local.toml
 .ruff.local.toml

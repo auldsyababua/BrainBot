@@ -13,9 +13,9 @@ from telegram.ext import (
     ContextTypes,
 )
 
-from config import TELEGRAM_BOT_TOKEN
-from llm import process_message
-from tools import ensure_index_exists
+from src.core.config import TELEGRAM_BOT_TOKEN
+from src.core.llm import process_message
+from src.core.tools import ensure_index_exists
 
 # Set up logging
 logging.basicConfig(
