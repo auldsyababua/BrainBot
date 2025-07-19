@@ -113,10 +113,15 @@ class VectorStore:
             # Format results
             formatted_results = []
             for result in results:
+                # Extract content from metadata if available
+                content = None
+                if hasattr(result, "metadata") and result.metadata:
+                    content = result.metadata.get("content_preview", "")
+
                 formatted_result = {
                     "id": result.id,
                     "score": result.score,
-                    "content": None,  # Data content not returned by query
+                    "content": content,
                     "metadata": result.metadata if include_metadata else None,
                 }
                 formatted_results.append(formatted_result)
