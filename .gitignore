@@ -60,7 +60,14 @@ htmlcov/
 # Notes folder - don't commit user data
 # IMPORTANT: Company notes should NEVER be in git
 notes/
-!notes/index.md*.local.toml
+!notes/index.md
+
+# Temporary test files
+test_*.py
+*_test.py
+interactive_*.py
+
+*.local.toml
 .ruff.local.toml
 .black.local.toml
 pyproject.local.toml

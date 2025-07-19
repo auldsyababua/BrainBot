@@ -18,6 +18,7 @@ import tempfile
 from config import TELEGRAM_BOT_TOKEN
 from llm import process_message
 from tools import ensure_index_exists, create_file
+from vector_store import vector_store
 
 # Set up logging
 logging.basicConfig(
@@ -89,7 +90,7 @@ async def reset_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     from llm import reset_conversation
 
     # Reset conversation for this chat
-    reset_conversation(chat_id)
+    await reset_conversation(chat_id)
 
     await update.message.reply_text(
         "🔄 Conversation reset! I've cleared my memory of our previous messages. "
@@ -105,7 +106,7 @@ async def continue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     from llm import restore_conversation
 
     # Try to restore conversation for this chat
-    if restore_conversation(chat_id):
+    if await restore_conversation(chat_id):
         await update.message.reply_text(
             "✅ Previous conversation restored! I remember what we were talking about. "
             "You can continue where we left off."
@@ -129,7 +130,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_chat_action(chat_id=chat_id, action="typing")
 
         # Process the message with LLM (pass chat_id for conversation memory)
-        response = process_message(user_message, str(chat_id))
+        response = await process_message(user_message, str(chat_id))
 
         # Send the response
         await update.message.reply_text(response, parse_mode="Markdown")
@@ -196,9 +197,21 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 tags=["imported", "telegram-attachment"],
             )
 
+            # Store in vector database for semantic search
+            doc_id = file_path.replace("/", "_").replace(".md", "")
+            metadata = {
+                "title": title,
+                "type": "note",
+                "tags": ["imported", "telegram-attachment"],
+                "folder": folder or "root",
+                "file_path": file_path,
+                "source": "telegram-upload",
+            }
+            await vector_store.embed_and_store(doc_id, content, metadata)
+
             # Let the LLM know about the imported file
             llm_message = f"I just imported a markdown file called '{document.file_name}' to {file_path}. The file contains:\n\n{content[:500]}..."
-            llm_response = process_message(llm_message, str(chat_id))
+            llm_response = await process_message(llm_message, str(chat_id))
 
             response = f"✅ Successfully imported '{document.file_name}' to {file_path}\n\n{llm_response}"
             await update.message.reply_text(response)

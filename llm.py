@@ -1,21 +1,17 @@
 import json
 from typing import Dict, Any, List
 from openai import OpenAI
-from datetime import datetime, timedelta
 
 from config import OPENAI_API_KEY, GPT_MODEL, MAX_TOKENS, TEMPERATURE, SYSTEM_PROMPT
 from tools import create_file, append_to_file, read_file, search_files, list_all_files
+from redis_store import redis_store
+from vector_store import vector_store
 
 # Initialize OpenAI client
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-# Store conversation history in memory
-# Format: {chat_id: {"messages": [...], "last_updated": datetime}}
-conversation_history = {}
-
-# Store previous conversations when reset
-# Format: {chat_id: {"messages": [...], "last_updated": datetime}}
-previous_conversations = {}
+# Note: Conversation history is now stored in Redis via redis_store
+# Previous conversations are also stored in Redis with a "prev:" prefix
 
 FUNCTION_DEFINITIONS = [
     {
@@ -98,77 +94,108 @@ FUNCTION_DEFINITIONS = [
 ]
 
 
-def get_conversation_history(
+async def get_conversation_history(
     chat_id: str, max_messages: int = 10
 ) -> List[Dict[str, str]]:
     """Get conversation history for a chat, creating new if needed."""
-    # Clean up old conversations (inactive for more than 1 hour)
-    current_time = datetime.now()
-    inactive_chats = [
-        cid
-        for cid, data in conversation_history.items()
-        if current_time - data["last_updated"] > timedelta(hours=1)
-    ]
-    for cid in inactive_chats:
-        del conversation_history[cid]
+    # Try to get conversation from Redis
+    messages = await redis_store.get_conversation(chat_id)
 
-    # Get or create conversation for this chat
-    if chat_id not in conversation_history:
-        conversation_history[chat_id] = {
-            "messages": [{"role": "system", "content": SYSTEM_PROMPT}],
-            "last_updated": current_time,
-        }
+    # If no conversation exists, create a new one
+    if messages is None:
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        await redis_store.save_conversation(chat_id, messages)
     else:
-        conversation_history[chat_id]["last_updated"] = current_time
+        # Extend TTL on active conversation
+        await redis_store.extend_conversation_ttl(chat_id)
 
     # Return recent messages (keep system prompt + last N messages)
-    messages = conversation_history[chat_id]["messages"]
     if len(messages) > max_messages + 1:  # +1 for system prompt
         return [messages[0]] + messages[-(max_messages):]
     return messages
 
 
-def add_to_conversation_history(chat_id: str, role: str, content: str):
+async def add_to_conversation_history(chat_id: str, role: str, content: str):
     """Add a message to conversation history."""
-    if chat_id in conversation_history:
-        conversation_history[chat_id]["messages"].append(
-            {"role": role, "content": content}
-        )
-        conversation_history[chat_id]["last_updated"] = datetime.now()
+    # Get existing conversation
+    messages = await redis_store.get_conversation(chat_id)
+
+    if messages is not None:
+        # Add new message
+        messages.append({"role": role, "content": content})
+        # Save back to Redis
+        await redis_store.save_conversation(chat_id, messages)
 
 
-def reset_conversation(chat_id: str):
+async def reset_conversation(chat_id: str):
     """Reset conversation but save it for potential restoration."""
-    if chat_id in conversation_history:
-        # Save current conversation before resetting
-        previous_conversations[chat_id] = {
-            "messages": conversation_history[chat_id]["messages"].copy(),
-            "last_updated": conversation_history[chat_id]["last_updated"],
-        }
-        del conversation_history[chat_id]
+    # Get current conversation
+    messages = await redis_store.get_conversation(chat_id)
+
+    if messages is not None:
+        # Save to previous conversations with different key
+        prev_key = f"prev:{chat_id}"
+        await redis_store.save_conversation(prev_key, messages)
+        # Delete current conversation
+        await redis_store.delete_conversation(chat_id)
 
 
-def restore_conversation(chat_id: str) -> bool:
+async def restore_conversation(chat_id: str) -> bool:
     """Restore previous conversation if available."""
-    if chat_id in previous_conversations:
-        conversation_history[chat_id] = {
-            "messages": previous_conversations[chat_id]["messages"].copy(),
-            "last_updated": datetime.now(),  # Update timestamp to current
-        }
-        del previous_conversations[chat_id]
+    # Try to get previous conversation
+    prev_key = f"prev:{chat_id}"
+    messages = await redis_store.get_conversation(prev_key)
+
+    if messages is not None:
+        # Restore to current conversation
+        await redis_store.save_conversation(chat_id, messages)
+        # Delete the previous conversation backup
+        await redis_store.delete_conversation(prev_key)
         return True
     return False
 
 
-def process_message(user_message: str, chat_id: str = "default") -> str:
+async def search_knowledge_base(query: str) -> List[Dict]:
+    """Search the vector knowledge base for relevant context."""
+    try:
+        # Search vector store first
+        results = await vector_store.search(query, top_k=3)
+        return results
+    except Exception as e:
+        print(f"Vector search error: {e}")
+        # Fallback to file search if vector search fails
+        file_results = search_files(query)
+        return [
+            {"id": r["path"], "content": r.get("content", ""), "score": 0.5}
+            for r in file_results[:3]
+        ]
+
+
+async def process_message(user_message: str, chat_id: str = "default") -> str:
     """Process a user message using GPT-4o and execute any necessary file operations."""
     try:
+        # First, search for relevant context
+        search_results = await search_knowledge_base(user_message)
+
+        # Build context from search results
+        context_parts = []
+        for result in search_results:
+            if result.get("content"):
+                context_parts.append(
+                    f"[Relevant context - Score: {result.get('score', 0):.2f}]\n{result['content'][:500]}..."
+                )
+
         # Get conversation history
-        messages = get_conversation_history(chat_id)
+        messages = await get_conversation_history(chat_id)
+
+        # If we have relevant context, add it to the user message
+        enhanced_message = user_message
+        if context_parts:
+            enhanced_message = f"{user_message}\n\n[System: Found relevant context from knowledge base]\n{chr(10).join(context_parts)}"
 
         # Add the new user message
-        messages.append({"role": "user", "content": user_message})
-        add_to_conversation_history(chat_id, "user", user_message)
+        messages.append({"role": "user", "content": enhanced_message})
+        await add_to_conversation_history(chat_id, "user", user_message)
 
         response = client.chat.completions.create(
             model=GPT_MODEL,
@@ -187,7 +214,7 @@ def process_message(user_message: str, chat_id: str = "default") -> str:
             function_args = json.loads(message.function_call.arguments)
 
             # Execute the function
-            function_result = execute_function(function_name, function_args)
+            function_result = await execute_function(function_name, function_args)
 
             # Send the result back to GPT for a final response
             messages.append(message)
@@ -207,19 +234,19 @@ def process_message(user_message: str, chat_id: str = "default") -> str:
             )
 
             final_content = final_response.choices[0].message.content
-            add_to_conversation_history(chat_id, "assistant", final_content)
+            await add_to_conversation_history(chat_id, "assistant", final_content)
             return final_content
 
         # If no function call, return the direct response
         assistant_content = message.content
-        add_to_conversation_history(chat_id, "assistant", assistant_content)
+        await add_to_conversation_history(chat_id, "assistant", assistant_content)
         return assistant_content
 
     except Exception as e:
         return f"I encountered an error processing your request: {str(e)}"
 
 
-def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str, Any]:
+async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str, Any]:
     """Execute a function based on GPT's decision."""
     try:
         if function_name == "create_file":
@@ -231,6 +258,18 @@ def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str, Any]
             tags = args.get("tags", [])
 
             file_path = create_file(title, content, folder, doc_type, tags)
+
+            # Also store in vector database for semantic search
+            doc_id = file_path.replace("/", "_").replace(".md", "")
+            metadata = {
+                "title": title,
+                "type": doc_type,
+                "tags": tags,
+                "folder": folder or "root",
+                "file_path": file_path,
+            }
+            await vector_store.embed_and_store(doc_id, content, metadata)
+
             return {
                 "success": True,
                 "message": f"Created file: {file_path}",
