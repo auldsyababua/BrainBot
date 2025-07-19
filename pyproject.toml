@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "markdown-brain-bot"
+version = "2.0.0"
+description = "A Telegram bot that manages markdown notes with vector search and hybrid storage"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Colin Aulds", email = "colin@10netzero.com"},
+]
+dependencies = [
+    "python-telegram-bot[webhooks]>=20.3",
+    "openai>=1.51.2",
+    "python-dotenv>=1.0.0",
+    "redis>=4.5.5",
+    "upstash-vector>=0.3.3",
+    "aiohttp>=3.9.1",
+    "flask>=3.0.0",
+    "supabase>=2.3.1",
+    "boto3>=1.34.13",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.3.1",
+    "pytest-asyncio>=0.21.0",
+    "black>=24.3.0",
+    "ruff>=0.3.0",
+]
+
+[project.scripts]
+brain-bot = "src.bot.main_polling:main"
+brain-bot-webhook = "src.bot.main_webhook:app"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["*"]
+exclude = ["tests*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+asyncio_mode = "auto"
