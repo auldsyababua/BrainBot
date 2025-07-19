@@ -20,7 +20,6 @@ class VectorStore:
     def __init__(self):
         """Initialize Vector index from environment variables."""
         self.index = Index.from_env()
-        self.namespace = os.getenv("VECTOR_NAMESPACE", "")  # Default namespace
         self.top_k = int(os.getenv("VECTOR_TOP_K", "5"))
 
     async def embed_and_store(
@@ -54,15 +53,9 @@ class VectorStore:
             )
 
             # Upsert with automatic embedding (using data field)
-            # Note: Upstash Python SDK doesn't support namespace in upsert directly
-            # Need to use namespace() method first if namespace is set
-            if self.namespace:
-                self.index.namespace(self.namespace).upsert(
-                    vectors=[(document_id, content, metadata)]
-                )
-            else:
-                self.index.upsert(vectors=[(document_id, content, metadata)])
+            response = self.index.upsert(vectors=[(document_id, content, metadata)])
 
+            print(f"[DEBUG] Upsert response for {document_id}: {response}")
             return True
         except Exception as e:
             print(f"Error storing document {document_id}: {e}")
@@ -93,27 +86,29 @@ class VectorStore:
                 top_k = self.top_k
 
             # Query using text data (automatic embedding)
-            # Note: include_data is not a parameter in the SDK
-            if self.namespace:
-                results = self.index.namespace(self.namespace).query(
-                    data=query,
-                    top_k=top_k,
-                    filter=filter or "",
-                    include_metadata=include_metadata,
-                    include_vectors=False,
-                )
-            else:
-                results = self.index.query(
-                    data=query,
-                    top_k=top_k,
-                    filter=filter or "",
-                    include_metadata=include_metadata,
-                    include_vectors=False,
-                )
+            results = self.index.query(
+                data=query,
+                top_k=top_k,
+                filter=filter or "",
+                include_metadata=include_metadata,
+                include_vectors=False,
+            )
+
+            print(f"[DEBUG] Query '{query}' response: {results}")
+            print(f"[DEBUG] Query response type: {type(results)}")
+            print(
+                f"[DEBUG] Query response length: {len(results) if hasattr(results, '__len__') else 'N/A'}"
+            )
 
             # Format results
             formatted_results = []
-            for result in results:
+            for i, result in enumerate(results):
+                print(f"[DEBUG] Result {i}: {result}")
+                print(f"[DEBUG] Result type: {type(result)}")
+                print(f"[DEBUG] Result attributes: {dir(result)}")
+                print(f"[DEBUG] Result ID: {getattr(result, 'id', 'N/A')}")
+                print(f"[DEBUG] Result score: {getattr(result, 'score', 'N/A')}")
+                print(f"[DEBUG] Result metadata: {getattr(result, 'metadata', 'N/A')}")
                 # Extract content from metadata if available
                 content = None
                 if hasattr(result, "metadata") and result.metadata:
@@ -248,41 +243,37 @@ class VectorStore:
         """
         Update metadata for an existing document.
 
+        Note: Update functionality not available in upstash-vector v0.8.0
+        This method is a placeholder for future compatibility.
+
+        TODO: When upstash-vector releases a version > v0.8.0 with the update method,
+        replace this implementation with:
+        ```python
+        try:
+            return self.index.update(document_id, metadata=metadata)
+        except Exception as e:
+            print(f"Error updating metadata for {document_id}: {e}")
+            return False
+        ```
+
+        For now, you can work around this by using upsert:
+        ```python
+        self.index.upsert([(document_id, None, metadata)])
+        ```
+
         Args:
             document_id: Document ID to update
             metadata: New metadata to merge with existing
 
         Returns:
-            True if updated successfully, False otherwise
+            False (not implemented in current SDK version)
         """
-        try:
-            # Fetch existing document
-            if self.namespace:
-                result = self.index.namespace(self.namespace).fetch([document_id])
-            else:
-                result = self.index.fetch([document_id])
-
-            if not result or document_id not in result:
-                print(f"Document {document_id} not found")
-                return False
-
-            # Merge metadata
-            existing_metadata = result[document_id].metadata or {}
-            existing_metadata.update(metadata)
-            existing_metadata["last_updated"] = datetime.now().isoformat()
-
-            # Update the document
-            if self.namespace:
-                self.index.namespace(self.namespace).update(
-                    id=document_id, metadata=existing_metadata
-                )
-            else:
-                self.index.update(id=document_id, metadata=existing_metadata)
-
-            return True
-        except Exception as e:
-            print(f"Error updating metadata for {document_id}: {e}")
-            return False
+        print("[DEBUG] Update metadata not supported in upstash-vector v0.8.0")
+        print(
+            "[DEBUG] The update method exists in the main branch but not in the current release"
+        )
+        print("[DEBUG] See: https://github.com/upstash/vector-py#update-a-vector")
+        return False
 
     async def delete_document(self, document_id: str) -> bool:
         """
@@ -295,10 +286,7 @@ class VectorStore:
             True if deleted successfully, False otherwise
         """
         try:
-            if self.namespace:
-                self.index.namespace(self.namespace).delete([document_id])
-            else:
-                self.index.delete([document_id])
+            self.index.delete([document_id])
             return True
         except Exception as e:
             print(f"Error deleting document {document_id}: {e}")
@@ -337,10 +325,7 @@ class VectorStore:
                 vectors.append((doc_id, content, metadata))
 
             # Batch upsert
-            if self.namespace:
-                self.index.namespace(self.namespace).upsert(vectors=vectors)
-            else:
-                self.index.upsert(vectors=vectors)
+            self.index.upsert(vectors=vectors)
 
             return len(vectors)
         except Exception as e:
@@ -358,18 +343,20 @@ class VectorStore:
             Document data or None if not found
         """
         try:
-            if self.namespace:
-                result = self.index.namespace(self.namespace).fetch([document_id])
-            else:
-                result = self.index.fetch([document_id])
+            result = self.index.fetch([document_id])
 
-            if result and document_id in result:
-                doc = result[document_id]
-                return {
-                    "id": document_id,
-                    "content": None,  # Data content not returned by fetch
-                    "metadata": doc.metadata,
-                }
+            print(f"[DEBUG] Fetch result for {document_id}: {result}")
+            print(f"[DEBUG] Fetch result type: {type(result)}")
+
+            # Find the document in the result list
+            if result:
+                for doc in result:
+                    if doc.id == document_id:
+                        return {
+                            "id": document_id,
+                            "content": None,  # Data content not returned by fetch
+                            "metadata": doc.metadata,
+                        }
 
             return None
         except Exception as e:
@@ -398,25 +385,18 @@ class VectorStore:
             print(f"Error listing documents: {e}")
             return []
 
-    async def reset_namespace(self, namespace: Optional[str] = None) -> bool:
+    async def reset_store(self) -> bool:
         """
-        Reset (clear) all documents in a namespace.
-
-        Args:
-            namespace: Namespace to reset (uses default if not specified)
+        Reset (clear) all documents in the vector store.
 
         Returns:
             True if reset successfully, False otherwise
         """
         try:
-            target_namespace = namespace or self.namespace
-            if target_namespace:
-                self.index.namespace(target_namespace).reset()
-            else:
-                self.index.reset()
+            self.index.reset()
             return True
         except Exception as e:
-            print(f"Error resetting namespace {target_namespace}: {e}")
+            print(f"Error resetting vector store: {e}")
             return False
 
 

@@ -1,12 +1,16 @@
+# 🏭 PRODUCTION CONFIGURATION FOR RENDER
+# This bot uses WEBHOOKS (not polling) in production!
+# The webhook server (FastAPI) receives updates from Telegram
+
 services:
-  - type: web
+  - type: web  # Changed from 'background' to 'web' for webhooks
     name: markdown-brain-bot
     runtime: python
     region: oregon
     plan: starter
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "python webhook_server.py"
-    healthCheckPath: /
+    startCommand: "python webhook_server.py"  # Runs FastAPI webhook server
+    healthCheckPath: /  # Health check endpoint for web service
     envVars:
       - key: TELEGRAM_BOT_TOKEN
         sync: false

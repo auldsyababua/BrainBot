@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """
-Webhook server for Render deployment.
-Handles incoming Telegram updates via webhooks.
+🏭 PRODUCTION WEBHOOK SERVER - This is the main entry point for production on Render!
+
+This FastAPI server receives webhook events from Telegram and processes them.
+DO NOT use this for local development - use run_bot.py instead.
+
+Render runs this automatically with: python webhook_server.py
 """
 
 import os
