@@ -5,9 +5,11 @@ A shared knowledge Telegram bot that stores all information as markdown files in
 ## 🎯 Features
 
 - **Natural Language Processing**: Uses OpenAI GPT-4o to understand user requests
+- **Persistent Conversations**: Redis-backed conversation memory across bot restarts
+- **Semantic Search**: Vector database search enhances responses with relevant context
+- **Smart Todo Lists**: Checkbox formatting with completion tracking
 - **Markdown Storage**: All knowledge stored as `.md` files with YAML frontmatter
 - **Automatic Organization**: Maintains index.md and folder README.md files
-- **No Database**: Pure filesystem-based storage
 - **Shared Brain**: Acts as a team's collective memory (no user differentiation)
 
 ## 🚀 Quick Start
@@ -17,6 +19,8 @@ A shared knowledge Telegram bot that stores all information as markdown files in
 - Python 3.9+
 - Telegram Bot Token (from [@BotFather](https://t.me/botfather))
 - OpenAI API Key
+- Upstash Redis database (for conversation persistence)
+- Upstash Vector database (for semantic search)
 
 ### 2. Installation
 
@@ -36,16 +40,15 @@ cp .env.example .env
 ### 3. Running Locally
 
 ```bash
-# Start the FastAPI server
+# Start the bot in polling mode (recommended for local development)
+python main_polling.py
+
+# Or use webhook mode (requires ngrok for local testing)
 uvicorn main:app --reload
-
-# In another terminal, expose via ngrok (for Telegram webhook)
-ngrok http 8000
-
-# Set your Telegram webhook
-curl -X POST "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook" \
-     -H "Content-Type: application/json" \
-     -d '{"url": "https://your-ngrok-url.ngrok.io/webhook"}'
+# In another terminal: ngrok http 8000
+# Set webhook: curl -X POST "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook" \
+#               -H "Content-Type: application/json" \
+#               -d '{"url": "https://your-ngrok-url.ngrok.io/webhook"}'
 ```
 
 ## 📝 Usage Examples
@@ -91,31 +94,41 @@ markdown-brain-bot/
 Environment variables in `.env`:
 
 ```env
+# Required
 TELEGRAM_BOT_TOKEN=your_bot_token_here
 OPENAI_API_KEY=your_openai_api_key_here
+UPSTASH_REDIS_REST_URL=your_upstash_redis_url_here
+UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token_here
+UPSTASH_VECTOR_REST_URL=your_upstash_vector_url_here
+UPSTASH_VECTOR_REST_TOKEN=your_upstash_vector_token_here
+
+# Optional
+VECTOR_NAMESPACE=10netzero
+VECTOR_TOP_K=5
 ```
 
 ## 🚢 Deployment
 
-### Option 1: Render.com
+### Render.com (Recommended)
 
-1. Create a new Web Service
-2. Connect your GitHub repository
-3. Set environment variables
-4. Deploy
+1. **Set up Upstash services**:
+   - Create [Upstash Redis](https://upstash.com) database
+   - Create [Upstash Vector](https://upstash.com/docs/vector) database
+   - Note the REST URLs and tokens
 
-### Option 2: Fly.io
+2. **Deploy to Render**:
+   - Fork this repository to your GitHub account
+   - Connect your forked repository to Render
+   - Use the included `render.yaml` configuration
+   - Set environment variables in Render dashboard:
+     - `TELEGRAM_BOT_TOKEN` (from @BotFather)
+     - `OPENAI_API_KEY` (from OpenAI)
+     - `UPSTASH_REDIS_REST_URL` & `UPSTASH_REDIS_REST_TOKEN`
+     - `UPSTASH_VECTOR_REST_URL` & `UPSTASH_VECTOR_REST_TOKEN`
 
-```bash
-# Install flyctl
-curl -L https://fly.io/install.sh | sh
-
-# Deploy
-fly launch
-fly secrets set TELEGRAM_BOT_TOKEN="your_token"
-fly secrets set OPENAI_API_KEY="your_key"
-fly deploy
-```
+3. **Initialize knowledge base** (optional):
+   - Run the migration script to populate vector database
+   - Upload markdown files via Telegram
 
 ## 🛠️ Development
 
@@ -154,18 +167,20 @@ tags: [shopping, groceries]
 
 ## 🚀 Future Features
 
-### Redis Integration
-- **Conversation Memory**: Store chat history in Redis with TTL
-- **Session Management**: Persistent user sessions across bot restarts
-- **Caching**: Cache frequently accessed files for faster retrieval
-- **Distributed**: Enable multiple bot instances with shared state
+### Dynamic Task Management ⭐ NEXT
+- **Cross-Referenced Tasks**: Tasks automatically appear in multiple views
+- **Smart Entity Recognition**: Recognize users, sites, generators in commands
+- **Supabase Integration**: Sync with existing 10NetZero database
+- **Example**: "Add task for Bryan to clean gaskets on genny 1 at Eagle Lake"
+  - Creates entry in Bryan's task list
+  - Creates entry in Eagle Lake site list  
+  - Links both for synchronized updates
 
-### Vector Database Integration
-- **Semantic Search**: Find notes by meaning, not just keywords
-- **Smart Retrieval**: Return most relevant content based on context
-- **Embeddings Storage**: Store document embeddings for similarity search
-- **RAG Support**: Retrieval-Augmented Generation for better responses
-- **Options**: Qdrant, Pinecone, or Weaviate integration
+### Advanced Analytics
+- **Usage Tracking**: Monitor team knowledge patterns
+- **Search Analytics**: Most accessed content
+- **Knowledge Gaps**: Identify missing information
+- **Team Insights**: Collaboration patterns
 
 ## 📄 License
 
