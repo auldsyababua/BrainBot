@@ -190,15 +190,23 @@ class VectorStore:
                             print(
                                 f"File not found: {file_path}, falling back to chunks"
                             )
+                            # Fallback to chunks if file not found
+                            # Try to build content from chunks' content or content_preview
+                            content_parts = []
+                            for chunk in doc_info["chunks"]:
+                                chunk_content = chunk.get("content")
+                                if not chunk_content and chunk.get("metadata"):
+                                    chunk_content = chunk["metadata"].get(
+                                        "content_preview"
+                                    )
+                                if chunk_content:
+                                    content_parts.append(chunk_content)
+
                             enhanced_result = {
                                 "id": file_path,
                                 "score": doc_info["best_score"],
-                                "content": "\n\n".join(
-                                    [
-                                        chunk["content"]
-                                        for chunk in doc_info["chunks"]
-                                        if chunk.get("content")
-                                    ]
+                                "content": (
+                                    "\n\n".join(content_parts) if content_parts else ""
                                 ),
                                 "metadata": doc_info["metadata"],
                                 "chunks": doc_info["chunks"],

@@ -1,4 +1,5 @@
 import json
+import logging
 from typing import Dict, Any, List
 from openai import OpenAI
 
@@ -169,14 +170,16 @@ async def restore_conversation(chat_id: str) -> bool:
 
 async def search_knowledge_base(query: str) -> List[Dict]:
     """Search the vector knowledge base for relevant context with full document retrieval."""
+    logger = logging.getLogger(__name__)
     try:
         # Use the new search_with_full_content method to get full documents
         results = await vector_store.search_with_full_content(
             query, top_k=3, include_full_docs=True
         )
+        logger.info(f"Vector search for '{query}' returned {len(results)} results")
         return results
     except Exception as e:
-        print(f"Vector search error: {e}")
+        logger.error(f"Vector search error for query '{query}': {e}")
         # Fallback to file search if vector search fails
         file_results = search_files(query)
         return [
@@ -187,6 +190,8 @@ async def search_knowledge_base(query: str) -> List[Dict]:
 
 async def process_message(user_message: str, chat_id: str = "default") -> str:
     """Process a user message using GPT-4o and execute any necessary file operations."""
+    logger = logging.getLogger(__name__)
+    logger.info(f"Processing message for chat_id={chat_id}: {user_message[:50]}...")
     try:
         # First, search for relevant context
         search_results = await search_knowledge_base(user_message)
@@ -194,9 +199,21 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         # Build context from search results
         context_parts = []
         for result in search_results:
-            if result.get("content"):
+            # Try to get content from multiple possible locations
+            content = result.get("content")
+
+            # If content is None or empty, try metadata.content_preview
+            if not content and result.get("metadata"):
+                content = result["metadata"].get("content_preview")
+
+            # Only add to context if we have actual content
+            if content and content.strip():
                 context_parts.append(
-                    f"[Relevant context - Score: {result.get('score', 0):.2f}]\n{result['content'][:500]}..."
+                    f"[Relevant context - Score: {result.get('score', 0):.2f}]\n{content[:500]}..."
+                )
+            else:
+                logger.warning(
+                    f"Empty content for result: {result.get('id', 'unknown')}"
                 )
 
         # Get conversation history
