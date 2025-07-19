@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Run the bot with proper imports"""
+"""
+🧪 LOCAL DEVELOPMENT ONLY - Run the bot using polling mode
+
+This is for local testing only. Uses polling to check for updates.
+For production, use webhook_server.py instead.
+
+Usage: python run_bot.py
+"""
 import sys
 import os
 
