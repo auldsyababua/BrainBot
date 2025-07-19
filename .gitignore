@@ -60,4 +60,15 @@ htmlcov/
 # Notes folder - don't commit user data
 # IMPORTANT: Company notes should NEVER be in git
 notes/
-!notes/index.md
+!notes/index.md*.local.toml
+.ruff.local.toml
+.black.local.toml
+pyproject.local.toml
+.venv
+.hypothesis/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+.pyre/
+.vscode/settings.json

@@ -1,11 +1,17 @@
 import logging
-from typing import Dict
+from contextlib import asynccontextmanager
+from http import HTTPStatus
 
-from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, Request, Response
 import uvicorn
-from telegram import Update, Bot
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram import Update
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    MessageHandler,
+    filters,
+    ContextTypes,
+)
 
 from config import TELEGRAM_BOT_TOKEN
 from llm import process_message
@@ -13,34 +19,36 @@ from tools import ensure_index_exists
 
 # Set up logging
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 logger = logging.getLogger(__name__)
-
-# Initialize FastAPI
-app = FastAPI(title="Markdown Brain Bot")
-
-# Initialize bot
-bot = Bot(token=TELEGRAM_BOT_TOKEN)
-application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
 
 # Ensure index exists on startup
 ensure_index_exists()
 
+# Initialize python telegram bot
+ptb = (
+    Application.builder()
+    .updater(None)
+    .token(TELEGRAM_BOT_TOKEN)
+    .read_timeout(7)
+    .get_updates_read_timeout(42)
+    .build()
+)
 
-@app.on_event("startup")
-async def startup_event():
-    """Initialize the bot on startup."""
-    await application.initialize()
-    logger.info("Bot initialized successfully")
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    """Manage the application lifecycle."""
+    # Webhook URL will be set by set_webhook.py
+    async with ptb:
+        await ptb.start()
+        yield
+        await ptb.stop()
 
 
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Cleanup on shutdown."""
-    await application.shutdown()
-    logger.info("Bot shut down successfully")
+# Initialize FastAPI app
+app = FastAPI(title="Markdown Brain Bot", lifespan=lifespan)
 
 
 @app.get("/")
@@ -50,22 +58,21 @@ async def root():
 
 
 @app.post("/webhook")
-async def webhook(request: Request):
+async def process_update(request: Request):
     """Handle incoming Telegram updates via webhook."""
     try:
-        data = await request.json()
-        update = Update.de_json(data, bot)
-        
-        # Process the update
-        await application.process_update(update)
-        
-        return {"status": "ok"}
+        req = await request.json()
+        logger.info(f"Received update: {req}")
+        update = Update.de_json(req, ptb.bot)
+        await ptb.process_update(update)
+        return Response(status_code=HTTPStatus.OK)
     except Exception as e:
-        logger.error(f"Error processing webhook: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error processing webhook: {e}", exc_info=True)
+        return Response(status_code=HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+# Handler functions
+async def start_command(update: Update, _: ContextTypes.DEFAULT_TYPE):
     """Handle the /start command."""
     welcome_message = (
         "🧠 Welcome to the Markdown Brain Bot!\n\n"
@@ -75,35 +82,35 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• Search and retrieve information\n\n"
         "Just send me a message with what you'd like to do!\n\n"
         "Examples:\n"
-        "- \"Create a shopping list with milk, eggs, and bread\"\n"
-        "- \"Add coffee to the shopping list\"\n"
-        "- \"What's on my shopping list?\"\n"
-        "- \"Create a note about project ideas\"\n"
-        "- \"Find all notes about projects\""
+        '- "Create a shopping list with milk, eggs, and bread"\n'
+        '- "Add coffee to the shopping list"\n'
+        '- "What\'s on my shopping list?"\n'
+        '- "Create a note about project ideas"\n'
+        '- "Find all notes about projects"'
     )
     await update.message.reply_text(welcome_message)
 
 
-async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def help_command(update: Update, _: ContextTypes.DEFAULT_TYPE):
     """Handle the /help command."""
     help_message = (
         "📚 **How to use the Markdown Brain Bot**\n\n"
         "**Creating content:**\n"
-        "• \"Create a [type] about [topic]\" - Creates a new note\n"
-        "• \"Make a list of [items]\" - Creates a new list\n\n"
+        '• "Create a [type] about [topic]" - Creates a new note\n'
+        '• "Make a list of [items]" - Creates a new list\n\n'
         "**Adding content:**\n"
-        "• \"Add [content] to [note name]\" - Appends to existing note\n\n"
+        '• "Add [content] to [note name]" - Appends to existing note\n\n'
         "**Reading content:**\n"
-        "• \"What's in [note name]?\" - Shows note content\n"
-        "• \"Show me [note name]\" - Shows note content\n\n"
+        '• "What\'s in [note name]?" - Shows note content\n'
+        '• "Show me [note name]" - Shows note content\n\n'
         "**Searching:**\n"
-        "• \"Find notes about [topic]\" - Searches all notes\n"
-        "• \"Search for [keyword]\" - Searches all content\n\n"
+        '• "Find notes about [topic]" - Searches all notes\n'
+        '• "Search for [keyword]" - Searches all content\n\n'
         "**Listing:**\n"
-        "• \"List all notes\" - Shows all stored notes\n"
-        "• \"What notes do we have?\" - Shows all stored notes"
+        '• "List all notes" - Shows all stored notes\n'
+        '• "What notes do we have?" - Shows all stored notes'
     )
-    await update.message.reply_text(help_message, parse_mode='Markdown')
+    await update.message.reply_text(help_message, parse_mode="Markdown")
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -111,18 +118,18 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         user_message = update.message.text
         chat_id = update.effective_chat.id
-        
+
         logger.info(f"Received message from {chat_id}: {user_message}")
-        
+
         # Show typing indicator
-        await bot.send_chat_action(chat_id=chat_id, action="typing")
-        
+        await context.bot.send_chat_action(chat_id=chat_id, action="typing")
+
         # Process the message with LLM
         response = process_message(user_message)
-        
+
         # Send the response
-        await update.message.reply_text(response, parse_mode='Markdown')
-        
+        await update.message.reply_text(response, parse_mode="Markdown")
+
     except Exception as e:
         logger.error(f"Error handling message: {e}")
         error_message = (
@@ -133,9 +140,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # Register handlers
-application.add_handler(CommandHandler("start", start_command))
-application.add_handler(CommandHandler("help", help_command))
-application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+ptb.add_handler(CommandHandler("start", start_command))
+ptb.add_handler(CommandHandler("help", help_command))
+ptb.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
 
 if __name__ == "__main__":
