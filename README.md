@@ -41,14 +41,15 @@ cp .env.example .env
 
 ```bash
 # Start the bot in polling mode (recommended for local development)
-python main_polling.py
+python main.py
+
+# Or run directly from src
+python src/bot/main_polling.py
 
 # Or use webhook mode (requires ngrok for local testing)
-uvicorn main:app --reload
+python src/bot/main_webhook.py
 # In another terminal: ngrok http 8000
-# Set webhook: curl -X POST "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook" \
-#               -H "Content-Type: application/json" \
-#               -d '{"url": "https://your-ngrok-url.ngrok.io/webhook"}'
+# Set webhook: python src/bot/set_webhook.py https://your-ngrok-url.ngrok.io
 ```
 
 ## 📝 Usage Examples
@@ -72,21 +73,78 @@ uvicorn main:app --reload
 - "Search for recipes"
 - "What notes do we have?"
 
-## 📂 File Structure
+## 📂 Project Structure
 
 ```
 markdown-brain-bot/
-├── main.py             # FastAPI + Telegram webhook
-├── llm.py              # GPT-4o integration
-├── tools.py            # File operations
-├── config.py           # Configuration
-├── notes/              # All markdown files stored here
-│   ├── index.md        # Global index
-│   ├── shopping-list.md
-│   └── recipes/
-│       ├── README.md   # Folder index
-│       └── cookies.md
-└── requirements.txt
+├── main.py                     # Main entry point
+├── requirements.txt            # Dependencies
+├── README.md                   # Project documentation
+├── .env                        # Environment variables
+├── .gitignore                  # Git ignore file
+│
+├── src/                        # Source code
+│   ├── __init__.py
+│   ├── bot/                    # Bot-specific code
+│   │   ├── __init__.py
+│   │   ├── main_polling.py
+│   │   ├── main_webhook.py
+│   │   └── set_webhook.py
+│   ├── storage/                # Storage services
+│   │   ├── __init__.py
+│   │   ├── storage_service.py
+│   │   ├── media_storage.py
+│   │   ├── redis_store.py
+│   │   └── vector_store.py
+│   ├── core/                   # Core functionality
+│   │   ├── __init__.py
+│   │   ├── config.py
+│   │   ├── tools.py
+│   │   ├── llm.py
+│   │   ├── chunking.py
+│   │   └── version.py
+│   └── migrations/             # Data migration scripts
+│       ├── __init__.py
+│       ├── migrate_to_vector.py
+│       └── add_to_vector.py
+│
+├── scripts/                    # Utility scripts
+│   ├── diagnostics/           # Diagnostic tools
+│   │   ├── diagnose_vector.py
+│   │   ├── remote_diagnostic.py
+│   │   └── list_vector_contents.py
+│   ├── deployment/            # Deployment scripts
+│   │   ├── bot-restart.sh
+│   │   ├── botlogs.sh
+│   │   └── start.py
+│   └── database/              # Database scripts
+│       ├── create_document_storage_tables.sql
+│       └── audit_queries.sql
+│
+├── tests/                     # All tests
+│   ├── integration/           # Integration tests
+│   │   ├── test_document_storage.py
+│   │   ├── test_media_storage.py
+│   │   └── test_s3_connection.py
+│   ├── unit/                  # Unit tests
+│   │   ├── test_context_awareness.py
+│   │   └── test_search_resilience.py
+│   └── scratch/               # Temporary test files
+│       ├── test_chunked_migration.py
+│       ├── test_chunking.py
+│       └── test_full_content_search.py
+│
+├── docs/                      # Documentation
+│   ├── DEPLOYMENT_GUIDE.md
+│   ├── STORAGE_IMPLEMENTATION_PLAN.md
+│   ├── STORAGE_OPTIONS.md
+│   └── VECTOR_ENHANCEMENT_PLAN.md
+│
+├── notes/                     # Knowledge base (unchanged)
+│   └── ...
+│
+└── logs/                      # Log files (unchanged)
+    └── ...
 ```
 
 ## 🔧 Configuration

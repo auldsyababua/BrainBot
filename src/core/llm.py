@@ -2,10 +2,22 @@ import json
 from typing import Dict, Any, List
 from openai import OpenAI
 
-from config import OPENAI_API_KEY, GPT_MODEL, MAX_TOKENS, TEMPERATURE, SYSTEM_PROMPT
-from tools import create_file, append_to_file, read_file, search_files, list_all_files
-from redis_store import redis_store
-from vector_store import vector_store
+from src.core.config import (
+    OPENAI_API_KEY,
+    GPT_MODEL,
+    MAX_TOKENS,
+    TEMPERATURE,
+    SYSTEM_PROMPT,
+)
+from src.core.tools import (
+    create_file,
+    append_to_file,
+    read_file,
+    search_files,
+    list_all_files,
+)
+from src.storage.redis_store import redis_store
+from src.storage.vector_store import vector_store
 
 # Initialize OpenAI client
 client = OpenAI(api_key=OPENAI_API_KEY)
