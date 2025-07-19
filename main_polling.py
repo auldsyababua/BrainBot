@@ -19,6 +19,7 @@ from config import TELEGRAM_BOT_TOKEN
 from llm import process_message
 from tools import ensure_index_exists, create_file
 from vector_store import vector_store
+from version import VERSION, LATEST_CHANGES
 
 # Set up logging
 logging.basicConfig(
@@ -43,7 +44,8 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• /start - Show this welcome message\n"
         "• /help - Show detailed help and examples\n"
         "• /reset - Start a new conversation (clears memory)\n"
-        "• /continue - Restore previous conversation\n\n"
+        "• /continue - Restore previous conversation\n"
+        "• /version - Show bot version and diagnostics\n\n"
         "Just send me a message with what you'd like to do!\n\n"
         "Examples:\n"
         '- "Create a shopping list with milk, eggs, and bread"\n'
@@ -116,6 +118,28 @@ async def continue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "❌ No previous conversation found to restore. "
             "We're already in a fresh conversation!"
         )
+
+
+async def version_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle the /version command to show bot version and capabilities."""
+    version_message = (
+        f"🤖 **Markdown Brain Bot v{VERSION}**\n\n" "**Latest Changes:**\n"
+    )
+
+    for change in LATEST_CHANGES:
+        version_message += f"• {change}\n"
+
+    version_message += (
+        "\n**Diagnostic Info:**\n"
+        f"• Vector search: {'✅ Enabled' if vector_store else '❌ Disabled'}\n"
+        f"• Search method: Full document retrieval\n"
+        f"• Chunk size: 1000 chars with 200 char overlap\n"
+        "\nIf I'm not finding your documents, please ask your admin to:\n"
+        "1. Check the vector store migration\n"
+        "2. Run: `python diagnose_vector.py`"
+    )
+
+    await update.message.reply_text(version_message)
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -243,6 +267,7 @@ def main():
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("reset", reset_command))
     application.add_handler(CommandHandler("continue", continue_command))
+    application.add_handler(CommandHandler("version", version_command))
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
     )

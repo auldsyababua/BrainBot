@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from version import VERSION
 
 # Load environment variables
 load_dotenv()
@@ -27,7 +28,7 @@ TEMPERATURE = float(os.getenv("TEMPERATURE", "0.7"))
 # System prompt (can be overridden from environment)
 SYSTEM_PROMPT = os.getenv(
     "SYSTEM_PROMPT",
-    """You are a markdown-based memory assistant.
+    f"""You are a markdown-based memory assistant (Version {VERSION}).
 
 All content is stored in plain `.md` files inside a single folder structure.
 
