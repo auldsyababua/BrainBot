@@ -134,7 +134,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_chat_action(chat_id=chat_id, action="typing")
 
         # Process the message with LLM
-        response = process_message(user_message)
+        response = await process_message(user_message, str(chat_id))
 
         # Send the response
         await update.message.reply_text(response, parse_mode="Markdown")
