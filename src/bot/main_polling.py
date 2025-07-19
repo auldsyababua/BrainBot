@@ -15,11 +15,11 @@ from telegram.ext import (
 import os
 import tempfile
 
-from config import TELEGRAM_BOT_TOKEN
-from llm import process_message
-from tools import ensure_index_exists, create_file
-from vector_store import vector_store
-from version import VERSION, LATEST_CHANGES
+from src.core.config import TELEGRAM_BOT_TOKEN
+from src.core.llm import process_message
+from src.core.tools import ensure_index_exists, create_file
+from src.storage.vector_store import vector_store
+from src.core.version import VERSION, LATEST_CHANGES
 
 # Set up logging
 logging.basicConfig(
@@ -89,7 +89,7 @@ async def reset_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = str(update.effective_chat.id)
 
     # Import the reset function from llm
-    from llm import reset_conversation
+    from src.core.llm import reset_conversation
 
     # Reset conversation for this chat
     await reset_conversation(chat_id)
@@ -105,7 +105,7 @@ async def continue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = str(update.effective_chat.id)
 
     # Import the restore function from llm
-    from llm import restore_conversation
+    from src.core.llm import restore_conversation
 
     # Try to restore conversation for this chat
     if await restore_conversation(chat_id):
