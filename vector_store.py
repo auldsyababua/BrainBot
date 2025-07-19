@@ -8,6 +8,7 @@ from typing import List, Dict, Optional, Tuple
 from datetime import datetime
 from upstash_vector import Index
 from dotenv import load_dotenv
+from pathlib import Path
 
 # Load environment variables
 load_dotenv()
@@ -129,6 +130,118 @@ class VectorStore:
             return formatted_results
         except Exception as e:
             print(f"Error searching for query '{query}': {e}")
+            return []
+
+    async def search_with_full_content(
+        self, query: str, top_k: Optional[int] = None, include_full_docs: bool = True
+    ) -> List[Dict]:
+        """
+        Search for documents and retrieve full content from filesystem.
+
+        This method performs a vector search for relevant chunks, then
+        retrieves the complete document content from the filesystem.
+
+        Args:
+            query: Natural language query text
+            top_k: Number of results to return (defaults to VECTOR_TOP_K)
+            include_full_docs: Whether to fetch full documents from filesystem
+
+        Returns:
+            List of matching documents with full content and metadata
+        """
+        try:
+            # 1. Perform vector search for chunks
+            results = await self.search(query, top_k=top_k, include_metadata=True)
+
+            # 2. Group results by document file path
+            docs_to_fetch = {}
+            for result in results:
+                if result.get("metadata"):
+                    file_path = result["metadata"].get("file_path")
+                    if file_path:
+                        if file_path not in docs_to_fetch:
+                            docs_to_fetch[file_path] = {
+                                "chunks": [],
+                                "best_score": result["score"],
+                                "metadata": result["metadata"],
+                            }
+                        docs_to_fetch[file_path]["chunks"].append(result)
+                        # Keep track of best score for this document
+                        if result["score"] > docs_to_fetch[file_path]["best_score"]:
+                            docs_to_fetch[file_path]["best_score"] = result["score"]
+
+            # 3. Fetch full documents if requested
+            enhanced_results = []
+            for file_path, doc_info in docs_to_fetch.items():
+                if include_full_docs:
+                    try:
+                        # Read full document from filesystem
+                        path = Path(file_path)
+                        if path.exists():
+                            full_content = path.read_text(encoding="utf-8")
+
+                            # Create enhanced result with full content
+                            enhanced_result = {
+                                "id": file_path,
+                                "score": doc_info["best_score"],
+                                "content": full_content,
+                                "metadata": doc_info["metadata"],
+                                "chunks": doc_info["chunks"],
+                                "source": "filesystem",
+                            }
+                            enhanced_results.append(enhanced_result)
+                        else:
+                            # Fallback to chunks if file not found
+                            print(
+                                f"File not found: {file_path}, falling back to chunks"
+                            )
+                            enhanced_result = {
+                                "id": file_path,
+                                "score": doc_info["best_score"],
+                                "content": "\n\n".join(
+                                    [
+                                        chunk["content"]
+                                        for chunk in doc_info["chunks"]
+                                        if chunk.get("content")
+                                    ]
+                                ),
+                                "metadata": doc_info["metadata"],
+                                "chunks": doc_info["chunks"],
+                                "source": "chunks",
+                            }
+                            enhanced_results.append(enhanced_result)
+                    except Exception as e:
+                        print(
+                            f"Error reading file {file_path}: {e}, falling back to chunks"
+                        )
+                        # Fallback to chunks on any error
+                        enhanced_result = {
+                            "id": file_path,
+                            "score": doc_info["best_score"],
+                            "content": "\n\n".join(
+                                [
+                                    chunk["content"]
+                                    for chunk in doc_info["chunks"]
+                                    if chunk.get("content")
+                                ]
+                            ),
+                            "metadata": doc_info["metadata"],
+                            "chunks": doc_info["chunks"],
+                            "source": "chunks",
+                        }
+                        enhanced_results.append(enhanced_result)
+                else:
+                    # Return chunks only
+                    for chunk in doc_info["chunks"]:
+                        enhanced_results.append(chunk)
+
+            # Sort by score (highest first)
+            enhanced_results.sort(key=lambda x: x["score"], reverse=True)
+
+            return enhanced_results
+
+        except Exception as e:
+            print(f"Error in search_with_full_content for query '{query}': {e}")
             return []
 
     async def update_metadata(self, document_id: str, metadata: Dict) -> bool:
