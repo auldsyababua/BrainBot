@@ -169,11 +169,11 @@ tags: [shopping, groceries]
 
 ### Dynamic Task Management ⭐ NEXT
 - **Cross-Referenced Tasks**: Tasks automatically appear in multiple views
-- **Smart Entity Recognition**: Recognize users, sites, generators in commands
-- **Supabase Integration**: Sync with existing 10NetZero database
-- **Example**: "Add task for Bryan to clean gaskets on genny 1 at Eagle Lake"
-  - Creates entry in Bryan's task list
-  - Creates entry in Eagle Lake site list  
+- **Smart Entity Recognition**: Recognize users, sites, equipment in commands
+- **Database Integration**: Sync with existing company database
+- **Example**: "Add task for technician to service equipment at Site A"
+  - Creates entry in technician's task list
+  - Creates entry in site task list  
   - Links both for synchronized updates
 
 ### Advanced Analytics
