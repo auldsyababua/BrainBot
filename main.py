@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """
-Main entry point for Render deployment.
-Runs the polling bot instead of webhook mode.
+⚠️ LEGACY FILE - This was used for polling mode on Render (OLD ARCHITECTURE)
+
+DO NOT USE THIS FILE! It's kept for reference only.
+- For local development: use run_bot.py
+- For production: use webhook_server.py
+
+This file should be renamed to legacy_polling_entry.py to avoid confusion.
 """
 import subprocess
 import sys

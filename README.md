@@ -1,5 +1,10 @@
 # 🧠 Markdown Brain Bot
 
+> **⚠️ IMPORTANT: Architecture Update**  
+> This bot has migrated from a **polling-based** architecture to a **webhook-based** architecture for production deployment on Render.  
+> - **Production (Render)**: Uses webhooks via FastAPI  
+> - **Local Development**: Still uses polling for convenience
+
 A shared knowledge Telegram bot that stores all information as markdown files in a local folder structure.
 
 ## 🎯 Features
@@ -40,16 +45,22 @@ cp .env.example .env
 ### 3. Running Locally
 
 ```bash
-# Start the bot in polling mode (recommended for local development)
-python main.py
+# FOR LOCAL DEVELOPMENT - Use polling mode (no webhook needed)
+python run_bot.py
 
-# Or run directly from src
+# Alternative: run polling directly
 python src/bot/main_polling.py
+```
 
-# Or use webhook mode (requires ngrok for local testing)
-python src/bot/main_webhook.py
-# In another terminal: ngrok http 8000
-# Set webhook: python src/bot/set_webhook.py https://your-ngrok-url.ngrok.io
+### 4. Production Deployment (Webhook Mode)
+
+```bash
+# Production uses webhooks - DO NOT use polling in production!
+# Render automatically runs: python webhook_server.py
+# This starts a FastAPI server that receives webhook events
+
+# To set up webhook after deployment:
+python setup_webhook.py  # or python src/bot/set_webhook.py
 ```
 
 ## 📝 Usage Examples
@@ -77,19 +88,27 @@ python src/bot/main_webhook.py
 
 ```
 markdown-brain-bot/
-├── main.py                     # Main entry point
-├── requirements.txt            # Dependencies
+├── 🏭 PRODUCTION FILES
+├── webhook_server.py           # ⭐ PRODUCTION: FastAPI webhook server
+├── setup_webhook.py            # ⭐ PRODUCTION: Configure webhook URL
+├── requirements.txt            # ⭐ PRODUCTION: Dependencies
+├── render.yaml                 # ⭐ PRODUCTION: Render deployment config
 ├── README.md                   # Project documentation
 ├── .env                        # Environment variables
 ├── .gitignore                  # Git ignore file
+│
+├── 🧪 LOCAL TESTING FILES
+├── run_bot.py                  # 🧪 LOCAL: Run bot with polling
+├── test_bot_local.py          # 🧪 LOCAL: Duplicate of run_bot.py (DELETE THIS)
+├── main.py                     # ⚠️ CONFUSING: Production file that uses polling
 │
 ├── src/                        # Source code
 │   ├── __init__.py
 │   ├── bot/                    # Bot-specific code
 │   │   ├── __init__.py
-│   │   ├── main_polling.py
-│   │   ├── main_webhook.py
-│   │   └── set_webhook.py
+│   │   ├── main_polling.py    # 🧪 LOCAL: Polling implementation
+│   │   ├── main_webhook.py    # ⭐ PRODUCTION: Webhook implementation
+│   │   └── set_webhook.py     # ⭐ PRODUCTION: Alternative webhook setter
 │   ├── storage/                # Storage services
 │   │   ├── __init__.py
 │   │   ├── storage_service.py

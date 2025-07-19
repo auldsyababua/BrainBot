@@ -1,3 +1,12 @@
+"""
+🏭 PRODUCTION: Webhook handler for Telegram bot
+
+This module handles incoming webhook requests from Telegram in production.
+Used by webhook_server.py when running on Render.
+
+DO NOT run this directly - it's imported by webhook_server.py
+"""
+
 import logging
 from contextlib import asynccontextmanager
 from http import HTTPStatus
