@@ -15,11 +15,11 @@ from telegram.ext import (
 import os
 import tempfile
 
-from src.core.config import TELEGRAM_BOT_TOKEN
-from src.core.llm import process_message
-from src.core.tools import ensure_index_exists, create_file
-from src.storage.vector_store import vector_store
-from src.core.version import VERSION, LATEST_CHANGES
+from core.config import TELEGRAM_BOT_TOKEN
+from core.llm import process_message
+from core.tools import ensure_index_exists, create_file
+from storage.vector_store import vector_store
+from core.version import VERSION, LATEST_CHANGES
 
 # Set up logging
 logging.basicConfig(

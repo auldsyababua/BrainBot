@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from version import VERSION
+from .version import VERSION
 
 # Load environment variables
 load_dotenv()
