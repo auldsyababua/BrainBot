@@ -156,10 +156,12 @@ async def restore_conversation(chat_id: str) -> bool:
 
 
 async def search_knowledge_base(query: str) -> List[Dict]:
-    """Search the vector knowledge base for relevant context."""
+    """Search the vector knowledge base for relevant context with full document retrieval."""
     try:
-        # Search vector store first
-        results = await vector_store.search(query, top_k=3)
+        # Use the new search_with_full_content method to get full documents
+        results = await vector_store.search_with_full_content(
+            query, top_k=3, include_full_docs=True
+        )
         return results
     except Exception as e:
         print(f"Vector search error: {e}")
