@@ -152,6 +152,21 @@ tags: [shopping, groceries]
 - [ ] User permissions system
 - [ ] Web UI for browsing notes
 
+## 🚀 Future Features
+
+### Redis Integration
+- **Conversation Memory**: Store chat history in Redis with TTL
+- **Session Management**: Persistent user sessions across bot restarts
+- **Caching**: Cache frequently accessed files for faster retrieval
+- **Distributed**: Enable multiple bot instances with shared state
+
+### Vector Database Integration
+- **Semantic Search**: Find notes by meaning, not just keywords
+- **Smart Retrieval**: Return most relevant content based on context
+- **Embeddings Storage**: Store document embeddings for similarity search
+- **RAG Support**: Retrieval-Augmented Generation for better responses
+- **Options**: Qdrant, Pinecone, or Weaviate integration
+
 ## 📄 License
 
 MIT License - feel free to use this for your team!

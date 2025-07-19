@@ -1,53 +1,17 @@
 import json
-import re
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, List
 from openai import OpenAI
 
-from config import OPENAI_API_KEY, GPT_MODEL, MAX_TOKENS, TEMPERATURE
-from tools import (
-    create_file, append_to_file, read_file, search_files, 
-    list_all_files, sanitize_filename
-)
+from config import OPENAI_API_KEY, GPT_MODEL, MAX_TOKENS, TEMPERATURE, SYSTEM_PROMPT
+from tools import create_file, append_to_file, read_file, search_files, list_all_files
+from redis_store import redis_store
+from vector_store import vector_store
 
 # Initialize OpenAI client
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-SYSTEM_PROMPT = """You are a markdown-based memory assistant.
-
-All content is stored in plain `.md` files inside a single folder structure.
-
-When a user says:
-* "create a list..." → create a new .md file with a list
-* "add to X..." → append to the relevant file
-* "what's in X..." → read and return that file's content
-* "find/search X..." → search for files containing that information
-
-You must always:
-1. Update the global `index.md` with a link and summary of every new file or folder.
-2. If a file is created inside a subfolder, update or create a `README.md` in that folder with its own local index.
-3. Never mention filenames unless the user asks for them.
-4. Use bullet lists for lists, and clean markdown formatting.
-5. Respond naturally without exposing the technical details.
-
-Files may optionally contain frontmatter (YAML) with metadata like:
-```
----
-title: groceries
-type: list
-created: 2025-01-18
-tags: [shopping]
----
-```
-
-Maintain clean structure. Be consistent. Do not hallucinate files.
-
-You have access to these functions:
-- create_file(title, content, folder, type, tags): Creates a new markdown file
-- append_to_file(file_path, content): Adds content to an existing file
-- read_file(file_path): Reads content from a file
-- search_files(query): Searches for files containing specific text
-- list_all_files(): Lists all files in the system
-"""
+# Note: Conversation history is now stored in Redis via redis_store
+# Previous conversations are also stored in Redis with a "prev:" prefix
 
 FUNCTION_DEFINITIONS = [
     {
@@ -58,29 +22,29 @@ FUNCTION_DEFINITIONS = [
             "properties": {
                 "title": {
                     "type": "string",
-                    "description": "Title of the file (will be sanitized into filename)"
+                    "description": "Title of the file (will be sanitized into filename)",
                 },
                 "content": {
                     "type": "string",
-                    "description": "Markdown content of the file"
+                    "description": "Markdown content of the file",
                 },
                 "folder": {
                     "type": "string",
-                    "description": "Optional folder path to organize the file"
+                    "description": "Optional folder path to organize the file",
                 },
                 "type": {
                     "type": "string",
                     "description": "Type of document (note, list, recipe, etc)",
-                    "default": "note"
+                    "default": "note",
                 },
                 "tags": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "Optional tags for categorization"
-                }
+                    "description": "Optional tags for categorization",
+                },
             },
-            "required": ["title", "content"]
-        }
+            "required": ["title", "content"],
+        },
     },
     {
         "name": "append_to_file",
@@ -90,15 +54,12 @@ FUNCTION_DEFINITIONS = [
             "properties": {
                 "file_path": {
                     "type": "string",
-                    "description": "Path to the file to append to"
+                    "description": "Path to the file to append to",
                 },
-                "content": {
-                    "type": "string",
-                    "description": "Content to append"
-                }
+                "content": {"type": "string", "description": "Content to append"},
             },
-            "required": ["file_path", "content"]
-        }
+            "required": ["file_path", "content"],
+        },
     },
     {
         "name": "read_file",
@@ -108,11 +69,11 @@ FUNCTION_DEFINITIONS = [
             "properties": {
                 "file_path": {
                     "type": "string",
-                    "description": "Path to the file to read"
+                    "description": "Path to the file to read",
                 }
             },
-            "required": ["file_path"]
-        }
+            "required": ["file_path"],
+        },
     },
     {
         "name": "search_files",
@@ -120,78 +81,172 @@ FUNCTION_DEFINITIONS = [
         "parameters": {
             "type": "object",
             "properties": {
-                "query": {
-                    "type": "string",
-                    "description": "Text to search for"
-                }
+                "query": {"type": "string", "description": "Text to search for"}
             },
-            "required": ["query"]
-        }
+            "required": ["query"],
+        },
     },
     {
         "name": "list_all_files",
         "description": "List all markdown files in the system",
-        "parameters": {
-            "type": "object",
-            "properties": {}
-        }
-    }
+        "parameters": {"type": "object", "properties": {}},
+    },
 ]
 
 
-def process_message(user_message: str) -> str:
+async def get_conversation_history(
+    chat_id: str, max_messages: int = 10
+) -> List[Dict[str, str]]:
+    """Get conversation history for a chat, creating new if needed."""
+    # Try to get conversation from Redis
+    messages = await redis_store.get_conversation(chat_id)
+
+    # If no conversation exists, create a new one
+    if messages is None:
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        await redis_store.save_conversation(chat_id, messages)
+    else:
+        # Extend TTL on active conversation
+        await redis_store.extend_conversation_ttl(chat_id)
+
+    # Return recent messages (keep system prompt + last N messages)
+    if len(messages) > max_messages + 1:  # +1 for system prompt
+        return [messages[0]] + messages[-(max_messages):]
+    return messages
+
+
+async def add_to_conversation_history(chat_id: str, role: str, content: str):
+    """Add a message to conversation history."""
+    # Get existing conversation
+    messages = await redis_store.get_conversation(chat_id)
+
+    if messages is not None:
+        # Add new message
+        messages.append({"role": role, "content": content})
+        # Save back to Redis
+        await redis_store.save_conversation(chat_id, messages)
+
+
+async def reset_conversation(chat_id: str):
+    """Reset conversation but save it for potential restoration."""
+    # Get current conversation
+    messages = await redis_store.get_conversation(chat_id)
+
+    if messages is not None:
+        # Save to previous conversations with different key
+        prev_key = f"prev:{chat_id}"
+        await redis_store.save_conversation(prev_key, messages)
+        # Delete current conversation
+        await redis_store.delete_conversation(chat_id)
+
+
+async def restore_conversation(chat_id: str) -> bool:
+    """Restore previous conversation if available."""
+    # Try to get previous conversation
+    prev_key = f"prev:{chat_id}"
+    messages = await redis_store.get_conversation(prev_key)
+
+    if messages is not None:
+        # Restore to current conversation
+        await redis_store.save_conversation(chat_id, messages)
+        # Delete the previous conversation backup
+        await redis_store.delete_conversation(prev_key)
+        return True
+    return False
+
+
+async def search_knowledge_base(query: str) -> List[Dict]:
+    """Search the vector knowledge base for relevant context."""
+    try:
+        # Search vector store first
+        results = await vector_store.search(query, top_k=3)
+        return results
+    except Exception as e:
+        print(f"Vector search error: {e}")
+        # Fallback to file search if vector search fails
+        file_results = search_files(query)
+        return [
+            {"id": r["path"], "content": r.get("content", ""), "score": 0.5}
+            for r in file_results[:3]
+        ]
+
+
+async def process_message(user_message: str, chat_id: str = "default") -> str:
     """Process a user message using GPT-4o and execute any necessary file operations."""
     try:
-        # First, let GPT analyze the message and decide what to do
-        messages = [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": user_message}
-        ]
-        
+        # First, search for relevant context
+        search_results = await search_knowledge_base(user_message)
+
+        # Build context from search results
+        context_parts = []
+        for result in search_results:
+            if result.get("content"):
+                context_parts.append(
+                    f"[Relevant context - Score: {result.get('score', 0):.2f}]\n{result['content'][:500]}..."
+                )
+
+        # Get conversation history
+        messages = await get_conversation_history(chat_id)
+
+        # If we have relevant context, add it to the user message
+        enhanced_message = user_message
+        if context_parts:
+            enhanced_message = f"{user_message}\n\n[System: Found relevant context from knowledge base]\n{chr(10).join(context_parts)}"
+
+        # Add the new user message
+        messages.append({"role": "user", "content": enhanced_message})
+        await add_to_conversation_history(chat_id, "user", user_message)
+
         response = client.chat.completions.create(
             model=GPT_MODEL,
             messages=messages,
             functions=FUNCTION_DEFINITIONS,
             function_call="auto",
             temperature=TEMPERATURE,
-            max_tokens=MAX_TOKENS
+            max_tokens=MAX_TOKENS,
         )
-        
+
         message = response.choices[0].message
-        
+
         # If GPT wants to call a function
         if message.function_call:
             function_name = message.function_call.name
             function_args = json.loads(message.function_call.arguments)
-            
+
             # Execute the function
-            function_result = execute_function(function_name, function_args)
-            
+            function_result = await execute_function(function_name, function_args)
+
             # Send the result back to GPT for a final response
             messages.append(message)
-            messages.append({
-                "role": "function",
-                "name": function_name,
-                "content": json.dumps(function_result)
-            })
-            
+            messages.append(
+                {
+                    "role": "function",
+                    "name": function_name,
+                    "content": json.dumps(function_result),
+                }
+            )
+
             final_response = client.chat.completions.create(
                 model=GPT_MODEL,
                 messages=messages,
                 temperature=TEMPERATURE,
-                max_tokens=MAX_TOKENS
+                max_tokens=MAX_TOKENS,
             )
-            
-            return final_response.choices[0].message.content
-        
+
+            final_content = final_response.choices[0].message.content
+            await add_to_conversation_history(chat_id, "assistant", final_content)
+            return final_content
+
         # If no function call, return the direct response
-        return message.content
-        
+        assistant_content = message.content
+        await add_to_conversation_history(chat_id, "assistant", assistant_content)
+        return assistant_content
+
     except Exception as e:
         return f"I encountered an error processing your request: {str(e)}"
 
 
-def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str, Any]:
+async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str, Any]:
     """Execute a function based on GPT's decision."""
     try:
         if function_name == "create_file":
@@ -201,80 +256,97 @@ def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str, Any]
             folder = args.get("folder")
             doc_type = args.get("type", "note")
             tags = args.get("tags", [])
-            
+
             file_path = create_file(title, content, folder, doc_type, tags)
+
+            # Also store in vector database for semantic search
+            doc_id = file_path.replace("/", "_").replace(".md", "")
+            metadata = {
+                "title": title,
+                "type": doc_type,
+                "tags": tags,
+                "folder": folder or "root",
+                "file_path": file_path,
+            }
+            await vector_store.embed_and_store(doc_id, content, metadata)
+
             return {
                 "success": True,
                 "message": f"Created file: {file_path}",
-                "file_path": file_path
+                "file_path": file_path,
             }
-            
+
         elif function_name == "append_to_file":
             file_path = args.get("file_path")
             content = args.get("content")
-            
+
             # If file_path is just a title, try to find the file
-            if not file_path.endswith('.md'):
+            if not file_path.endswith(".md"):
                 search_results = search_files(file_path)
                 if search_results:
-                    file_path = search_results[0]['path']
+                    file_path = search_results[0]["path"]
                 else:
                     return {
                         "success": False,
-                        "error": f"Could not find file matching '{file_path}'"
+                        "error": f"Could not find file matching '{file_path}'",
                     }
-            
+
             updated_path = append_to_file(file_path, content)
-            return {
-                "success": True,
-                "message": f"Appended to file: {updated_path}"
-            }
-            
+            return {"success": True, "message": f"Appended to file: {updated_path}"}
+
         elif function_name == "read_file":
             file_path = args.get("file_path")
-            
+
             # If file_path is just a title, try to find the file
-            if not file_path.endswith('.md'):
+            if not file_path.endswith(".md"):
                 search_results = search_files(file_path)
                 if search_results:
-                    file_path = search_results[0]['path']
+                    file_path = search_results[0]["path"]
                 else:
                     return {
                         "success": False,
-                        "error": f"Could not find file matching '{file_path}'"
+                        "error": f"Could not find file matching '{file_path}'",
                     }
-            
+
             content = read_file(file_path)
-            return {
-                "success": True,
-                "content": content
-            }
-            
+            return {"success": True, "content": content}
+
         elif function_name == "search_files":
             query = args.get("query")
             results = search_files(query)
-            return {
-                "success": True,
-                "results": results,
-                "count": len(results)
-            }
-            
+
+            # If no results, try alternate search strategies
+            if not results and query:
+                # Try case variations
+                if query.lower() != query:
+                    results = search_files(query.lower())
+                if not results and query.upper() != query:
+                    results = search_files(query.title())
+
+                # Try splitting multi-word queries
+                if not results and " " in query:
+                    words = query.split()
+                    for word in words:
+                        word_results = search_files(word)
+                        if word_results:
+                            results.extend(word_results)
+                    # Remove duplicates
+                    seen = set()
+                    unique_results = []
+                    for r in results:
+                        if r["path"] not in seen:
+                            seen.add(r["path"])
+                            unique_results.append(r)
+                    results = unique_results
+
+            return {"success": True, "results": results, "count": len(results)}
+
         elif function_name == "list_all_files":
             files = list_all_files()
-            return {
-                "success": True,
-                "files": files,
-                "count": len(files)
-            }
-            
+            return {"success": True, "files": files, "count": len(files)}
+
         else:
-            return {
-                "success": False,
-                "error": f"Unknown function: {function_name}"
-            }
-            
+            return {"success": False, "error": f"Unknown function: {function_name}"}
+
     except Exception as e:
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        return {"success": False, "error": str(e)}
