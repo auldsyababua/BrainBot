@@ -19,8 +19,16 @@ from src.core.tools import (
 )
 from src.storage.redis_store import redis_store
 from src.storage.vector_store import vector_store
+from src.core.api_client import get_resilient_client, RetryConfig
+from src.core.benchmarks import get_performance_monitor, async_benchmark
 
-# Initialize OpenAI client
+# Initialize resilient OpenAI client with custom retry config
+retry_config = RetryConfig(
+    max_retries=3, base_delay=1.0, max_delay=30.0, exponential_base=2.0, jitter=True
+)
+resilient_client = get_resilient_client(retry_config)
+
+# Keep original client for backwards compatibility
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Note: Conversation history is now stored in Redis via redis_store
@@ -188,10 +196,15 @@ async def search_knowledge_base(query: str) -> List[Dict]:
         ]
 
 
+@async_benchmark("process_message")
 async def process_message(user_message: str, chat_id: str = "default") -> str:
     """Process a user message using GPT-4o and execute any necessary file operations."""
     logger = logging.getLogger(__name__)
     logger.info(f"Processing message for chat_id={chat_id}: {user_message[:50]}...")
+
+    # Track conversation size
+    monitor = get_performance_monitor()
+
     try:
         # First, search for relevant context
         search_results = await search_knowledge_base(user_message)
@@ -219,6 +232,9 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         # Get conversation history
         messages = await get_conversation_history(chat_id)
 
+        # Track conversation size
+        monitor.track_conversation_size(chat_id, len(messages))
+
         # If we have relevant context, add it to the user message
         enhanced_message = user_message
         if context_parts:
@@ -228,9 +244,10 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         messages.append({"role": "user", "content": enhanced_message})
         await add_to_conversation_history(chat_id, "user", user_message)
 
-        response = client.chat.completions.create(
-            model=GPT_MODEL,
+        # Use resilient client for API call
+        response = await resilient_client.chat_completion(
             messages=messages,
+            model=GPT_MODEL,
             functions=FUNCTION_DEFINITIONS,
             function_call="auto",
             temperature=TEMPERATURE,
@@ -257,9 +274,10 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                 }
             )
 
-            final_response = client.chat.completions.create(
-                model=GPT_MODEL,
+            # Use resilient client for final response
+            final_response = await resilient_client.chat_completion(
                 messages=messages,
+                model=GPT_MODEL,
                 temperature=TEMPERATURE,
                 max_tokens=MAX_TOKENS,
             )
@@ -274,6 +292,7 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         return assistant_content
 
     except Exception as e:
+        logger.error(f"Error processing message: {e}", exc_info=True)
         return f"I encountered an error processing your request: {str(e)}"
 
 
