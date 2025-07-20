@@ -142,13 +142,13 @@ class DocumentStorage:
     ) -> Optional[Dict[str, Any]]:
         """
         Store a document in Supabase and return the full document data.
-        
+
         This is useful for indexing workflows where you need both
         the document ID and other data immediately after storing.
-        
+
         Args:
             Same as store_document
-            
+
         Returns:
             Full document data including ID, or None if failed
         """
@@ -164,11 +164,11 @@ class DocumentStorage:
                 telegram_user_id=telegram_user_id,
                 created_by=created_by,
             )
-            
+
             if doc_id:
                 return await self.get_document_by_id(doc_id)
             return None
-            
+
         except Exception as e:
             logger.error(f"Error in store_and_return_document: {e}")
             return None
