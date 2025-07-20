@@ -128,6 +128,51 @@ class DocumentStorage:
             logger.error(f"Error storing document: {e}")
             raise
 
+    async def store_and_return_document(
+        self,
+        file_path: str,
+        content: str,
+        metadata: Optional[Dict[str, Any]] = None,
+        category: Optional[str] = None,
+        tags: Optional[List[str]] = None,
+        is_public: bool = False,
+        telegram_chat_id: Optional[int] = None,
+        telegram_user_id: Optional[int] = None,
+        created_by: str = "manual",
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Store a document in Supabase and return the full document data.
+        
+        This is useful for indexing workflows where you need both
+        the document ID and other data immediately after storing.
+        
+        Args:
+            Same as store_document
+            
+        Returns:
+            Full document data including ID, or None if failed
+        """
+        try:
+            doc_id = await self.store_document(
+                file_path=file_path,
+                content=content,
+                metadata=metadata,
+                category=category,
+                tags=tags,
+                is_public=is_public,
+                telegram_chat_id=telegram_chat_id,
+                telegram_user_id=telegram_user_id,
+                created_by=created_by,
+            )
+            
+            if doc_id:
+                return await self.get_document_by_id(doc_id)
+            return None
+            
+        except Exception as e:
+            logger.error(f"Error in store_and_return_document: {e}")
+            return None
+
     async def get_document(self, file_path: str) -> Optional[Dict[str, Any]]:
         """
         Retrieve a document by file path
