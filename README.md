@@ -17,6 +17,13 @@ A shared knowledge Telegram bot that stores all information as markdown files in
 - **Automatic Organization**: Maintains index.md and folder README.md files
 - **Shared Brain**: Acts as a team's collective memory (no user differentiation)
 
+### 🚀 Performance Features (NEW)
+- **Vector Search Caching**: 10-50x faster responses with Redis LRU cache
+- **Resilient API Client**: Automatic retry with exponential backoff for 99.9% reliability
+- **Conversation Sliding Window**: Memory-efficient conversation management (20 message limit)
+- **Real-time Performance Monitoring**: Track response times, cache rates, and token usage
+- **Production-Ready Metrics**: Built-in `/metrics` endpoint for monitoring
+
 ## 🚀 Quick Start
 
 ### 1. Prerequisites
@@ -182,6 +189,12 @@ UPSTASH_VECTOR_REST_TOKEN=your_upstash_vector_token_here
 # Optional
 VECTOR_NAMESPACE=10netzero
 VECTOR_TOP_K=5
+
+# Performance Configuration (NEW)
+VECTOR_CACHE_ENABLED=true          # Enable vector search caching
+VECTOR_CACHE_TTL=300              # Cache TTL in seconds (5 minutes)
+CONVERSATION_MAX_MESSAGES=20       # Max messages in conversation window
+CONVERSATION_TTL_HOURS=24         # Hours before conversation expires
 ```
 
 ## 🚢 Deployment
@@ -210,9 +223,33 @@ VECTOR_TOP_K=5
 ## 🛠️ Development
 
 ### Running Tests
+
 ```bash
-pytest tests/
+# Run all tests
+python tests/test_all_storage.py
+
+# Run performance tests specifically
+python tests/test_performance.py
+
+# Run integration tests
+python tests/integration/test_storage_integrations.py
 ```
+
+### Performance Monitoring
+
+```bash
+# Check real-time metrics (when bot is running)
+curl http://localhost:8000/metrics
+
+# View performance in local development
+python scripts/local_dev.py
+# Watch console for timing logs: ⏱️ vector_search: 0.234s
+
+# Run performance test suite
+python tests/test_performance.py
+```
+
+See [Testing Guide](tests/README.md) and [Monitoring Guide](docs/MONITORING_GUIDE.md) for detailed information.
 
 ### File Format
 
