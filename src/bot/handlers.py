@@ -1,42 +1,35 @@
 #!/usr/bin/env python3
 """
-🧪 LOCAL DEVELOPMENT: Polling implementation for testing
+🔧 Core message handlers for Telegram bot
 
-This module implements polling mode for local development.
-Used by run_bot.py when testing locally.
+This module contains all the bot message handling logic that is shared
+between polling (local development) and webhook (production) modes.
 
-DO NOT use this in production - use webhooks (main_webhook.py) instead!
+Handlers:
+- Command handlers (/start, /help, /reset, /continue, /version)
+- Message handlers (text messages, documents)
+- Error handling
 """
 
 import logging
-from telegram import Update
-from telegram.ext import (
-    Application,
-    CommandHandler,
-    MessageHandler,
-    filters,
-    ContextTypes,
-)
 import os
 import tempfile
+from telegram import Update
+from telegram.ext import ContextTypes
 
-from core.config import TELEGRAM_BOT_TOKEN
 from core.llm import process_message
 from core.tools import ensure_index_exists, create_file
 from storage.vector_store import vector_store
 from core.version import VERSION, LATEST_CHANGES
 
 # Set up logging
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-)
 logger = logging.getLogger(__name__)
 
 # Ensure index exists on startup
 ensure_index_exists()
 
 
-# Handler functions
+# Command handlers
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /start command."""
     welcome_message = (
@@ -94,7 +87,7 @@ async def reset_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = str(update.effective_chat.id)
 
     # Import the reset function from llm
-    from src.core.llm import reset_conversation
+    from core.llm import reset_conversation
 
     # Reset conversation for this chat
     await reset_conversation(chat_id)
@@ -110,7 +103,7 @@ async def continue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = str(update.effective_chat.id)
 
     # Import the restore function from llm
-    from src.core.llm import restore_conversation
+    from core.llm import restore_conversation
 
     # Try to restore conversation for this chat
     if await restore_conversation(chat_id):
@@ -147,19 +140,22 @@ async def version_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(version_message)
 
 
+# Message handlers
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle incoming text messages."""
     try:
         user_message = update.message.text
         chat_id = update.effective_chat.id
 
-        logger.info(f"Received message from {chat_id}: {user_message}")
+        logger.info(f"📥 Received message from {chat_id}: {user_message}")
 
         # Show typing indicator
         await context.bot.send_chat_action(chat_id=chat_id, action="typing")
 
         # Process the message with LLM (pass chat_id for conversation memory)
         response = await process_message(user_message, str(chat_id))
+
+        logger.info(f"📤 Bot response: {response[:100]}...")
 
         # Send the response
         await update.message.reply_text(response, parse_mode="Markdown")
@@ -185,7 +181,7 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             document.file_name.endswith(".md")
             or document.file_name.endswith(".markdown")
         ):
-            logger.info(f"Received markdown file from {chat_id}: {document.file_name}")
+            logger.info(f"📎 Received markdown file from {chat_id}: {document.file_name}")
 
             # Show typing indicator
             await context.bot.send_chat_action(chat_id=chat_id, action="typing")
@@ -258,30 +254,3 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Please try again or contact the administrator if the problem persists."
         )
         await update.message.reply_text(error_message)
-
-
-def main():
-    """Start the bot."""
-    logger.info("Starting Telegram bot with polling...")
-
-    # Create the Application
-    application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
-
-    # Register handlers
-    application.add_handler(CommandHandler("start", start_command))
-    application.add_handler(CommandHandler("help", help_command))
-    application.add_handler(CommandHandler("reset", reset_command))
-    application.add_handler(CommandHandler("continue", continue_command))
-    application.add_handler(CommandHandler("version", version_command))
-    application.add_handler(
-        MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
-    )
-    application.add_handler(MessageHandler(filters.Document.ALL, handle_document))
-
-    # Run the bot until the user presses Ctrl-C
-    logger.info("Bot is polling for updates...")
-    application.run_polling(allowed_updates=Update.ALL_TYPES)
-
-
-if __name__ == "__main__":
-    main()

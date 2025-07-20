@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
 import uvicorn  # noqa: E402
 
-from bot.main_webhook import app  # noqa: E402
+from bot.webhook_bot import create_webhook_bot  # noqa: E402
 from core.config import TELEGRAM_BOT_TOKEN  # noqa: E402
 
 # Set up logging
@@ -55,6 +55,10 @@ def set_webhook():
 
 
 if __name__ == "__main__":
+    # Create the webhook bot
+    bot = create_webhook_bot()
+    app = bot.get_fastapi_app()
+    
     # Set webhook on startup
     if set_webhook():
         # Run the FastAPI server
