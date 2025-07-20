@@ -11,8 +11,8 @@ import os
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 
-from src.storage.vector_store import vector_store
-from src.core.llm import process_message
+from src.storage.vector_store import vector_store  # noqa: E402
+from src.core.llm import process_message  # noqa: E402
 
 
 async def test_vector_search():

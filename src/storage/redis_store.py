@@ -18,7 +18,9 @@ class RedisStore:
     def __init__(self):
         """Initialize Redis client from environment variables."""
         self.redis = Redis.from_env()
-        self.ttl_seconds = 3600  # 1 hour default TTL
+        self.ttl_seconds = (
+            86400  # 24 hours default TTL - matches ConversationManager default
+        )
 
     async def get_conversation(self, chat_id: str) -> Optional[List[Dict]]:
         """
