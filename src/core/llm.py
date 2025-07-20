@@ -315,7 +315,7 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         # Build context from search results
         context_parts = []
         source_documents = []
-        
+
         for result in search_results:
             # Try to get content from multiple possible locations
             content = result.get("content")
@@ -329,7 +329,7 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                 # Build source info
                 source_info = ""
                 title = ""
-                
+
                 # Get title from various sources
                 if result.get("metadata"):
                     title = result["metadata"].get("title", "")
@@ -337,21 +337,23 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                         file_path = result["metadata"].get("file_path", "")
                         if file_path:
                             title = file_path.split("/")[-1].replace(".md", "")
-                
+
                 # Add document URL if available
                 document_url = result.get("document_url")
                 if document_url:
                     source_info = f"Source: {title} ({document_url})"
-                    source_documents.append({
-                        "title": title,
-                        "url": document_url,
-                        "score": result.get('score', 0)
-                    })
+                    source_documents.append(
+                        {
+                            "title": title,
+                            "url": document_url,
+                            "score": result.get("score", 0),
+                        }
+                    )
                 elif title:
                     source_info = f"Source: {title}"
                 else:
                     source_info = f"Source: {result.get('id', 'unknown')}"
-                
+
                 context_parts.append(
                     f"[{source_info} - Score: {result.get('score', 0):.2f}]\n{content[:500]}..."
                 )
@@ -414,27 +416,27 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
             )
 
             final_content = final_response.choices[0].message.content
-            
+
             # Add source documents if available
             if source_documents:
-                sources_text = "\n\n📚 Sources:\n" + "\n".join([
-                    f"• {doc['title']} - {doc['url']}" for doc in source_documents[:3]
-                ])
+                sources_text = "\n\n📚 Sources:\n" + "\n".join(
+                    [f"• {doc['title']} - {doc['url']}" for doc in source_documents[:3]]
+                )
                 final_content += sources_text
-                
+
             await add_to_conversation_history(chat_id, "assistant", final_content)
             return final_content
 
         # If no function call, return the direct response
         assistant_content = message.content
-        
+
         # Add source documents if available
         if source_documents:
-            sources_text = "\n\n📚 Sources:\n" + "\n".join([
-                f"• {doc['title']} - {doc['url']}" for doc in source_documents[:3]
-            ])
+            sources_text = "\n\n📚 Sources:\n" + "\n".join(
+                [f"• {doc['title']} - {doc['url']}" for doc in source_documents[:3]]
+            )
             assistant_content += sources_text
-            
+
         await add_to_conversation_history(chat_id, "assistant", assistant_content)
         return assistant_content
 
