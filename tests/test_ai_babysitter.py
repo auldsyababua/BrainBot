@@ -328,6 +328,215 @@ async def test_everything_works_together():
 
 
 # =====================================
+# Layer 2.5: "Did AI Break Something?" Tests
+# =====================================
+
+
+@pytest.mark.asyncio
+async def test_no_unreachable_code():
+    """AI often writes functions that are never called - check major functions are actually used."""
+    # Test that vector store search is actually called from process_message
+    with patch("src.storage.vector_store.vector_store.search") as mock_search:
+        mock_search.return_value = []  # Empty results to avoid complex setup
+
+        await process_message("Test search functionality", chat_id="test_unreachable")
+
+        # Vector search should have been called
+        assert (
+            mock_search.called
+        ), "process_message should call vector_store.search but didn't - dead code detected!"
+
+
+@pytest.mark.asyncio
+async def test_retry_config_actually_applied():
+    """AI might create RetryConfig but forget to use it."""
+    from src.core.api_client import get_resilient_client, RetryConfig
+
+    # Create client with specific config
+    test_config = RetryConfig(max_retries=5, base_delay=0.1)
+    client = get_resilient_client(test_config)
+
+    # Check that the config is actually stored in the client
+    assert hasattr(client, "retry_config") or hasattr(
+        client, "_retry_config"
+    ), "RetryConfig created but not stored in client - AI forgot to apply it!"
+
+
+@pytest.mark.asyncio
+async def test_errors_dont_crash_bot():
+    """Test that common errors are handled gracefully - AI often forgets edge cases."""
+    error_cases = [
+        (None, "None input should not crash"),
+        ("", "Empty string should not crash"),
+        ("   ", "Whitespace-only should not crash"),
+        ('{"malformed": json}', "Invalid JSON-like input should not crash"),
+        ("Save note: " + "x" * 10000, "Extremely long input should not crash"),
+    ]
+
+    for error_input, description in error_cases:
+        try:
+            response = await process_message(error_input, chat_id="test_error_handling")
+            # Should get some response, not crash
+            assert (
+                isinstance(response, str) and len(response) > 0
+            ), f"{description}: Got empty or non-string response"
+        except Exception as e:
+            pytest.fail(f"{description}: Crashed with {type(e).__name__}: {e}")
+
+
+@pytest.mark.asyncio
+async def test_new_feature_didnt_break_old_features():
+    """When AI adds feature X, it often breaks feature Y - run core feature sequence."""
+    chat_id = "test_core_sequence"
+
+    try:
+        # Clear any existing data
+        await redis_store.delete_conversation(chat_id)
+
+        # Core sequence: Save → Search → Update → Search again
+        # Step 1: Save note
+        save_response = await process_message(
+            "Save note: Core feature test - remember this important info",
+            chat_id=chat_id,
+        )
+        assert (
+            "saved" in save_response.lower() or "created" in save_response.lower()
+        ), "Save feature broken"
+
+        # Step 2: Search for note
+        search_response = await process_message(
+            "Search for core feature test", chat_id=chat_id
+        )
+        assert (
+            "important info" in search_response.lower()
+            or "core feature" in search_response.lower()
+        ), "Search feature broken"
+
+        # Step 3: Update note (append)
+        update_response = await process_message(
+            "Add to that note: Additional important details", chat_id=chat_id
+        )
+        assert len(update_response) > 0, "Update feature broken"
+
+        # Step 4: Search again to verify update
+        final_search = await process_message(
+            "Find the note about core feature test", chat_id=chat_id
+        )
+        assert (
+            "additional" in final_search.lower() or "details" in final_search.lower()
+        ), "Feature sequence broken - updates not searchable"
+
+    except Exception as e:
+        pytest.fail(f"Core feature sequence broken: {type(e).__name__}: {e}")
+
+
+# =====================================
+# Layer 5: AI Consistency Tests
+# =====================================
+
+
+@pytest.mark.asyncio
+async def test_ai_agents_using_same_patterns():
+    """Different AI agents might implement things differently - check consistency."""
+    # Test that all API calls go through resilient client
+    from src.core.llm import resilient_client
+    from src.core.api_client import get_resilient_client
+
+    # These should be the same type
+    assert isinstance(
+        resilient_client, type(get_resilient_client())
+    ), "Inconsistent API client usage - different AI agents used different patterns"
+
+    # Test that conversation manager uses the configured max_messages
+    from src.core.config import CONVERSATION_MAX_MESSAGES
+
+    assert (
+        conversation_manager.max_messages == CONVERSATION_MAX_MESSAGES
+    ), "ConversationManager not using config value - AI forgot to connect config"
+
+
+@pytest.mark.asyncio
+async def test_data_survives_restart():
+    """AI might store data in memory instead of database - test persistence."""
+    chat_id = "test_persistence"
+    test_note = "This note should survive restart simulation"
+
+    # Save data
+    await process_message(f"Save note: {test_note}", chat_id=chat_id)
+
+    # Simulate restart by clearing any in-memory caches
+    # (In a real restart test, you'd actually restart the service)
+    if hasattr(vector_store, "_cache"):
+        vector_store._cache.clear()
+
+    # Try to retrieve data
+    search_response = await process_message(
+        "Search for restart simulation", chat_id=chat_id
+    )
+
+    assert (
+        "survive restart" in search_response.lower()
+        or test_note.lower() in search_response.lower()
+    ), "Data didn't survive restart simulation - AI storing data in memory instead of database!"
+
+
+@pytest.mark.asyncio
+async def test_multiple_users_dont_interfere():
+    """AI often forgets about multi-user scenarios - test isolation."""
+    # User 1 saves private note
+    user1_note = "User 1 private note - secret info"
+    await process_message(f"Save note: {user1_note}", chat_id="user1")
+
+    # User 2 saves different note
+    user2_note = "User 2 different note - public info"
+    await process_message(f"Save note: {user2_note}", chat_id="user2")
+
+    # User 1 searches - should only see their note
+    user1_search = await process_message("Search for my notes", chat_id="user1")
+
+    # User 2 searches - should only see their note
+    user2_search = await process_message("Search for my notes", chat_id="user2")
+
+    # Check isolation
+    assert (
+        "secret info" not in user2_search.lower()
+    ), "User isolation broken - User 2 can see User 1's private notes!"
+
+    assert (
+        "public info" not in user1_search.lower()
+        or "secret info" in user1_search.lower()
+    ), "User isolation broken - User 1 can't see their own notes or sees User 2's notes!"
+
+
+@pytest.mark.asyncio
+async def test_not_burning_api_credits():
+    """Track API calls to prevent cost explosions from inefficient AI code."""
+    with patch("openai.resources.chat.completions.AsyncCompletions.create") as mock_api:
+        # Mock successful responses
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock()]
+        mock_response.choices[0].message.content = "Test response"
+        mock_response.choices[0].message.function_call = None
+        mock_api.return_value = mock_response
+
+        initial_count = mock_api.call_count
+
+        # Run typical user journey
+        chat_id = "test_api_efficiency"
+        await process_message("Hello, how are you?", chat_id=chat_id)
+        await process_message("Save note: Test note", chat_id=chat_id)
+        await process_message("Search for test note", chat_id=chat_id)
+
+        final_count = mock_api.call_count
+        api_calls_made = final_count - initial_count
+
+        # Should be reasonable number of calls (allowing for some flexibility)
+        assert (
+            api_calls_made <= 6
+        ), f"Too many API calls for simple tasks! Made {api_calls_made} calls - AI being inefficient with API usage"
+
+
+# =====================================
 # Quick Diagnostic Helpers
 # =====================================
 
@@ -358,9 +567,82 @@ async def test_system_components_available():
         pytest.fail(f"Conversation manager not working: {e}")
 
 
-if __name__ == "__main__":
-    # Allow running this file directly for quick testing
-    asyncio.run(test_bot_saves_and_retrieves_notes())
-    print(
-        "✅ Basic test passed - you can run the full suite with: pytest tests/test_ai_babysitter.py -v"
+def explain_failure_for_non_coders(test_name: str, error_msg: str):
+    """Explain test failures in non-coder terms."""
+    explanations = {
+        "test_cache_actually_works": {
+            "problem": "The AI agent forgot to implement caching or bypassed it",
+            "what_this_means": "Your bot is making slow, expensive searches every time instead of remembering recent results",
+            "tell_ai": "The caching system isn't working. Make sure vector_store.search() uses the existing cache mechanism.",
+            "impact": "Slow responses and higher costs",
+        },
+        "test_conversation_history_not_growing_infinitely": {
+            "problem": "The AI agent didn't implement the sliding window for conversation memory",
+            "what_this_means": "Conversations will consume more and more memory until the system crashes",
+            "tell_ai": "The conversation sliding window isn't working. Ensure conversation_manager.max_messages is being enforced.",
+            "impact": "System crashes and memory problems",
+        },
+        "test_no_unreachable_code": {
+            "problem": "The AI agent wrote code that's never actually used",
+            "what_this_means": "There are functions or features that exist but aren't connected to the main system",
+            "tell_ai": "You created code that isn't being called. Make sure new functions are integrated with process_message().",
+            "impact": "Features that don't work despite existing in the code",
+        },
+        "test_retry_config_actually_applied": {
+            "problem": "The AI agent created retry configuration but forgot to use it",
+            "what_this_means": "API failures won't be handled properly, causing user errors",
+            "tell_ai": "The RetryConfig exists but isn't being used. Ensure get_resilient_client() applies the config.",
+            "impact": "Users see errors when APIs are temporarily unavailable",
+        },
+        "test_multiple_users_dont_interfere": {
+            "problem": "The AI agent didn't properly isolate user data",
+            "what_this_means": "Users might see each other's private notes or data",
+            "tell_ai": "User isolation is broken. Always use chat_id to separate user data in database operations.",
+            "impact": "Privacy violations and data mixing between users",
+        },
+        "test_not_burning_api_credits": {
+            "problem": "The AI agent is making too many API calls",
+            "what_this_means": "Your API costs will be much higher than necessary",
+            "tell_ai": "Too many API calls are being made. Check for caching and avoid redundant requests.",
+            "impact": "Expensive API bills",
+        },
+    }
+
+    explanation = explanations.get(
+        test_name,
+        {
+            "problem": "Unknown test failure",
+            "what_this_means": "Something went wrong but the specific issue isn't documented yet",
+            "tell_ai": f"The test {test_name} failed. Please check the error message and fix the issue.",
+            "impact": "Potential system problems",
+        },
     )
+
+    print("\n🤖 WHAT THIS MEANS FOR NON-CODERS:")
+    print(f"\n❌ Problem: {explanation['problem']}")
+    print(f"\n📝 What this means: {explanation['what_this_means']}")
+    print(f"\n💸 Impact: {explanation['impact']}")
+    print("\n🗣️  What to tell the AI agent:")
+    print(f"   '{explanation['tell_ai']}'")
+    print(f"\n🔍 Technical error: {error_msg[:200]}...")
+
+
+if __name__ == "__main__":
+    import sys
+
+    # Check if we should explain failures
+    if len(sys.argv) > 1 and sys.argv[1] == "--explain-failure":
+        if len(sys.argv) > 3:
+            test_name = sys.argv[2]
+            error_msg = sys.argv[3]
+            explain_failure_for_non_coders(test_name, error_msg)
+        else:
+            print(
+                "Usage: python test_ai_babysitter.py --explain-failure <test_name> <error_message>"
+            )
+    else:
+        # Allow running this file directly for quick testing
+        asyncio.run(test_bot_saves_and_retrieves_notes())
+        print(
+            "✅ Basic test passed - you can run the full suite with: pytest tests/test_ai_babysitter.py -v"
+        )
