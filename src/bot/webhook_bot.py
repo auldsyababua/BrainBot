@@ -34,6 +34,7 @@ from telegram.ext import (
 )
 
 from core.config import TELEGRAM_BOT_TOKEN
+from core.benchmarks import PerformanceMiddleware
 from bot.handlers import (
     start_command,
     help_command,
@@ -112,10 +113,46 @@ class WebhookTelegramBot:
         # Initialize FastAPI app
         app = FastAPI(title="Markdown Brain Bot", lifespan=lifespan)
 
+        # Add performance monitoring middleware
+        perf_middleware = PerformanceMiddleware()
+        app.middleware("http")(perf_middleware)
+
         @app.get("/")
         async def root():
             """Health check endpoint."""
             return {"status": "ok", "bot": "Markdown Brain Bot", "mode": "webhook"}
+
+        @app.get("/metrics")
+        async def get_metrics():
+            """Get performance metrics summary."""
+            from src.core.benchmarks import get_performance_monitor
+
+            monitor = get_performance_monitor()
+
+            # Get comprehensive performance summary
+            summary = monitor.get_performance_summary(
+                metric_names=[
+                    "vector_search_duration",
+                    "llm_call_duration",
+                    "conversation_size",
+                    "http_request_duration",
+                    "benchmark_process_message",
+                ],
+                time_range_minutes=60,
+            )
+
+            return {
+                "status": "ok",
+                "metrics": summary,
+                "description": {
+                    "cache_hit_rate": "Percentage of vector searches served from cache",
+                    "total_tokens_used": "Total OpenAI API tokens consumed",
+                    "vector_search_duration": "Time taken for vector searches (seconds)",
+                    "llm_call_duration": "Time taken for LLM API calls (seconds)",
+                    "conversation_size": "Number of messages in conversations",
+                    "http_request_duration": "Time taken for HTTP requests (seconds)",
+                },
+            }
 
         @app.post("/webhook")
         async def process_update(request: Request):
