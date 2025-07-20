@@ -4,11 +4,16 @@ Handles document embedding, storage, and retrieval for the knowledge base.
 """
 
 import os
+import json
+import hashlib
+import time
 from typing import List, Dict, Optional, Tuple
 from datetime import datetime
 from upstash_vector import Index
+from upstash_redis import Redis
 from dotenv import load_dotenv
 from pathlib import Path
+from src.core.benchmarks import get_performance_monitor, async_benchmark
 
 # Load environment variables
 load_dotenv()
@@ -21,6 +26,49 @@ class VectorStore:
         """Initialize Vector index from environment variables."""
         self.index = Index.from_env()
         self.top_k = int(os.getenv("VECTOR_TOP_K", "5"))
+
+        # Initialize cache
+        self.redis = Redis.from_env()
+        self.cache_ttl = int(os.getenv("VECTOR_CACHE_TTL", "300"))  # 5 minutes default
+        self.cache_enabled = os.getenv("VECTOR_CACHE_ENABLED", "true").lower() == "true"
+
+        # Initialize performance monitor
+        self.monitor = None
+
+    def _get_cache_key(
+        self, query: str, top_k: int, filter: Optional[str] = None
+    ) -> str:
+        """Generate a cache key for a query."""
+        # Create a stable hash of the query parameters
+        key_parts = [query, str(top_k), filter or ""]
+        key_string = "|".join(key_parts)
+        key_hash = hashlib.md5(key_string.encode()).hexdigest()
+        return f"vector_cache:{key_hash}"
+
+    async def _ensure_monitor(self):
+        """Ensure performance monitor is initialized."""
+        if self.monitor is None:
+            self.monitor = get_performance_monitor()
+
+    async def invalidate_cache(self, pattern: Optional[str] = None):
+        """Invalidate cache entries matching a pattern or all cache entries."""
+        if not self.cache_enabled:
+            return
+
+        try:
+            if pattern:
+                # Invalidate specific pattern
+                keys = self.redis.keys(f"vector_cache:{pattern}*")
+            else:
+                # Invalidate all vector cache
+                keys = self.redis.keys("vector_cache:*")
+
+            if keys:
+                for key in keys:
+                    self.redis.delete(key)
+                print(f"[DEBUG] Invalidated {len(keys)} cache entries")
+        except Exception as e:
+            print(f"Error invalidating cache: {e}")
 
     async def embed_and_store(
         self, document_id: str, content: str, metadata: Optional[Dict] = None
@@ -56,11 +104,16 @@ class VectorStore:
             response = self.index.upsert(vectors=[(document_id, content, metadata)])
 
             print(f"[DEBUG] Upsert response for {document_id}: {response}")
+
+            # Invalidate cache after storing new document
+            await self.invalidate_cache()
+
             return True
         except Exception as e:
             print(f"Error storing document {document_id}: {e}")
             return False
 
+    @async_benchmark("vector_search")
     async def search(
         self,
         query: str,
@@ -69,7 +122,7 @@ class VectorStore:
         include_metadata: bool = True,
     ) -> List[Dict]:
         """
-        Search for documents using semantic similarity.
+        Search for documents using semantic similarity with caching.
 
         Args:
             query: Natural language query text
@@ -80,11 +133,40 @@ class VectorStore:
         Returns:
             List of matching documents with scores and metadata
         """
+        start_time = time.perf_counter()
+        cache_hit = False
+
         try:
+            # Ensure monitor is initialized
+            await self._ensure_monitor()
+
             # Use configured top_k if not specified
             if top_k is None:
                 top_k = self.top_k
 
+            # Check cache if enabled
+            if self.cache_enabled:
+                cache_key = self._get_cache_key(query, top_k, filter)
+                cached_result = self.redis.get(cache_key)
+
+                if cached_result:
+                    # Cache hit - deserialize and return
+                    cache_hit = True
+                    formatted_results = json.loads(cached_result)
+                    duration = time.perf_counter() - start_time
+
+                    # Track performance
+                    self.monitor.track_vector_search(
+                        query=query,
+                        results_count=len(formatted_results),
+                        duration=duration,
+                        cache_hit=True,
+                    )
+
+                    print(f"[DEBUG] Cache hit for query '{query}'")
+                    return formatted_results
+
+            # Cache miss - perform actual search
             # Query using text data (automatic embedding)
             results = self.index.query(
                 data=query,
@@ -122,9 +204,32 @@ class VectorStore:
                 }
                 formatted_results.append(formatted_result)
 
+            # Cache the results if caching is enabled
+            if self.cache_enabled and formatted_results:
+                cache_key = self._get_cache_key(query, top_k, filter)
+                self.redis.setex(
+                    cache_key, self.cache_ttl, json.dumps(formatted_results)
+                )
+                print(f"[DEBUG] Cached results for query '{query}'")
+
+            # Track performance
+            duration = time.perf_counter() - start_time
+            self.monitor.track_vector_search(
+                query=query,
+                results_count=len(formatted_results),
+                duration=duration,
+                cache_hit=False,
+            )
+
             return formatted_results
         except Exception as e:
             print(f"Error searching for query '{query}': {e}")
+            # Track error
+            duration = time.perf_counter() - start_time
+            if self.monitor:
+                self.monitor.track_vector_search(
+                    query=query, results_count=0, duration=duration, cache_hit=cache_hit
+                )
             return []
 
     async def search_with_full_content(
@@ -295,6 +400,10 @@ class VectorStore:
         """
         try:
             self.index.delete([document_id])
+
+            # Invalidate cache after deletion
+            await self.invalidate_cache()
+
             return True
         except Exception as e:
             print(f"Error deleting document {document_id}: {e}")
@@ -334,6 +443,9 @@ class VectorStore:
 
             # Batch upsert
             self.index.upsert(vectors=vectors)
+
+            # Invalidate cache after batch update
+            await self.invalidate_cache()
 
             return len(vectors)
         except Exception as e:
