@@ -8,7 +8,6 @@ from typing import List, Dict, Optional, Tuple
 from datetime import datetime
 from upstash_vector import Index
 from dotenv import load_dotenv
-from pathlib import Path
 
 # Load environment variables
 load_dotenv()
@@ -131,15 +130,15 @@ class VectorStore:
         self, query: str, top_k: Optional[int] = None, include_full_docs: bool = True
     ) -> List[Dict]:
         """
-        Search for documents and retrieve full content from filesystem.
+        Search for documents and retrieve full content from Supabase.
 
         This method performs a vector search for relevant chunks, then
-        retrieves the complete document content from the filesystem.
+        retrieves the complete document content from Supabase database.
 
         Args:
             query: Natural language query text
             top_k: Number of results to return (defaults to VECTOR_TOP_K)
-            include_full_docs: Whether to fetch full documents from filesystem
+            include_full_docs: Whether to fetch full documents from Supabase
 
         Returns:
             List of matching documents with full content and metadata
@@ -148,50 +147,87 @@ class VectorStore:
             # 1. Perform vector search for chunks
             results = await self.search(query, top_k=top_k, include_metadata=True)
 
-            # 2. Group results by document file path
+            # 2. Group results by document ID
             docs_to_fetch = {}
             for result in results:
                 if result.get("metadata"):
+                    # Look for document_id first, fallback to file_path
+                    document_id = result["metadata"].get("document_id")
                     file_path = result["metadata"].get("file_path")
-                    if file_path:
-                        if file_path not in docs_to_fetch:
-                            docs_to_fetch[file_path] = {
+
+                    # Use document_id if available, otherwise use file_path
+                    doc_key = document_id if document_id else file_path
+
+                    if doc_key:
+                        if doc_key not in docs_to_fetch:
+                            docs_to_fetch[doc_key] = {
                                 "chunks": [],
                                 "best_score": result["score"],
                                 "metadata": result["metadata"],
+                                "document_id": document_id,
+                                "file_path": file_path,
                             }
-                        docs_to_fetch[file_path]["chunks"].append(result)
+                        docs_to_fetch[doc_key]["chunks"].append(result)
                         # Keep track of best score for this document
-                        if result["score"] > docs_to_fetch[file_path]["best_score"]:
-                            docs_to_fetch[file_path]["best_score"] = result["score"]
+                        if result["score"] > docs_to_fetch[doc_key]["best_score"]:
+                            docs_to_fetch[doc_key]["best_score"] = result["score"]
 
             # 3. Fetch full documents if requested
             enhanced_results = []
-            for file_path, doc_info in docs_to_fetch.items():
+
+            # Import Supabase client if we need to fetch documents
+            if include_full_docs and docs_to_fetch:
+                from storage.storage_service import document_storage
+
+            for doc_key, doc_info in docs_to_fetch.items():
                 if include_full_docs:
                     try:
-                        # Read full document from filesystem
-                        path = Path(file_path)
-                        if path.exists():
-                            full_content = path.read_text(encoding="utf-8")
+                        full_content = None
+                        document_data = None
 
-                            # Create enhanced result with full content
+                        # Try to fetch from Supabase using document_id
+                        if doc_info["document_id"] and document_storage:
+                            document_data = await document_storage.get_document_by_id(
+                                doc_info["document_id"]
+                            )
+                            if document_data:
+                                full_content = document_data.get("content", "")
+
+                        # If no document_id or fetch failed, try file_path
+                        if (
+                            not full_content
+                            and doc_info["file_path"]
+                            and document_storage
+                        ):
+                            document_data = await document_storage.get_document(
+                                doc_info["file_path"]
+                            )
+                            if document_data:
+                                full_content = document_data.get("content", "")
+
+                        if full_content and document_data:
+                            # Create enhanced result with full content from Supabase
                             enhanced_result = {
-                                "id": file_path,
+                                "id": document_data["id"],
                                 "score": doc_info["best_score"],
                                 "content": full_content,
-                                "metadata": doc_info["metadata"],
+                                "metadata": {
+                                    **doc_info["metadata"],
+                                    "title": document_data.get("title", ""),
+                                    "category": document_data.get("category", ""),
+                                    "tags": document_data.get("tags", []),
+                                },
                                 "chunks": doc_info["chunks"],
-                                "source": "filesystem",
+                                "source": "supabase",
+                                "document_url": f"/documents/{document_data['id']}",  # Placeholder URL
                             }
                             enhanced_results.append(enhanced_result)
                         else:
-                            # Fallback to chunks if file not found
+                            # Fallback to chunks if document not found in Supabase
                             print(
-                                f"File not found: {file_path}, falling back to chunks"
+                                f"Document not found in Supabase: {doc_key}, falling back to chunks"
                             )
-                            # Fallback to chunks if file not found
-                            # Try to build content from chunks' content or content_preview
+                            # Build content from chunks
                             content_parts = []
                             for chunk in doc_info["chunks"]:
                                 chunk_content = chunk.get("content")
@@ -203,7 +239,7 @@ class VectorStore:
                                     content_parts.append(chunk_content)
 
                             enhanced_result = {
-                                "id": file_path,
+                                "id": doc_key,
                                 "score": doc_info["best_score"],
                                 "content": (
                                     "\n\n".join(content_parts) if content_parts else ""
@@ -215,18 +251,22 @@ class VectorStore:
                             enhanced_results.append(enhanced_result)
                     except Exception as e:
                         print(
-                            f"Error reading file {file_path}: {e}, falling back to chunks"
+                            f"Error fetching document {doc_key} from Supabase: {e}, falling back to chunks"
                         )
                         # Fallback to chunks on any error
+                        content_parts = []
+                        for chunk in doc_info["chunks"]:
+                            chunk_content = chunk.get("content")
+                            if not chunk_content and chunk.get("metadata"):
+                                chunk_content = chunk["metadata"].get("content_preview")
+                            if chunk_content:
+                                content_parts.append(chunk_content)
+
                         enhanced_result = {
-                            "id": file_path,
+                            "id": doc_key,
                             "score": doc_info["best_score"],
-                            "content": "\n\n".join(
-                                [
-                                    chunk["content"]
-                                    for chunk in doc_info["chunks"]
-                                    if chunk.get("content")
-                                ]
+                            "content": (
+                                "\n\n".join(content_parts) if content_parts else ""
                             ),
                             "metadata": doc_info["metadata"],
                             "chunks": doc_info["chunks"],
