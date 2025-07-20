@@ -18,6 +18,7 @@ from datetime import datetime
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), "src"))
 
 from storage.vector_store import vector_store
+from storage.storage_service import document_storage
 from core.chunking import chunk_markdown_document
 
 
@@ -60,31 +61,72 @@ async def main():
             title = file_path.stem.replace("-", " ").replace("_", " ")
             folder = file_path.parent.name
 
-            # Chunk the document
-            metadata = {"title": title, "folder": folder, "source": "10net_reindex"}
+            # First, store document in Supabase
+            try:
+                document_data = await document_storage.store_and_return_document(
+                    file_path=str(file_path),
+                    content=content,
+                    metadata={"title": title, "folder": folder},
+                    category="10NetZero",
+                    tags=["10netzero", folder.lower()],
+                    created_by="indexing_script",
+                )
+                
+                if not document_data:
+                    print(f"   ❌ Failed to store document in Supabase: {file_path}")
+                    continue
+                    
+                document_id = document_data["id"]
+                print(f"   ✅ Stored in Supabase with ID: {document_id}")
+                
+            except Exception as e:
+                print(f"   ❌ Error storing document in Supabase: {e}")
+                continue
+
+            # Chunk the document with document_id in metadata
+            chunk_metadata = {
+                "title": title,
+                "folder": folder, 
+                "source": "10net_reindex",
+                "document_id": document_id,  # Add document_id for Supabase lookups
+            }
 
             chunks = chunk_markdown_document(
                 content=content,
                 file_path=str(file_path),
-                metadata=metadata,
+                metadata=chunk_metadata,
                 chunk_size=1000,
                 chunk_overlap=200,
             )
             print(f"   📊 Created {len(chunks)} chunks")
 
-            # Store each chunk
-            for chunk_content, chunk_metadata in chunks:
-                chunk_id = f"{file_path}#chunk_{chunk_metadata['chunk_index']}"
+            # Store each chunk in vector store
+            for chunk_content, chunk_meta in chunks:
+                chunk_id = f"{document_id}#chunk_{chunk_meta['chunk_index']}"
 
-                # Add indexing timestamp
-                chunk_metadata["indexed_at"] = datetime.now().isoformat()
+                # Add indexing timestamp and ensure document_id is in metadata
+                chunk_meta.update({
+                    "indexed_at": datetime.now().isoformat(),
+                    "document_id": document_id,  # Ensure document_id is always present
+                })
 
                 success = await vector_store.embed_and_store(
-                    chunk_id, chunk_content, chunk_metadata
+                    chunk_id, chunk_content, chunk_meta
                 )
 
                 if success:
                     chunk_count += 1
+                    # Store chunk reference in Supabase
+                    if document_storage:
+                        await document_storage.store_document_chunk(
+                            document_id=document_id,
+                            chunk_index=chunk_meta['chunk_index'],
+                            chunk_text=chunk_content,
+                            vector_id=chunk_id,
+                            start_char=chunk_meta.get('start_char', 0),
+                            end_char=chunk_meta.get('end_char', len(chunk_content)),
+                            metadata=chunk_meta,
+                        )
                 else:
                     print(f"   ❌ Failed to store chunk {chunk_id}")
 
