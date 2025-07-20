@@ -9,6 +9,8 @@ from src.core.config import (
     MAX_TOKENS,
     TEMPERATURE,
     SYSTEM_PROMPT,
+    CONVERSATION_MAX_MESSAGES,
+    CONVERSATION_TTL_HOURS,
 )
 from src.core.tools import (
     create_file,
@@ -19,8 +21,16 @@ from src.core.tools import (
 )
 from src.storage.redis_store import redis_store
 from src.storage.vector_store import vector_store
+from src.core.api_client import get_resilient_client, RetryConfig
+from src.core.benchmarks import get_performance_monitor, async_benchmark
 
-# Initialize OpenAI client
+# Initialize resilient OpenAI client with custom retry config
+retry_config = RetryConfig(
+    max_retries=3, base_delay=1.0, max_delay=30.0, exponential_base=2.0, jitter=True
+)
+resilient_client = get_resilient_client(retry_config)
+
+# Keep original client for backwards compatibility
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Note: Conversation history is now stored in Redis via redis_store
@@ -107,37 +117,138 @@ FUNCTION_DEFINITIONS = [
 ]
 
 
+class ConversationManager:
+    """Manages conversation history with sliding window and performance tracking."""
+
+    def __init__(self, max_messages: int = 20, ttl_hours: int = 24):
+        """Initialize conversation manager.
+
+        Args:
+            max_messages: Maximum messages to keep in sliding window
+            ttl_hours: Hours before conversation expires
+        """
+        self.max_messages = max_messages
+        self.ttl_seconds = ttl_hours * 3600
+        self.monitor = None
+
+    async def _ensure_monitor(self):
+        """Ensure performance monitor is initialized."""
+        if self.monitor is None:
+            self.monitor = get_performance_monitor()
+
+    async def get_conversation_history(self, chat_id: str) -> List[Dict[str, str]]:
+        """Get conversation history with sliding window management."""
+        # Try to get conversation from Redis
+        messages = await redis_store.get_conversation(chat_id)
+
+        # If no conversation exists, create a new one
+        if messages is None:
+            messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+            await redis_store.save_conversation(chat_id, messages)
+        else:
+            # Extend TTL on active conversation
+            await redis_store.extend_conversation_ttl(chat_id)
+
+        # Apply sliding window (keep system prompt + last N messages)
+        if len(messages) > self.max_messages + 1:  # +1 for system prompt
+            # Keep system prompt and last max_messages
+            messages = [messages[0]] + messages[-(self.max_messages) :]
+            # Save trimmed conversation back to Redis
+            await redis_store.save_conversation(chat_id, messages)
+
+        # Track conversation size
+        await self._ensure_monitor()
+        self.monitor.track_conversation_size(chat_id, len(messages))
+
+        return messages
+
+    async def add_message(self, chat_id: str, role: str, content: str):
+        """Add a message to conversation with automatic sliding window."""
+        # Get existing conversation
+        messages = await redis_store.get_conversation(chat_id)
+
+        if messages is not None:
+            # Add new message
+            messages.append({"role": role, "content": content})
+
+            # Apply sliding window if needed
+            if len(messages) > self.max_messages + 1:  # +1 for system prompt
+                # Keep system prompt and last max_messages
+                messages = [messages[0]] + messages[-(self.max_messages) :]
+
+            # Save back to Redis with TTL
+            await redis_store.save_conversation(chat_id, messages)
+
+            # Track updated size
+            await self._ensure_monitor()
+            self.monitor.track_conversation_size(chat_id, len(messages))
+
+    async def cleanup_old_conversations(self, days_inactive: int = 7):
+        """Cleanup conversations older than specified days.
+
+        Note: This is handled automatically by Redis TTL, but this method
+        can be used for manual cleanup or different retention policies.
+        """
+        # Since we're using Redis TTL, this is mostly a placeholder
+        # In a production system, you might want to:
+        # 1. Archive old conversations to S3/storage
+        # 2. Generate summaries before deletion
+        # 3. Track cleanup metrics
+        logger = logging.getLogger(__name__)
+        logger.info(
+            f"Cleanup requested for conversations older than {days_inactive} days"
+        )
+
+    async def get_conversation_stats(self, chat_id: str) -> Dict[str, Any]:
+        """Get statistics about a conversation."""
+        messages = await redis_store.get_conversation(chat_id)
+
+        if messages is None:
+            return {"exists": False}
+
+        # Calculate stats
+        user_messages = sum(1 for m in messages if m.get("role") == "user")
+        assistant_messages = sum(1 for m in messages if m.get("role") == "assistant")
+        total_chars = sum(len(m.get("content", "")) for m in messages)
+
+        return {
+            "exists": True,
+            "total_messages": len(messages),
+            "user_messages": user_messages,
+            "assistant_messages": assistant_messages,
+            "total_characters": total_chars,
+            "estimated_tokens": total_chars // 4,  # Rough estimate
+            "has_system_prompt": any(m.get("role") == "system" for m in messages),
+        }
+
+
+# Global conversation manager instance with config values
+conversation_manager = ConversationManager(
+    max_messages=CONVERSATION_MAX_MESSAGES, ttl_hours=CONVERSATION_TTL_HOURS
+)
+
+
 async def get_conversation_history(
-    chat_id: str, max_messages: int = 10
+    chat_id: str, max_messages: int = None
 ) -> List[Dict[str, str]]:
-    """Get conversation history for a chat, creating new if needed."""
-    # Try to get conversation from Redis
-    messages = await redis_store.get_conversation(chat_id)
+    """Get conversation history for a chat.
 
-    # If no conversation exists, create a new one
-    if messages is None:
-        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-        await redis_store.save_conversation(chat_id, messages)
+    This is a compatibility wrapper for the new ConversationManager.
+    """
+    if max_messages is not None:
+        # Create temporary manager with custom max_messages
+        temp_manager = ConversationManager(max_messages=max_messages)
+        return await temp_manager.get_conversation_history(chat_id)
     else:
-        # Extend TTL on active conversation
-        await redis_store.extend_conversation_ttl(chat_id)
-
-    # Return recent messages (keep system prompt + last N messages)
-    if len(messages) > max_messages + 1:  # +1 for system prompt
-        return [messages[0]] + messages[-(max_messages):]
-    return messages
+        return await conversation_manager.get_conversation_history(chat_id)
 
 
 async def add_to_conversation_history(chat_id: str, role: str, content: str):
-    """Add a message to conversation history."""
-    # Get existing conversation
-    messages = await redis_store.get_conversation(chat_id)
+    """Add a message to conversation history.
 
-    if messages is not None:
-        # Add new message
-        messages.append({"role": role, "content": content})
-        # Save back to Redis
-        await redis_store.save_conversation(chat_id, messages)
+    This is a compatibility wrapper for the new ConversationManager.
+    """
+    await conversation_manager.add_message(chat_id, role, content)
 
 
 async def reset_conversation(chat_id: str):
@@ -188,10 +299,15 @@ async def search_knowledge_base(query: str) -> List[Dict]:
         ]
 
 
+@async_benchmark("process_message")
 async def process_message(user_message: str, chat_id: str = "default") -> str:
     """Process a user message using GPT-4o and execute any necessary file operations."""
     logger = logging.getLogger(__name__)
     logger.info(f"Processing message for chat_id={chat_id}: {user_message[:50]}...")
+
+    # Track conversation size
+    monitor = get_performance_monitor()
+
     try:
         # First, search for relevant context
         search_results = await search_knowledge_base(user_message)
@@ -199,7 +315,7 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         # Build context from search results
         context_parts = []
         source_documents = []
-        
+
         for result in search_results:
             # Try to get content from multiple possible locations
             content = result.get("content")
@@ -213,7 +329,7 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                 # Build source info
                 source_info = ""
                 title = ""
-                
+
                 # Get title from various sources
                 if result.get("metadata"):
                     title = result["metadata"].get("title", "")
@@ -221,21 +337,23 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                         file_path = result["metadata"].get("file_path", "")
                         if file_path:
                             title = file_path.split("/")[-1].replace(".md", "")
-                
+
                 # Add document URL if available
                 document_url = result.get("document_url")
                 if document_url:
                     source_info = f"Source: {title} ({document_url})"
-                    source_documents.append({
-                        "title": title,
-                        "url": document_url,
-                        "score": result.get('score', 0)
-                    })
+                    source_documents.append(
+                        {
+                            "title": title,
+                            "url": document_url,
+                            "score": result.get("score", 0),
+                        }
+                    )
                 elif title:
                     source_info = f"Source: {title}"
                 else:
                     source_info = f"Source: {result.get('id', 'unknown')}"
-                
+
                 context_parts.append(
                     f"[{source_info} - Score: {result.get('score', 0):.2f}]\n{content[:500]}..."
                 )
@@ -247,6 +365,9 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         # Get conversation history
         messages = await get_conversation_history(chat_id)
 
+        # Track conversation size
+        monitor.track_conversation_size(chat_id, len(messages))
+
         # If we have relevant context, add it to the user message
         enhanced_message = user_message
         if context_parts:
@@ -256,9 +377,10 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         messages.append({"role": "user", "content": enhanced_message})
         await add_to_conversation_history(chat_id, "user", user_message)
 
-        response = client.chat.completions.create(
-            model=GPT_MODEL,
+        # Use resilient client for API call
+        response = await resilient_client.chat_completion(
             messages=messages,
+            model=GPT_MODEL,
             functions=FUNCTION_DEFINITIONS,
             function_call="auto",
             temperature=TEMPERATURE,
@@ -285,39 +407,41 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                 }
             )
 
-            final_response = client.chat.completions.create(
-                model=GPT_MODEL,
+            # Use resilient client for final response
+            final_response = await resilient_client.chat_completion(
                 messages=messages,
+                model=GPT_MODEL,
                 temperature=TEMPERATURE,
                 max_tokens=MAX_TOKENS,
             )
 
             final_content = final_response.choices[0].message.content
-            
+
             # Add source documents if available
             if source_documents:
-                sources_text = "\n\n📚 Sources:\n" + "\n".join([
-                    f"• {doc['title']} - {doc['url']}" for doc in source_documents[:3]
-                ])
+                sources_text = "\n\n📚 Sources:\n" + "\n".join(
+                    [f"• {doc['title']} - {doc['url']}" for doc in source_documents[:3]]
+                )
                 final_content += sources_text
-                
+
             await add_to_conversation_history(chat_id, "assistant", final_content)
             return final_content
 
         # If no function call, return the direct response
         assistant_content = message.content
-        
+
         # Add source documents if available
         if source_documents:
-            sources_text = "\n\n📚 Sources:\n" + "\n".join([
-                f"• {doc['title']} - {doc['url']}" for doc in source_documents[:3]
-            ])
+            sources_text = "\n\n📚 Sources:\n" + "\n".join(
+                [f"• {doc['title']} - {doc['url']}" for doc in source_documents[:3]]
+            )
             assistant_content += sources_text
-            
+
         await add_to_conversation_history(chat_id, "assistant", assistant_content)
         return assistant_content
 
     except Exception as e:
+        logger.error(f"Error processing message: {e}", exc_info=True)
         return f"I encountered an error processing your request: {str(e)}"
 
 

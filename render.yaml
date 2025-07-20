@@ -9,7 +9,7 @@ services:
     region: oregon
     plan: starter
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "python webhook_server.py"  # Runs FastAPI webhook server
+    startCommand: "python main.py"  # Runs FastAPI webhook server
     healthCheckPath: /  # Health check endpoint for web service
     envVars:
       - key: TELEGRAM_BOT_TOKEN
