@@ -8,7 +8,6 @@ from typing import List, Dict, Optional, Tuple
 from datetime import datetime
 from upstash_vector import Index
 from dotenv import load_dotenv
-from pathlib import Path
 
 # Load environment variables
 load_dotenv()
@@ -155,10 +154,10 @@ class VectorStore:
                     # Look for document_id first, fallback to file_path
                     document_id = result["metadata"].get("document_id")
                     file_path = result["metadata"].get("file_path")
-                    
+
                     # Use document_id if available, otherwise use file_path
                     doc_key = document_id if document_id else file_path
-                    
+
                     if doc_key:
                         if doc_key not in docs_to_fetch:
                             docs_to_fetch[doc_key] = {
@@ -175,17 +174,17 @@ class VectorStore:
 
             # 3. Fetch full documents if requested
             enhanced_results = []
-            
+
             # Import Supabase client if we need to fetch documents
             if include_full_docs and docs_to_fetch:
                 from storage.storage_service import document_storage
-                
+
             for doc_key, doc_info in docs_to_fetch.items():
                 if include_full_docs:
                     try:
                         full_content = None
                         document_data = None
-                        
+
                         # Try to fetch from Supabase using document_id
                         if doc_info["document_id"] and document_storage:
                             document_data = await document_storage.get_document_by_id(
@@ -193,15 +192,19 @@ class VectorStore:
                             )
                             if document_data:
                                 full_content = document_data.get("content", "")
-                        
+
                         # If no document_id or fetch failed, try file_path
-                        if not full_content and doc_info["file_path"] and document_storage:
+                        if (
+                            not full_content
+                            and doc_info["file_path"]
+                            and document_storage
+                        ):
                             document_data = await document_storage.get_document(
                                 doc_info["file_path"]
                             )
                             if document_data:
                                 full_content = document_data.get("content", "")
-                        
+
                         if full_content and document_data:
                             # Create enhanced result with full content from Supabase
                             enhanced_result = {
@@ -258,11 +261,13 @@ class VectorStore:
                                 chunk_content = chunk["metadata"].get("content_preview")
                             if chunk_content:
                                 content_parts.append(chunk_content)
-                                
+
                         enhanced_result = {
                             "id": doc_key,
                             "score": doc_info["best_score"],
-                            "content": "\n\n".join(content_parts) if content_parts else "",
+                            "content": (
+                                "\n\n".join(content_parts) if content_parts else ""
+                            ),
                             "metadata": doc_info["metadata"],
                             "chunks": doc_info["chunks"],
                             "source": "chunks",
