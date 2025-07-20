@@ -58,7 +58,7 @@ if __name__ == "__main__":
     # Create the webhook bot
     bot = create_webhook_bot()
     app = bot.get_fastapi_app()
-    
+
     # Set webhook on startup
     if set_webhook():
         # Run the FastAPI server

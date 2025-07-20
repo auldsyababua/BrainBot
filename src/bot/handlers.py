@@ -181,7 +181,9 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             document.file_name.endswith(".md")
             or document.file_name.endswith(".markdown")
         ):
-            logger.info(f"📎 Received markdown file from {chat_id}: {document.file_name}")
+            logger.info(
+                f"📎 Received markdown file from {chat_id}: {document.file_name}"
+            )
 
             # Show typing indicator
             await context.bot.send_chat_action(chat_id=chat_id, action="typing")
