@@ -9,6 +9,8 @@ from src.core.config import (
     MAX_TOKENS,
     TEMPERATURE,
     SYSTEM_PROMPT,
+    CONVERSATION_MAX_MESSAGES,
+    CONVERSATION_TTL_HOURS,
 )
 from src.core.tools import (
     create_file,
@@ -115,37 +117,138 @@ FUNCTION_DEFINITIONS = [
 ]
 
 
+class ConversationManager:
+    """Manages conversation history with sliding window and performance tracking."""
+
+    def __init__(self, max_messages: int = 20, ttl_hours: int = 24):
+        """Initialize conversation manager.
+
+        Args:
+            max_messages: Maximum messages to keep in sliding window
+            ttl_hours: Hours before conversation expires
+        """
+        self.max_messages = max_messages
+        self.ttl_seconds = ttl_hours * 3600
+        self.monitor = None
+
+    async def _ensure_monitor(self):
+        """Ensure performance monitor is initialized."""
+        if self.monitor is None:
+            self.monitor = get_performance_monitor()
+
+    async def get_conversation_history(self, chat_id: str) -> List[Dict[str, str]]:
+        """Get conversation history with sliding window management."""
+        # Try to get conversation from Redis
+        messages = await redis_store.get_conversation(chat_id)
+
+        # If no conversation exists, create a new one
+        if messages is None:
+            messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+            await redis_store.save_conversation(chat_id, messages)
+        else:
+            # Extend TTL on active conversation
+            await redis_store.extend_conversation_ttl(chat_id)
+
+        # Apply sliding window (keep system prompt + last N messages)
+        if len(messages) > self.max_messages + 1:  # +1 for system prompt
+            # Keep system prompt and last max_messages
+            messages = [messages[0]] + messages[-(self.max_messages) :]
+            # Save trimmed conversation back to Redis
+            await redis_store.save_conversation(chat_id, messages)
+
+        # Track conversation size
+        await self._ensure_monitor()
+        self.monitor.track_conversation_size(chat_id, len(messages))
+
+        return messages
+
+    async def add_message(self, chat_id: str, role: str, content: str):
+        """Add a message to conversation with automatic sliding window."""
+        # Get existing conversation
+        messages = await redis_store.get_conversation(chat_id)
+
+        if messages is not None:
+            # Add new message
+            messages.append({"role": role, "content": content})
+
+            # Apply sliding window if needed
+            if len(messages) > self.max_messages + 1:  # +1 for system prompt
+                # Keep system prompt and last max_messages
+                messages = [messages[0]] + messages[-(self.max_messages) :]
+
+            # Save back to Redis with TTL
+            await redis_store.save_conversation(chat_id, messages)
+
+            # Track updated size
+            await self._ensure_monitor()
+            self.monitor.track_conversation_size(chat_id, len(messages))
+
+    async def cleanup_old_conversations(self, days_inactive: int = 7):
+        """Cleanup conversations older than specified days.
+
+        Note: This is handled automatically by Redis TTL, but this method
+        can be used for manual cleanup or different retention policies.
+        """
+        # Since we're using Redis TTL, this is mostly a placeholder
+        # In a production system, you might want to:
+        # 1. Archive old conversations to S3/storage
+        # 2. Generate summaries before deletion
+        # 3. Track cleanup metrics
+        logger = logging.getLogger(__name__)
+        logger.info(
+            f"Cleanup requested for conversations older than {days_inactive} days"
+        )
+
+    async def get_conversation_stats(self, chat_id: str) -> Dict[str, Any]:
+        """Get statistics about a conversation."""
+        messages = await redis_store.get_conversation(chat_id)
+
+        if messages is None:
+            return {"exists": False}
+
+        # Calculate stats
+        user_messages = sum(1 for m in messages if m.get("role") == "user")
+        assistant_messages = sum(1 for m in messages if m.get("role") == "assistant")
+        total_chars = sum(len(m.get("content", "")) for m in messages)
+
+        return {
+            "exists": True,
+            "total_messages": len(messages),
+            "user_messages": user_messages,
+            "assistant_messages": assistant_messages,
+            "total_characters": total_chars,
+            "estimated_tokens": total_chars // 4,  # Rough estimate
+            "has_system_prompt": any(m.get("role") == "system" for m in messages),
+        }
+
+
+# Global conversation manager instance with config values
+conversation_manager = ConversationManager(
+    max_messages=CONVERSATION_MAX_MESSAGES, ttl_hours=CONVERSATION_TTL_HOURS
+)
+
+
 async def get_conversation_history(
-    chat_id: str, max_messages: int = 10
+    chat_id: str, max_messages: int = None
 ) -> List[Dict[str, str]]:
-    """Get conversation history for a chat, creating new if needed."""
-    # Try to get conversation from Redis
-    messages = await redis_store.get_conversation(chat_id)
+    """Get conversation history for a chat.
 
-    # If no conversation exists, create a new one
-    if messages is None:
-        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-        await redis_store.save_conversation(chat_id, messages)
+    This is a compatibility wrapper for the new ConversationManager.
+    """
+    if max_messages is not None:
+        # Create temporary manager with custom max_messages
+        temp_manager = ConversationManager(max_messages=max_messages)
+        return await temp_manager.get_conversation_history(chat_id)
     else:
-        # Extend TTL on active conversation
-        await redis_store.extend_conversation_ttl(chat_id)
-
-    # Return recent messages (keep system prompt + last N messages)
-    if len(messages) > max_messages + 1:  # +1 for system prompt
-        return [messages[0]] + messages[-(max_messages):]
-    return messages
+        return await conversation_manager.get_conversation_history(chat_id)
 
 
 async def add_to_conversation_history(chat_id: str, role: str, content: str):
-    """Add a message to conversation history."""
-    # Get existing conversation
-    messages = await redis_store.get_conversation(chat_id)
+    """Add a message to conversation history.
 
-    if messages is not None:
-        # Add new message
-        messages.append({"role": role, "content": content})
-        # Save back to Redis
-        await redis_store.save_conversation(chat_id, messages)
+    This is a compatibility wrapper for the new ConversationManager.
+    """
+    await conversation_manager.add_message(chat_id, role, content)
 
 
 async def reset_conversation(chat_id: str):

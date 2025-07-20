@@ -24,6 +24,10 @@ GPT_MODEL = os.getenv("GPT_MODEL", "gpt-4o")
 MAX_TOKENS = int(os.getenv("MAX_TOKENS", "2000"))
 TEMPERATURE = float(os.getenv("TEMPERATURE", "0.7"))
 
+# Conversation management configuration
+CONVERSATION_MAX_MESSAGES = int(os.getenv("CONVERSATION_MAX_MESSAGES", "20"))
+CONVERSATION_TTL_HOURS = int(os.getenv("CONVERSATION_TTL_HOURS", "24"))
+
 # System prompt (can be overridden from environment)
 SYSTEM_PROMPT = os.getenv(
     "SYSTEM_PROMPT",
