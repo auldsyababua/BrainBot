@@ -14,7 +14,7 @@ Features:
 
 Usage:
     from bot.webhook_bot import WebhookTelegramBot
-    
+
     bot = WebhookTelegramBot()
     app = bot.get_fastapi_app()
     # Run with uvicorn
@@ -51,7 +51,7 @@ logger = logging.getLogger(__name__)
 class WebhookTelegramBot:
     """
     Webhook-only Telegram bot for production use.
-    
+
     This bot is designed to run as a FastAPI webhook server and does not support
     polling mode. For local development, use the local development simulator
     at scripts/local_dev.py instead.
@@ -62,7 +62,7 @@ class WebhookTelegramBot:
         Initialize the webhook bot.
         """
         logger.info("Initializing Webhook Telegram Bot")
-        
+
         # Initialize the application with webhook configuration
         self.application = (
             Application.builder()
@@ -72,10 +72,10 @@ class WebhookTelegramBot:
             .get_updates_read_timeout(42)
             .build()
         )
-        
+
         # Register handlers
         self._register_handlers()
-        
+
         # Initialize FastAPI app
         self.app = self._create_fastapi_app()
 
@@ -87,17 +87,20 @@ class WebhookTelegramBot:
         self.application.add_handler(CommandHandler("reset", reset_command))
         self.application.add_handler(CommandHandler("continue", continue_command))
         self.application.add_handler(CommandHandler("version", version_command))
-        
+
         # Message handlers
         self.application.add_handler(
             MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
         )
-        self.application.add_handler(MessageHandler(filters.Document.ALL, handle_document))
-        
+        self.application.add_handler(
+            MessageHandler(filters.Document.ALL, handle_document)
+        )
+
         logger.info("Bot handlers registered successfully")
 
     def _create_fastapi_app(self) -> FastAPI:
         """Create FastAPI app for webhook mode."""
+
         @asynccontextmanager
         async def lifespan(_: FastAPI):
             """Manage the application lifecycle."""
@@ -119,7 +122,9 @@ class WebhookTelegramBot:
             """Handle incoming Telegram updates via webhook."""
             try:
                 req = await request.json()
-                logger.info(f"📥 Received webhook update: {req.get('message', {}).get('text', 'Non-text update')}")
+                logger.info(
+                    f"📥 Received webhook update: {req.get('message', {}).get('text', 'Non-text update')}"
+                )
                 update = Update.de_json(req, self.application.bot)
                 await self.application.process_update(update)
                 return Response(status_code=HTTPStatus.OK)
@@ -138,7 +143,7 @@ class WebhookTelegramBot:
 def create_webhook_bot() -> WebhookTelegramBot:
     """
     Create a webhook bot instance.
-    
+
     Returns:
         WebhookTelegramBot instance
     """
