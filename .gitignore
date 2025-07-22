@@ -57,7 +57,7 @@ htmlcov/
 # pyenv
 .python-version
 
-# Notes folder - don't commit user data
+# Notes folder - DEPRECATED filesystem storage (being migrated to Supabase)
 # IMPORTANT: Company notes should NEVER be in git
 notes/
 !notes/index.md
@@ -86,3 +86,12 @@ dmypy.json
 .pytype/
 .pyre/
 .vscode/settings.json
+
+# AI Coder Template (for internal use)
+AI_CODER_TEMPLATE.md
+
+# Prompts directory (for internal use)
+prompts/
+
+# Architecture file (contains local paths)
+ARCHITECTURE.md

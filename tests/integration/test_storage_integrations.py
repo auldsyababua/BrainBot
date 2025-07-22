@@ -19,7 +19,7 @@ from datetime import datetime
 import argparse
 
 # Add src to Python path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 # Import storage modules
 from storage.redis_store import redis_store

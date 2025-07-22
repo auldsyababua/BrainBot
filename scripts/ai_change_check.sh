@@ -49,7 +49,7 @@ run_test "test_not_burning_api_credits" "API call efficiency"
 run_test "test_response_time_reasonable" "Response speed"
 
 echo "\n🔒 Testing Multi-User Safety"
-run_test "test_multiple_users_dont_interfere" "User isolation"
+run_test "test_multiple_users_share_namespace" "Shared namespace (MVP)"
 run_test "test_data_survives_restart" "Data persistence"
 
 # Final summary

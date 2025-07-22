@@ -16,9 +16,15 @@ if ! command -v pytest &> /dev/null; then
     pip install pytest pytest-asyncio
 fi
 
-# Run the AI babysitter tests with verbose output
+# Create test results directory
+mkdir -p tests/test_results
+
+# Run the AI babysitter tests with verbose output and result tracking
 echo "Running tests..."
-pytest tests/test_ai_babysitter.py -v -s --tb=short
+pytest tests/test_ai_babysitter.py -v -s --tb=short --json-report --json-report-file=tests/test_results/$(date +%Y%m%d_%H%M%S).json
+
+# Also keep a latest copy
+cp tests/test_results/$(date +%Y%m%d_%H%M%S).json tests/test_results/latest.json 2>/dev/null || echo "Note: Could not create latest.json backup"
 
 echo ""
 echo "🎯 Test Summary:"
