@@ -57,3 +57,5 @@ target-version = "py39"
 testpaths = ["tests"]
 pythonpath = ["src"]
 asyncio_mode = "auto"
+# Generate JSON report with timestamps for historical tracking
+addopts = "--json-report --json-report-file=tests/test_results/latest.json"

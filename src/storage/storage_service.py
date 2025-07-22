@@ -238,6 +238,60 @@ class DocumentStorage:
             logger.error(f"Error retrieving document by ID: {e}")
             return None
 
+    async def update_document_by_id(
+        self, doc_id: str, content: str, metadata: Optional[Dict[str, Any]] = None
+    ) -> bool:
+        """
+        Update an existing document by ID, creating a new version
+
+        Args:
+            doc_id: Document ID
+            content: New content
+            metadata: Updated metadata
+
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            # Get existing document
+            existing = await self.get_document_by_id(doc_id)
+            if not existing:
+                logger.warning(f"Document {doc_id} not found for update")
+                return False
+
+            # Calculate new content hash
+            new_hash = hashlib.sha256(content.encode()).hexdigest()
+
+            # Check if content actually changed
+            if new_hash == existing["content_hash"]:
+                logger.info("Content unchanged, skipping update")
+                return True
+
+            # Update document with new version
+            update_data = {
+                "content": content,
+                "content_hash": new_hash,
+                "version": existing["version"] + 1,
+                "previous_version_id": existing["id"],
+                "updated_at": datetime.utcnow().isoformat(),
+            }
+
+            if metadata:
+                update_data["metadata"] = {**existing.get("metadata", {}), **metadata}
+
+            result = (
+                self.supabase.table("brain_bot_documents")
+                .update(update_data)
+                .eq("id", existing["id"])
+                .execute()
+            )
+
+            return bool(result.data)
+
+        except Exception as e:
+            logger.error(f"Error updating document by ID: {e}")
+            return False
+
     async def update_document(
         self, file_path: str, content: str, metadata: Optional[Dict[str, Any]] = None
     ) -> bool:

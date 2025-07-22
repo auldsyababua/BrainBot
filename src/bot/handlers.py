@@ -234,7 +234,7 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 "file_path": file_path,
                 "source": "telegram-upload",
             }
-            await vector_store.embed_and_store(doc_id, content, metadata)
+            await vector_store.embed_and_store(doc_id, content, metadata, namespace="")
 
             # Let the LLM know about the imported file
             llm_message = f"I just imported a markdown file called '{document.file_name}' to {file_path}. The file contains:\n\n{content[:500]}..."

@@ -1,20 +1,18 @@
-# 🏗️ Architecture & File Organization
+# 🏗️ BrainBot Architecture
 
-> **🔄 CRITICAL UPDATE: We've moved from POLLING to WEBHOOKS for production!**
+## Core Components
 
-## 🚫 What Changed?
+### CAG Engine
+- **LLM Decision Making**: GPT-4o decides organization structure
+- **Source Preservation**: Every input stored with unique ID
+- **Derivative Creation**: LLM can merge/synthesize while preserving sources
+- **Audit Trail**: All derivatives reference their source IDs
 
-### Old Architecture (Background Worker + Polling)
-- Render ran a background worker
-- Bot constantly polled Telegram servers for updates
-- Used `main.py` as entry point
-- Inefficient and resource-intensive
-
-### New Architecture (Web Service + Webhooks)
-- Render runs a web service with FastAPI
-- Telegram sends updates directly to our webhook endpoint
-- Uses `webhook_server.py` as entry point
-- Efficient and scalable
+### Storage Layer
+- **Filesystem**: Markdown files with YAML frontmatter (being migrated)
+- **Supabase**: Document storage with metadata
+- **Upstash Vector**: Semantic search capabilities
+- **Redis**: Conversation memory and caching
 
 ## 📁 File Organization
 
@@ -91,12 +89,12 @@ python setup_webhook.py
 | Efficiency | Lower | Higher |
 | Setup | Just run | Need webhook URL |
 
-## 🚮 Common Mistakes to Avoid
+## 🔑 Key Design Principles
 
-1. **DON'T** use `main.py` - it's confusingly named
-2. **DON'T** use polling in production - use webhooks
-3. **DON'T** commit the `/notes/` folder - it's test data
-4. **DON'T** use `test_bot_local.py` - use `run_bot.py`
+1. **Append-Only**: Never delete user data, only create derivatives
+2. **No Questions**: Bot decides organization, doesn't ask users
+3. **Source Tracking**: Every piece of content traceable to origin
+4. **Permissive**: Start flexible, add structure later
 
 ## 🔍 Where Things Are
 
@@ -106,10 +104,46 @@ python setup_webhook.py
 - **Tests**: `tests/` and `scripts/test_*.py`
 - **Docs**: `docs/` and this file
 
-## 🎯 Next Steps
+## 🗺️ Data Flow
 
-1. Delete `test_bot_local.py`
-2. Rename `main.py` to `legacy_polling_entry.py`
-3. Move all test scripts to `tests/` or `scratch/`
-4. Remove `/notes/` from repo
-5. Update documentation to reflect webhook architecture
+```
+User Input (Telegram) 
+    ↓
+CAG Engine (Decides: merge or create)
+    ↓
+Storage Layer (Preserves source + creates derivative)
+    ↓
+Vector Index (Makes searchable)
+    ↓
+User Query → RAG Search → Intelligent Response
+```
+
+## 🔧 Configuration
+
+```bash
+# Key environment variables
+TELEGRAM_BOT_TOKEN=your_bot_token
+OPENAI_API_KEY=your_key
+UPSTASH_REDIS_REST_URL=your_url
+UPSTASH_REDIS_REST_TOKEN=your_token
+UPSTASH_VECTOR_REST_URL=your_url
+UPSTASH_VECTOR_REST_TOKEN=your_token
+
+# Performance settings
+VECTOR_CACHE_ENABLED=true
+VECTOR_CACHE_TTL=300
+CONVERSATION_MAX_MESSAGES=20
+```
+
+## 🧪 Testing
+
+```bash
+# Quick smoke test
+./scripts/ai_change_check.sh
+
+# Full test suite
+pytest tests/test_ai_babysitter.py -v
+
+# Check metrics
+curl http://localhost:8000/metrics | jq .
+```
