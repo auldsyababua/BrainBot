@@ -427,6 +427,31 @@ class DocumentStorage:
             logger.error(f"Error deleting document: {e}")
             return False
 
+    async def clear_all_documents(self) -> bool:
+        """
+        Clear all documents from the database (for reset purposes)
+
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            # Delete all documents
+            result = (
+                self.supabase.table("brain_bot_documents")
+                .delete()
+                .neq("id", "00000000-0000-0000-0000-000000000000")  # Delete all rows
+                .execute()
+            )
+
+            logger.info(
+                f"Cleared {len(result.data) if result.data else 0} documents from Supabase"
+            )
+            return True
+
+        except Exception as e:
+            logger.error(f"Error clearing all documents: {e}")
+            return False
+
     async def store_document_chunk(
         self,
         document_id: str,
