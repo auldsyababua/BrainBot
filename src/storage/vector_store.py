@@ -7,13 +7,15 @@ import os
 import json
 import hashlib
 import time
+import logging
 from typing import List, Dict, Optional, Tuple
 from datetime import datetime
 from upstash_vector import Index
 from upstash_redis import Redis
 from dotenv import load_dotenv
-from pathlib import Path
 from src.core.benchmarks import get_performance_monitor, async_benchmark
+
+logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
@@ -66,12 +68,16 @@ class VectorStore:
             if keys:
                 for key in keys:
                     self.redis.delete(key)
-                print(f"[DEBUG] Invalidated {len(keys)} cache entries")
+                # Cache invalidated successfully
         except Exception as e:
             print(f"Error invalidating cache: {e}")
 
     async def embed_and_store(
-        self, document_id: str, content: str, metadata: Optional[Dict] = None
+        self,
+        document_id: str,
+        content: str,
+        metadata: Optional[Dict] = None,
+        namespace: Optional[str] = None,
     ) -> bool:
         """
         Store a document with automatic embedding generation.
@@ -80,11 +86,15 @@ class VectorStore:
             document_id: Unique identifier for the document
             content: Text content to embed and store
             metadata: Optional metadata to attach to the document
+            namespace: Optional namespace for user isolation (defaults to None)
 
         Returns:
             True if stored successfully, False otherwise
         """
         try:
+            logger.info(
+                f"📝 Storing document {document_id} in namespace: {namespace or 'default'}"
+            )
             # Prepare metadata
             if metadata is None:
                 metadata = {}
@@ -101,9 +111,12 @@ class VectorStore:
             )
 
             # Upsert with automatic embedding (using data field)
-            response = self.index.upsert(vectors=[(document_id, content, metadata)])
+            # Using native namespace support from v0.8.1
+            response = self.index.upsert(
+                vectors=[(document_id, content, metadata)], namespace=namespace or ""
+            )
 
-            print(f"[DEBUG] Upsert response for {document_id}: {response}")
+            # Document stored successfully
 
             # Invalidate cache after storing new document
             await self.invalidate_cache()
@@ -120,6 +133,7 @@ class VectorStore:
         top_k: Optional[int] = None,
         filter: Optional[str] = None,
         include_metadata: bool = True,
+        namespace: Optional[str] = None,
     ) -> List[Dict]:
         """
         Search for documents using semantic similarity with caching.
@@ -129,6 +143,7 @@ class VectorStore:
             top_k: Number of results to return (defaults to VECTOR_TOP_K)
             filter: Optional metadata filter
             include_metadata: Whether to include metadata in results
+            namespace: Optional namespace for user isolation (defaults to None)
 
         Returns:
             List of matching documents with scores and metadata
@@ -146,7 +161,10 @@ class VectorStore:
 
             # Check cache if enabled
             if self.cache_enabled:
+                # Include namespace in cache key for proper isolation
                 cache_key = self._get_cache_key(query, top_k, filter)
+                if namespace:
+                    cache_key = f"{cache_key}:ns:{namespace}"
                 cached_result = self.redis.get(cache_key)
 
                 if cached_result:
@@ -163,34 +181,34 @@ class VectorStore:
                         cache_hit=True,
                     )
 
-                    print(f"[DEBUG] Cache hit for query '{query}'")
+                    # Cache hit
                     return formatted_results
 
             # Cache miss - perform actual search
             # Query using text data (automatic embedding)
+            # Using native namespace support from v0.8.1
+            logger.info(
+                f"🔍 Searching in namespace: {namespace or 'default'} for query: {query[:50]}..."
+            )
+
             results = self.index.query(
                 data=query,
                 top_k=top_k,
                 filter=filter or "",
                 include_metadata=include_metadata,
                 include_vectors=False,
+                namespace=namespace or "",
             )
 
-            print(f"[DEBUG] Query '{query}' response: {results}")
-            print(f"[DEBUG] Query response type: {type(results)}")
-            print(
-                f"[DEBUG] Query response length: {len(results) if hasattr(results, '__len__') else 'N/A'}"
+            # Query executed successfully
+            logger.info(
+                f"🔍 Found {len(results)} results in namespace: {namespace or 'default'}"
             )
 
             # Format results
             formatted_results = []
             for i, result in enumerate(results):
-                print(f"[DEBUG] Result {i}: {result}")
-                print(f"[DEBUG] Result type: {type(result)}")
-                print(f"[DEBUG] Result attributes: {dir(result)}")
-                print(f"[DEBUG] Result ID: {getattr(result, 'id', 'N/A')}")
-                print(f"[DEBUG] Result score: {getattr(result, 'score', 'N/A')}")
-                print(f"[DEBUG] Result metadata: {getattr(result, 'metadata', 'N/A')}")
+                # Process each result
                 # Extract content from metadata if available
                 content = None
                 if hasattr(result, "metadata") and result.metadata:
@@ -207,10 +225,12 @@ class VectorStore:
             # Cache the results if caching is enabled
             if self.cache_enabled and formatted_results:
                 cache_key = self._get_cache_key(query, top_k, filter)
+                if namespace:
+                    cache_key = f"{cache_key}:ns:{namespace}"
                 self.redis.setex(
                     cache_key, self.cache_ttl, json.dumps(formatted_results)
                 )
-                print(f"[DEBUG] Cached results for query '{query}'")
+                # Results cached successfully
 
             # Track performance
             duration = time.perf_counter() - start_time
@@ -393,54 +413,74 @@ class VectorStore:
             print(f"Error in search_with_full_content for query '{query}': {e}")
             return []
 
-    async def update_metadata(self, document_id: str, metadata: Dict) -> bool:
+    async def update_metadata(
+        self, document_id: str, metadata: Dict, mode: str = "overwrite"
+    ) -> bool:
         """
-        Update metadata for an existing document.
-
-        Note: Update functionality not available in upstash-vector v0.8.0
-        This method is a placeholder for future compatibility.
-
-        TODO: When upstash-vector releases a version > v0.8.0 with the update method,
-        replace this implementation with:
-        ```python
-        try:
-            return self.index.update(document_id, metadata=metadata)
-        except Exception as e:
-            print(f"Error updating metadata for {document_id}: {e}")
-            return False
-        ```
-
-        For now, you can work around this by using upsert:
-        ```python
-        self.index.upsert([(document_id, None, metadata)])
-        ```
+        Update metadata for a document.
 
         Args:
             document_id: Document ID to update
-            metadata: New metadata to merge with existing
+            metadata: New metadata to apply
+            mode: "overwrite" (replace all) or "patch" (merge)
 
         Returns:
-            False (not implemented in current SDK version)
+            True if updated successfully
         """
-        print("[DEBUG] Update metadata not supported in upstash-vector v0.8.0")
-        print(
-            "[DEBUG] The update method exists in the main branch but not in the current release"
-        )
-        print("[DEBUG] See: https://github.com/upstash/vector-py#update-a-vector")
-        return False
+        try:
+            # For now, use upsert to update metadata
+            # This requires fetching the existing vector first
+            existing = self.index.fetch([document_id])
+            if not existing or len(existing) == 0:
+                print(f"Document {document_id} not found for metadata update")
+                return False
 
-    async def delete_document(self, document_id: str) -> bool:
+            # Get the existing vector and metadata
+            doc = existing[0]
+
+            # Apply metadata based on mode
+            if mode == "overwrite":
+                new_metadata = metadata
+            else:  # patch mode
+                # Merge existing metadata with new metadata
+                new_metadata = (
+                    doc.metadata.copy()
+                    if hasattr(doc, "metadata") and doc.metadata
+                    else {}
+                )
+                new_metadata.update(metadata)
+
+            # Re-upsert with same vector but new metadata
+            # Note: This is a workaround until native update method is available
+            response = self.index.upsert(
+                vectors=[(document_id, doc.vector, new_metadata)], namespace=""
+            )
+
+            if response:
+                await self.invalidate_cache()
+                return True
+
+            return False
+        except Exception as e:
+            print(f"Error updating metadata for {document_id}: {e}")
+            return False
+
+    async def delete_document(
+        self, document_id: str, namespace: Optional[str] = None
+    ) -> bool:
         """
         Delete a document from the vector store.
 
         Args:
             document_id: Document ID to delete
+            namespace: Optional namespace (defaults to empty string for MVP)
 
         Returns:
             True if deleted successfully, False otherwise
         """
         try:
-            self.index.delete([document_id])
+            # Use default namespace for MVP
+            self.index.delete([document_id], namespace=namespace or "")
 
             # Invalidate cache after deletion
             await self.invalidate_cache()
@@ -482,8 +522,8 @@ class VectorStore:
 
                 vectors.append((doc_id, content, metadata))
 
-            # Batch upsert
-            self.index.upsert(vectors=vectors)
+            # Batch upsert with default namespace
+            self.index.upsert(vectors=vectors, namespace="")
 
             # Invalidate cache after batch update
             await self.invalidate_cache()
@@ -504,10 +544,9 @@ class VectorStore:
             Document data or None if not found
         """
         try:
-            result = self.index.fetch([document_id])
+            result = self.index.fetch([document_id], namespace="")
 
-            print(f"[DEBUG] Fetch result for {document_id}: {result}")
-            print(f"[DEBUG] Fetch result type: {type(result)}")
+            # Document fetched successfully
 
             # Find the document in the result list
             if result:
