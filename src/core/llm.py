@@ -331,7 +331,7 @@ async def search_knowledge_base(
 
 @async_benchmark("process_message")
 async def process_message(user_message: str, chat_id: str = "default") -> str:
-    """Process a user message using GPT-4o and execute any necessary file operations."""
+    """Process a user message using GPT-4o and execute any necessary document operations."""
     logger = logging.getLogger(__name__)
     logger.info(
         f"Processing message for chat_id={chat_id}: {(user_message or '')[:50]}..."
@@ -588,7 +588,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
                 }
 
                 # Store in Supabase
-                doc_result = await document_storage.store_document(
+                doc_id = await document_storage.store_document(
                     file_path=file_path,
                     content=content,
                     metadata=metadata,
@@ -598,12 +598,9 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
                     created_by="bot",
                 )
 
-                # Get the document ID from the result
-                doc_id = (
-                    doc_result.get("id")
-                    if doc_result
-                    else file_path.replace("/", "_").replace(".md", "")
-                )
+                # doc_id is returned directly as a string
+                if not doc_id:
+                    doc_id = file_path.replace("/", "_").replace(".md", "")
 
                 # Store in vector database for semantic search
                 await vector_store.embed_and_store(

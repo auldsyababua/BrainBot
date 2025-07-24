@@ -21,7 +21,7 @@ mkdir -p tests/test_results
 
 # Run the AI babysitter tests with verbose output and result tracking
 echo "Running tests..."
-pytest tests/test_ai_babysitter.py -v -s --tb=short --json-report --json-report-file=tests/test_results/$(date +%Y%m%d_%H%M%S).json
+pytest tests/system/test_ai_babysitter.py -v -s --tb=short --json-report --json-report-file=tests/test_results/$(date +%Y%m%d_%H%M%S).json
 
 # Also keep a latest copy
 cp tests/test_results/$(date +%Y%m%d_%H%M%S).json tests/test_results/latest.json 2>/dev/null || echo "Note: Could not create latest.json backup"
