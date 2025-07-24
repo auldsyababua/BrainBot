@@ -1,6 +1,8 @@
 import json
 import logging
-from typing import Dict, Any, List
+import re
+from typing import Dict, Any, List, Optional, Tuple
+from datetime import datetime
 from openai import OpenAI
 
 from src.core.config import (
@@ -12,13 +14,9 @@ from src.core.config import (
     CONVERSATION_MAX_MESSAGES,
     CONVERSATION_TTL_HOURS,
 )
-from src.core.tools import (
-    create_file,
-    append_to_file,
-    read_file,
-    search_files,
-    list_all_files,
-)
+
+# Legacy tools.py imports removed - production only uses Supabase + Vector
+# from src.core.tools import (...) - REMOVED
 from src.storage.redis_store import redis_store
 from src.storage.vector_store import vector_store
 from src.core.api_client import get_resilient_client, RetryConfig
@@ -38,22 +36,22 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 FUNCTION_DEFINITIONS = [
     {
-        "name": "create_file",
-        "description": "Create a new markdown file with content",
+        "name": "create_document",
+        "description": "Create a new document in Supabase with vector indexing",
         "parameters": {
             "type": "object",
             "properties": {
                 "title": {
                     "type": "string",
-                    "description": "Title of the file (will be sanitized into filename)",
+                    "description": "Title of the document",
                 },
                 "content": {
                     "type": "string",
-                    "description": "Markdown content of the file",
+                    "description": "Markdown content of the document",
                 },
                 "folder": {
                     "type": "string",
-                    "description": "Optional folder path to organize the file",
+                    "description": "Optional folder/category to organize the document",
                 },
                 "type": {
                     "type": "string",
@@ -70,37 +68,37 @@ FUNCTION_DEFINITIONS = [
         },
     },
     {
-        "name": "append_to_file",
-        "description": "Append content to an existing markdown file",
+        "name": "append_to_document",
+        "description": "Append content to an existing document by ID or title",
         "parameters": {
             "type": "object",
             "properties": {
-                "file_path": {
+                "document_reference": {
                     "type": "string",
-                    "description": "Path to the file to append to",
+                    "description": "Document ID (UUID) or document title to append to",
                 },
                 "content": {"type": "string", "description": "Content to append"},
             },
-            "required": ["file_path", "content"],
+            "required": ["document_reference", "content"],
         },
     },
     {
-        "name": "read_file",
-        "description": "Read content from a markdown file",
+        "name": "read_document",
+        "description": "Read content from a document by ID or title",
         "parameters": {
             "type": "object",
             "properties": {
-                "file_path": {
+                "document_reference": {
                     "type": "string",
-                    "description": "Path to the file to read",
+                    "description": "Document ID (UUID) or document title to read",
                 }
             },
-            "required": ["file_path"],
+            "required": ["document_reference"],
         },
     },
     {
-        "name": "search_files",
-        "description": "Search for files containing specific text",
+        "name": "search_documents",
+        "description": "Search for documents containing specific text using Supabase",
         "parameters": {
             "type": "object",
             "properties": {
@@ -110,9 +108,21 @@ FUNCTION_DEFINITIONS = [
         },
     },
     {
-        "name": "list_all_files",
-        "description": "List all markdown files in the system",
-        "parameters": {"type": "object", "properties": {}},
+        "name": "list_documents",
+        "description": "List documents from Supabase with optional filtering",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "description": "Optional category filter",
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Optional limit (default 20)",
+                },
+            },
+        },
     },
 ]
 
@@ -279,38 +289,60 @@ async def restore_conversation(chat_id: str) -> bool:
     return False
 
 
-async def search_knowledge_base(query: str) -> List[Dict]:
+async def search_knowledge_base(
+    query: str, chat_id: Optional[str] = None
+) -> List[Dict]:
     """Search the vector knowledge base for relevant context with full document retrieval."""
     logger = logging.getLogger(__name__)
     try:
         # Use the new search_with_full_content method to get full documents
-        results = await vector_store.search_with_full_content(
-            query, top_k=3, include_full_docs=True
+        # Note: search_with_full_content doesn't support namespace parameter yet
+        # We need to use the regular search method with namespace
+        results = await vector_store.search(
+            query, top_k=3, include_metadata=True, namespace=""
         )
-        logger.info(f"Vector search for '{query}' returned {len(results)} results")
+        logger.info(
+            f"Vector search for '{query}' (namespace={chat_id}) returned {len(results)} results"
+        )
         return results
     except Exception as e:
         logger.error(f"Vector search error for query '{query}': {e}")
-        # Fallback to file search if vector search fails
-        file_results = search_files(query)
-        return [
-            {"id": r["path"], "content": r.get("content", ""), "score": 0.5}
-            for r in file_results[:3]
-        ]
+        # Fallback to Supabase search if vector search fails
+        try:
+            from src.storage.storage_service import document_storage
+
+            if document_storage:
+                supabase_results = await document_storage.search_documents(query)
+                return [
+                    {
+                        "id": r.get("id", ""),
+                        "content": r.get("content", ""),
+                        "score": 0.5,
+                        "metadata": r.get("metadata", {}),
+                    }
+                    for r in supabase_results[:3]
+                ]
+        except Exception as fallback_error:
+            logger.error(f"Fallback search also failed: {fallback_error}")
+
+        # Return empty results if both searches fail
+        return []
 
 
 @async_benchmark("process_message")
 async def process_message(user_message: str, chat_id: str = "default") -> str:
-    """Process a user message using GPT-4o and execute any necessary file operations."""
+    """Process a user message using GPT-4o and execute any necessary document operations."""
     logger = logging.getLogger(__name__)
-    logger.info(f"Processing message for chat_id={chat_id}: {user_message[:50]}...")
+    logger.info(
+        f"Processing message for chat_id={chat_id}: {(user_message or '')[:50]}..."
+    )
 
     # Track conversation size
     monitor = get_performance_monitor()
 
     try:
         # First, search for relevant context
-        search_results = await search_knowledge_base(user_message)
+        search_results = await search_knowledge_base(user_message, chat_id)
 
         # Build context from search results
         context_parts = []
@@ -394,6 +426,9 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
             function_name = message.function_call.name
             function_args = json.loads(message.function_call.arguments)
 
+            # Add chat_id to function args for namespace support
+            function_args["chat_id"] = chat_id
+
             # Execute the function
             function_result = await execute_function(function_name, function_args)
 
@@ -445,10 +480,69 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         return f"I encountered an error processing your request: {str(e)}"
 
 
+def is_uuid(value: str) -> bool:
+    """Check if a string is a valid UUID."""
+    uuid_pattern = re.compile(
+        r"^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$", re.IGNORECASE
+    )
+    return bool(uuid_pattern.match(value))
+
+
+async def resolve_document_reference(
+    reference: str,
+) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+    """Resolve a document reference to (file_path, document_id, content).
+
+    Args:
+        reference: Either a file path or a Supabase document ID
+
+    Returns:
+        Tuple of (file_path, document_id, content) - some may be None
+    """
+    logger = logging.getLogger(__name__)
+
+    # Check if it's a UUID (Supabase document ID)
+    if is_uuid(reference):
+        logger.info(f"Detected Supabase document ID: {reference}")
+        from src.storage.storage_service import document_storage
+
+        if document_storage:
+            try:
+                doc = await document_storage.get_document_by_id(reference)
+                if doc:
+                    return doc.get("file_path"), reference, doc.get("content")
+                else:
+                    logger.warning(f"Document ID {reference} not found in Supabase")
+            except Exception as e:
+                logger.error(f"Error fetching document by ID: {e}")
+
+        return None, reference, None
+
+    # Otherwise, treat it as a file path
+    elif reference.endswith(".md"):
+        # It's already a file path
+        return reference, None, None
+
+    else:
+        # It might be a title - search for it in Supabase
+        try:
+            from src.storage.storage_service import document_storage
+
+            if document_storage:
+                search_results = await document_storage.search_documents(reference)
+                if search_results:
+                    doc = search_results[0]
+                    return doc.get("file_path"), doc.get("id"), doc.get("content")
+        except Exception as e:
+            logger.error(f"Error searching for document by title: {e}")
+
+        return None, None, None
+
+
 async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str, Any]:
     """Execute a function based on GPT's decision."""
     try:
-        if function_name == "create_file":
+        if function_name == "create_document":
             # Extract arguments with defaults
             title = args.get("title")
             content = args.get("content")
@@ -456,93 +550,281 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
             doc_type = args.get("type", "note")
             tags = args.get("tags", [])
 
-            file_path = create_file(title, content, folder, doc_type, tags)
+            # Get chat_id from context if available
+            chat_id = args.get("chat_id", "default")
 
-            # Also store in vector database for semantic search
-            doc_id = file_path.replace("/", "_").replace(".md", "")
-            metadata = {
-                "title": title,
-                "type": doc_type,
-                "tags": tags,
-                "folder": folder or "root",
-                "file_path": file_path,
-            }
-            await vector_store.embed_and_store(doc_id, content, metadata)
+            # Store in Supabase (primary storage)
+            from src.storage.storage_service import document_storage
 
-            return {
-                "success": True,
-                "message": f"Created file: {file_path}",
-                "file_path": file_path,
-            }
+            if not document_storage:
+                return {
+                    "success": False,
+                    "error": "Document storage not available",
+                }
 
-        elif function_name == "append_to_file":
-            file_path = args.get("file_path")
+            try:
+                # Convert chat_id to integer for telegram_chat_id, or None if not a valid integer
+                telegram_chat_id = None
+                if chat_id and chat_id != "default":
+                    try:
+                        telegram_chat_id = int(chat_id)
+                    except ValueError:
+                        # If chat_id is not a valid integer (e.g., "user1"), pass None
+                        telegram_chat_id = None
+
+                # Create synthetic file_path for compatibility
+                file_path = (
+                    f"{folder}/{title.lower().replace(' ', '-')}.md"
+                    if folder
+                    else f"{title.lower().replace(' ', '-')}.md"
+                )
+
+                metadata = {
+                    "title": title,
+                    "type": doc_type,
+                    "tags": tags,
+                    "folder": folder or "root",
+                    "file_path": file_path,
+                }
+
+                # Store in Supabase
+                doc_id = await document_storage.store_document(
+                    file_path=file_path,
+                    content=content,
+                    metadata=metadata,
+                    category=folder,
+                    tags=tags,
+                    telegram_chat_id=telegram_chat_id,
+                    created_by="bot",
+                )
+
+                # doc_id is returned directly as a string
+                if not doc_id:
+                    doc_id = file_path.replace("/", "_").replace(".md", "")
+
+                # Store in vector database for semantic search
+                await vector_store.embed_and_store(
+                    str(doc_id), content, metadata, namespace=""
+                )
+
+                return {
+                    "success": True,
+                    "message": f"Created document: {title}",
+                    "document_id": doc_id,
+                    "file_path": file_path,
+                }
+
+            except Exception as e:
+                logger = logging.getLogger(__name__)
+                logger.error(f"Error creating document: {e}")
+                return {
+                    "success": False,
+                    "error": f"Failed to create document: {str(e)}",
+                }
+
+        elif function_name == "append_to_document":
+            reference = args.get("document_reference")
             content = args.get("content")
 
-            # If file_path is just a title, try to find the file
-            if not file_path.endswith(".md"):
-                search_results = search_files(file_path)
-                if search_results:
-                    file_path = search_results[0]["path"]
+            # Resolve the reference to document ID and existing content
+            file_path, document_id, existing_content = await resolve_document_reference(
+                reference
+            )
+
+            if not document_id and not file_path:
+                return {
+                    "success": False,
+                    "error": f"Could not find document matching '{reference}'",
+                }
+
+            from src.storage.storage_service import document_storage
+
+            if not document_storage:
+                return {
+                    "success": False,
+                    "error": "Document storage not available",
+                }
+
+            try:
+                # Append to the existing content
+                updated_content = (existing_content or "") + "\n\n" + content
+
+                # Update in Supabase
+                if document_id:
+                    success = await document_storage.update_document_by_id(
+                        document_id, updated_content
+                    )
+                    doc_ref = document_id
+                else:
+                    # Use file path for backward compatibility
+                    success = await document_storage.update_document(
+                        file_path, updated_content
+                    )
+                    doc_ref = file_path.replace("/", "_").replace(".md", "")
+
+                if success:
+                    # Re-index in vector store
+                    metadata = {
+                        "document_id": document_id or doc_ref,
+                        "file_path": file_path,
+                        "last_updated": datetime.now().isoformat(),
+                        "source_ids": [
+                            doc_ref,
+                            f"{doc_ref}_append_{datetime.now().timestamp()}",
+                        ],
+                        "operation": "merge",
+                    }
+                    await vector_store.embed_and_store(
+                        doc_ref, updated_content, metadata, namespace=""
+                    )
+
+                    return {
+                        "success": True,
+                        "message": f"Updated document: {reference}",
+                    }
                 else:
                     return {
                         "success": False,
-                        "error": f"Could not find file matching '{file_path}'",
+                        "error": f"Failed to update document: {reference}",
                     }
 
-            updated_path = append_to_file(file_path, content)
-            return {"success": True, "message": f"Appended to file: {updated_path}"}
+            except Exception as e:
+                logger = logging.getLogger(__name__)
+                logger.error(f"Error updating document: {e}")
+                return {
+                    "success": False,
+                    "error": f"Failed to append to document: {str(e)}",
+                }
 
-        elif function_name == "read_file":
-            file_path = args.get("file_path")
+        elif function_name == "read_document":
+            reference = args.get("document_reference")
 
-            # If file_path is just a title, try to find the file
-            if not file_path.endswith(".md"):
-                search_results = search_files(file_path)
-                if search_results:
-                    file_path = search_results[0]["path"]
-                else:
-                    return {
-                        "success": False,
-                        "error": f"Could not find file matching '{file_path}'",
-                    }
+            # Resolve the reference to document ID and content
+            file_path, document_id, content = await resolve_document_reference(
+                reference
+            )
 
-            content = read_file(file_path)
-            return {"success": True, "content": content}
+            if not document_id and not file_path:
+                return {
+                    "success": False,
+                    "error": f"Could not find document matching '{reference}'",
+                }
 
-        elif function_name == "search_files":
+            # If we have content from Supabase, use it
+            if content is not None:
+                return {"success": True, "content": content}
+
+            # Try to get content from Supabase if we have an ID
+            if document_id:
+                from src.storage.storage_service import document_storage
+
+                if document_storage:
+                    try:
+                        doc = await document_storage.get_document_by_id(document_id)
+                        if doc and doc.get("content"):
+                            return {"success": True, "content": doc["content"]}
+                    except Exception as e:
+                        logger = logging.getLogger(__name__)
+                        logger.error(f"Error reading document from Supabase: {e}")
+
+            return {
+                "success": False,
+                "error": f"Could not read content for document '{reference}'",
+            }
+
+        elif function_name == "search_documents":
             query = args.get("query")
-            results = search_files(query)
 
-            # If no results, try alternate search strategies
-            if not results and query:
-                # Try case variations
-                if query.lower() != query:
-                    results = search_files(query.lower())
-                if not results and query.upper() != query:
-                    results = search_files(query.title())
+            from src.storage.storage_service import document_storage
 
-                # Try splitting multi-word queries
-                if not results and " " in query:
-                    words = query.split()
-                    for word in words:
-                        word_results = search_files(word)
-                        if word_results:
-                            results.extend(word_results)
-                    # Remove duplicates
-                    seen = set()
-                    unique_results = []
-                    for r in results:
-                        if r["path"] not in seen:
-                            seen.add(r["path"])
-                            unique_results.append(r)
-                    results = unique_results
+            if not document_storage:
+                return {
+                    "success": False,
+                    "error": "Document storage not available",
+                }
 
-            return {"success": True, "results": results, "count": len(results)}
+            try:
+                # Search documents in Supabase
+                results = await document_storage.search_documents(query)
 
-        elif function_name == "list_all_files":
-            files = list_all_files()
-            return {"success": True, "files": files, "count": len(files)}
+                # Convert to expected format
+                formatted_results = []
+                for doc in results:
+                    formatted_results.append(
+                        {
+                            "id": doc.get("id"),
+                            "title": doc.get("metadata", {}).get("title", "Untitled"),
+                            "snippet": (
+                                doc.get("content", "")[:200] + "..."
+                                if len(doc.get("content", "")) > 200
+                                else doc.get("content", "")
+                            ),
+                            "path": doc.get("file_path", ""),
+                            "category": doc.get("category"),
+                            "tags": doc.get("tags", []),
+                        }
+                    )
+
+                return {
+                    "success": True,
+                    "results": formatted_results,
+                    "count": len(formatted_results),
+                }
+
+            except Exception as e:
+                logger = logging.getLogger(__name__)
+                logger.error(f"Error searching documents: {e}")
+                return {
+                    "success": False,
+                    "error": f"Search failed: {str(e)}",
+                }
+
+        elif function_name == "list_documents":
+            category = args.get("category")
+            limit = args.get("limit", 20)
+
+            from src.storage.storage_service import document_storage
+
+            if not document_storage:
+                return {
+                    "success": False,
+                    "error": "Document storage not available",
+                }
+
+            try:
+                # List documents from Supabase
+                documents = await document_storage.list_documents(
+                    category=category, limit=limit
+                )
+
+                # Convert to expected format
+                formatted_docs = []
+                for doc in documents:
+                    formatted_docs.append(
+                        {
+                            "id": doc.get("id"),
+                            "title": doc.get("metadata", {}).get("title", "Untitled"),
+                            "type": doc.get("metadata", {}).get("type", "note"),
+                            "category": doc.get("category"),
+                            "created": doc.get("created_at"),
+                            "path": doc.get("file_path", ""),
+                            "tags": doc.get("tags", []),
+                        }
+                    )
+
+                return {
+                    "success": True,
+                    "files": formatted_docs,
+                    "count": len(formatted_docs),
+                }
+
+            except Exception as e:
+                logger = logging.getLogger(__name__)
+                logger.error(f"Error listing documents: {e}")
+                return {
+                    "success": False,
+                    "error": f"List failed: {str(e)}",
+                }
 
         else:
             return {"success": False, "error": f"Unknown function: {function_name}"}

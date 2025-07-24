@@ -25,7 +25,7 @@ run_test() {
     
     echo -e "\n${YELLOW}Testing:${NC} $description"
     
-    if pytest "tests/test_ai_babysitter.py::$test_name" -v --tb=short -q; then
+    if pytest "tests/system/test_ai_babysitter.py::$test_name" -v --tb=short -q; then
         echo -e "${GREEN}✅ PASSED${NC}"
     else
         echo -e "${RED}❌ FAILED${NC}"
@@ -35,21 +35,21 @@ run_test() {
 
 # Core functionality tests (run these after every AI change)
 echo "\n🎯 Testing Core Features (most likely to break)"
-run_test "test_bot_saves_and_retrieves_notes" "Save and retrieve notes"
+run_test "test_basic_save_search_flow" "Save and retrieve notes"
 run_test "test_cache_actually_works" "Caching system"
 run_test "test_conversation_history_not_growing_infinitely" "Memory management"
 
 echo "\n🔍 Testing AI-Specific Issues"
 run_test "test_no_unreachable_code" "Dead code detection"
 run_test "test_retry_config_actually_applied" "Config usage"
-run_test "test_new_feature_didnt_break_old_features" "Feature interference"
+run_test "test_core_components_available" "Component availability"
 
 echo "\n💰 Testing Efficiency"
 run_test "test_not_burning_api_credits" "API call efficiency"
 run_test "test_response_time_reasonable" "Response speed"
 
 echo "\n🔒 Testing Multi-User Safety"
-run_test "test_multiple_users_dont_interfere" "User isolation"
+run_test "test_shared_namespace_mvp" "Shared namespace (MVP)"
 run_test "test_data_survives_restart" "Data persistence"
 
 # Final summary
@@ -75,7 +75,7 @@ else
     echo "   'Please fix these issues before proceeding.'"
     echo ""
     echo "📋 Run full diagnostic:"
-    echo "   pytest tests/test_ai_babysitter.py -v"
+    echo "   pytest tests/system/test_ai_babysitter.py -v"
     
     exit 1
 fi

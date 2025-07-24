@@ -41,6 +41,7 @@ from bot.handlers import (
     reset_command,
     continue_command,
     version_command,
+    report_command,
     handle_message,
     handle_document,
 )
@@ -88,6 +89,7 @@ class WebhookTelegramBot:
         self.application.add_handler(CommandHandler("reset", reset_command))
         self.application.add_handler(CommandHandler("continue", continue_command))
         self.application.add_handler(CommandHandler("version", version_command))
+        self.application.add_handler(CommandHandler("report", report_command))
 
         # Message handlers
         self.application.add_handler(

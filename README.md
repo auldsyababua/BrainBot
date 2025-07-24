@@ -1,28 +1,28 @@
-# 🧠 Markdown Brain Bot
+# 🧠 BrainBot - CAG (Creation Augmented Generation)
 
-> **⚠️ IMPORTANT: Architecture Update**  
-> This bot has migrated from a **polling-based** architecture to a **webhook-based** architecture for production deployment on Render.  
-> - **Production (Render)**: Uses webhooks via FastAPI  
-> - **Local Development**: Still uses polling for convenience
+An intelligent Telegram bot that acts as your personal filing assistant. Send it any information and it automatically organizes everything without asking questions - like having a hyper-competent assistant who just handles knowledge management.
 
-A shared knowledge Telegram bot that stores all information as markdown files in a local folder structure.
+> **Architecture**: Webhook-based (production) | Polling (local development)  
+> **Philosophy**: Append-only, source-preserving, auto-organizing
 
-## 🎯 Features
+## 🎯 Core Features
 
-- **Natural Language Processing**: Uses OpenAI GPT-4o to understand user requests
-- **Persistent Conversations**: Redis-backed conversation memory across bot restarts
-- **Semantic Search**: Vector database search enhances responses with relevant context
-- **Smart Todo Lists**: Checkbox formatting with completion tracking
-- **Markdown Storage**: All knowledge stored as `.md` files with YAML frontmatter
-- **Automatic Organization**: Maintains index.md and folder README.md files
-- **Shared Brain**: Acts as a team's collective memory (no user differentiation)
+- **Auto-Organization**: Intelligently files information without user intervention
+- **Source Preservation**: Every input preserved with audit trail
+- **Smart Merging**: Automatically combines similar content while keeping sources
+- **Natural Search**: Ask questions in plain language, get relevant answers
+- **No Questions Asked**: The bot decides how to organize, not you
+- **Cross-Device Sync**: Dump notes from any device, access from anywhere
 
-### 🚀 Performance Features (NEW)
-- **Vector Search Caching**: 10-50x faster responses with Redis LRU cache
-- **Resilient API Client**: Automatic retry with exponential backoff for 99.9% reliability
-- **Conversation Sliding Window**: Memory-efficient conversation management (20 message limit)
-- **Real-time Performance Monitoring**: Track response times, cache rates, and token usage
-- **Production-Ready Metrics**: Built-in `/metrics` endpoint for monitoring
+## 🚀 How It Works
+
+1. **Send any text** to the bot via Telegram
+2. **Bot analyzes** content and existing knowledge structure  
+3. **Auto-files** by either merging with similar content or creating new
+4. **Preserves sources** - every derivative references its origins
+5. **Brief confirmation** - "Added to project notes" or "Merged with existing FAQ"
+
+Think of it as "Git for thoughts" - all versions preserved, intelligently organized.
 
 ## 🚀 Quick Start
 
@@ -218,7 +218,7 @@ CONVERSATION_TTL_HOURS=24         # Hours before conversation expires
 
 3. **Initialize knowledge base** (optional):
    - Run the migration script to populate vector database
-   - Upload markdown files via Telegram
+   - Upload documents via Telegram
 
 ## 🛠️ Development
 
@@ -271,30 +271,36 @@ tags: [shopping, groceries]
 - Bread
 ```
 
-## 📋 TODO (v2)
+## 🔮 Roadmap
 
-- [ ] Scripted guardrails for index consistency
-- [ ] Markdown linting
-- [ ] GitHub backup integration
-- [ ] User permissions system
-- [ ] Web UI for browsing notes
+**Current (MVP)**:
+- ✅ Basic auto-organization
+- 🔄 Source tracking for audit trails
+- 🔄 Supabase + Vector sync
 
-## 🚀 Future Features
+**Next Phase**:
+- [ ] Auth via Telegram + Supabase (audit trail for all interactions)
+- [ ] FLRTS structure (Field reports, Lists, Reminders, Tasks, Sub-tasks)
+- [ ] Chunking pipeline for all uploaded documents
+- [ ] Web UI for viewing vectors/documents
+- [ ] Private namespace support for multi-user isolation
+- [ ] Time awareness (date injection, reminders, timers)
 
-### Dynamic Task Management ⭐ NEXT
-- **Cross-Referenced Tasks**: Tasks automatically appear in multiple views
-- **Smart Entity Recognition**: Recognize users, sites, equipment in commands
-- **Database Integration**: Sync with existing company database
-- **Example**: "Add task for technician to service equipment at Site A"
-  - Creates entry in technician's task list
-  - Creates entry in site task list  
-  - Links both for synchronized updates
+**Advanced Features**:
+- [ ] Agent selection in Telegram bot
+- [ ] Rich outputs (charts, graphs, images)
+- [ ] Web search and external tools integration
+- [ ] Full training mode (beyond just vector returns)
+- [ ] Conversation vectorization for better memory
+- [ ] Smart CAG/RAG prompt switching
+- [ ] Tool calls tied to UI buttons (new task, reminder)
+- [ ] Redis configuration optimization
 
-### Advanced Analytics
-- **Usage Tracking**: Monitor team knowledge patterns
-- **Search Analytics**: Most accessed content
-- **Knowledge Gaps**: Identify missing information
-- **Team Insights**: Collaboration patterns
+**Infrastructure**:
+- [ ] Persist all conversations to vector store
+- [ ] Sync between human-readable notes and vector store
+- [ ] Store all original submissions with audit trail
+- [ ] Add vector-supabase sync verification to test suite
 
 ## 📄 License
 
