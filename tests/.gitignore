@@ -1,0 +1,41 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Pytest cache
+.pytest_cache/
+*.pytest_cache
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Test outputs (keep test_results/)
+*.log
+*.tmp
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary test data
+scratch/*.tmp
+scratch/*.log
+
+# But keep important files
+!test_results/*.json
+!fixtures/*.json
