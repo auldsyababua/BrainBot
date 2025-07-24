@@ -1,0 +1,136 @@
+{
+  "microgrids_booth": {
+    "file": "Microgrids_and_energy_resiliance_Samuel_Booth.pdf",
+    "key_concepts": [
+      "microgrids",
+      "resilience",
+      "distributed generation",
+      "energy",
+      "reliability",
+      "grid independence",
+      "islanded mode"
+    ],
+    "sample_queries": [
+      "What does the Booth paper say about microgrids and energy resilience?",
+      "Can you explain the benefits of microgrids according to Samuel Booth?",
+      "How do microgrids enhance energy resilience?"
+    ],
+    "expected_topics": [
+      "distributed generation",
+      "grid independence",
+      "resilience",
+      "islanded operation",
+      "efficiency improvements"
+    ],
+    "test_content": {
+      "chunk1": "Microgrids enhance energy resilience by providing distributed generation capabilities and grid independence during outages. According to Samuel Booth's research, microgrids can operate in both grid-connected and islanded modes, ensuring continuous power supply even when the main grid fails.",
+      "chunk2": "The key benefits include reduced transmission losses, enhanced local control, integration of renewable sources, and improved reliability during grid failures. Microgrids typically achieve 85-90% efficiency compared to traditional centralized systems at 35-40% efficiency."
+    }
+  },
+  "ieee_standards": {
+    "file": "IEEE 3006_2- 2016 Recommended Practice for Evaluating the.pdf",
+    "key_concepts": [
+      "IEEE 3006-2016",
+      "reliability evaluation",
+      "power systems",
+      "industrial",
+      "commercial",
+      "recommended practices"
+    ],
+    "sample_queries": [
+      "Can you tell me about the evaluation practices outlined in IEEE 3006?",
+      "What does IEEE 3006-2016 cover regarding power system reliability?",
+      "What specific areas does the IEEE standard cover?"
+    ],
+    "expected_topics": [
+      "power system reliability indices",
+      "failure mode analysis",
+      "maintenance strategies",
+      "cost-benefit evaluation",
+      "quantitative assessment"
+    ],
+    "test_content": {
+      "chunk1": "IEEE 3006-2016 provides recommended practices for evaluating the reliability of industrial and commercial power systems. The standard covers evaluation methods, data collection, and analysis techniques.",
+      "chunk2": "Specific areas include power system reliability indices, failure mode analysis, maintenance strategies, and cost-benefit evaluation of reliability improvements. The standard emphasizes quantitative reliability assessment using probabilistic methods and historical failure data."
+    }
+  },
+  "gas_turbine_breeze": {
+    "file": "Gas_Turbine_Power_Generation____Breeze,_Paul____.pdf",
+    "key_concepts": [
+      "gas turbines",
+      "efficiency",
+      "power generation",
+      "combined cycle",
+      "simple cycle",
+      "Breeze"
+    ],
+    "sample_queries": [
+      "What is the power efficiency of a gas turbine according to the Breeze power generation book?",
+      "How does gas turbine efficiency compare to other power generation methods?",
+      "What does Paul Breeze say about combined cycle efficiency?"
+    ],
+    "expected_topics": [
+      "40-45% simple cycle efficiency",
+      "62% combined cycle efficiency",
+      "firing temperature",
+      "pressure ratio",
+      "waste heat recovery"
+    ],
+    "test_content": {
+      "chunk1": "Modern gas turbines achieve efficiency levels of 40-45% in simple cycle operation, with combined cycle systems reaching up to 62% efficiency. Paul Breeze's comprehensive analysis shows that gas turbine efficiency depends on firing temperature, pressure ratio, and component efficiencies.",
+      "chunk2": "Compared to coal plants at 35% and nuclear at 33%, gas turbines offer superior efficiency, especially in combined cycle configurations where waste heat is recovered for additional power generation."
+    }
+  },
+  "field_operations_brantley": {
+    "file": "Field_Operations_service Manual Richard Brantley.pdf",
+    "key_concepts": [
+      "field operations",
+      "maintenance procedures",
+      "power generation equipment",
+      "Brantley",
+      "service manual"
+    ],
+    "sample_queries": [
+      "What maintenance procedures does the Brantley manual recommend?",
+      "Can you tell me about the field operations service schedule?",
+      "What does Richard Brantley say about equipment maintenance?"
+    ],
+    "expected_topics": [
+      "daily visual inspections",
+      "weekly performance checks",
+      "monthly oil analysis",
+      "quarterly comprehensive testing",
+      "maintenance schedules"
+    ],
+    "test_content": {
+      "chunk1": "Field operations manual by Richard Brantley outlines maintenance procedures for power generation equipment. Key procedures include daily visual inspections, weekly performance checks, monthly oil analysis, and quarterly comprehensive testing.",
+      "chunk2": "These procedures should be performed according to the following schedule: daily checks before each shift, weekly checks every Monday, monthly analysis on the first of each month, and quarterly testing aligned with seasonal changes."
+    }
+  },
+  "gpsa_engineering": {
+    "file": "gpsa_engineering_data_book_14th_edition.pdf",
+    "key_concepts": [
+      "GPSA",
+      "engineering data",
+      "gas processing",
+      "14th edition",
+      "technical specifications"
+    ],
+    "sample_queries": [
+      "What technical data does the GPSA engineering book provide?",
+      "Can you find information from the GPSA 14th edition?",
+      "What gas processing standards are in the GPSA book?"
+    ],
+    "expected_topics": [
+      "gas processing",
+      "technical specifications",
+      "engineering standards",
+      "equipment design",
+      "process calculations"
+    ],
+    "test_content": {
+      "chunk1": "The GPSA Engineering Data Book 14th edition provides comprehensive technical data for gas processing and related industries. It includes equipment specifications, process calculations, and engineering standards.",
+      "chunk2": "Key sections cover gas properties, compression, dehydration, sweetening, and fractionation processes. The book serves as an authoritative reference for gas processing facility design and operation."
+    }
+  }
+}
