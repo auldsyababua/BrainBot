@@ -168,7 +168,7 @@ This provides:
    - `/start` - Initialize conversation
    - `/help` - View commands
    - "Search for X" - Test vector search
-   - "Create a note about Y" - Test file operations
+   - "Create a note about Y" - Test document operations
 
 3. **Monitor performance**
    - Watch console for timing logs
@@ -375,6 +375,117 @@ jobs:
 - [Architecture Documentation](../docs/ARCHITECTURE.md)
 - [API Documentation](../docs/API.md)
 - [Deployment Guide](../docs/DEPLOYMENT.md)
+
+---
+
+## 📁 Test Directory Organization
+
+### Directory Structure
+
+```
+tests/
+├── README.md                    # This file - main testing guide
+├── README_load_testing.md       # Load testing documentation (for non-technical users)
+├── conftest.py                  # Shared pytest fixtures
+│
+├── fixtures/                    # Test data and fixtures
+│   └── pdf_content.json        # PDF content for LLM tests
+│
+├── unit/                       # Unit tests (isolated components)
+│   ├── test_auth.py           # Authentication tests
+│   ├── test_context_awareness.py  # Context building tests
+│   └── test_search_resilience.py  # Search fallback tests
+│
+├── integration/                # Integration tests (multiple components)
+│   ├── test_document_storage.py   # Document storage integration
+│   ├── test_media_storage.py      # Media/S3 storage tests
+│   ├── test_s3_connection.py      # S3 connectivity tests
+│   └── test_storage_integrations.py # Full storage stack tests
+│
+├── system/                     # System tests (end-to-end)
+│   ├── test_ai_babysitter.py  # AI code quality tests
+│   └── test_all_storage.py    # Complete storage tests
+│
+├── performance/                # Performance tests
+│   ├── test_performance.py    # Performance benchmarks
+│   └── locustfile.py         # Load testing configuration
+│
+├── scratch/                    # Temporary test scripts
+│   └── README.md              # Explains scratch directory usage
+│
+└── test_results/              # Test execution results
+    └── latest.json           # Most recent test results
+```
+
+### Test Categories
+
+#### 1. Unit Tests (`unit/`)
+Tests individual components in isolation:
+- **test_auth.py**: User authentication and authorization
+- **test_context_awareness.py**: Knowledge retrieval and context building
+- **test_search_resilience.py**: Fallback mechanisms when services fail
+
+#### 2. Integration Tests (`integration/`)
+Tests interactions between components:
+- **test_document_storage.py**: Supabase document operations
+- **test_media_storage.py**: S3/media file handling
+- **test_storage_integrations.py**: Full storage stack (Vector + Redis + Supabase)
+
+#### 3. System Tests (`system/`)
+Tests the complete system:
+- **test_ai_babysitter.py**: Catches common AI coding mistakes
+- **test_all_storage.py**: End-to-end storage functionality
+
+#### 4. Performance Tests (`performance/`)
+- **test_performance.py**: Performance benchmarks and monitoring
+- **locustfile.py**: Load testing with concurrent users
+
+### Best Practices
+
+1. **Naming Convention**
+   - Test files: `test_*.py`
+   - Test functions: `test_*()` or `async def test_*()`
+   - Test classes: `TestClassName`
+
+2. **Test Isolation**
+   - Use fixtures for setup/teardown
+   - Mock external services when appropriate
+   - Clean up test data after execution
+
+3. **Test Data**
+   - Keep fixtures in `fixtures/` directory
+   - Use meaningful test data that reflects real usage
+   - Document test data structure in fixture files
+
+4. **Performance Tests**
+   - Track metrics over time
+   - Set clear performance baselines
+   - Alert on performance regressions
+
+### Adding New Tests
+
+1. **Determine test category**:
+   - Unit: Testing a single function/class
+   - Integration: Testing component interactions
+   - System: Testing end-to-end flows
+
+2. **Choose appropriate directory**:
+   - Place in correct subdirectory
+   - Or create new subdirectory if needed
+
+3. **Follow patterns**:
+   - Look at existing tests in that category
+   - Use similar structure and fixtures
+   - Maintain consistency
+
+## 🔄 CI/CD Integration
+
+Tests are run automatically on:
+- Pull requests
+- Commits to main branch
+- Scheduled daily runs
+
+See `.github/workflows/` for CI configuration.
 
 ---
 

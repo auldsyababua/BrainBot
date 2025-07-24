@@ -218,7 +218,7 @@ CONVERSATION_TTL_HOURS=24         # Hours before conversation expires
 
 3. **Initialize knowledge base** (optional):
    - Run the migration script to populate vector database
-   - Upload markdown files via Telegram
+   - Upload documents via Telegram
 
 ## 🛠️ Development
 

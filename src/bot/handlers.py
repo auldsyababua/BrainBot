@@ -14,24 +14,53 @@ Handlers:
 import logging
 import os
 import tempfile
+import json
+from datetime import datetime
 from telegram import Update
 from telegram.ext import ContextTypes
 
 from core.llm import process_message
-from core.tools import ensure_index_exists, create_file
 from storage.vector_store import vector_store
+from storage.storage_service import DocumentStorage
 from core.version import VERSION, LATEST_CHANGES
+from core.auth import is_user_authorized
+from storage.redis_store import redis_store
 
 # Set up logging
 logger = logging.getLogger(__name__)
 
-# Ensure index exists on startup
-ensure_index_exists()
+# Index initialization removed - using Supabase storage
+
+
+# Helper function for authorization check
+async def check_authorization(update: Update) -> bool:
+    """Check if user is authorized and send rejection message if not.
+
+    Returns:
+        bool: True if authorized, False otherwise
+    """
+    user = update.effective_user
+    if not is_user_authorized(username=user.username, user_id=user.id):
+        await update.message.reply_text(
+            f"Hello {user.first_name}! 👋\n\n"
+            "This bot is currently available only to authorized 10NetZero team members.\n"
+            "Please contact your administrator for access.\n\n"
+            f"Your username: @{user.username or 'not set'}\n"
+            f"Your ID: {user.id}"
+        )
+        logger.warning(
+            f"Unauthorized access attempt (command): @{user.username} (ID: {user.id})"
+        )
+        return False
+    return True
 
 
 # Command handlers
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /start command."""
+    if not await check_authorization(update):
+        return
+
     welcome_message = (
         "🧠 Welcome to the Markdown Brain Bot!\n\n"
         "I'm your shared knowledge assistant. I can help you:\n\n"
@@ -43,7 +72,8 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• /help - Show detailed help and examples\n"
         "• /reset - Start a new conversation (clears memory)\n"
         "• /continue - Restore previous conversation\n"
-        "• /version - Show bot version and diagnostics\n\n"
+        "• /version - Show bot version and diagnostics\n"
+        "• /report - Generate a report of current conversation for debugging\n\n"
         "Just send me a message with what you'd like to do!\n\n"
         "Examples:\n"
         '- "Create a shopping list with milk, eggs, and bread"\n'
@@ -57,6 +87,9 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /help command."""
+    if not await check_authorization(update):
+        return
+
     help_message = (
         "📚 **How to use the Markdown Brain Bot**\n\n"
         "**Creating content:**\n"
@@ -84,6 +117,9 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def reset_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /reset command to start a new conversation."""
+    if not await check_authorization(update):
+        return
+
     chat_id = str(update.effective_chat.id)
 
     # Import the reset function from llm
@@ -100,6 +136,9 @@ async def reset_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def continue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /continue command to restore previous conversation."""
+    if not await check_authorization(update):
+        return
+
     chat_id = str(update.effective_chat.id)
 
     # Import the restore function from llm
@@ -118,8 +157,113 @@ async def continue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 
+async def report_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle the /report command - generates a conversation report for debugging."""
+    if not await check_authorization(update):
+        return
+
+    try:
+        chat_id = str(update.effective_chat.id)
+        user = update.effective_user
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        # Show processing message
+        processing_msg = await update.message.reply_text(
+            "📊 Generating conversation report...\n" "This may take a moment."
+        )
+
+        # Collect conversation data
+        report_data = {
+            "timestamp": timestamp,
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+            },
+            "chat_id": chat_id,
+            "conversation_history": [],
+            "vector_searches": [],
+            "errors": [],
+            "metadata": {
+                "bot_version": VERSION,
+                "report_generated_at": datetime.now().isoformat(),
+            },
+        }
+
+        # Get conversation history from Redis
+        conversation_key = f"conversation:{chat_id}"
+        messages = await redis_store.get_conversation(conversation_key)
+        report_data["conversation_history"] = messages
+
+        # Get recent vector searches (if tracked)
+        # TODO: Add vector search logging to track queries and results
+
+        # Create report content
+        report_content = "# Conversation Report\n\n"
+        report_content += (
+            f"**Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+        )
+        report_content += f"**User**: @{user.username or 'N/A'} (ID: {user.id})\n"
+        report_content += f"**Bot Version**: {VERSION}\n\n"
+
+        report_content += f"## Conversation History ({len(messages)} messages)\n\n"
+        for i, msg in enumerate(messages):
+            role = msg.get("role", "unknown")
+            content = msg.get("content", "")
+            report_content += f"### Message {i+1} ({role})\n"
+            report_content += (
+                f"```\n{content[:500]}{'...' if len(content) > 500 else ''}\n```\n\n"
+            )
+
+        # Save report to file
+        report_filename = f"conversation_report_{chat_id}_{timestamp}.md"
+        report_path = f"logs/reports/{report_filename}"
+
+        # Ensure reports directory exists
+        os.makedirs("logs/reports", exist_ok=True)
+
+        # Write report file
+        with open(report_path, "w", encoding="utf-8") as f:
+            f.write(report_content)
+            f.write("\n\n## Raw Data (JSON)\n\n")
+            f.write("```json\n")
+            f.write(json.dumps(report_data, indent=2, ensure_ascii=False))
+            f.write("\n```\n")
+
+        # Update processing message
+        await processing_msg.edit_text(
+            f"✅ **Conversation report generated!**\n\n"
+            f"📄 Report saved to: `{report_filename}`\n\n"
+            f"The report includes:\n"
+            f"• {len(messages)} conversation messages\n"
+            f"• User information\n"
+            f"• Timestamp and version info\n\n"
+            f"Please share this file with your administrator for debugging."
+        )
+
+        # Send the report file
+        with open(report_path, "rb") as f:
+            await update.message.reply_document(
+                document=f,
+                filename=report_filename,
+                caption="📎 Here's your conversation report for debugging.",
+            )
+
+    except Exception as e:
+        logger.error(f"Error generating report: {e}")
+        await update.message.reply_text(
+            "❌ Sorry, I couldn't generate the report.\n"
+            f"Error: {str(e)}\n\n"
+            "Please try again or contact your administrator."
+        )
+
+
 async def version_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /version command to show bot version and capabilities."""
+    if not await check_authorization(update):
+        return
+
     version_message = (
         f"🤖 **Markdown Brain Bot v{VERSION}**\n\n" "**Latest Changes:**\n"
     )
@@ -144,8 +288,26 @@ async def version_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle incoming text messages."""
     try:
+        user = update.effective_user
         user_message = update.message.text
         chat_id = update.effective_chat.id
+
+        # Check authorization
+        if not await check_authorization(update):
+            return
+
+        # Log first-time authorized users for future whitelist updates
+        if user.username and user.username in [
+            "Colin_10NetZero",
+            "Bryan_10NetZero",
+            "Joel_10NetZero",
+        ]:
+            logger.info(
+                f"Authorized user detected - Username: @{user.username}, ID: {user.id}"
+            )
+            logger.info(
+                f"Consider adding to AUTHORIZED_USER_IDS: {user.id}  # {user.username}"
+            )
 
         logger.info(f"📥 Received message from {chat_id}: {user_message}")
 
@@ -173,8 +335,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle incoming document files."""
     try:
+        user = update.effective_user
         document = update.message.document
         chat_id = update.effective_chat.id
+
+        # Check authorization
+        if not await check_authorization(update):
+            return
 
         # Check if it's a markdown file
         if document.file_name and (
@@ -215,38 +382,49 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             elif "config" in title.lower() or "setup" in title.lower():
                 folder = "development"
 
-            # Create the file
-            file_path = create_file(
-                title=title,
+            # Store document in Supabase
+            document_storage = DocumentStorage()
+            file_path = f"{folder or 'documents'}/{title}.md"
+
+            doc_id = await document_storage.store_document(
+                file_path=file_path,
                 content=content,
-                folder=folder,
-                doc_type="note",
+                metadata={
+                    "title": title,
+                    "type": "note",
+                    "source": "telegram-upload",
+                },
+                category=folder,
                 tags=["imported", "telegram-attachment"],
+                telegram_chat_id=chat_id,
+                telegram_user_id=user.id,
+                created_by="bot",
             )
 
             # Store in vector database for semantic search
-            doc_id = file_path.replace("/", "_").replace(".md", "")
             metadata = {
                 "title": title,
                 "type": "note",
                 "tags": ["imported", "telegram-attachment"],
                 "folder": folder or "root",
-                "file_path": file_path,
+                "doc_id": doc_id,
                 "source": "telegram-upload",
             }
             await vector_store.embed_and_store(doc_id, content, metadata, namespace="")
 
             # Let the LLM know about the imported file
-            llm_message = f"I just imported a markdown file called '{document.file_name}' to {file_path}. The file contains:\n\n{content[:500]}..."
+            llm_message = f"I just imported a document called '{document.file_name}'. The document contains:\n\n{content[:500]}..."
             llm_response = await process_message(llm_message, str(chat_id))
 
-            response = f"✅ Successfully imported '{document.file_name}' to {file_path}\n\n{llm_response}"
+            response = (
+                f"✅ Successfully imported '{document.file_name}'\n\n{llm_response}"
+            )
             await update.message.reply_text(response)
 
         else:
             await update.message.reply_text(
-                "📎 I can only process markdown files (.md or .markdown). "
-                "Please send a markdown file to import it into the knowledge base."
+                "📎 I can only process text-based documents. "
+                "Please send a text file to import it into the knowledge base."
             )
 
     except Exception as e:

@@ -64,7 +64,7 @@ case $SCENARIO in
         echo "📊 Running BASIC load test (10 users)..."
         echo "Good for: Testing basic functionality during development"
         echo ""
-        locust -f tests/locustfile.py \
+        locust -f tests/performance/locustfile.py \
             --host "$HOST" \
             --headless \
             --users 10 \
@@ -77,7 +77,7 @@ case $SCENARIO in
         echo "📊 Running NORMAL load test (100 users)..."
         echo "Good for: Testing typical daily load"
         echo ""
-        locust -f tests/locustfile.py \
+        locust -f tests/performance/locustfile.py \
             --host "$HOST" \
             --headless \
             --users 100 \
@@ -94,7 +94,7 @@ case $SCENARIO in
         read -p "Are you sure you want to continue? (y/N) " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            locust -f tests/locustfile.py \
+            locust -f tests/performance/locustfile.py \
                 --host "$HOST" \
                 --headless \
                 --users 500 \
@@ -111,7 +111,7 @@ case $SCENARIO in
         echo "📊 Running ENDURANCE test (50 users for 30 minutes)..."
         echo "Good for: Finding memory leaks and degradation over time"
         echo ""
-        locust -f tests/locustfile.py \
+        locust -f tests/performance/locustfile.py \
             --host "$HOST" \
             --headless \
             --users 50 \
@@ -125,7 +125,7 @@ case $SCENARIO in
         echo "Open http://localhost:8089 in your browser"
         echo "Press Ctrl+C to stop"
         echo ""
-        locust -f tests/locustfile.py --host "$HOST"
+        locust -f tests/performance/locustfile.py --host "$HOST"
         ;;
     
     *)

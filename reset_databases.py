@@ -23,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from src.storage.vector_store import vector_store
 from src.storage.storage_service import document_storage
-from src.core.tools import parse_frontmatter
+from src.core.utils import parse_frontmatter
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -80,7 +80,7 @@ class DatabaseResetter:
             logger.warning(f"   ⚠️  Supabase clear failed: {e}")
 
     async def load_production_data(self):
-        """Load all markdown files from 10nz_kb/ excluding test documents."""
+        """Load all documents from 10nz_kb/ excluding test documents."""
         logger.info("📁 Loading production data from 10nz_kb/...")
 
         if not self.notes_dir.exists():
@@ -128,7 +128,7 @@ class DatabaseResetter:
             return
 
         for md_file in self.test_docs_dir.glob("*.md"):
-            if md_file.name == "README.md":
+            if md_file.name in ["README.md", "index.md"]:
                 continue
 
             await self.load_markdown_file(md_file, source="test_required")

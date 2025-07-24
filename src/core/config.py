@@ -15,9 +15,10 @@ if not OPENAI_API_KEY:
     raise ValueError("OPENAI_API_KEY not found in environment variables")
 
 # Application configuration
-NOTES_FOLDER = os.getenv("NOTES_FOLDER", "notes")
-INDEX_FILE = os.getenv("INDEX_FILE", "index.md")
-README_FILE = os.getenv("README_FILE", "README.md")
+# Legacy file paths - no longer used, keeping for migration reference
+# NOTES_FOLDER = os.getenv("NOTES_FOLDER", "notes")
+# INDEX_FILE = os.getenv("INDEX_FILE", "index.md")
+# README_FILE = os.getenv("README_FILE", "index.md")
 
 # GPT model configuration
 GPT_MODEL = os.getenv("GPT_MODEL", "gpt-4o")
@@ -60,17 +61,17 @@ When user adds information:
 4. Make merged content searchable
 
 🔧 OPERATIONS:
-- create_file(title, content, folder, type, tags)
-- append_to_file(file_path, content) - accepts file paths OR document IDs
-- read_file(file_path) - accepts file paths OR document IDs
-- search_files(query)
-- list_all_files()
+- create_document(title, content, folder, type, tags)
+- append_to_document(doc_id, content) - accepts document IDs
+- read_document(doc_id) - accepts document IDs
+- search_documents(query)
+- list_documents()
 
 ⚡ DOCUMENT REFERENCES:
-- Search results may return document IDs (UUID format) or file paths
-- Both work with append_to_file and read_file operations
-- Example: append_to_file("edc2adf3-3360-4b71-936b-d0ff488ce9ce", "new content")
-- Example: append_to_file("notes/personal/todo.md", "new content")
+- Search results return document IDs in UUID format
+- Use document IDs with append_to_document and read_document functions
+- Example: append_to_document("edc2adf3-3360-4b71-936b-d0ff488ce9ce", "new content")
+- Documents are stored in Supabase with full text search and vector embeddings
 
 💬 RESPONSES: 1-2 sentences max
 - What action taken
@@ -80,5 +81,4 @@ When user adds information:
 Remember: Users dump info, you organize. No questions.""",
 )
 
-# Ensure notes folder exists
-os.makedirs(NOTES_FOLDER, exist_ok=True)
+# Notes folder creation removed - using Supabase storage

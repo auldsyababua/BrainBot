@@ -11,9 +11,10 @@ import yaml
 from datetime import datetime
 
 from src.storage.vector_store import vector_store
-from src.core.tools import read_file
-from src.core.config import NOTES_FOLDER
 from src.core.chunking import chunk_markdown_document
+
+# Define notes folder locally for migration
+NOTES_FOLDER = os.getenv("NOTES_FOLDER", "10nz_kb")
 
 # Target folder for migration
 TARGET_FOLDER = os.getenv("MIGRATION_FOLDER", "CompanyDocs")
@@ -43,7 +44,8 @@ async def migrate_file(file_path: str) -> bool:
     """Migrate a single markdown file to vector database."""
     try:
         # Read file content
-        full_content = read_file(file_path)
+        with open(file_path, "r", encoding="utf-8") as f:
+            full_content = f.read()
         if not full_content:
             print(f"⚠️  Skipping empty file: {file_path}")
             return False
@@ -106,7 +108,8 @@ async def migrate_file_chunked(
     """
     try:
         # Read file content
-        full_content = read_file(file_path)
+        with open(file_path, "r", encoding="utf-8") as f:
+            full_content = f.read()
         if not full_content:
             print(f"⚠️  Skipping empty file: {file_path}")
             return 0
