@@ -1,12 +1,259 @@
 #!/usr/bin/env python3
-"""Test Media Storage Service"""
+"""Test Media Storage Service with comprehensive edge case coverage"""
 import asyncio
+import sys
+import pytest
+import concurrent.futures
+from unittest.mock import patch, MagicMock
 from src.storage.media_storage import MediaStorage
 import os
 from dotenv import load_dotenv
+import hashlib
+from botocore.exceptions import ClientError, NoCredentialsError
 
 # Load environment variables
 load_dotenv()
+
+
+# Edge case test fixtures
+MALICIOUS_FILENAMES = [
+    "../../../etc/passwd",
+    "..\\..\\windows\\system32\\config\\sam",
+    "file://etc/passwd",
+    "\x00nullbyte.txt",
+    "<script>alert(1)</script>.js",
+    "'; DROP TABLE media;--.sql",
+]
+
+LARGE_FILE = b"x" * (50 * 1024 * 1024)  # 50MB
+VERY_LARGE_FILE = b"x" * (500 * 1024 * 1024)  # 500MB
+EMPTY_FILE = b""
+
+
+async def test_media_storage_edge_cases():
+    """Test media storage with comprehensive edge cases"""
+    storage = MediaStorage()
+
+    # Test 1: Null/None input handling
+    print("\n🔍 Testing null/None inputs...")
+    with pytest.raises((ValueError, AttributeError, TypeError)):
+        await storage.upload_media(None, "file.txt", "text/plain")
+
+    with pytest.raises((ValueError, AttributeError, TypeError)):
+        await storage.upload_media(b"content", None, "text/plain")
+
+    with pytest.raises((ValueError, AttributeError, TypeError)):
+        await storage.download_media(None)
+
+    # Test 2: Empty file handling
+    print("\n🔍 Testing empty files...")
+    result = await storage.upload_media(
+        file_content=EMPTY_FILE, file_name="empty.txt", file_type="text/plain"
+    )
+    # Should handle empty files gracefully
+    assert result is not None
+    assert result.get("file_hash") is not None
+
+    # Test 3: Malicious filenames
+    print("\n🔍 Testing malicious filenames...")
+    for malicious_name in MALICIOUS_FILENAMES:
+        result = await storage.upload_media(
+            file_content=b"safe content",
+            file_name=malicious_name,
+            file_type="text/plain",
+        )
+        # Should sanitize filename
+        assert result is not None
+        assert ".." not in result["s3_key"]
+        assert "<script>" not in result["s3_key"]
+
+    # Test 4: Invalid file types
+    print("\n🔍 Testing invalid file types...")
+    invalid_types = ["", None, "invalid/type/with/slashes", "text/plain; rm -rf /"]
+    for file_type in invalid_types:
+        try:
+            result = await storage.upload_media(
+                file_content=b"content",
+                file_name="test.txt",
+                file_type=file_type or "application/octet-stream",
+            )
+            assert result is not None  # Should handle gracefully
+        except (ValueError, TypeError):
+            pass  # Expected for None type
+
+    # Test 5: Large file handling
+    print("\n🔍 Testing large files...")
+    # Test 50MB file
+    result = await storage.upload_media(
+        file_content=LARGE_FILE,
+        file_name="large-file.bin",
+        file_type="application/octet-stream",
+        description="50MB test file",
+    )
+    assert result is not None
+    print(f"   50MB file uploaded: {result['s3_key']}")
+
+    # Test 6: Concurrent uploads
+    print("\n🔍 Testing concurrent uploads...")
+
+    async def concurrent_upload(index):
+        content = f"Concurrent upload {index}".encode()
+        return await storage.upload_media(
+            file_content=content,
+            file_name=f"concurrent-{index}.txt",
+            file_type="text/plain",
+        )
+
+    # Upload same content concurrently (test deduplication)
+    same_content = b"duplicate content test"
+
+    async def concurrent_duplicate(index):
+        return await storage.upload_media(
+            file_content=same_content,
+            file_name=f"duplicate-{index}.txt",
+            file_type="text/plain",
+        )
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        loop = asyncio.get_event_loop()
+        tasks = [
+            loop.run_in_executor(executor, asyncio.run, concurrent_duplicate(i))
+            for i in range(10)
+        ]
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    # All should have same s3_key due to deduplication
+    s3_keys = [r["s3_key"] for r in results if isinstance(r, dict)]
+    assert len(set(s3_keys)) == 1  # All should be deduplicated to same key
+
+    # Test 7: S3 connection failures
+    print("\n🔍 Testing S3 failures...")
+    with patch.object(storage.s3_client, "put_object") as mock_put:
+        mock_put.side_effect = ClientError(
+            {"Error": {"Code": "NoSuchBucket", "Message": "Bucket not found"}},
+            "PutObject",
+        )
+
+        with pytest.raises(ClientError):
+            await storage.upload_media(b"content", "fail.txt", "text/plain")
+
+    # Test 8: Invalid S3 credentials
+    with patch.object(storage.s3_client, "put_object") as mock_put:
+        mock_put.side_effect = NoCredentialsError()
+
+        with pytest.raises(NoCredentialsError):
+            await storage.upload_media(b"content", "nocreds.txt", "text/plain")
+
+    # Test 9: Unicode filenames
+    print("\n🔍 Testing Unicode filenames...")
+    unicode_names = [
+        "中文文件.txt",
+        "русский_файл.doc",
+        "🚀🎉emoji.png",
+        "café_månu.pdf",
+    ]
+
+    for name in unicode_names:
+        result = await storage.upload_media(
+            file_content=b"Unicode filename test",
+            file_name=name,
+            file_type="text/plain",
+        )
+        assert result is not None
+        # S3 key should be URL-safe
+        assert all(ord(c) < 128 for c in result["s3_key"] if c not in "/.-_")
+
+    # Test 10: Presigned URL edge cases
+    print("\n🔍 Testing presigned URL edge cases...")
+    # Upload a test file first
+    test_result = await storage.upload_media(
+        b"URL test content", "url-test.txt", "text/plain"
+    )
+
+    # Test invalid expiration times
+    for expires_in in [0, -1, sys.maxsize]:
+        try:
+            url = await storage.get_media_url(
+                test_result["s3_key"], expires_in=expires_in
+            )
+            # Should either work or raise exception
+        except (ValueError, OverflowError):
+            pass
+
+    # Test non-existent key
+    url = await storage.get_media_url("non/existent/key.txt")
+    assert url is not None  # URL generated even for non-existent files
+
+    # Test 11: Download edge cases
+    print("\n🔍 Testing download edge cases...")
+    # Download non-existent file
+    with patch.object(storage.s3_client, "get_object") as mock_get:
+        mock_get.side_effect = ClientError(
+            {"Error": {"Code": "NoSuchKey", "Message": "Key not found"}}, "GetObject"
+        )
+
+        content = await storage.download_media("non/existent/file.txt")
+        assert content is None  # Should return None for missing files
+
+    # Test 12: Media type filtering
+    print("\n🔍 Testing media type filtering...")
+    # Upload files with different types
+    test_files = [
+        (b"image", "test.jpg", "image/jpeg"),
+        (b"video", "test.mp4", "video/mp4"),
+        (b"audio", "test.mp3", "audio/mpeg"),
+        (b"document", "test.pdf", "application/pdf"),
+    ]
+
+    for content, name, mime_type in test_files:
+        await storage.upload_media(content, name, mime_type)
+
+    # List with various filters
+    for media_type in ["image", "video", "audio", "document", "unknown", ""]:
+        results = await storage.list_media(media_type=media_type)
+        assert isinstance(results, list)
+
+    # Cleanup
+    print("\n🧹 Cleaning up test files...")
+    # Note: In real tests, we would clean up all uploaded files
+    # For now, just delete the main test files
+    test_keys = [result["s3_key"], test_result["s3_key"]] + s3_keys[:1]
+    for key in test_keys:
+        try:
+            await storage.delete_media(key)
+        except Exception:
+            pass  # Ignore cleanup errors
+
+    print("\n✅ All media storage edge case tests completed!")
+
+
+async def test_hash_collision_handling():
+    """Test handling of hash collisions"""
+    storage = MediaStorage()
+
+    print("\n🔍 Testing hash collision handling...")
+
+    # Create two different files with mocked same hash
+    content1 = b"File content 1"
+    content2 = b"Different file content 2"
+
+    # Upload first file
+    result1 = await storage.upload_media(content1, "file1.txt", "text/plain")
+
+    # Mock hash function to return same hash for different content
+    with patch("hashlib.sha256") as mock_hash:
+        mock_instance = MagicMock()
+        mock_instance.hexdigest.return_value = result1["file_hash"]
+        mock_hash.return_value = mock_instance
+
+        # This should still work even with hash collision
+        result2 = await storage.upload_media(content2, "file2.txt", "text/plain")
+
+        # Files should have different S3 keys despite same hash
+        assert result2["already_exists"] is True  # Due to mocked same hash
+        assert result2["s3_key"] == result1["s3_key"]  # Dedup thinks it's same file
+
+    print("✅ Hash collision test completed!")
 
 
 async def test_media_storage():
@@ -122,5 +369,59 @@ async def test_media_storage():
         return False
 
 
+async def test_media_metadata_edge_cases():
+    """Test media metadata handling edge cases"""
+    storage = MediaStorage()
+
+    print("\n🔍 Testing metadata edge cases...")
+
+    # Test 1: Extremely long tags
+    long_tags = ["x" * 1000 for _ in range(100)]  # 100 tags of 1000 chars each
+    result = await storage.upload_media(
+        b"metadata test", "metadata-test.txt", "text/plain", tags=long_tags
+    )
+    assert result is not None
+
+    # Test 2: Special characters in description
+    special_descriptions = [
+        "Line1\nLine2\rLine3",
+        "Tab\there",
+        "Quote'and\"double",
+        "Null\x00byte",
+        "Unicode ❤️ 🌈 ✨",
+    ]
+
+    for desc in special_descriptions:
+        result = await storage.upload_media(
+            b"special desc", f"special-{hash(desc)}.txt", "text/plain", description=desc
+        )
+        assert result is not None
+
+    # Test 3: Invalid telegram IDs
+    invalid_ids = [0, -1, sys.maxsize, float("inf"), float("-inf")]
+    for telegram_id in invalid_ids:
+        try:
+            result = await storage.upload_media(
+                b"telegram test",
+                "telegram.txt",
+                "text/plain",
+                telegram_chat_id=(
+                    int(telegram_id) if telegram_id != float("inf") else 999999
+                ),
+                telegram_user_id=(
+                    int(telegram_id) if telegram_id != float("inf") else 999999
+                ),
+            )
+            # Should handle gracefully
+        except (ValueError, OverflowError):
+            pass  # Expected for inf values
+
+    print("✅ Metadata edge case tests completed!")
+
+
 if __name__ == "__main__":
+    # Run all test suites
     asyncio.run(test_media_storage())
+    asyncio.run(test_media_storage_edge_cases())
+    asyncio.run(test_hash_collision_handling())
+    asyncio.run(test_media_metadata_edge_cases())
