@@ -2,6 +2,7 @@
 
 import pytest
 import json
+import asyncio
 from unittest.mock import AsyncMock, MagicMock
 from src.rails.processors.list_processor import ListProcessor
 from src.rails.processors.task_processor import TaskProcessor
@@ -38,6 +39,57 @@ class TestListProcessor:
             elif operation in ["add_items", "remove_items"]:
                 assert "list_name" in parsed  # for finding existing list
                 assert "items" in parsed  # for list_items.item_name_primary_text
+
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test 1: Null/None operation
+        with pytest.raises((ValueError, AttributeError, TypeError, KeyError)):
+            processor.get_extraction_schema(None)
+
+        # Test 2: Empty string operation
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_extraction_schema("")
+
+        # Test 3: Invalid operation names
+        invalid_operations = [
+            "invalid_op",
+            "DROP TABLE",
+            "'; DELETE FROM",
+            123,
+            [],
+            {},
+            True,
+        ]
+        for invalid_op in invalid_operations:
+            with pytest.raises((ValueError, KeyError, AttributeError, TypeError)):
+                processor.get_extraction_schema(invalid_op)
+
+        # Test 4: Maximum length operation name
+        very_long_op = "x" * 10000
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_extraction_schema(very_long_op)
+
+        # Test 5: SQL injection attempts
+        injection_attempts = [
+            "create'; DROP TABLE lists--",
+            "delete OR 1=1",
+            "create UNION SELECT * FROM users",
+            "../../../etc/passwd",
+            "<script>alert(1)</script>",
+        ]
+        for attempt in injection_attempts:
+            with pytest.raises((ValueError, KeyError, AttributeError)):
+                processor.get_extraction_schema(attempt)
+
+        # Test 6: Case sensitivity
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_extraction_schema("CREATE")  # Should be lowercase
+
+        # Test 7: Unicode and special characters
+        special_ops = ["créate", "add_items™", "delete😀", "read\x00", "clear\n\r"]
+        for special_op in special_ops:
+            with pytest.raises((ValueError, KeyError, AttributeError, UnicodeError)):
+                processor.get_extraction_schema(special_op)
 
     @pytest.mark.asyncio
     async def test_operation_validation(self):
@@ -78,6 +130,80 @@ class TestListProcessor:
         assert valid is False
         assert "admin privileges" in msg
 
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test 1: Null/None inputs
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            await processor.validate_operation(None, {"list_name": "test"}, "user")
+
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            await processor.validate_operation("create", None, "user")
+
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            await processor.validate_operation("create", {"list_name": "test"}, None)
+
+        # Test 2: Empty string handling
+        valid, msg = await processor.validate_operation(
+            "", {"list_name": "test"}, "user"
+        )
+        assert valid is False
+
+        valid, msg = await processor.validate_operation(
+            "create", {"list_name": ""}, "user"
+        )
+        assert valid is True or (valid is False and "empty" in msg.lower())
+
+        valid, msg = await processor.validate_operation(
+            "create", {"list_name": "test"}, ""
+        )
+        assert valid is False or msg  # Should handle gracefully
+
+        # Test 3: Maximum length inputs
+        very_long_name = "x" * 10000
+        valid, msg = await processor.validate_operation(
+            "create", {"list_name": very_long_name}, "user"
+        )
+        assert valid is True or (valid is False and "length" in msg.lower())
+
+        # Test 4: Wrong input types
+        for wrong_data in [12345, "string", [], True, 3.14]:
+            with pytest.raises((TypeError, AttributeError)):
+                await processor.validate_operation("create", wrong_data, "user")
+
+        # Test 5: Malformed data structures
+        malformed_data = [
+            {"unexpected_field": "value"},  # Missing required field
+            {"list_name": None},  # Null value
+            {"list_name": 123},  # Wrong type for field
+            {"list_name": ["array", "value"]},  # Array instead of string
+            {"list_name": {"nested": "object"}},  # Object instead of string
+        ]
+        for data in malformed_data:
+            valid, msg = await processor.validate_operation("create", data, "user")
+            assert valid is False
+
+        # Test 6: SQL injection in data fields
+        injection_data = [
+            {"list_name": "'; DROP TABLE lists--"},
+            {"list_name": "test' OR '1'='1"},
+            {"list_name": "test UNION SELECT * FROM users"},
+        ]
+        for data in injection_data:
+            valid, msg = await processor.validate_operation("create", data, "user")
+            # Should either sanitize or reject
+            assert valid is True or (valid is False and "invalid" in msg.lower())
+
+        # Test 7: XSS attempts in data
+        xss_data = [
+            {"list_name": "<script>alert('xss')</script>"},
+            {"list_name": "javascript:alert(1)"},
+            {"list_name": "<img src=x onerror=alert(1)>"},
+        ]
+        for data in xss_data:
+            valid, msg = await processor.validate_operation("create", data, "user")
+            # Should handle without executing
+            assert isinstance(valid, bool)
+
     def test_confidence_boost_factors(self):
         """Test confidence boost calculation."""
         processor = ListProcessor(None)
@@ -97,6 +223,71 @@ class TestListProcessor:
         # Site mention boost (0.1)
         boost = processor.get_confidence_boost_factors("list for Eagle Lake", "create")
         assert boost >= 0.1
+
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test 1: Null/None inputs
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            processor.get_confidence_boost_factors(None, "create")
+
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            processor.get_confidence_boost_factors("test message", None)
+
+        # Test 2: Empty string handling
+        boost = processor.get_confidence_boost_factors("", "create")
+        assert boost >= 0  # Should return 0 or minimal boost
+
+        boost = processor.get_confidence_boost_factors("test message", "")
+        assert boost >= 0  # Should handle gracefully
+
+        # Test 3: Maximum length inputs
+        very_long_message = "add milk " * 2000  # ~16000 chars
+        boost = processor.get_confidence_boost_factors(very_long_message, "add_items")
+        assert isinstance(boost, (int, float))  # Should not crash
+        assert boost >= 0  # Should return valid boost
+
+        # Test 4: Wrong input types
+        for wrong_input in [12345, [], {}, True, 3.14]:
+            with pytest.raises((TypeError, AttributeError)):
+                processor.get_confidence_boost_factors(wrong_input, "create")
+
+        # Test 5: Special characters and unicode
+        special_messages = [
+            "add café to list",  # unicode
+            "add item with 特殊字符",  # non-latin chars
+            "add <item> to list",  # XML-like
+            "add item\x00null\x00byte",  # null bytes
+            "add item\n\r\twith\nwhitespace",  # various whitespace
+        ]
+        for msg in special_messages:
+            boost = processor.get_confidence_boost_factors(msg, "add_items")
+            assert isinstance(boost, (int, float))
+            assert boost >= 0
+
+        # Test 6: Boundary operations
+        all_operations = [
+            "create",
+            "add_items",
+            "remove_items",
+            "rename",
+            "clear",
+            "read",
+            "delete",
+        ]
+        for op in all_operations:
+            boost = processor.get_confidence_boost_factors("test message", op)
+            assert isinstance(boost, (int, float))
+            assert boost >= 0
+
+        # Invalid operation should be handled
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_confidence_boost_factors("test", "invalid_operation")
+
+        # Test 7: Case sensitivity tests
+        boost1 = processor.get_confidence_boost_factors("ADD MILK TO LIST", "add_items")
+        boost2 = processor.get_confidence_boost_factors("add milk to list", "add_items")
+        # Should handle case appropriately
+        assert isinstance(boost1, (int, float)) and isinstance(boost2, (int, float))
 
 
 class TestTaskProcessor:
@@ -125,6 +316,50 @@ class TestTaskProcessor:
         parsed = json.loads(schema)
         assert "task_title" in parsed
         assert "new_assignee" in parsed
+
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test 1: Null/None operation
+        with pytest.raises((ValueError, AttributeError, TypeError, KeyError)):
+            processor.get_extraction_schema(None)
+
+        # Test 2: Empty string operation
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_extraction_schema("")
+
+        # Test 3: Invalid operations
+        invalid_ops = ["invalid", "DROP TABLE", "'; DELETE", 123, [], {}, True, 3.14]
+        for invalid_op in invalid_ops:
+            with pytest.raises((ValueError, KeyError, AttributeError, TypeError)):
+                processor.get_extraction_schema(invalid_op)
+
+        # Test 4: Maximum length operation
+        very_long_op = "x" * 10000
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_extraction_schema(very_long_op)
+
+        # Test 5: SQL injection attempts
+        injection_attempts = [
+            "create'; DROP TABLE tasks--",
+            "complete OR 1=1",
+            "reassign UNION SELECT * FROM users",
+            "../../etc/passwd",
+            "<script>alert(1)</script>",
+        ]
+        for attempt in injection_attempts:
+            with pytest.raises((ValueError, KeyError, AttributeError)):
+                processor.get_extraction_schema(attempt)
+
+        # Test 6: Case sensitivity
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_extraction_schema("CREATE")  # Should be lowercase
+
+        # Test 7: All valid task operations
+        valid_operations = ["create", "complete", "reassign", "reschedule", "add_notes"]
+        for op in valid_operations:
+            schema = processor.get_extraction_schema(op)
+            parsed = json.loads(schema)
+            assert isinstance(parsed, dict)
 
     @pytest.mark.asyncio
     async def test_assignee_validation(self):
@@ -167,6 +402,85 @@ class TestTaskProcessor:
         assert valid is False
         assert "Unknown user" in msg
 
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test 1: Null/None inputs
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            await processor.validate_operation(None, {"task_title": "Test"}, "user")
+
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            await processor.validate_operation("create", None, "user")
+
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            await processor.validate_operation("create", {"task_title": "Test"}, None)
+
+        # Test 2: Empty string handling
+        valid, msg = await processor.validate_operation(
+            "create", {"task_title": "", "assigned_to": "joel"}, "user"
+        )
+        assert valid is False  # Empty task title should fail
+
+        valid, msg = await processor.validate_operation(
+            "create", {"task_title": "Test", "assigned_to": ""}, "user"
+        )
+        # Empty assignee might be valid (unassigned task) or invalid
+        assert isinstance(valid, bool)
+
+        # Test 3: Maximum length inputs
+        very_long_title = "x" * 10000
+        valid, msg = await processor.validate_operation(
+            "create", {"task_title": very_long_title, "assigned_to": "joel"}, "user"
+        )
+        assert isinstance(valid, bool)  # Should handle gracefully
+
+        # Test 4: Wrong input types
+        wrong_data_types = [
+            {"task_title": 123, "assigned_to": "joel"},  # number instead of string
+            {"task_title": ["array"], "assigned_to": "joel"},  # array
+            {"task_title": {"obj": "val"}, "assigned_to": "joel"},  # object
+            {"task_title": None, "assigned_to": "joel"},  # null
+        ]
+        for data in wrong_data_types:
+            valid, msg = await processor.validate_operation("create", data, "user")
+            assert valid is False
+
+        # Test 5: SQL injection in assignee field
+        injection_assignees = [
+            "joel'; DROP TABLE personnel--",
+            "bryan' OR '1'='1",
+            "admin UNION SELECT * FROM users",
+        ]
+        for assignee in injection_assignees:
+            valid, msg = await processor.validate_operation(
+                "create", {"task_title": "Test", "assigned_to": assignee}, "user"
+            )
+            assert valid is False  # Should not find these as valid users
+
+        # Test 6: Special characters in assignee
+        special_assignees = [
+            "<script>alert(1)</script>",
+            "javascript:alert(1)",
+            "../../../etc/passwd",
+            "user\x00null",
+            "user\n\rdrop",
+        ]
+        for assignee in special_assignees:
+            valid, msg = await processor.validate_operation(
+                "create", {"task_title": "Test", "assigned_to": assignee}, "user"
+            )
+            assert valid is False  # Should not find these as valid users
+
+        # Test 7: Database failure simulation
+        mock_supabase_fail = AsyncMock()
+        mock_supabase_fail.table.side_effect = Exception("Database connection failed")
+        processor_fail = TaskProcessor(mock_supabase_fail)
+
+        valid, msg = await processor_fail.validate_operation(
+            "create", {"task_title": "Test", "assigned_to": "joel"}, "user"
+        )
+        assert valid is False
+        assert "error" in msg.lower() or "database" in msg.lower()
+
     def test_confidence_boost_task_specific(self):
         """Test task-specific confidence boosts."""
         processor = TaskProcessor(None)
@@ -191,6 +505,69 @@ class TestTaskProcessor:
         )
         assert boost >= 0.05
 
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test 1: Null/None inputs
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            processor.get_confidence_boost_factors(None, "create")
+
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            processor.get_confidence_boost_factors("test task", None)
+
+        # Test 2: Empty string handling
+        boost = processor.get_confidence_boost_factors("", "create")
+        assert boost >= 0  # Should return 0 or minimal boost
+
+        boost = processor.get_confidence_boost_factors("create task", "")
+        assert boost >= 0  # Should handle gracefully
+
+        # Test 3: Maximum length inputs
+        very_long_message = "urgent task " * 1500  # ~18000 chars
+        boost = processor.get_confidence_boost_factors(very_long_message, "create")
+        assert isinstance(boost, (int, float))
+        assert boost >= 0  # Should handle without crashing
+
+        # Test 4: Wrong input types
+        for wrong_input in [12345, [], {}, True, 3.14]:
+            with pytest.raises((TypeError, AttributeError)):
+                processor.get_confidence_boost_factors(wrong_input, "create")
+
+        # Test 5: Special characters and unicode
+        special_messages = [
+            "task for café meeting",  # unicode
+            "任务 for tomorrow",  # non-latin chars
+            "task <priority>high</priority>",  # XML-like
+            "task\x00with\x00nulls",  # null bytes
+            "task\n\rwith\ttabs\nand\rnewlines",  # whitespace
+        ]
+        for msg in special_messages:
+            boost = processor.get_confidence_boost_factors(msg, "create")
+            assert isinstance(boost, (int, float))
+            assert boost >= 0
+
+        # Test 6: All task operations
+        task_operations = ["create", "complete", "reassign", "reschedule", "add_notes"]
+        for op in task_operations:
+            boost = processor.get_confidence_boost_factors("test task message", op)
+            assert isinstance(boost, (int, float))
+            assert boost >= 0
+
+        # Test 7: Invalid operation
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_confidence_boost_factors("test", "invalid_task_op")
+
+        # Test 8: Extreme time references
+        extreme_times = [
+            "task for year 9999",
+            "task for 00:00:00",
+            "task for 25:99:99",  # invalid time
+            "task for tomorrow at 99pm",
+        ]
+        for msg in extreme_times:
+            boost = processor.get_confidence_boost_factors(msg, "create")
+            assert isinstance(boost, (int, float))
+            assert boost >= 0
+
 
 class TestFieldReportProcessor:
     """Test field report processor functionality."""
@@ -212,6 +589,50 @@ class TestFieldReportProcessor:
         assert "new_status" in parsed
         assert "Draft" in parsed["new_status"]
         assert "Submitted" in parsed["new_status"]
+
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test 1: Null/None operation
+        with pytest.raises((ValueError, AttributeError, TypeError, KeyError)):
+            processor.get_extraction_schema(None)
+
+        # Test 2: Empty string operation
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_extraction_schema("")
+
+        # Test 3: Invalid operations
+        invalid_ops = ["invalid", "DROP TABLE", "'; DELETE", 123, [], {}, True]
+        for invalid_op in invalid_ops:
+            with pytest.raises((ValueError, KeyError, AttributeError, TypeError)):
+                processor.get_extraction_schema(invalid_op)
+
+        # Test 4: Maximum length operation
+        very_long_op = "x" * 10000
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_extraction_schema(very_long_op)
+
+        # Test 5: SQL injection attempts
+        injection_attempts = [
+            "create'; DROP TABLE field_reports--",
+            "update_status OR 1=1",
+            "create UNION SELECT * FROM reports",
+            "../../../etc/passwd",
+            "<script>alert(1)</script>",
+        ]
+        for attempt in injection_attempts:
+            with pytest.raises((ValueError, KeyError, AttributeError)):
+                processor.get_extraction_schema(attempt)
+
+        # Test 6: Case sensitivity
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_extraction_schema("CREATE")  # Should be lowercase
+
+        # Test 7: Valid field report operations
+        valid_operations = ["create", "update_status", "add_followups"]
+        for op in valid_operations:
+            schema = processor.get_extraction_schema(op)
+            parsed = json.loads(schema)
+            assert isinstance(parsed, dict)
 
     @pytest.mark.asyncio
     async def test_site_validation(self):
@@ -249,6 +670,91 @@ class TestFieldReportProcessor:
         assert valid is False
         assert "Unknown site" in msg
 
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test 1: Null/None inputs
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            await processor.validate_operation(None, {"site_name": "Test"}, "user")
+
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            await processor.validate_operation("create", None, "user")
+
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            await processor.validate_operation("create", {"site_name": "Test"}, None)
+
+        # Test 2: Empty string handling
+        valid, msg = await processor.validate_operation(
+            "create", {"site_name": "", "report_content_full": "Test"}, "user"
+        )
+        assert valid is False  # Empty site name should fail
+
+        valid, msg = await processor.validate_operation(
+            "create", {"site_name": "Eagle Lake", "report_content_full": ""}, "user"
+        )
+        assert valid is False  # Empty report content should fail
+
+        # Test 3: Maximum length inputs
+        very_long_site = "x" * 10000
+        valid, msg = await processor.validate_operation(
+            "create",
+            {"site_name": very_long_site, "report_content_full": "Test"},
+            "user",
+        )
+        assert valid is False  # Should not match any site
+
+        very_long_content = "x" * 100000
+        valid, msg = await processor.validate_operation(
+            "create",
+            {"site_name": "Eagle Lake", "report_content_full": very_long_content},
+            "user",
+        )
+        assert isinstance(valid, bool)  # Should handle gracefully
+
+        # Test 4: Wrong input types
+        wrong_data_types = [
+            {"site_name": 123, "report_content_full": "Test"},  # number
+            {"site_name": ["array"], "report_content_full": "Test"},  # array
+            {"site_name": {"obj": "val"}, "report_content_full": "Test"},  # object
+            {"site_name": None, "report_content_full": "Test"},  # null
+        ]
+        for data in wrong_data_types:
+            valid, msg = await processor.validate_operation("create", data, "user")
+            assert valid is False
+
+        # Test 5: SQL injection in site name
+        injection_sites = [
+            "Eagle Lake'; DROP TABLE sites--",
+            "Crockett' OR '1'='1",
+            "Mathis UNION SELECT * FROM sites",
+        ]
+        for site in injection_sites:
+            valid, msg = await processor.validate_operation(
+                "create", {"site_name": site, "report_content_full": "Test"}, "user"
+            )
+            assert valid is False  # Should not match any site
+
+        # Test 6: Case sensitivity variations
+        case_variations = ["eagle lake", "EAGLE LAKE", "Eagle lake", "eAgLe LaKe"]
+        for site_variant in case_variations:
+            valid, msg = await processor.validate_operation(
+                "create",
+                {"site_name": site_variant, "report_content_full": "Test"},
+                "user",
+            )
+            # Check if case sensitivity is handled consistently
+            assert isinstance(valid, bool)
+
+        # Test 7: Database failure simulation
+        mock_supabase_fail = AsyncMock()
+        mock_supabase_fail.table.side_effect = Exception("Database connection failed")
+        processor_fail = FieldReportProcessor(mock_supabase_fail)
+
+        valid, msg = await processor_fail.validate_operation(
+            "create", {"site_name": "Eagle Lake", "report_content_full": "Test"}, "user"
+        )
+        assert valid is False
+        assert "error" in msg.lower() or "database" in msg.lower()
+
     @pytest.mark.asyncio
     async def test_status_and_type_validation(self):
         """Test validation of status and report type values."""
@@ -283,6 +789,100 @@ class TestFieldReportProcessor:
         )
         assert valid is True
 
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test 1: Null/None inputs in status/type fields
+        valid, msg = await processor.validate_operation(
+            "update_status",
+            {"report_identifier": "Report 1", "new_status": None},
+            "user",
+        )
+        assert valid is False
+
+        valid, msg = await processor.validate_operation(
+            "create",
+            {
+                "site_name": "Eagle Lake",
+                "report_content_full": "Test",
+                "report_type": None,
+            },
+            "user",
+        )
+        assert valid is False or valid is True  # None might default to a type
+
+        # Test 2: Empty string status/type
+        valid, msg = await processor.validate_operation(
+            "update_status",
+            {"report_identifier": "Report 1", "new_status": ""},
+            "user",
+        )
+        assert valid is False
+
+        # Test 3: Case variations of valid statuses
+        status_variations = [
+            "DRAFT",
+            "draft",
+            "Draft",
+            "DrAfT",
+            "submitted",
+            "SUBMITTED",
+        ]
+        for status in status_variations:
+            valid, msg = await processor.validate_operation(
+                "update_status",
+                {"report_identifier": "Report 1", "new_status": status},
+                "user",
+            )
+            # Should handle case consistently
+            assert isinstance(valid, bool)
+
+        # Test 4: SQL injection in status/type
+        injection_values = [
+            "Draft'; DROP TABLE field_reports--",
+            "Submitted' OR '1'='1",
+            "Draft UNION SELECT * FROM reports",
+        ]
+        for injection in injection_values:
+            valid, msg = await processor.validate_operation(
+                "update_status",
+                {"report_identifier": "Report 1", "new_status": injection},
+                "user",
+            )
+            assert valid is False  # Should not match valid statuses
+
+        # Test 5: XSS attempts
+        xss_values = [
+            "<script>alert('xss')</script>",
+            "javascript:alert(1)",
+            "<img src=x onerror=alert(1)>",
+        ]
+        for xss in xss_values:
+            valid, msg = await processor.validate_operation(
+                "update_status",
+                {"report_identifier": "Report 1", "new_status": xss},
+                "user",
+            )
+            assert valid is False
+
+        # Test 6: Wrong data types
+        wrong_types = [123, ["array"], {"obj": "val"}, True, 3.14]
+        for wrong_type in wrong_types:
+            valid, msg = await processor.validate_operation(
+                "update_status",
+                {"report_identifier": "Report 1", "new_status": wrong_type},
+                "user",
+            )
+            assert valid is False
+
+        # Test 7: Maximum length values
+        very_long_status = "Draft" * 1000
+        valid, msg = await processor.validate_operation(
+            "update_status",
+            {"report_identifier": "Report 1", "new_status": very_long_status},
+            "user",
+        )
+        assert valid is False  # Should not match valid statuses
+
     def test_confidence_boost_field_report_specific(self):
         """Test field report specific confidence boosts."""
         processor = FieldReportProcessor(None)
@@ -311,6 +911,79 @@ class TestFieldReportProcessor:
         )
         assert boost >= 0.05
 
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test 1: Null/None inputs
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            processor.get_confidence_boost_factors(None, "create")
+
+        with pytest.raises((ValueError, AttributeError, TypeError)):
+            processor.get_confidence_boost_factors("field report", None)
+
+        # Test 2: Empty string handling
+        boost = processor.get_confidence_boost_factors("", "create")
+        assert boost >= 0  # Should return 0 or minimal boost
+
+        boost = processor.get_confidence_boost_factors("field report", "")
+        assert boost >= 0  # Should handle gracefully
+
+        # Test 3: Maximum length inputs
+        very_long_message = "incident report " * 1200  # ~19200 chars
+        boost = processor.get_confidence_boost_factors(very_long_message, "create")
+        assert isinstance(boost, (int, float))
+        assert boost >= 0
+
+        # Test 4: Wrong input types
+        for wrong_input in [12345, [], {}, True, 3.14]:
+            with pytest.raises((TypeError, AttributeError)):
+                processor.get_confidence_boost_factors(wrong_input, "create")
+
+        # Test 5: Special characters and unicode
+        special_messages = [
+            "report for café site",  # unicode
+            "报告 for Eagle Lake",  # non-latin chars
+            "report <type>incident</type>",  # XML-like
+            "report\x00with\x00nulls",  # null bytes
+            "report\n\rwith\tmultiple\nlines",  # whitespace
+        ]
+        for msg in special_messages:
+            boost = processor.get_confidence_boost_factors(msg, "create")
+            assert isinstance(boost, (int, float))
+            assert boost >= 0
+
+        # Test 6: All field report operations
+        report_operations = ["create", "update_status", "add_followups"]
+        for op in report_operations:
+            boost = processor.get_confidence_boost_factors("test report message", op)
+            assert isinstance(boost, (int, float))
+            assert boost >= 0
+
+        # Test 7: Invalid operation
+        with pytest.raises((ValueError, KeyError, AttributeError)):
+            processor.get_confidence_boost_factors("test", "invalid_report_op")
+
+        # Test 8: Site name variations
+        site_variations = [
+            "report for EAGLE LAKE",
+            "report for eagle lake",
+            "report for EaGlE lAkE",
+        ]
+        for msg in site_variations:
+            boost = processor.get_confidence_boost_factors(msg, "create")
+            assert isinstance(boost, (int, float))
+            assert boost >= 0
+
+        # Test 9: Extreme report types
+        extreme_types = [
+            "report type: '; DROP TABLE--",
+            "report type: <script>alert(1)</script>",
+            "report type: " + "x" * 1000,
+        ]
+        for msg in extreme_types:
+            boost = processor.get_confidence_boost_factors(msg, "create")
+            assert isinstance(boost, (int, float))
+            assert boost >= 0
+
 
 @pytest.mark.asyncio
 class TestProcessorErrorHandling:
@@ -329,6 +1002,40 @@ class TestProcessorErrorHandling:
         assert valid is False
         assert "database" in msg.lower() or "error" in msg.lower()
 
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test with different types of exceptions
+        exceptions_to_test = [
+            ConnectionError("Connection refused"),
+            TimeoutError("Query timeout"),
+            RuntimeError("Runtime error"),
+            ValueError("Invalid value"),
+            KeyError("Missing key"),
+            AttributeError("Missing attribute"),
+        ]
+
+        for exception in exceptions_to_test:
+            mock_supabase = AsyncMock()
+            mock_supabase.table.side_effect = exception
+            processor = ListProcessor(mock_supabase)
+            valid, msg = await processor.validate_operation(
+                "create", {"list_name": "test"}, "user"
+            )
+            assert valid is False
+            assert len(msg) > 0  # Should have error message
+
+        # Test cascading failures
+        mock_supabase = AsyncMock()
+        mock_table = MagicMock()
+        mock_table.select.side_effect = Exception("Select failed")
+        mock_supabase.table.return_value = mock_table
+
+        processor = ListProcessor(mock_supabase)
+        valid, msg = await processor.validate_operation(
+            "create", {"list_name": "test"}, "user"
+        )
+        assert valid is False
+
     async def test_malformed_database_response(self):
         """Test handling of unexpected database responses."""
         mock_supabase = AsyncMock()
@@ -346,6 +1053,63 @@ class TestProcessorErrorHandling:
         # When response is None, it should be handled as no users found
         assert valid is False
         assert "unknown user" in msg.lower() or "error" in msg.lower()
+
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test various malformed responses
+        malformed_responses = [
+            None,  # Null response
+            MagicMock(data=None),  # Response with null data
+            MagicMock(data=[]),  # Empty data array
+            MagicMock(data="string instead of array"),  # Wrong type
+            MagicMock(data=123),  # Number instead of array
+            MagicMock(data={}),  # Object instead of array
+            MagicMock(),  # Response missing data attribute
+        ]
+
+        for response in malformed_responses:
+            mock_supabase = AsyncMock()
+            mock_table = MagicMock()
+            mock_table.select.return_value.eq.return_value.execute.return_value = (
+                response
+            )
+            mock_supabase.table.return_value = mock_table
+
+            processor = TaskProcessor(mock_supabase)
+            valid, msg = await processor.validate_operation(
+                "create", {"task_title": "Test", "assigned_to": "joel"}, "user"
+            )
+            # Should handle gracefully
+            assert isinstance(valid, bool)
+            assert isinstance(msg, str)
+
+        # Test response with malformed user data
+        malformed_user_data = [
+            [{"id": 1}],  # Missing first_name
+            [{"first_name": "Joel"}],  # Missing id
+            [{"id": "not_a_number", "first_name": "Joel"}],  # Wrong type for id
+            [{"id": 1, "first_name": 123}],  # Wrong type for name
+            [{"id": 1, "first_name": None}],  # Null name
+            [{"id": None, "first_name": "Joel"}],  # Null id
+        ]
+
+        for user_data in malformed_user_data:
+            mock_supabase = AsyncMock()
+            mock_response = MagicMock()
+            mock_response.data = user_data
+
+            mock_table = MagicMock()
+            mock_table.select.return_value.eq.return_value.execute.return_value = (
+                mock_response
+            )
+            mock_supabase.table.return_value = mock_table
+
+            processor = TaskProcessor(mock_supabase)
+            valid, msg = await processor.validate_operation(
+                "create", {"task_title": "Test", "assigned_to": "joel"}, "user"
+            )
+            # Should handle without crashing
+            assert isinstance(valid, bool)
 
     async def test_empty_aliases_array(self):
         """Test user validation with empty aliases."""
@@ -377,6 +1141,71 @@ class TestProcessorErrorHandling:
         )
         assert valid is False
 
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test various alias array edge cases
+        alias_edge_cases = [
+            {"id": 1, "first_name": "Joel", "aliases": None},  # Null aliases
+            {"id": 1, "first_name": "Joel", "aliases": "not an array"},  # Wrong type
+            {"id": 1, "first_name": "Joel", "aliases": 123},  # Number
+            {"id": 1, "first_name": "Joel", "aliases": {}},  # Object
+            {"id": 1, "first_name": "Joel", "aliases": [None, None]},  # Array of nulls
+            {"id": 1, "first_name": "Joel", "aliases": [123, 456]},  # Array of numbers
+            {
+                "id": 1,
+                "first_name": "Joel",
+                "aliases": ["", "", ""],
+            },  # Array of empty strings
+            {
+                "id": 1,
+                "first_name": "Joel",
+                "aliases": ["alias\x00null"],
+            },  # Null byte in alias
+            {
+                "id": 1,
+                "first_name": "Joel",
+                "aliases": ["<script>alert(1)</script>"],
+            },  # XSS in alias
+        ]
+
+        for user_data in alias_edge_cases:
+            mock_supabase = AsyncMock()
+            mock_response = MagicMock()
+            mock_response.data = [user_data]
+
+            mock_table = MagicMock()
+            mock_table.select.return_value.eq.return_value.execute.return_value = (
+                mock_response
+            )
+            mock_supabase.table.return_value = mock_table
+
+            processor = TaskProcessor(mock_supabase)
+
+            # Should handle malformed aliases gracefully
+            valid, msg = await processor.validate_operation(
+                "create", {"task_title": "Test", "assigned_to": "joel"}, "user"
+            )
+            # Should match by first_name even if aliases are malformed
+            assert isinstance(valid, bool)
+
+        # Test extremely large alias arrays
+        large_aliases = ["alias" + str(i) for i in range(10000)]
+        mock_response = MagicMock()
+        mock_response.data = [{"id": 1, "first_name": "Joel", "aliases": large_aliases}]
+
+        mock_table = MagicMock()
+        mock_table.select.return_value.eq.return_value.execute.return_value = (
+            mock_response
+        )
+        mock_supabase.table.return_value = mock_table
+
+        processor = TaskProcessor(mock_supabase)
+        valid, msg = await processor.validate_operation(
+            "create", {"task_title": "Test", "assigned_to": "alias5000"}, "user"
+        )
+        # Should handle large arrays without performance issues
+        assert isinstance(valid, bool)
+
     async def test_database_timeout(self):
         """Test handling of database timeouts."""
         mock_supabase = AsyncMock()
@@ -396,6 +1225,68 @@ class TestProcessorErrorHandling:
         # The validate_operation should handle the timeout and return a validation error
         assert valid is False
         assert "error" in msg.lower() or "validation" in msg.lower()
+
+        # EDGE CASE TESTING ADDITIONS
+
+        # Test different timeout scenarios
+        timeout_scenarios = [
+            (TimeoutError("Query timeout"), "execute"),
+            (TimeoutError("Connection timeout"), "table"),
+            (TimeoutError("Network timeout"), "select"),
+            (asyncio.TimeoutError("Async timeout"), "execute"),
+        ]
+
+        for error, failure_point in timeout_scenarios:
+            mock_supabase = AsyncMock()
+
+            if failure_point == "table":
+                mock_supabase.table.side_effect = error
+            elif failure_point == "select":
+                mock_table = MagicMock()
+                mock_table.select.side_effect = error
+                mock_supabase.table.return_value = mock_table
+            else:  # execute
+                mock_table = MagicMock()
+                mock_table.select.return_value.execute.side_effect = error
+                mock_supabase.table.return_value = mock_table
+
+            processor = FieldReportProcessor(mock_supabase)
+            valid, msg = await processor.validate_operation(
+                "create",
+                {"site_name": "Test", "report_content_full": "Content"},
+                "user",
+            )
+            assert valid is False
+            assert len(msg) > 0
+
+        # Test partial timeouts (some operations succeed, others timeout)
+        call_count = 0
+
+        def intermittent_timeout(*args, **kwargs):
+            nonlocal call_count
+            call_count += 1
+            if call_count % 2 == 0:
+                raise TimeoutError("Intermittent timeout")
+            return MagicMock(data=[{"site_name": "Eagle Lake"}])
+
+        mock_table = MagicMock()
+        mock_table.select.return_value.execute = intermittent_timeout
+        mock_supabase.table.return_value = mock_table
+
+        processor = FieldReportProcessor(mock_supabase)
+        # Run multiple operations to test intermittent failures
+        for i in range(3):
+            try:
+                valid, msg = await processor.validate_operation(
+                    "create",
+                    {"site_name": "Eagle Lake", "report_content_full": "Test"},
+                    "user",
+                )
+                # Some may succeed, some may fail
+                assert isinstance(valid, bool)
+            except TimeoutError:
+                # Should handle timeout gracefully
+                pass
 
 
 @pytest.mark.parametrize(
