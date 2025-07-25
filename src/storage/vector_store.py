@@ -112,7 +112,7 @@ class VectorStore:
 
             # Upsert with automatic embedding (using data field)
             # Using native namespace support from v0.8.1
-            response = self.index.upsert(
+            self.index.upsert(
                 vectors=[(document_id, content, metadata)], namespace=namespace or ""
             )
 
