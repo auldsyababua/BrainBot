@@ -112,7 +112,7 @@ class VectorStore:
 
             # Upsert with automatic embedding (using data field)
             # Using native namespace support from v0.8.1
-            response = self.index.upsert(
+            self.index.upsert(
                 vectors=[(document_id, content, metadata)], namespace=namespace or ""
             )
 
@@ -123,7 +123,9 @@ class VectorStore:
 
             return True
         except Exception as e:
-            print(f"Error storing document {document_id}: {e}")
+            logger.error(f"Error storing document {document_id}: {e}")
+            # Ensure any open connections are properly closed
+            await self.invalidate_cache()
             return False
 
     @async_benchmark("vector_search")

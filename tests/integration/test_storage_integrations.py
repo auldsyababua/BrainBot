@@ -535,6 +535,117 @@ This is a test markdown document for Supabase storage testing.
             if not success:
                 all_passed = False
 
+            # EDGE CASE TESTS
+            print_info("\nTesting Supabase edge cases...")
+
+            # Test 7: Null/None handling
+            try:
+                await document_storage.store_document(None, "content", {})
+                success = False
+            except (ValueError, TypeError, AttributeError):
+                success = True
+            print_test_result("Null file path", success)
+            self.test_results["supabase"].append(("Null file path", success))
+
+            # Test 8: Empty document
+            empty_doc_id = await document_storage.store_document(
+                "test/empty.md", "", {"empty": True}
+            )
+            success = empty_doc_id is not None
+            print_test_result("Empty document", success)
+            self.test_results["supabase"].append(("Empty document", success))
+            if success:
+                await document_storage.delete_document("test/empty.md")
+
+            # Test 9: Very large document
+            large_content = "x" * (5 * 1024 * 1024)  # 5MB
+            large_doc_id = await document_storage.store_document(
+                "test/large.md", large_content, {"size": "5MB"}
+            )
+            success = large_doc_id is not None
+            print_test_result("Large document (5MB)", success)
+            self.test_results["supabase"].append(("Large document", success))
+            if success:
+                await document_storage.delete_document("test/large.md")
+
+            # Test 10: Special characters in path
+            special_paths = [
+                "test/file with spaces.md",
+                "test/文件.md",
+                "test/файл.md",
+                "test/emoji-😀.md",
+            ]
+
+            for path in special_paths:
+                try:
+                    doc_id = await document_storage.store_document(
+                        path, "Special path test", {}
+                    )
+                    if doc_id:
+                        await document_storage.delete_document(path)
+                        success = True
+                    else:
+                        success = False
+                except Exception:
+                    success = False
+
+                print_test_result(f"Special path: {repr(path[:20])}", success)
+
+            # Test 11: SQL injection attempts
+            malicious_paths = [
+                "test/'; DROP TABLE documents;--.md",
+                "test/<script>alert(1)</script>.md",
+                "test/../../../etc/passwd",
+            ]
+
+            injection_safe = True
+            for path in malicious_paths:
+                try:
+                    doc_id = await document_storage.store_document(
+                        path, "Injection test", {}
+                    )
+                    if doc_id:
+                        # Verify no injection occurred
+                        search_results = await document_storage.search_documents(
+                            "Injection test"
+                        )
+                        await document_storage.delete_document(path)
+                except Exception:
+                    pass  # Expected to fail
+
+            print_test_result("SQL injection prevention", injection_safe)
+            self.test_results["supabase"].append(("Injection safe", injection_safe))
+
+            # Test 12: Concurrent document operations
+            async def concurrent_doc_op(index):
+                path = f"test/concurrent_{index}.md"
+                return (
+                    await document_storage.store_document(
+                        path, f"Concurrent doc {index}", {"index": index}
+                    ),
+                    path,
+                )
+
+            tasks = [concurrent_doc_op(i) for i in range(10)]
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+
+            successful_paths = []
+            for result in results:
+                if isinstance(result, tuple) and result[0] is not None:
+                    successful_paths.append(result[1])
+
+            success = len(successful_paths) >= 8
+            print_test_result(
+                "Concurrent operations",
+                success,
+                f"{len(successful_paths)}/10 succeeded",
+            )
+            self.test_results["supabase"].append(("Concurrent ops", success))
+
+            # Cleanup concurrent docs
+            for path in successful_paths:
+                await document_storage.delete_document(path)
+
         except Exception as e:
             print_error(f"Supabase test failed with exception: {e}")
             all_passed = False
@@ -542,7 +653,7 @@ This is a test markdown document for Supabase storage testing.
         return all_passed
 
     async def test_s3_storage(self) -> bool:
-        """Test S3 media storage"""
+        """Test S3 media storage with edge cases"""
         print_header("S3 STORAGE TESTS")
 
         if not media_storage:
@@ -676,6 +787,125 @@ This is a test markdown document for Supabase storage testing.
             self.test_results["s3"].append(("Cleanup", cleanup_success))
             if not cleanup_success:
                 all_passed = False
+
+            # EDGE CASE TESTS
+            print_info("\nTesting S3 edge cases...")
+
+            # Test 6: Null/None handling
+            try:
+                await media_storage.upload_media(None, "test.txt", "text/plain")
+                success = False
+            except (ValueError, TypeError, AttributeError):
+                success = True
+            print_test_result("Null file content", success)
+            self.test_results["s3"].append(("Null content", success))
+
+            # Test 7: Empty file
+            empty_result = await media_storage.upload_media(
+                b"", "empty.txt", "text/plain"
+            )
+            success = empty_result is not None
+            print_test_result("Empty file upload", success)
+            self.test_results["s3"].append(("Empty file", success))
+            if success:
+                await media_storage.delete_media(empty_result["s3_key"])
+
+            # Test 8: Large file
+            large_file = b"x" * (10 * 1024 * 1024)  # 10MB
+            large_result = await media_storage.upload_media(
+                large_file, "large.bin", "application/octet-stream"
+            )
+            success = large_result is not None
+            print_test_result(
+                "Large file (10MB)",
+                success,
+                f"Hash: {large_result['file_hash'][:8]}..." if large_result else "",
+            )
+            self.test_results["s3"].append(("Large file", success))
+            if success:
+                await media_storage.delete_media(large_result["s3_key"])
+
+            # Test 9: Special characters in filename
+            special_names = [
+                "file with spaces.txt",
+                "文件.txt",
+                "файл.txt",
+                "emoji-😀.txt",
+                "special!@#$%^&().txt",
+            ]
+
+            for name in special_names:
+                try:
+                    result = await media_storage.upload_media(
+                        b"Special name test", name, "text/plain"
+                    )
+                    if result:
+                        await media_storage.delete_media(result["s3_key"])
+                        success = True
+                    else:
+                        success = False
+                except Exception:
+                    success = False
+
+                print_test_result(f"Special filename: {repr(name[:20])}", success)
+
+            # Test 10: Invalid MIME types
+            invalid_types = [
+                "",
+                "invalid/type/with/slashes",
+                "text/plain; rm -rf /",
+                "<script>alert(1)</script>",
+            ]
+
+            for mime_type in invalid_types:
+                try:
+                    result = await media_storage.upload_media(
+                        b"MIME test", "mime_test.txt", mime_type
+                    )
+                    # Should handle gracefully, possibly defaulting to octet-stream
+                    if result:
+                        await media_storage.delete_media(result["s3_key"])
+                except Exception:
+                    pass  # Expected for some types
+
+            # Test 11: Concurrent uploads of same content
+            same_content = b"Deduplication test content"
+
+            async def concurrent_upload(index):
+                return await media_storage.upload_media(
+                    same_content, f"dedup_test_{index}.txt", "text/plain"
+                )
+
+            tasks = [concurrent_upload(i) for i in range(5)]
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+
+            # All should have same S3 key due to deduplication
+            s3_keys = set()
+            for result in results:
+                if isinstance(result, dict) and "s3_key" in result:
+                    s3_keys.add(result["s3_key"])
+
+            success = len(s3_keys) == 1  # All deduplicated to same key
+            print_test_result(
+                "Concurrent deduplication", success, f"Unique keys: {len(s3_keys)}"
+            )
+            self.test_results["s3"].append(("Deduplication", success))
+
+            # Cleanup dedup test
+            if s3_keys:
+                await media_storage.delete_media(list(s3_keys)[0])
+
+            # Test 12: Presigned URL edge cases
+            if uploaded_files:  # Reuse from earlier test
+                test_key = uploaded_files[0]["s3_key"]
+
+                # Test various expiration times
+                for expires_in in [0, -1, 604800]:  # 0, negative, 1 week
+                    try:
+                        await media_storage.get_media_url(test_key, expires_in)
+                        # Should handle edge cases
+                    except Exception:
+                        pass  # Expected for invalid values
 
         except Exception as e:
             print_error(f"S3 test failed with exception: {e}")

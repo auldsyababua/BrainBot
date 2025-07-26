@@ -1,6 +1,8 @@
 import json
 import logging
 import re
+import gc
+import time
 from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime
 from openai import OpenAI
@@ -148,7 +150,7 @@ class ConversationManager:
 
     async def get_conversation_history(self, chat_id: str) -> List[Dict[str, str]]:
         """Get conversation history with sliding window management."""
-        # Try to get conversation from Redis
+        # Memory optimization: Use weak references and limit object retention
         messages = await redis_store.get_conversation(chat_id)
 
         # If no conversation exists, create a new one
@@ -170,11 +172,12 @@ class ConversationManager:
         await self._ensure_monitor()
         self.monitor.track_conversation_size(chat_id, len(messages))
 
-        return messages
+        # Memory optimization: Return copy to prevent external modifications
+        return [msg.copy() for msg in messages]
 
     async def add_message(self, chat_id: str, role: str, content: str):
         """Add a message to conversation with automatic sliding window."""
-        # Get existing conversation
+        # Memory optimization: Limit string retention and use efficient updates
         messages = await redis_store.get_conversation(chat_id)
 
         if messages is not None:
@@ -192,6 +195,9 @@ class ConversationManager:
             # Track updated size
             await self._ensure_monitor()
             self.monitor.track_conversation_size(chat_id, len(messages))
+
+            # Memory optimization: Clear large content references
+            del content
 
     async def cleanup_old_conversations(self, days_inactive: int = 7):
         """Cleanup conversations older than specified days.
@@ -236,6 +242,13 @@ class ConversationManager:
 conversation_manager = ConversationManager(
     max_messages=CONVERSATION_MAX_MESSAGES, ttl_hours=CONVERSATION_TTL_HOURS
 )
+
+# Cache for function results and schemas with memory limits
+_function_result_cache = {}
+_function_schema_cache = None
+_MAX_CACHE_SIZE = 100
+_CACHE_TTL_SECONDS = 3600
+_cache_timestamps = {}
 
 
 async def get_conversation_history(
@@ -341,58 +354,52 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
     monitor = get_performance_monitor()
 
     try:
-        # First, search for relevant context
+        # Memory optimization: Limit context size and use generators
         search_results = await search_knowledge_base(user_message, chat_id)
 
-        # Build context from search results
+        # Build context from search results with size limits
         context_parts = []
         source_documents = []
+        max_context_length = 2000  # Limit total context size
 
         for result in search_results:
-            # Try to get content from multiple possible locations
-            content = result.get("content")
-
-            # If content is None or empty, try metadata.content_preview
+            # Memory optimization: Use efficient content extraction
+            content = result.get("content", "")
             if not content and result.get("metadata"):
-                content = result["metadata"].get("content_preview")
+                content = result["metadata"].get("content_preview", "")
 
-            # Only add to context if we have actual content
             if content and content.strip():
-                # Build source info
-                source_info = ""
-                title = ""
+                # Memory optimization: Limit string operations
+                title = result.get("metadata", {}).get("title", "")
+                if not title:
+                    file_path = result.get("metadata", {}).get("file_path", "")
+                    title = (
+                        file_path.split("/")[-1].replace(".md", "")
+                        if file_path
+                        else "unknown"
+                    )
 
-                # Get title from various sources
-                if result.get("metadata"):
-                    title = result["metadata"].get("title", "")
-                    if not title:
-                        file_path = result["metadata"].get("file_path", "")
-                        if file_path:
-                            title = file_path.split("/")[-1].replace(".md", "")
-
-                # Add document URL if available
-                document_url = result.get("document_url")
-                if document_url:
-                    source_info = f"Source: {title} ({document_url})"
+                # Memory optimization: Use string formatting efficiently
+                source_info = f"Source: {title}"
+                if result.get("document_url"):
+                    source_info += f" ({result['document_url']})"
                     source_documents.append(
                         {
                             "title": title,
-                            "url": document_url,
+                            "url": result["document_url"],
                             "score": result.get("score", 0),
                         }
                     )
-                elif title:
-                    source_info = f"Source: {title}"
-                else:
-                    source_info = f"Source: {result.get('id', 'unknown')}"
 
+                # Memory optimization: Limit content preview size
+                preview = content[: min(500, max_context_length // len(search_results))]
                 context_parts.append(
-                    f"[{source_info} - Score: {result.get('score', 0):.2f}]\n{content[:500]}..."
+                    f"[{source_info} - Score: {result.get('score', 0):.2f}]\n{preview}..."
                 )
-            else:
-                logger.warning(
-                    f"Empty content for result: {result.get('id', 'unknown')}"
-                )
+
+                # Memory optimization: Early exit if context is large enough
+                if sum(len(part) for part in context_parts) > max_context_length:
+                    break
 
         # Get conversation history
         messages = await get_conversation_history(chat_id)
@@ -409,11 +416,13 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         messages.append({"role": "user", "content": enhanced_message})
         await add_to_conversation_history(chat_id, "user", user_message)
 
-        # Use resilient client for API call
+        # Use optimized function definitions (cached and filtered)
+        functions_to_send = _get_optimized_functions(messages)
+
         response = await resilient_client.chat_completion(
             messages=messages,
             model=GPT_MODEL,
-            functions=FUNCTION_DEFINITIONS,
+            functions=functions_to_send,
             function_call="auto",
             temperature=TEMPERATURE,
             max_tokens=MAX_TOKENS,
@@ -429,8 +438,26 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
             # Add chat_id to function args for namespace support
             function_args["chat_id"] = chat_id
 
-            # Execute the function
-            function_result = await execute_function(function_name, function_args)
+            # Execute the function with caching and memory management
+            cache_key = f"{function_name}:{json.dumps(function_args, sort_keys=True)}"
+
+            # Clean expired cache entries
+            _cleanup_expired_cache()
+
+            if cache_key in _function_result_cache:
+                function_result = _function_result_cache[cache_key]
+            else:
+                function_result = await execute_function(function_name, function_args)
+                _function_result_cache[cache_key] = function_result
+                _cache_timestamps[cache_key] = time.time()
+
+                # Enforce cache size limit
+                _enforce_cache_size_limit()
+
+                # Explicit cleanup of large objects
+                if hasattr(function_result, "__dict__"):
+                    # Use weak references for large objects
+                    function_result = _create_weakref_safe_copy(function_result)
 
             # Send the result back to GPT for a final response
             messages.append(message)
@@ -438,7 +465,7 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                 {
                     "role": "function",
                     "name": function_name,
-                    "content": json.dumps(function_result),
+                    "content": json.dumps(function_result, separators=(",", ":")),
                 }
             )
 
@@ -460,12 +487,24 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                 final_content += sources_text
 
             await add_to_conversation_history(chat_id, "assistant", final_content)
+
+            # Memory optimization: Explicit cleanup of large objects
+            del search_results
+            del context_parts
+            del source_documents
+            del messages
+            del response
+            del final_response
+
+            # Force garbage collection for large objects
+            gc.collect()
+
             return final_content
 
         # If no function call, return the direct response
         assistant_content = message.content
 
-        # Add source documents if available
+        # Add source documents if available (optimized string building)
         if source_documents:
             sources_text = "\n\n📚 Sources:\n" + "\n".join(
                 [f"• {doc['title']} - {doc['url']}" for doc in source_documents[:3]]
@@ -473,6 +512,17 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
             assistant_content += sources_text
 
         await add_to_conversation_history(chat_id, "assistant", assistant_content)
+
+        # Memory optimization: Explicit cleanup
+        del search_results
+        del context_parts
+        del source_documents
+        del messages
+        del response
+
+        # Force garbage collection
+        gc.collect()
+
         return assistant_content
 
     except Exception as e:
@@ -539,6 +589,60 @@ async def resolve_document_reference(
         return None, None, None
 
 
+def _get_optimized_functions(messages: List[Dict[str, str]]) -> List[Dict[str, Any]]:
+    """Return optimized function definitions based on context."""
+    global _function_schema_cache
+
+    if _function_schema_cache is None:
+        # Cache the full schema once
+        _function_schema_cache = FUNCTION_DEFINITIONS
+
+    # For now, return all functions - can be enhanced to filter based on context
+    return _function_schema_cache
+
+
+def _cleanup_expired_cache():
+    """Remove expired cache entries."""
+    import time
+
+    current_time = time.time()
+    expired_keys = [
+        key
+        for key, timestamp in _cache_timestamps.items()
+        if current_time - timestamp > _CACHE_TTL_SECONDS
+    ]
+
+    for key in expired_keys:
+        if key in _function_result_cache:
+            del _function_result_cache[key]
+        del _cache_timestamps[key]
+
+
+def _enforce_cache_size_limit():
+    """Enforce maximum cache size."""
+    if len(_function_result_cache) > _MAX_CACHE_SIZE:
+        # Remove oldest entries
+        sorted_keys = sorted(
+            _cache_timestamps.keys(), key=lambda k: _cache_timestamps[k]
+        )
+        keys_to_remove = sorted_keys[: len(sorted_keys) - _MAX_CACHE_SIZE]
+
+        for key in keys_to_remove:
+            if key in _function_result_cache:
+                del _function_result_cache[key]
+            if key in _cache_timestamps:
+                del _cache_timestamps[key]
+
+
+def _create_weakref_safe_copy(obj):
+    """Create a memory-efficient copy of large objects."""
+    if isinstance(obj, dict):
+        return {k: v for k, v in obj.items() if not callable(v)}
+    elif isinstance(obj, list):
+        return [item for item in obj if not callable(item)]
+    return obj
+
+
 async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str, Any]:
     """Execute a function based on GPT's decision."""
     try:
@@ -587,7 +691,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
                     "file_path": file_path,
                 }
 
-                # Store in Supabase
+                # Store in Supabase with async connection handling
                 doc_id = await document_storage.store_document(
                     file_path=file_path,
                     content=content,

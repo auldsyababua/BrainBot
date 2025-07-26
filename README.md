@@ -271,6 +271,56 @@ tags: [shopping, groceries]
 - Bread
 ```
 
+## How Routing and Confidence Works:
+
+### Confidence Hierarchy (100% = Explicit Syntax)
+
+  1. Entity Type Certainty
+
+  - /task or /tnr → 100% certain it's task operations
+  - /lists → 100% certain it's list operations
+  - /fr → 100% certain it's field report operations
+
+  2. Operation Certainty
+
+  - /newtask → 100% certain it's CREATE + task
+  - /addtolist → 100% certain it's ADD_ITEMS + lists
+  - /completetask → 100% certain it's COMPLETE + tasks
+
+  3. Assignment Certainty
+
+  - @bryan (if bryan exists in user_aliases) → 100% certain bryan is assignee
+  - @bryan (if bryan doesn't exist) → ignored, falls back to self-assignment
+  - No @ mention → 100% certain it's self-assigned
+
+  4. Natural Language Confidence (< 100%)
+
+  Everything else uses pattern matching with variable confidence based on:
+  - Keyword position in message
+  - Keyword length/specificity
+  - Context clues (time references, site names, comma-separated lists)
+  - Ambiguity penalties
+
+  ### The Confidence Composition
+
+  So a message like @bryan /newtask check the generator tomorrow would have:
+  - Entity confidence: 1.0 (explicit /newtask)
+  - Operation confidence: 1.0 (explicit /newtask)
+  - Assignee confidence: 1.0 (explicit @bryan)
+  - Overall confidence: 1.0 (all components are certain)
+  - Direct execution: True (high confidence enables bypass of LLM)
+
+  While create task for tomorrow would have:
+  - Entity confidence: ~0.8 (pattern matching "task")
+  - Operation confidence: ~0.8 (pattern matching "create")
+  - Assignee confidence: None (no assignment, defaults to self)
+  - Overall confidence: ~0.8 (based on pattern matching)
+  - Direct execution: False (needs LLM interpretation)
+
+  This explains why my test was failing - I was testing user extraction without
+  any operation patterns, so the router had no reason to have confidence in the
+  routing decision even if it could extract the user mention.
+
 ## 🔮 Roadmap
 
 **Current (MVP)**:
