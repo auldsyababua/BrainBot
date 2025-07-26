@@ -16,6 +16,15 @@ class ListProcessor(BaseProcessor):
     def get_extraction_schema(self, operation: str) -> str:
         """Get JSON schema for LLM data extraction based on operation."""
 
+        if operation is None:
+            raise ValueError("Operation cannot be None")
+
+        if not isinstance(operation, str):
+            raise TypeError(f"Operation must be a string, got {type(operation)}")
+
+        if not operation:
+            raise ValueError("Operation cannot be empty")
+
         if operation == "create":
             return """{
                 "list_name": "name of the list",
@@ -70,12 +79,25 @@ class ListProcessor(BaseProcessor):
                 "confirm": true
             }"""
 
-        return "{}"
+        else:
+            raise KeyError(f"Unknown operation: {operation}")
 
     async def validate_operation(
         self, operation: str, data: Dict[str, Any], user_role: str = "user"
     ) -> Tuple[bool, str]:
         """Validate if operation is allowed and data is complete."""
+
+        if operation is None:
+            raise ValueError("Operation cannot be None")
+
+        if data is None:
+            raise ValueError("Data cannot be None")
+
+        if user_role is None:
+            raise ValueError("User role cannot be None")
+
+        if not operation:
+            return False, "Operation cannot be empty"
 
         # Check admin-only operations
         if operation == "delete" and user_role != "admin":

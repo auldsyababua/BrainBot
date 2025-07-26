@@ -8,7 +8,6 @@ from unittest.mock import patch, MagicMock
 from src.storage.media_storage import MediaStorage
 import os
 from dotenv import load_dotenv
-import hashlib
 from botocore.exceptions import ClientError, NoCredentialsError
 
 # Load environment variables

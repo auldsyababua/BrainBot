@@ -2,6 +2,7 @@
 
 import logging
 import re
+import time
 from typing import Dict
 
 logger = logging.getLogger(__name__)
@@ -11,6 +12,11 @@ class SynonymLibrary:
     """Comprehensive synonym mapping based on 500+ natural language variations."""
 
     def __init__(self):
+        # Memory optimization: Add cache size limits
+        self._max_cache_size = 1000
+        self._cache_ttl_seconds = 3600  # 1 hour
+        self._cache_timestamps = {}
+
         # Based on natural_language_operations_comprehensive.yaml analysis
         self.operation_synonyms = {
             # List Operations - Add Items (High Confidence)
@@ -136,6 +142,8 @@ class SynonymLibrary:
         self, message: str, operation: str, base_match_confidence: float
     ) -> float:
         """Calculate confidence for a specific operation based on language patterns."""
+        # Memory optimization: Implement cache cleanup
+        self._cleanup_expired_cache()
 
         if operation not in self.operation_synonyms:
             return base_match_confidence
@@ -181,6 +189,18 @@ class SynonymLibrary:
 
     def extract_confidence_indicators(self, message: str) -> Dict[str, float]:
         """Extract all confidence indicators from message."""
+        # Memory optimization: Use cache key to avoid recomputation
+        cache_key = f"indicators:{hash(message)}"
+        current_time = time.time()
+
+        if hasattr(self, "_indicator_cache") and cache_key in self._indicator_cache:
+            # Check if cache is still valid
+            if (
+                current_time - self._cache_timestamps.get(cache_key, 0)
+                < self._cache_ttl_seconds
+            ):
+                return self._indicator_cache[cache_key]
+
         indicators = {}
         message_lower = message.lower()
 
@@ -208,4 +228,48 @@ class SynonymLibrary:
                 ]
                 break
 
+        # Memory optimization: Cache the result
+        if not hasattr(self, "_indicator_cache"):
+            self._indicator_cache = {}
+
+        self._indicator_cache[cache_key] = indicators
+        self._cache_timestamps[cache_key] = current_time
+
+        # Enforce cache size limit
+        self._enforce_cache_size_limit()
+
         return indicators
+
+    def _cleanup_expired_cache(self):
+        """Remove expired cache entries."""
+        if not hasattr(self, "_cache_timestamps"):
+            return
+
+        current_time = time.time()
+        expired_keys = [
+            key
+            for key, timestamp in self._cache_timestamps.items()
+            if current_time - timestamp > self._cache_ttl_seconds
+        ]
+
+        for key in expired_keys:
+            if hasattr(self, "_indicator_cache") and key in self._indicator_cache:
+                del self._indicator_cache[key]
+            del self._cache_timestamps[key]
+
+    def _enforce_cache_size_limit(self):
+        """Enforce maximum cache size by removing oldest entries."""
+        if not hasattr(self, "_indicator_cache"):
+            return
+
+        if len(self._indicator_cache) > self._max_cache_size:
+            # Remove oldest entries
+            sorted_keys = sorted(
+                self._cache_timestamps.keys(), key=lambda k: self._cache_timestamps[k]
+            )
+            keys_to_remove = sorted_keys[: len(sorted_keys) - self._max_cache_size]
+
+            for key in keys_to_remove:
+                if key in self._indicator_cache:
+                    del self._indicator_cache[key]
+                del self._cache_timestamps[key]
