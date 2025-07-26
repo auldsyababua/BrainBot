@@ -123,7 +123,9 @@ class VectorStore:
 
             return True
         except Exception as e:
-            print(f"Error storing document {document_id}: {e}")
+            logger.error(f"Error storing document {document_id}: {e}")
+            # Ensure any open connections are properly closed
+            await self.invalidate_cache()
             return False
 
     @async_benchmark("vector_search")

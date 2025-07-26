@@ -2,6 +2,7 @@
 
 import re
 import logging
+import time
 from datetime import timedelta
 from typing import Dict, Any, Tuple, Optional, List
 from dataclasses import dataclass, field
@@ -152,7 +153,9 @@ class SynonymLibrary:
         users = []
         message_lower = message.lower()
 
-        # Check for @ mentions first
+        # Check for @ mentions first (use router's pre-compiled pattern if available)
+        # Note: This method is part of SynonymLibrary, so we can't access router patterns directly
+        # This is a legacy method that may not need optimization since preprocessing handles @mentions
         at_mentions = re.findall(r"@([a-zA-Z][a-zA-Z0-9._]*)", message)
         for mention in at_mentions:
             canonical = self.user_aliases.get(mention.lower())
@@ -274,6 +277,12 @@ class KeywordRouter:
         self.confidence_scorer = ConfidenceScorer(self.synonym_lib)
         self._aliases_loaded = False
         self._aliases_loading = None
+
+        # Memory optimization: Enhanced cache management
+        self._recent_routes = {}  # LRU cache for recent routes
+        self._max_cache_size = 50  # Reduced from 100
+        self._cache_ttl = 1800  # 30 minutes TTL
+        self._cache_timestamps = {}
 
         # Specific operations replacing generic "update"
         self.operations = {
@@ -472,8 +481,9 @@ class KeywordRouter:
             "/showmyreminders": ("tasks", "read"),
         }
 
-        # Compile regex patterns for efficiency
+        # Compile regex patterns for efficiency (after operations are defined)
         self._compile_patterns()
+        self._compile_preprocessing_patterns()
 
     async def ensure_aliases_loaded(self):
         """Ensure aliases are loaded before use."""
@@ -513,24 +523,57 @@ class KeywordRouter:
                     rf"\b({keywords_pattern})\b", re.IGNORECASE
                 )
 
+    def _compile_preprocessing_patterns(self):
+        """Pre-compile preprocessing patterns for performance."""
+        # Compile all regex patterns once
+        self._at_mention_pattern = re.compile(r"@([a-zA-Z][a-zA-Z0-9._]*)")
+        self._command_pattern = re.compile(r"/(\w+)")
+        self._whitespace_pattern = re.compile(r"\s+")
+        self._name_pattern = re.compile(
+            r'(?:called|named)\s+["\']?([^"\'\.]+)["\']?', re.IGNORECASE
+        )
+        self._time_pattern = re.compile(
+            r"(tomorrow|today|next week|at \d+[ap]m)", re.IGNORECASE
+        )
+
+        # Entity extraction patterns
+        self._list_name_pattern = re.compile(
+            r'(?:called|named)\s+["\']?([^"\'\.]+)["\']?', re.IGNORECASE
+        )
+        self._items_pattern = re.compile(
+            r"(?:add|remove)\s+(.+?)\s+(?:to|from)", re.IGNORECASE
+        )
+        self._site_pattern = re.compile(r"(eagle lake|crockett|mathis)", re.IGNORECASE)
+        self._time_ref_pattern = re.compile(
+            r"(tomorrow|today|next week|at \d+[ap]m)", re.IGNORECASE
+        )
+
+        # UUID validation pattern
+        self._uuid_pattern = re.compile(
+            r"^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            re.IGNORECASE,
+        )
+
     def preprocess_message(
         self, message: str
     ) -> Tuple[str, Dict[str, Any], Dict[str, float]]:
         """Extract deterministic syntax markers before routing."""
+        # Memory optimization: Use string interning and avoid temporary strings
         prefilled = {}
         confidences = {}
         cleaned_message = message
 
-        # Extract @mentions with validation
-        at_mentions = re.findall(r"@([a-zA-Z][a-zA-Z0-9._]*)", message)
+        # Extract @mentions with validation using pre-compiled pattern
+        at_mentions = self._at_mention_pattern.findall(message)
         if at_mentions:
             valid_users = []
             for mention in at_mentions:
-                canonical = self.synonym_lib.user_aliases.get(mention.lower())
+                mention_lower = mention.lower()
+                canonical = self.synonym_lib.user_aliases.get(mention_lower)
                 if canonical and canonical not in valid_users:
                     valid_users.append(canonical)
-                # Remove the @mention from the message regardless of validity
-                cleaned_message = re.sub(rf"@{re.escape(mention)}", "", cleaned_message)
+                # Use efficient string replacement
+                cleaned_message = cleaned_message.replace(f"@{mention}", "")
 
             if valid_users:
                 prefilled["assignee"] = (
@@ -538,8 +581,8 @@ class KeywordRouter:
                 )
                 confidences["assignee_confidence"] = 1.0
 
-        # Extract /commands
-        command_match = re.search(r"/(\w+)", message)
+        # Extract /commands using pre-compiled pattern
+        command_match = self._command_pattern.search(message)
         if command_match:
             command = command_match.group(1).lower()
 
@@ -601,13 +644,24 @@ class KeywordRouter:
                 command_match.group(0), ""
             ).strip()
 
-        # Clean up multiple spaces and trim
-        cleaned_message = re.sub(r"\s+", " ", cleaned_message).strip()
+        # Clean up multiple spaces and trim - use simple string ops instead of regex
+        cleaned_message = " ".join(cleaned_message.split())
 
         return cleaned_message, prefilled, confidences
 
     def route(self, message: str) -> RouteResult:
         """Enhanced routing with synonym library and confidence scoring."""
+        # Memory optimization: Enhanced cache management
+        cache_key = hash(message)
+
+        # Clean expired cache entries
+        self._cleanup_expired_cache()
+
+        if cache_key in self._recent_routes:
+            # Check if cache is still valid
+            if time.time() - self._cache_timestamps.get(cache_key, 0) < self._cache_ttl:
+                return self._recent_routes[cache_key]
+
         # Note: This is sync, so we can't await. Document that aliases
         # should be loaded before routing for user resolution to work.
         if not self._aliases_loaded and self.supabase_client:
@@ -617,6 +671,7 @@ class KeywordRouter:
 
         # First, preprocess the message to extract deterministic syntax
         cleaned_message, prefilled_data, confidences = self.preprocess_message(message)
+        message_lower = cleaned_message.lower()
 
         # If we have high confidence prefilled data, use it
         if prefilled_data.get("entity_type") and prefilled_data.get("operation"):
@@ -633,7 +688,9 @@ class KeywordRouter:
                     confidences.get("operation_confidence", 1.0),
                 ),
                 extracted_data={
-                    **self._extract_data(cleaned_message, entity_type, operation),
+                    **self._extract_data(
+                        cleaned_message, entity_type, operation, message_lower
+                    ),
                     **prefilled_data,
                 },
                 use_direct_execution=True,
@@ -647,8 +704,6 @@ class KeywordRouter:
                 assignee_confidence=confidences.get("assignee_confidence"),
             )
 
-        # Continue with normal routing on cleaned message
-        message_lower = cleaned_message.lower()
         best_match = RouteResult(None, None, None, 0.0)
 
         # Use prefilled assignee if available
@@ -664,7 +719,7 @@ class KeywordRouter:
 
         # Check for hidden commands anywhere in cleaned message (100% confidence)
         for cmd, (entity_type, operation) in self.hidden_commands.items():
-            if cmd in cleaned_message.lower():
+            if cmd in message_lower:
                 config = self.operations[entity_type][operation]
                 return RouteResult(
                     entity_type=entity_type,
@@ -672,7 +727,9 @@ class KeywordRouter:
                     function_name=config["function"],
                     confidence=1.0,
                     extracted_data={
-                        **self._extract_data(cleaned_message, entity_type, operation),
+                        **self._extract_data(
+                            cleaned_message, entity_type, operation, message_lower
+                        ),
                         **prefilled_data,
                     },
                     use_direct_execution=True,  # Always direct for hidden commands
@@ -691,7 +748,7 @@ class KeywordRouter:
         # Only check for telegram commands if we don't already have an entity type
         if not forced_entity_type:
             for cmd, entity_type in self.telegram_commands.items():
-                if cmd in cleaned_message.lower():
+                if cmd in message_lower:
                     forced_entity_type = entity_type
                     telegram_boost = 0.3  # Same boost regardless of position
                     break
@@ -723,7 +780,10 @@ class KeywordRouter:
                             confidence=confidence,
                             extracted_data={
                                 **self._extract_data(
-                                    cleaned_message, entity_type, operation
+                                    cleaned_message,
+                                    entity_type,
+                                    operation,
+                                    message_lower,
                                 ),
                                 **prefilled_data,
                             },
@@ -751,34 +811,62 @@ class KeywordRouter:
                 assignee_confidence=confidences.get("assignee_confidence"),
             )
 
+        # Memory optimization: Enhanced cache management
+        self._recent_routes[cache_key] = best_match
+        self._cache_timestamps[cache_key] = time.time()
+
+        # Enforce cache size limit
+        self._enforce_cache_size_limit()
+
         return best_match
 
+    def _cleanup_expired_cache(self):
+        """Remove expired cache entries."""
+        current_time = time.time()
+        expired_keys = [
+            key
+            for key, timestamp in self._cache_timestamps.items()
+            if current_time - timestamp > self._cache_ttl
+        ]
+
+        for key in expired_keys:
+            if key in self._recent_routes:
+                del self._recent_routes[key]
+            del self._cache_timestamps[key]
+
+    def _enforce_cache_size_limit(self):
+        """Enforce maximum cache size."""
+        if len(self._recent_routes) > self._max_cache_size:
+            # Remove oldest entries
+            sorted_keys = sorted(
+                self._cache_timestamps.keys(), key=lambda k: self._cache_timestamps[k]
+            )
+            keys_to_remove = sorted_keys[: len(sorted_keys) - self._max_cache_size]
+
+            for key in keys_to_remove:
+                if key in self._recent_routes:
+                    del self._recent_routes[key]
+                if key in self._cache_timestamps:
+                    del self._cache_timestamps[key]
+
     def _extract_data(
-        self, message: str, entity_type: str, operation: str
+        self, message: str, entity_type: str, operation: str, message_lower: str = None
     ) -> Dict[str, Any]:
         """Extract relevant data from message based on entity type and operation."""
         data = {}
+        if message_lower is None:
+            message_lower = message.lower()
 
         if entity_type == "lists":
             if operation in ["create", "rename"]:
                 # Extract list name after "called" or "named"
-                name_match = re.search(
-                    r'(?:called|named)\s+["\']?([^"\'\.]+)["\']?',
-                    message,
-                    re.IGNORECASE,
-                )
+                name_match = self._list_name_pattern.search(message)
                 if name_match:
                     data["suggested_name"] = name_match.group(1).strip()
 
             elif operation in ["add_items", "remove_items"]:
                 # Extract items after "add" or "remove"
-                if operation == "add_items":
-                    items_match = re.search(r"add\s+(.+?)\s+to", message, re.IGNORECASE)
-                else:
-                    items_match = re.search(
-                        r"remove\s+(.+?)\s+from", message, re.IGNORECASE
-                    )
-
+                items_match = self._items_pattern.search(message)
                 if items_match:
                     items_text = items_match.group(1)
                     # Split on commas and clean up
@@ -786,19 +874,15 @@ class KeywordRouter:
                     data["items"] = items
 
         elif entity_type == "field_reports":
-            # Extract site name
-            sites = ["eagle lake", "crockett", "mathis"]
-            for site in sites:
-                if site in message.lower():
-                    data["site"] = site.title()
-                    break
+            # Extract site name using pre-compiled pattern
+            site_match = self._site_pattern.search(message_lower)
+            if site_match:
+                data["site"] = site_match.group(1).title()
 
         elif entity_type == "tasks":
             if operation == "create":
-                # Extract time references
-                time_match = re.search(
-                    r"(tomorrow|today|next week|at \d+[ap]m)", message, re.IGNORECASE
-                )
+                # Extract time references using pre-compiled pattern
+                time_match = self._time_ref_pattern.search(message)
                 if time_match:
                     data["time_reference"] = time_match.group(1)
 

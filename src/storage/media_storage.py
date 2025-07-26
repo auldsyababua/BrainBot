@@ -102,6 +102,11 @@ class MediaStorage:
         Returns:
             Dict with upload details
         """
+        if file_content is None:
+            raise ValueError("file_content cannot be None")
+        if file_name is None:
+            raise ValueError("file_name cannot be None")
+
         try:
             # Handle bytes vs file-like object
             if isinstance(file_content, bytes):
@@ -228,6 +233,9 @@ class MediaStorage:
         Returns:
             File content as bytes or None if not found
         """
+        if s3_key is None:
+            raise ValueError("s3_key cannot be None")
+
         try:
             response = self.s3_client.get_object(Bucket=self.bucket_name, Key=s3_key)
 

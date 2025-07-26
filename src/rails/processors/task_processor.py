@@ -16,6 +16,15 @@ class TaskProcessor(BaseProcessor):
     def get_extraction_schema(self, operation: str) -> str:
         """Get JSON schema for LLM data extraction based on operation."""
 
+        if operation is None:
+            raise ValueError("Operation cannot be None")
+
+        if not isinstance(operation, str):
+            raise TypeError(f"Operation must be a string, got {type(operation)}")
+
+        if not operation:
+            raise ValueError("Operation cannot be empty")
+
         if operation == "create":
             return """{
                 "task_title": "title of the task",
@@ -64,7 +73,8 @@ class TaskProcessor(BaseProcessor):
                 }
             }"""
 
-        return "{}"
+        else:
+            raise KeyError(f"Unknown operation: {operation}")
 
     async def validate_operation(
         self, operation: str, data: Dict[str, Any], user_role: str = "user"
@@ -131,6 +141,11 @@ class TaskProcessor(BaseProcessor):
 
     def get_confidence_boost_factors(self, message: str, operation: str) -> float:
         """Calculate confidence boost based on message analysis."""
+        if message is None:
+            raise ValueError("Message cannot be None")
+        if operation is None:
+            raise ValueError("Operation cannot be None")
+
         boost = 0.0
         message_lower = message.lower()
 

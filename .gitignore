@@ -95,3 +95,8 @@ prompts/
 
 # Architecture file (contains local paths)
 ARCHITECTURE.md
+.aider*
+
+# DEVLOG System - Auto-generated files
+DEVLOG.md
+.devlog/
