@@ -586,7 +586,7 @@ This is a test markdown document for Supabase storage testing.
                         success = True
                     else:
                         success = False
-                except:
+                except Exception:
                     success = False
 
                 print_test_result(f"Special path: {repr(path[:20])}", success)
@@ -610,7 +610,7 @@ This is a test markdown document for Supabase storage testing.
                             "Injection test"
                         )
                         await document_storage.delete_document(path)
-                except:
+                except Exception:
                     pass  # Expected to fail
 
             print_test_result("SQL injection prevention", injection_safe)
@@ -844,7 +844,7 @@ This is a test markdown document for Supabase storage testing.
                         success = True
                     else:
                         success = False
-                except:
+                except Exception:
                     success = False
 
                 print_test_result(f"Special filename: {repr(name[:20])}", success)
@@ -865,7 +865,7 @@ This is a test markdown document for Supabase storage testing.
                     # Should handle gracefully, possibly defaulting to octet-stream
                     if result:
                         await media_storage.delete_media(result["s3_key"])
-                except:
+                except Exception:
                     pass  # Expected for some types
 
             # Test 11: Concurrent uploads of same content
@@ -902,9 +902,9 @@ This is a test markdown document for Supabase storage testing.
                 # Test various expiration times
                 for expires_in in [0, -1, 604800]:  # 0, negative, 1 week
                     try:
-                        url = await media_storage.get_media_url(test_key, expires_in)
+                        await media_storage.get_media_url(test_key, expires_in)
                         # Should handle edge cases
-                    except:
+                    except Exception:
                         pass  # Expected for invalid values
 
         except Exception as e:

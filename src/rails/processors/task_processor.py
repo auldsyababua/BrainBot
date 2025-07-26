@@ -128,9 +128,13 @@ class TaskProcessor(BaseProcessor):
                                 f"Unknown user: {assignee}. Please use a known username or alias.",
                             )
                     else:
-                        # If we can't validate, let it through rather than blocking
+                        # If we can't validate, fail gracefully
                         logger.warning(
                             "Could not validate assignee - database unavailable"
+                        )
+                        return (
+                            False,
+                            "Could not validate assignee - database unavailable",
                         )
 
                 except Exception as e:

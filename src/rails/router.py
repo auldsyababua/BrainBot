@@ -135,6 +135,9 @@ class SynonymLibrary:
                 # Use first_name as canonical username (lowercase)
                 canonical_username = first_name.lower()
 
+                # Map the canonical username to itself
+                self.user_aliases[canonical_username] = canonical_username
+
                 # Map each alias to the canonical username
                 for alias in aliases:
                     self.user_aliases[alias.lower()] = canonical_username
@@ -164,7 +167,7 @@ class SynonymLibrary:
 
         # Check for alias mentions in text
         for alias, username in self.user_aliases.items():
-            if alias in message_lower and username not in users:
+            if alias and username and alias in message_lower and username not in users:
                 users.append(username)
 
         return users
@@ -294,6 +297,7 @@ class KeywordRouter:
                         "make list",
                         "start list",
                         "build list",
+                        "create shopping list",  # TODO: Remove once wildcard patterns are implemented
                     ],
                     "function": "create_list",
                     "example": "new list called grocery items",
