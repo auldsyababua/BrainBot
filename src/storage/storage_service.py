@@ -7,7 +7,7 @@ import hashlib
 from typing import Optional, List, Dict, Any
 from supabase import create_client, Client
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 from dotenv import load_dotenv
 
@@ -23,7 +23,7 @@ class DocumentStorage:
     """Handles document storage in Supabase"""
 
     def __init__(self):
-        """Initialize Supabase client"""
+        """Initialize Supabase client with connection optimization"""
         supabase_url = os.getenv("SUPABASE_URL")
         # Try service key first, fall back to anon key
         supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
@@ -38,8 +38,15 @@ class DocumentStorage:
                 "Missing Supabase credentials. Please set SUPABASE_URL and SUPABASE_ANON_KEY"
             )
 
+        # Initialize client with connection pooling
         self.supabase: Client = create_client(supabase_url, supabase_key)
         self.using_anon_key = key_type == "anon"
+
+        # Performance optimizations
+        self._query_cache = {}
+        self._cache_ttl = 300  # 5 minutes
+        self._last_cache_cleanup = datetime.now()
+
         logger.info(f"DocumentStorage initialized with Supabase ({key_type} key)")
 
     async def store_document(
@@ -71,6 +78,12 @@ class DocumentStorage:
         Returns:
             Document ID
         """
+        # Input validation
+        if file_path is None:
+            raise ValueError("file_path cannot be None")
+        if content is None:
+            raise ValueError("content cannot be None")
+
         try:
             # Calculate content hash for deduplication
             content_hash = hashlib.sha256(content.encode()).hexdigest()
@@ -175,15 +188,19 @@ class DocumentStorage:
 
     async def get_document(self, file_path: str) -> Optional[Dict[str, Any]]:
         """
-        Retrieve a document by file path
-
-        Args:
-            file_path: Path/identifier of the document
-
-        Returns:
-            Document data or None if not found
+        Retrieve a document by file path with caching
         """
+        if file_path is None:
+            raise ValueError("file_path cannot be None")
+
         try:
+            # Check cache first
+            cache_key = f"doc_path:{file_path}"
+            if cache_key in self._query_cache:
+                cached_result, timestamp = self._query_cache[cache_key]
+                if datetime.now() - timestamp < timedelta(seconds=self._cache_ttl):
+                    return cached_result
+
             result = (
                 self.supabase.table("brain_bot_documents")
                 .select("*")
@@ -192,13 +209,22 @@ class DocumentStorage:
             )
 
             if result.data:
-                # Update last accessed timestamp
-                doc_id = result.data[0]["id"]
-                self.supabase.table("brain_bot_documents").update(
-                    {"last_accessed_at": datetime.utcnow().isoformat()}
-                ).eq("id", doc_id).execute()
+                doc = result.data[0]
+                doc_id = doc["id"]
 
-                return result.data[0]
+                # Update last accessed timestamp (fire and forget)
+                try:
+                    self.supabase.table("brain_bot_documents").update(
+                        {"last_accessed_at": datetime.utcnow().isoformat()}
+                    ).eq("id", doc_id).execute()
+                except Exception:
+                    pass  # Non-critical operation
+
+                # Cache result
+                self._query_cache[cache_key] = (doc, datetime.now())
+                self._cleanup_cache()
+
+                return doc
 
             return None
 
@@ -208,15 +234,16 @@ class DocumentStorage:
 
     async def get_document_by_id(self, doc_id: str) -> Optional[Dict[str, Any]]:
         """
-        Retrieve a document by ID
-
-        Args:
-            doc_id: Document ID
-
-        Returns:
-            Document data or None if not found
+        Retrieve a document by ID with caching
         """
         try:
+            # Check cache first
+            cache_key = f"doc_id:{doc_id}"
+            if cache_key in self._query_cache:
+                cached_result, timestamp = self._query_cache[cache_key]
+                if datetime.now() - timestamp < timedelta(seconds=self._cache_ttl):
+                    return cached_result
+
             result = (
                 self.supabase.table("brain_bot_documents")
                 .select("*")
@@ -225,18 +252,121 @@ class DocumentStorage:
             )
 
             if result.data:
-                # Update last accessed timestamp
-                self.supabase.table("brain_bot_documents").update(
-                    {"last_accessed_at": datetime.utcnow().isoformat()}
-                ).eq("id", doc_id).execute()
+                doc = result.data[0]
 
-                return result.data[0]
+                # Update last accessed timestamp (fire and forget)
+                try:
+                    self.supabase.table("brain_bot_documents").update(
+                        {"last_accessed_at": datetime.utcnow().isoformat()}
+                    ).eq("id", doc_id).execute()
+                except Exception:
+                    pass  # Non-critical operation
+
+                # Cache result
+                self._query_cache[cache_key] = (doc, datetime.now())
+                self._cleanup_cache()
+
+                return doc
 
             return None
 
         except Exception as e:
             logger.error(f"Error retrieving document by ID: {e}")
             return None
+
+    async def get_documents_by_ids(self, doc_ids: List[str]) -> List[Dict[str, Any]]:
+        """
+        Retrieve multiple documents by their IDs in a single query
+        """
+        if not doc_ids:
+            return []
+
+        try:
+            # Filter out cached results
+            uncached_ids = []
+            results = []
+
+            for doc_id in doc_ids:
+                cache_key = f"doc_id:{doc_id}"
+                if cache_key in self._query_cache:
+                    cached_result, timestamp = self._query_cache[cache_key]
+                    if datetime.now() - timestamp < timedelta(seconds=self._cache_ttl):
+                        results.append(cached_result)
+                    else:
+                        uncached_ids.append(doc_id)
+                else:
+                    uncached_ids.append(doc_id)
+
+            # Batch fetch uncached documents
+            if uncached_ids:
+                result = (
+                    self.supabase.table("brain_bot_documents")
+                    .select("*")
+                    .in_("id", uncached_ids)
+                    .execute()
+                )
+
+                if result.data:
+                    for doc in result.data:
+                        # Cache each result
+                        cache_key = f"doc_id:{doc['id']}"
+                        self._query_cache[cache_key] = (doc, datetime.now())
+                        results.append(doc)
+                        self._cleanup_cache()
+
+            return results
+
+        except Exception as e:
+            logger.error(f"Error retrieving documents by IDs: {e}")
+            return []
+
+    async def get_documents_by_paths(
+        self, file_paths: List[str]
+    ) -> List[Dict[str, Any]]:
+        """
+        Retrieve multiple documents by their file paths in a single query
+        """
+        if not file_paths:
+            return []
+
+        try:
+            # Filter out cached results
+            uncached_paths = []
+            results = []
+
+            for file_path in file_paths:
+                cache_key = f"doc_path:{file_path}"
+                if cache_key in self._query_cache:
+                    cached_result, timestamp = self._query_cache[cache_key]
+                    if datetime.now() - timestamp < timedelta(seconds=self._cache_ttl):
+                        results.append(cached_result)
+                    else:
+                        uncached_paths.append(file_path)
+                else:
+                    uncached_paths.append(file_path)
+
+            # Batch fetch uncached documents
+            if uncached_paths:
+                result = (
+                    self.supabase.table("brain_bot_documents")
+                    .select("*")
+                    .in_("file_path", uncached_paths)
+                    .execute()
+                )
+
+                if result.data:
+                    for doc in result.data:
+                        # Cache each result
+                        cache_key = f"doc_path:{doc['file_path']}"
+                        self._query_cache[cache_key] = (doc, datetime.now())
+                        results.append(doc)
+                        self._cleanup_cache()
+
+            return results
+
+        except Exception as e:
+            logger.error(f"Error retrieving documents by paths: {e}")
+            return []
 
     async def update_document_by_id(
         self, doc_id: str, content: str, metadata: Optional[Dict[str, Any]] = None
@@ -356,20 +486,22 @@ class DocumentStorage:
         limit: int = 10,
     ) -> List[Dict[str, Any]]:
         """
-        Search documents with various filters
-
-        Args:
-            query: Text to search in content
-            category: Filter by category
-            tags: Filter by tags
-            telegram_chat_id: Filter by Telegram chat
-            is_public: Filter by public/private
-            limit: Maximum results
-
-        Returns:
-            List of matching documents
+        Search documents with various filters and caching
         """
+        # Note: query parameter can be None for searches without text filter
+
         try:
+            # Create cache key from search parameters
+            cache_key = f"search:{hash((query, category, tuple(tags or []), telegram_chat_id, is_public, limit))}"
+
+            # Check cache
+            if cache_key in self._query_cache:
+                cached_result, timestamp = self._query_cache[cache_key]
+                if datetime.now() - timestamp < timedelta(
+                    seconds=30
+                ):  # Shorter cache for search
+                    return cached_result
+
             query_builder = self.supabase.table("brain_bot_documents").select("*")
 
             if category:
@@ -387,15 +519,20 @@ class DocumentStorage:
                     query_builder = query_builder.contains("tags", [tag])
 
             if query:
-                # Full text search in content
-                query_builder = query_builder.ilike("content", f"%{query}%")
+                # Use full-text search for better performance
+                query_builder = query_builder.text_search("content", query)
 
-            # Order by relevance (updated_at for now)
+            # Order by relevance
             query_builder = query_builder.order("updated_at", desc=True)
 
             result = query_builder.limit(limit).execute()
+            documents = result.data or []
 
-            return result.data or []
+            # Cache result
+            self._query_cache[cache_key] = (documents, datetime.now())
+            self._cleanup_cache()
+
+            return documents
 
         except Exception as e:
             logger.error(f"Error searching documents: {e}")
@@ -430,16 +567,16 @@ class DocumentStorage:
     async def clear_all_documents(self) -> bool:
         """
         Clear all documents from the database (for reset purposes)
-
-        Returns:
-            True if successful, False otherwise
         """
         try:
+            # Clear cache
+            self._query_cache.clear()
+
             # Delete all documents
             result = (
                 self.supabase.table("brain_bot_documents")
                 .delete()
-                .neq("id", "00000000-0000-0000-0000-000000000000")  # Delete all rows
+                .neq("id", "00000000-0000-0000-0000-000000000000")
                 .execute()
             )
 
@@ -451,6 +588,21 @@ class DocumentStorage:
         except Exception as e:
             logger.error(f"Error clearing all documents: {e}")
             return False
+
+    def _cleanup_cache(self):
+        """Clean up expired cache entries"""
+        now = datetime.now()
+        if now - self._last_cache_cleanup > timedelta(minutes=5):
+            expired_keys = [
+                key
+                for key, (_, timestamp) in self._query_cache.items()
+                if now - timestamp > timedelta(seconds=self._cache_ttl)
+            ]
+            for key in expired_keys:
+                del self._query_cache[key]
+            self._last_cache_cleanup = now
+            if expired_keys:
+                logger.debug(f"Cleaned up {len(expired_keys)} expired cache entries")
 
     async def store_document_chunk(
         self,
