@@ -97,10 +97,11 @@ class FieldReportProcessor(BaseProcessor):
                             f"Unknown site: {site_name}. Available sites: {', '.join([s.title() for s in valid_sites])}",
                         )
                 else:
-                    # If we can't validate, assume it's valid rather than blocking
+                    # If we can't validate, fail gracefully
                     logger.warning(
                         "Could not validate site name - database unavailable"
                     )
+                    return False, "Could not validate site - database unavailable"
 
             except Exception as e:
                 logger.warning(f"Could not validate site: {e}")

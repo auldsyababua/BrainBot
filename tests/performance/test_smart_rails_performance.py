@@ -77,7 +77,7 @@ class TestSmartRailsPerformance:
         long_times = []
         for _ in range(10):  # Fewer iterations for long messages
             start = time.perf_counter()
-            result = router.route(extremely_long)
+            router.route(extremely_long)
             elapsed = (time.perf_counter() - start) * 1000
             long_times.append(elapsed)
 
@@ -98,7 +98,7 @@ class TestSmartRailsPerformance:
             special_times = []
             for _ in range(50):
                 start = time.perf_counter()
-                result = router.route(special_msg)
+                router.route(special_msg)
                 elapsed = (time.perf_counter() - start) * 1000
                 special_times.append(elapsed)
 
@@ -139,7 +139,7 @@ class TestSmartRailsPerformance:
             invalid_times = []
             for _ in range(50):
                 start = time.perf_counter()
-                result = router.route(invalid_cmd)
+                router.route(invalid_cmd)
                 elapsed = (time.perf_counter() - start) * 1000
                 invalid_times.append(elapsed)
 
@@ -152,7 +152,6 @@ class TestSmartRailsPerformance:
 
         # Create test data without assuming implementation
         num_aliases = 1000
-        aliases = {}
 
         # Create diverse alias patterns
         patterns = [
