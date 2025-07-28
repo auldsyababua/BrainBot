@@ -30,4 +30,4 @@ services:
         value: "us-east-1"
       - key: S3_ENDPOINT_URL
         sync: false
-    autoDeploy: false
+    autoDeploy: true
