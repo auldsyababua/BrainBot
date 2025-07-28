@@ -5,8 +5,12 @@ import time
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 
-from core.config import SUPABASE_URL, SUPABASE_KEY
+import os
 from supabase import create_client, Client
+
+# Get Supabase credentials from environment
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_ANON_KEY") or os.getenv("SUPABASE_KEY")
 
 
 class SupabaseLogHandler(logging.Handler):
