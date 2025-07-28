@@ -29,12 +29,20 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 import uvicorn  # noqa: E402
 from bot.webhook_bot import create_webhook_bot  # noqa: E402
 from core.config import TELEGRAM_BOT_TOKEN  # noqa: E402
+from core.supabase_logger import setup_supabase_logging  # noqa: E402
 
 # Set up logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 logger = logging.getLogger(__name__)
+
+# Set up Supabase logging for real-time access
+try:
+    supabase_handler = setup_supabase_logging(level=logging.INFO)
+    logger.info("✅ Supabase logging enabled - logs available for real-time queries")
+except Exception as e:
+    logger.warning(f"Could not enable Supabase logging: {e}")
 
 
 def set_webhook():
