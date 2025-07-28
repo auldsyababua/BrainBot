@@ -15,6 +15,7 @@ import logging
 import os
 import tempfile
 import json
+import time
 from datetime import datetime
 from telegram import Update
 from telegram.ext import ContextTypes
@@ -28,6 +29,18 @@ from storage.redis_store import redis_store
 
 # Set up logging
 logger = logging.getLogger(__name__)
+
+# Import structured logging helpers if available
+try:
+    from core.supabase_logger import log_operation, log_performance
+except ImportError:
+    # Fallback if supabase_logger not available
+    def log_operation(logger, level, message, **kwargs):
+        logger.log(level, message)
+
+    def log_performance(logger, operation, duration_ms, **kwargs):
+        logger.info(f"{operation} took {duration_ms}ms")
+
 
 # Index initialization removed - using Supabase storage
 
@@ -287,6 +300,7 @@ async def version_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Message handlers
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle incoming text messages."""
+    start_time = time.time()
     try:
         user = update.effective_user
         user_message = update.message.text
@@ -309,21 +323,61 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"Consider adding to AUTHORIZED_USER_IDS: {user.id}  # {user.username}"
             )
 
-        logger.info(f"📥 Received message from {chat_id}: {user_message}")
+        # Log incoming message with structured data
+        log_operation(
+            logger,
+            logging.INFO,
+            f"Received message: {user_message[:50]}...",
+            user_id=user.id,
+            chat_id=chat_id,
+            operation="handle_message",
+            message_length=len(user_message),
+        )
 
         # Show typing indicator
         await context.bot.send_chat_action(chat_id=chat_id, action="typing")
 
         # Process the message with LLM (pass chat_id for conversation memory)
+        llm_start = time.time()
         response = await process_message(user_message, str(chat_id))
+        llm_duration = int((time.time() - llm_start) * 1000)
 
-        logger.info(f"📤 Bot response: {response[:100]}...")
+        # Log LLM performance
+        log_performance(
+            logger,
+            "llm_processing",
+            llm_duration,
+            user_id=user.id,
+            chat_id=chat_id,
+            response_length=len(response),
+        )
 
         # Send the response
         await update.message.reply_text(response, parse_mode="Markdown")
 
+        # Log total handling time
+        total_duration = int((time.time() - start_time) * 1000)
+        log_performance(
+            logger,
+            "message_handling",
+            total_duration,
+            user_id=user.id,
+            chat_id=chat_id,
+            operation="handle_message",
+        )
+
     except Exception as e:
-        logger.error(f"Error handling message: {e}")
+        # Log error with structured data
+        log_operation(
+            logger,
+            logging.ERROR,
+            f"Error handling message: {str(e)}",
+            user_id=user.id if "user" in locals() else None,
+            chat_id=chat_id if "chat_id" in locals() else None,
+            error=str(e),
+            operation="handle_message",
+        )
+
         error_message = (
             "😔 Sorry, I encountered an error processing your message. "
             "Please try again or contact the administrator if the problem persists.\n\n"
