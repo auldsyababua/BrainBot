@@ -1,0 +1,516 @@
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+
+============================================================
+Analyzing: TRANSACTIONS - Employees.xlsx
+============================================================
+
+Sheet: Employee Contact List
+Shape: (11, 5)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+  - Unnamed: 3: object
+  - Unnamed: 4: object
+
+First 3 rows:
+         10NetZero, Inc. Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4
+0  Employee Contact List        NaN        NaN        NaN        NaN
+1                    NaN        NaN        NaN        NaN        NaN
+2                    NaN        NaN        NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 9 nulls
+  - Unnamed: 1: 6 nulls
+  - Unnamed: 2: 10 nulls
+  - Unnamed: 3: 9 nulls
+  - Unnamed: 4: 10 nulls
+
+============================================================
+Analyzing: TRANSACTIONS - Profit_and_loss.xlsx
+============================================================
+
+Sheet: Profit and Loss
+Shape: (104, 2)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+
+First 3 rows:
+   10NetZero, Inc. Unnamed: 1
+0  Profit and Loss        NaN
+1        All Dates        NaN
+2              NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 5 nulls
+  - Unnamed: 1: 19 nulls
+
+============================================================
+Analyzing: TRANSACTIONS - Journal.xlsx
+============================================================
+
+Sheet: Journal
+Shape: (7179, 9)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6', 'Unnamed: 7', 'Unnamed: 8']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+  - Unnamed: 3: object
+  - Unnamed: 4: object
+  - Unnamed: 5: object
+  - Unnamed: 6: object
+  - Unnamed: 7: object
+  - Unnamed: 8: object
+
+First 3 rows:
+  10NetZero, Inc. Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4 Unnamed: 5 Unnamed: 6 Unnamed: 7 Unnamed: 8
+0         Journal        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+1       All Dates        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+2             NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 7175 nulls
+  - Unnamed: 1: 5505 nulls
+  - Unnamed: 2: 5505 nulls
+  - Unnamed: 3: 7056 nulls
+  - Unnamed: 4: 6406 nulls
+  - Unnamed: 5: 3778 nulls
+  - Unnamed: 6: 3354 nulls
+  - Unnamed: 7: 3699 nulls
+  - Unnamed: 8: 3485 nulls
+
+============================================================
+Analyzing: TRANSACTIONS - General_ledger.xlsx
+============================================================
+
+Sheet: General Ledger
+Shape: (4062, 10)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6', 'Unnamed: 7', 'Unnamed: 8', 'Unnamed: 9']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+  - Unnamed: 3: object
+  - Unnamed: 4: object
+  - Unnamed: 5: object
+  - Unnamed: 6: object
+  - Unnamed: 7: object
+  - Unnamed: 8: object
+  - Unnamed: 9: object
+
+First 3 rows:
+  10NetZero, Inc. Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4 Unnamed: 5 Unnamed: 6 Unnamed: 7 Unnamed: 8 Unnamed: 9
+0  General Ledger        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+1       All Dates        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+2             NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 3829 nulls
+  - Unnamed: 1: 236 nulls
+  - Unnamed: 2: 236 nulls
+  - Unnamed: 3: 3344 nulls
+  - Unnamed: 4: 2066 nulls
+  - Unnamed: 5: 661 nulls
+  - Unnamed: 6: 237 nulls
+  - Unnamed: 7: 2141 nulls
+  - Unnamed: 8: 1935 nulls
+  - Unnamed: 9: 237 nulls
+
+============================================================
+Analyzing: TRANSACTIONS - Customers.xlsx
+============================================================
+
+Sheet: Customer Contact List
+Shape: (22, 7)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+  - Unnamed: 3: object
+  - Unnamed: 4: object
+  - Unnamed: 5: object
+  - Unnamed: 6: object
+
+First 3 rows:
+         10NetZero, Inc. Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4 Unnamed: 5 Unnamed: 6
+0  Customer Contact List        NaN        NaN        NaN        NaN        NaN        NaN
+1                    NaN        NaN        NaN        NaN        NaN        NaN        NaN
+2                    NaN        NaN        NaN        NaN        NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 20 nulls
+  - Unnamed: 1: 6 nulls
+  - Unnamed: 2: 21 nulls
+  - Unnamed: 3: 16 nulls
+  - Unnamed: 4: 15 nulls
+  - Unnamed: 5: 19 nulls
+  - Unnamed: 6: 19 nulls
+
+============================================================
+Analyzing: TRANSACTIONS - Trial_balance.xlsx
+============================================================
+
+Sheet: Trial Balance
+Shape: (105, 3)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+
+First 3 rows:
+  10NetZero, Inc. Unnamed: 1 Unnamed: 2
+0   Trial Balance        NaN        NaN
+1       All Dates        NaN        NaN
+2             NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 5 nulls
+  - Unnamed: 1: 39 nulls
+  - Unnamed: 2: 71 nulls
+
+============================================================
+Analyzing: TRANSACTIONS - Vendors.xlsx
+============================================================
+
+Sheet: Vendor Contact List
+Shape: (91, 7)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+  - Unnamed: 3: object
+  - Unnamed: 4: object
+  - Unnamed: 5: object
+  - Unnamed: 6: object
+
+First 3 rows:
+       10NetZero, Inc. Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4 Unnamed: 5 Unnamed: 6
+0  Vendor Contact List        NaN        NaN        NaN        NaN        NaN        NaN
+1                  NaN        NaN        NaN        NaN        NaN        NaN        NaN
+2                  NaN        NaN        NaN        NaN        NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 89 nulls
+  - Unnamed: 1: 6 nulls
+  - Unnamed: 2: 89 nulls
+  - Unnamed: 3: 89 nulls
+  - Unnamed: 4: 80 nulls
+  - Unnamed: 5: 89 nulls
+  - Unnamed: 6: 90 nulls
+
+============================================================
+Analyzing: TRANSACTIONS - Balance_sheet.xlsx
+============================================================
+
+Sheet: Balance Sheet
+Shape: (86, 2)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+
+First 3 rows:
+  10NetZero, Inc. Unnamed: 1
+0   Balance Sheet        NaN
+1       All Dates        NaN
+2             NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 5 nulls
+  - Unnamed: 1: 25 nulls
+
+============================================================
+Analyzing: LISTS - Employees.xlsx
+============================================================
+
+Sheet: Employee Contact List
+Shape: (11, 5)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+  - Unnamed: 3: object
+  - Unnamed: 4: object
+
+First 3 rows:
+         10NetZero, Inc. Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4
+0  Employee Contact List        NaN        NaN        NaN        NaN
+1                    NaN        NaN        NaN        NaN        NaN
+2                    NaN        NaN        NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 9 nulls
+  - Unnamed: 1: 6 nulls
+  - Unnamed: 2: 10 nulls
+  - Unnamed: 3: 9 nulls
+  - Unnamed: 4: 10 nulls
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+/Users/colinaulds/.pyenv/versions/3.11.5/lib/python3.11/site-packages/openpyxl/styles/stylesheet.py:237: UserWarning: Workbook contains no default style, apply openpyxl's default
+  warn("Workbook contains no default style, apply openpyxl's default")
+
+============================================================
+Analyzing: LISTS - Profit_and_loss.xlsx
+============================================================
+
+Sheet: Profit and Loss
+Shape: (104, 2)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+
+First 3 rows:
+   10NetZero, Inc. Unnamed: 1
+0  Profit and Loss        NaN
+1        All Dates        NaN
+2              NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 5 nulls
+  - Unnamed: 1: 19 nulls
+
+============================================================
+Analyzing: LISTS - Journal.xlsx
+============================================================
+
+Sheet: Journal
+Shape: (7179, 9)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6', 'Unnamed: 7', 'Unnamed: 8']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+  - Unnamed: 3: object
+  - Unnamed: 4: object
+  - Unnamed: 5: object
+  - Unnamed: 6: object
+  - Unnamed: 7: object
+  - Unnamed: 8: object
+
+First 3 rows:
+  10NetZero, Inc. Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4 Unnamed: 5 Unnamed: 6 Unnamed: 7 Unnamed: 8
+0         Journal        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+1       All Dates        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+2             NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 7175 nulls
+  - Unnamed: 1: 5505 nulls
+  - Unnamed: 2: 5505 nulls
+  - Unnamed: 3: 7056 nulls
+  - Unnamed: 4: 6406 nulls
+  - Unnamed: 5: 3778 nulls
+  - Unnamed: 6: 3354 nulls
+  - Unnamed: 7: 3699 nulls
+  - Unnamed: 8: 3485 nulls
+
+============================================================
+Analyzing: LISTS - General_ledger.xlsx
+============================================================
+
+Sheet: General Ledger
+Shape: (4062, 10)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6', 'Unnamed: 7', 'Unnamed: 8', 'Unnamed: 9']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+  - Unnamed: 3: object
+  - Unnamed: 4: object
+  - Unnamed: 5: object
+  - Unnamed: 6: object
+  - Unnamed: 7: object
+  - Unnamed: 8: object
+  - Unnamed: 9: object
+
+First 3 rows:
+  10NetZero, Inc. Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4 Unnamed: 5 Unnamed: 6 Unnamed: 7 Unnamed: 8 Unnamed: 9
+0  General Ledger        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+1       All Dates        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+2             NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 3829 nulls
+  - Unnamed: 1: 236 nulls
+  - Unnamed: 2: 236 nulls
+  - Unnamed: 3: 3344 nulls
+  - Unnamed: 4: 2066 nulls
+  - Unnamed: 5: 661 nulls
+  - Unnamed: 6: 237 nulls
+  - Unnamed: 7: 2141 nulls
+  - Unnamed: 8: 1935 nulls
+  - Unnamed: 9: 237 nulls
+
+============================================================
+Analyzing: LISTS - Customers.xlsx
+============================================================
+
+Sheet: Customer Contact List
+Shape: (22, 7)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+  - Unnamed: 3: object
+  - Unnamed: 4: object
+  - Unnamed: 5: object
+  - Unnamed: 6: object
+
+First 3 rows:
+         10NetZero, Inc. Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4 Unnamed: 5 Unnamed: 6
+0  Customer Contact List        NaN        NaN        NaN        NaN        NaN        NaN
+1                    NaN        NaN        NaN        NaN        NaN        NaN        NaN
+2                    NaN        NaN        NaN        NaN        NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 20 nulls
+  - Unnamed: 1: 6 nulls
+  - Unnamed: 2: 21 nulls
+  - Unnamed: 3: 16 nulls
+  - Unnamed: 4: 15 nulls
+  - Unnamed: 5: 19 nulls
+  - Unnamed: 6: 19 nulls
+
+============================================================
+Analyzing: LISTS - Trial_balance.xlsx
+============================================================
+
+Sheet: Trial Balance
+Shape: (105, 3)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+
+First 3 rows:
+  10NetZero, Inc. Unnamed: 1 Unnamed: 2
+0   Trial Balance        NaN        NaN
+1       All Dates        NaN        NaN
+2             NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 5 nulls
+  - Unnamed: 1: 39 nulls
+  - Unnamed: 2: 71 nulls
+
+============================================================
+Analyzing: LISTS - Vendors.xlsx
+============================================================
+
+Sheet: Vendor Contact List
+Shape: (91, 7)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4', 'Unnamed: 5', 'Unnamed: 6']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+  - Unnamed: 2: object
+  - Unnamed: 3: object
+  - Unnamed: 4: object
+  - Unnamed: 5: object
+  - Unnamed: 6: object
+
+First 3 rows:
+       10NetZero, Inc. Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4 Unnamed: 5 Unnamed: 6
+0  Vendor Contact List        NaN        NaN        NaN        NaN        NaN        NaN
+1                  NaN        NaN        NaN        NaN        NaN        NaN        NaN
+2                  NaN        NaN        NaN        NaN        NaN        NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 89 nulls
+  - Unnamed: 1: 6 nulls
+  - Unnamed: 2: 89 nulls
+  - Unnamed: 3: 89 nulls
+  - Unnamed: 4: 80 nulls
+  - Unnamed: 5: 89 nulls
+  - Unnamed: 6: 90 nulls
+
+============================================================
+Analyzing: LISTS - Balance_sheet.xlsx
+============================================================
+
+Sheet: Balance Sheet
+Shape: (86, 2)
+
+Columns: ['10NetZero, Inc.', 'Unnamed: 1']
+
+Data Types:
+  - 10NetZero, Inc.: object
+  - Unnamed: 1: object
+
+First 3 rows:
+  10NetZero, Inc. Unnamed: 1
+0   Balance Sheet        NaN
+1       All Dates        NaN
+2             NaN        NaN
+
+Null values:
+  - 10NetZero, Inc.: 5 nulls
+  - Unnamed: 1: 25 nulls

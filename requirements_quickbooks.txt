@@ -1,0 +1,16 @@
+# QuickBooks Integration Requirements
+# Install with: pip install -r requirements_quickbooks.txt
+
+# Web framework for webhook server
+fastapi==0.104.1
+uvicorn==0.24.0
+
+# HTTP client for API calls
+httpx==0.25.1
+
+# Rich console output
+rich==13.6.0
+
+# Existing dependencies (if not already installed)
+python-dotenv==1.0.0
+supabase==2.0.3
