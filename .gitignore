@@ -100,3 +100,25 @@ ARCHITECTURE.md
 # DEVLOG System - Auto-generated files
 DEVLOG.md
 .devlog/
+
+# Archive directory (for old/documentation files)
+archive/
+
+# Temporary directories
+temp_migration/
+workers/
+
+# Company-specific data
+10nz_kb/
+
+# Cache and build directories
+.ruff_cache/
+__pycache__/
+.coverage
+htmlcov/
+
+# Aider files (already listed above but grouping here)
+.aider*
+
+# Local config files
+*.local.toml
