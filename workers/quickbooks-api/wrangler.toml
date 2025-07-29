@@ -1,0 +1,17 @@
+name = "quickbooks-api"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[env.production]
+route = { pattern = "10nz.tools/api/quickbooks/*", zone_name = "10nz.tools" }
+
+[env.production.vars]
+QB_ENVIRONMENT = "production"
+CORS_ORIGIN = "https://10nz.tools,https://10netzero.com"
+
+# These will be set as secrets
+# QB_CLIENT_ID = "set via wrangler secret"
+# QB_CLIENT_SECRET = "set via wrangler secret"
+# QB_WEBHOOK_TOKEN = "set via wrangler secret"
+# SUPABASE_URL = "set via wrangler secret"
+# SUPABASE_SERVICE_KEY = "set via wrangler secret"

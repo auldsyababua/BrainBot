@@ -26,8 +26,7 @@ app = FastAPI(title="QuickBooks Webhook Server")
 
 # Initialize Supabase client
 supabase: Client = create_client(
-    os.getenv("SUPABASE_URL"),
-    os.getenv("SUPABASE_SERVICE_KEY")
+    os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_SERVICE_KEY")
 )
 
 # QuickBooks configuration
@@ -51,50 +50,51 @@ def verify_webhook_signature(payload: str, signature: str) -> bool:
     if not QB_WEBHOOK_TOKEN:
         logger.error("QB_WEBHOOK_TOKEN not configured")
         return False
-    
+
     expected_signature = hmac.new(
-        QB_WEBHOOK_TOKEN.encode('utf-8'),
-        payload.encode('utf-8'),
-        hashlib.sha256
+        QB_WEBHOOK_TOKEN.encode("utf-8"), payload.encode("utf-8"), hashlib.sha256
     ).hexdigest()
-    
+
     return hmac.compare_digest(signature, expected_signature)
 
 
 @app.post("/webhooks/quickbooks")
 async def quickbooks_webhook(
-    request: Request,
-    intuit_signature: Optional[str] = Header(None)
+    request: Request, intuit_signature: Optional[str] = Header(None)
 ):
     """Handle QuickBooks webhook events"""
     try:
         # Get raw payload
         payload = await request.body()
-        payload_str = payload.decode('utf-8')
-        
+        payload_str = payload.decode("utf-8")
+
         # Verify signature
-        if intuit_signature and not verify_webhook_signature(payload_str, intuit_signature):
+        if intuit_signature and not verify_webhook_signature(
+            payload_str, intuit_signature
+        ):
             logger.warning("Invalid webhook signature")
             raise HTTPException(status_code=401, detail="Invalid signature")
-        
+
         # Parse webhook data
         webhook_data = json.loads(payload_str)
-        
+
         # Process events
         for event_notification in webhook_data.get("eventNotifications", []):
             realm_id = event_notification.get("realmId")
-            
-            for entity_event in event_notification.get("dataChangeEvent", {}).get("entities", []):
+
+            for entity_event in event_notification.get("dataChangeEvent", {}).get(
+                "entities", []
+            ):
                 await process_entity_event(
                     realm_id=realm_id,
                     entity_name=entity_event.get("name"),
                     entity_id=entity_event.get("id"),
                     operation=entity_event.get("operation"),
-                    last_updated=entity_event.get("lastUpdated")
+                    last_updated=entity_event.get("lastUpdated"),
                 )
-        
+
         return JSONResponse({"status": "success"})
-    
+
     except json.JSONDecodeError:
         logger.error("Invalid JSON in webhook payload")
         raise HTTPException(status_code=400, detail="Invalid JSON")
@@ -104,11 +104,7 @@ async def quickbooks_webhook(
 
 
 async def process_entity_event(
-    realm_id: str,
-    entity_name: str,
-    entity_id: str,
-    operation: str,
-    last_updated: str
+    realm_id: str, entity_name: str, entity_id: str, operation: str, last_updated: str
 ):
     """Process individual entity events from webhook"""
     try:
@@ -119,88 +115,114 @@ async def process_entity_event(
             "entity_id": entity_id,
             "operation": operation,
             "event_time": last_updated,
-            "processing_status": "processing"
+            "processing_status": "processing",
         }
-        
+
         # Store webhook event
-        result = supabase.table("quickbooks_webhook_events").insert(event_data).execute()
+        result = (
+            supabase.table("quickbooks_webhook_events").insert(event_data).execute()
+        )
         event_record_id = result.data[0]["id"]
-        
+
         # Get company by realm_id
-        company_result = supabase.table("companies").select("*").eq("quickbooks_realm_id", realm_id).execute()
+        company_result = (
+            supabase.table("companies")
+            .select("*")
+            .eq("quickbooks_realm_id", realm_id)
+            .execute()
+        )
         if not company_result.data:
             raise Exception(f"Company not found for realm_id: {realm_id}")
-        
+
         company = company_result.data[0]
-        
+
         # Get QuickBooks auth token
         auth_token = await get_valid_auth_token(company["id"])
         if not auth_token:
             raise Exception("No valid auth token available")
-        
+
         # Fetch entity data from QuickBooks
         entity_data = await fetch_quickbooks_entity(
             auth_token=auth_token,
             realm_id=realm_id,
             entity_name=entity_name,
-            entity_id=entity_id
+            entity_id=entity_id,
         )
-        
+
         # Sync to Supabase based on entity type
         await sync_entity_to_supabase(
             company_id=company["id"],
             entity_name=entity_name,
             entity_id=entity_id,
             entity_data=entity_data,
-            operation=operation
+            operation=operation,
         )
-        
+
         # Update webhook event status
-        supabase.table("quickbooks_webhook_events").update({
-            "processing_status": "completed",
-            "processed_at": datetime.utcnow().isoformat(),
-            "payload": entity_data
-        }).eq("id", event_record_id).execute()
-        
+        supabase.table("quickbooks_webhook_events").update(
+            {
+                "processing_status": "completed",
+                "processed_at": datetime.utcnow().isoformat(),
+                "payload": entity_data,
+            }
+        ).eq("id", event_record_id).execute()
+
     except Exception as e:
         logger.error(f"Error processing entity event: {e}")
         # Update webhook event with error
-        supabase.table("quickbooks_webhook_events").update({
-            "processing_status": "failed",
-            "error_message": str(e),
-            "processed_at": datetime.utcnow().isoformat()
-        }).eq("id", event_record_id).execute()
+        supabase.table("quickbooks_webhook_events").update(
+            {
+                "processing_status": "failed",
+                "error_message": str(e),
+                "processed_at": datetime.utcnow().isoformat(),
+            }
+        ).eq("id", event_record_id).execute()
 
 
 async def get_valid_auth_token(company_id: str) -> Optional[str]:
     """Get valid QuickBooks auth token, refreshing if necessary"""
     try:
         # Get current auth record
-        auth_result = supabase.table("quickbooks_auth").select("*").eq("company_id", company_id).eq("is_active", True).execute()
-        
+        auth_result = (
+            supabase.table("quickbooks_auth")
+            .select("*")
+            .eq("company_id", company_id)
+            .eq("is_active", True)
+            .execute()
+        )
+
         if not auth_result.data:
             return None
-        
+
         auth = auth_result.data[0]
-        
+
         # Check if token is expired
-        token_expires_at = datetime.fromisoformat(auth["token_expires_at"].replace('Z', '+00:00'))
-        if datetime.utcnow() >= token_expires_at - timedelta(minutes=5):  # Refresh 5 mins before expiry
+        token_expires_at = datetime.fromisoformat(
+            auth["token_expires_at"].replace("Z", "+00:00")
+        )
+        if datetime.utcnow() >= token_expires_at - timedelta(
+            minutes=5
+        ):  # Refresh 5 mins before expiry
             # Refresh token
             new_tokens = await refresh_quickbooks_token(auth["refresh_token"])
             if new_tokens:
                 # Update auth record
-                supabase.table("quickbooks_auth").update({
-                    "access_token": new_tokens["access_token"],
-                    "refresh_token": new_tokens["refresh_token"],
-                    "token_expires_at": (datetime.utcnow() + timedelta(seconds=new_tokens["expires_in"])).isoformat(),
-                    "updated_at": datetime.utcnow().isoformat()
-                }).eq("id", auth["id"]).execute()
-                
+                supabase.table("quickbooks_auth").update(
+                    {
+                        "access_token": new_tokens["access_token"],
+                        "refresh_token": new_tokens["refresh_token"],
+                        "token_expires_at": (
+                            datetime.utcnow()
+                            + timedelta(seconds=new_tokens["expires_in"])
+                        ).isoformat(),
+                        "updated_at": datetime.utcnow().isoformat(),
+                    }
+                ).eq("id", auth["id"]).execute()
+
                 return new_tokens["access_token"]
-        
+
         return auth["access_token"]
-    
+
     except Exception as e:
         logger.error(f"Error getting auth token: {e}")
         return None
@@ -212,30 +234,24 @@ async def refresh_quickbooks_token(refresh_token: str) -> Optional[Dict[str, Any
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{QB_AUTH_URL}/tokens/bearer",
-                data={
-                    "grant_type": "refresh_token",
-                    "refresh_token": refresh_token
-                },
+                data={"grant_type": "refresh_token", "refresh_token": refresh_token},
                 auth=(QB_CLIENT_ID, QB_CLIENT_SECRET),
-                headers={"Accept": "application/json"}
+                headers={"Accept": "application/json"},
             )
-            
+
             if response.status_code == 200:
                 return response.json()
             else:
                 logger.error(f"Token refresh failed: {response.text}")
                 return None
-    
+
     except Exception as e:
         logger.error(f"Error refreshing token: {e}")
         return None
 
 
 async def fetch_quickbooks_entity(
-    auth_token: str,
-    realm_id: str,
-    entity_name: str,
-    entity_id: str
+    auth_token: str, realm_id: str, entity_name: str, entity_id: str
 ) -> Dict[str, Any]:
     """Fetch entity data from QuickBooks API"""
     try:
@@ -250,26 +266,26 @@ async def fetch_quickbooks_entity(
             "JournalEntry": "journalentry",
             "Payment": "payment",
             "Deposit": "deposit",
-            "Transfer": "transfer"
+            "Transfer": "transfer",
         }
-        
+
         endpoint = entity_endpoints.get(entity_name, entity_name.lower())
-        
+
         async with httpx.AsyncClient() as client:
             response = await client.get(
                 f"{QB_API_URL}/v3/company/{realm_id}/{endpoint}/{entity_id}",
                 headers={
                     "Authorization": f"Bearer {auth_token}",
-                    "Accept": "application/json"
-                }
+                    "Accept": "application/json",
+                },
             )
-            
+
             if response.status_code == 200:
                 return response.json()
             else:
                 logger.error(f"Failed to fetch entity: {response.text}")
                 raise Exception(f"Failed to fetch {entity_name} {entity_id}")
-    
+
     except Exception as e:
         logger.error(f"Error fetching QuickBooks entity: {e}")
         raise
@@ -280,13 +296,13 @@ async def sync_entity_to_supabase(
     entity_name: str,
     entity_id: str,
     entity_data: Dict[str, Any],
-    operation: str
+    operation: str,
 ):
     """Sync QuickBooks entity to Supabase"""
     try:
         # Extract the actual entity data
         entity = entity_data.get(entity_name, {})
-        
+
         if operation == "Delete":
             await handle_entity_deletion(company_id, entity_name, entity_id)
         else:
@@ -303,7 +319,7 @@ async def sync_entity_to_supabase(
                 await sync_journal_entry(company_id, entity)
             else:
                 logger.warning(f"Unhandled entity type: {entity_name}")
-    
+
     except Exception as e:
         logger.error(f"Error syncing entity to Supabase: {e}")
         raise
@@ -321,20 +337,28 @@ async def sync_customer(company_id: str, customer: Dict[str, Any]):
             "phone": customer.get("PrimaryPhone", {}).get("FreeFormNumber"),
             "is_active": customer.get("Active", True),
             "quickbooks_sync_token": customer.get("SyncToken"),
-            "quickbooks_last_sync": datetime.utcnow().isoformat()
+            "quickbooks_last_sync": datetime.utcnow().isoformat(),
         }
-        
+
         # Check if customer exists
-        existing = supabase.table("accounting_customers").select("id").eq("company_id", company_id).eq("quickbooks_customer_id", customer["Id"]).execute()
-        
+        existing = (
+            supabase.table("accounting_customers")
+            .select("id")
+            .eq("company_id", company_id)
+            .eq("quickbooks_customer_id", customer["Id"])
+            .execute()
+        )
+
         if existing.data:
             # Update existing
-            supabase.table("accounting_customers").update(customer_data).eq("id", existing.data[0]["id"]).execute()
+            supabase.table("accounting_customers").update(customer_data).eq(
+                "id", existing.data[0]["id"]
+            ).execute()
         else:
             # Create new
             customer_data["customer_id_display"] = f"CUST-{customer['Id']}"
             supabase.table("accounting_customers").insert(customer_data).execute()
-        
+
         # Update sync mapping
         await update_sync_mapping(
             company_id=company_id,
@@ -342,9 +366,9 @@ async def sync_customer(company_id: str, customer: Dict[str, Any]):
             local_id=existing.data[0]["id"] if existing.data else None,
             quickbooks_entity_type="Customer",
             quickbooks_id=customer["Id"],
-            sync_token=customer.get("SyncToken")
+            sync_token=customer.get("SyncToken"),
         )
-    
+
     except Exception as e:
         logger.error(f"Error syncing customer: {e}")
         raise
@@ -363,27 +387,35 @@ async def sync_account(company_id: str, account: Dict[str, Any]):
             "is_active": account.get("Active", True),
             "description": account.get("Description"),
             "quickbooks_sync_token": account.get("SyncToken"),
-            "quickbooks_last_sync": datetime.utcnow().isoformat()
+            "quickbooks_last_sync": datetime.utcnow().isoformat(),
         }
-        
+
         # Map QuickBooks classification to normal balance
         classification = account.get("Classification")
         if classification in ["Asset", "Expense"]:
             account_data["normal_balance"] = "Debit"
         else:
             account_data["normal_balance"] = "Credit"
-        
+
         # Check if account exists
-        existing = supabase.table("chart_of_accounts").select("id").eq("company_id", company_id).eq("quickbooks_account_id", account["Id"]).execute()
-        
+        existing = (
+            supabase.table("chart_of_accounts")
+            .select("id")
+            .eq("company_id", company_id)
+            .eq("quickbooks_account_id", account["Id"])
+            .execute()
+        )
+
         if existing.data:
             # Update existing
-            supabase.table("chart_of_accounts").update(account_data).eq("id", existing.data[0]["id"]).execute()
+            supabase.table("chart_of_accounts").update(account_data).eq(
+                "id", existing.data[0]["id"]
+            ).execute()
         else:
             # Create new
             account_data["account_id_display"] = f"ACCT-{account['Id']}"
             supabase.table("chart_of_accounts").insert(account_data).execute()
-    
+
     except Exception as e:
         logger.error(f"Error syncing account: {e}")
         raise
@@ -406,9 +438,9 @@ def map_quickbooks_account_type(qb_type: str) -> str:
         "Other Income": "Income",
         "Cost of Goods Sold": "Expense",
         "Expense": "Expense",
-        "Other Expense": "Expense"
+        "Other Expense": "Expense",
     }
-    
+
     return type_mapping.get(qb_type, "Asset")
 
 
@@ -425,7 +457,7 @@ async def update_sync_mapping(
     local_id: str,
     quickbooks_entity_type: str,
     quickbooks_id: str,
-    sync_token: str
+    sync_token: str,
 ):
     """Update or create sync mapping record"""
     try:
@@ -436,17 +468,26 @@ async def update_sync_mapping(
             "quickbooks_entity_type": quickbooks_entity_type,
             "quickbooks_id": quickbooks_id,
             "quickbooks_sync_token": sync_token,
-            "last_synced_at": datetime.utcnow().isoformat()
+            "last_synced_at": datetime.utcnow().isoformat(),
         }
-        
+
         # Try to update existing mapping
-        existing = supabase.table("quickbooks_sync_mapping").select("id").eq("company_id", company_id).eq("quickbooks_entity_type", quickbooks_entity_type).eq("quickbooks_id", quickbooks_id).execute()
-        
+        existing = (
+            supabase.table("quickbooks_sync_mapping")
+            .select("id")
+            .eq("company_id", company_id)
+            .eq("quickbooks_entity_type", quickbooks_entity_type)
+            .eq("quickbooks_id", quickbooks_id)
+            .execute()
+        )
+
         if existing.data:
-            supabase.table("quickbooks_sync_mapping").update(mapping_data).eq("id", existing.data[0]["id"]).execute()
+            supabase.table("quickbooks_sync_mapping").update(mapping_data).eq(
+                "id", existing.data[0]["id"]
+            ).execute()
         else:
             supabase.table("quickbooks_sync_mapping").insert(mapping_data).execute()
-    
+
     except Exception as e:
         logger.error(f"Error updating sync mapping: {e}")
 
@@ -457,7 +498,7 @@ async def quickbooks_auth(company_id: str):
     """Initiate QuickBooks OAuth flow"""
     # Store company_id in session or state parameter
     state = f"{company_id}:{os.urandom(16).hex()}"
-    
+
     auth_url = (
         f"{QB_AUTH_URL}/authorize?"
         f"client_id={QB_CLIENT_ID}&"
@@ -466,7 +507,7 @@ async def quickbooks_auth(company_id: str):
         f"redirect_uri={QB_REDIRECT_URI}&"
         f"state={state}"
     )
-    
+
     return JSONResponse({"auth_url": auth_url})
 
 
@@ -475,8 +516,8 @@ async def quickbooks_callback(code: str, state: str, realm_id: str):
     """Handle QuickBooks OAuth callback"""
     try:
         # Extract company_id from state
-        company_id = state.split(':')[0]
-        
+        company_id = state.split(":")[0]
+
         # Exchange code for tokens
         async with httpx.AsyncClient() as client:
             response = await client.post(
@@ -484,43 +525,47 @@ async def quickbooks_callback(code: str, state: str, realm_id: str):
                 data={
                     "grant_type": "authorization_code",
                     "code": code,
-                    "redirect_uri": QB_REDIRECT_URI
+                    "redirect_uri": QB_REDIRECT_URI,
                 },
                 auth=(QB_CLIENT_ID, QB_CLIENT_SECRET),
-                headers={"Accept": "application/json"}
+                headers={"Accept": "application/json"},
             )
-            
+
             if response.status_code != 200:
-                raise HTTPException(status_code=400, detail="Failed to exchange code for tokens")
-            
+                raise HTTPException(
+                    status_code=400, detail="Failed to exchange code for tokens"
+                )
+
             tokens = response.json()
-        
+
         # Store tokens in database
         auth_data = {
             "company_id": company_id,
             "realm_id": realm_id,
             "access_token": tokens["access_token"],
             "refresh_token": tokens["refresh_token"],
-            "token_expires_at": (datetime.utcnow() + timedelta(seconds=tokens["expires_in"])).isoformat()
+            "token_expires_at": (
+                datetime.utcnow() + timedelta(seconds=tokens["expires_in"])
+            ).isoformat(),
         }
-        
+
         # Deactivate any existing auth for this company
-        supabase.table("quickbooks_auth").update({"is_active": False}).eq("company_id", company_id).execute()
-        
+        supabase.table("quickbooks_auth").update({"is_active": False}).eq(
+            "company_id", company_id
+        ).execute()
+
         # Insert new auth record
         supabase.table("quickbooks_auth").insert(auth_data).execute()
-        
+
         # Update company with realm_id
-        supabase.table("companies").update({
-            "quickbooks_realm_id": realm_id,
-            "quickbooks_sync_enabled": True
-        }).eq("id", company_id).execute()
-        
-        return JSONResponse({
-            "status": "success",
-            "message": "QuickBooks connected successfully"
-        })
-    
+        supabase.table("companies").update(
+            {"quickbooks_realm_id": realm_id, "quickbooks_sync_enabled": True}
+        ).eq("id", company_id).execute()
+
+        return JSONResponse(
+            {"status": "success", "message": "QuickBooks connected successfully"}
+        )
+
     except Exception as e:
         logger.error(f"OAuth callback error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -528,4 +573,5 @@ async def quickbooks_callback(code: str, state: str, realm_id: str):
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)

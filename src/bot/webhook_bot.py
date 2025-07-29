@@ -166,7 +166,7 @@ class WebhookTelegramBot:
                 logger.info(
                     f"📥 Received webhook update: {req.get('message', {}).get('text', 'Non-text update')}"
                 )
-                
+
                 logger.info("🔧 Creating Update object from JSON")
                 # Create Update object
                 update = Update.de_json(req, self.application.bot)

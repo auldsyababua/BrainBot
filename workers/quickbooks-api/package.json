@@ -1,0 +1,16 @@
+{
+  "name": "quickbooks-api-worker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy --env production",
+    "dev": "wrangler dev",
+    "tail": "wrangler tail --env production"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}

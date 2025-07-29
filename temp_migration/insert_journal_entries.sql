@@ -1,0 +1,25400 @@
+-- Insert Journal Entries
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0001', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-08-02',
+    'Journal Entry',
+    'Miners for first HashHut',
+    80320.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000001', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0001'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1410'),
+    'Miners for first HashHut',
+    80320.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0002', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-08-02',
+    'Journal Entry',
+    'Miners for HashHut',
+    51792.48, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000002', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0002'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1410'),
+    'Miners for HashHut',
+    51792.48, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0003', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-09-30',
+    'Deposit',
+    'Book Transfer Credit BiO: Scott Aulds Cathy Aulds Richmond TX 77406 US Tm:',
+    100000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000003', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0003'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Book Transfer Credit BiO: Scott Aulds Cathy Aulds Richmond TX 77406 US Tm:',
+    100000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0004', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-10-04',
+    'Expense',
+    'Online US Dollar Inti Wire Fee',
+    0.0, 33005.35, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000004', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0004'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online US Dollar Inti Wire Fee',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000005', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0004'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Ctcorporation Orig ID:0000445668 Deso Dale:211004 CO Entry Descr:Legalserv Sec:Tel Trace#:021000025625203 Eed:211004 Ind ID:3211955 Ind Name:Joel *Fulford',
+    1060.71, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000006', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0004'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Ctcorporation Orig ID:0000445668 Deso Dale:211004 CO Entry Descr:Legalserv Sec:Tel Trace#:021000025625202 Eed:211004 Ind ID:3211954 Ind Name:Joel *Fulford',
+    2346.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000007', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0004'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '10/04 Online International Wire Transfer Via: Bank of America, N.A./0959 A/C: The Toronto
+Dominion Bank Toronto 1, Canada Ben: Upstream Data Inc Lloydminster Ab T9V2X1 CA Ref: Invoice Payment Ssh: 0273321 Tm: 3051981277Es',
+    29557.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0005', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-10-05',
+    'Expense',
+    '10/04 Basic Online Payroll Payment 5305277363 To ####0870 Joel Refund',
+    0.0, 12912.5, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000008', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0005'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '10/04 Basic Online Payroll Payment 5305277363 To ####0870 Joel Refund',
+    12912.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0006', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-10-29',
+    'Deposit',
+    'Book Transfer Credit B/O: Shawn M Leary OR Jilllan Marie Saint Johns FL 32269-7370 US',
+    100000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000009', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0006'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Book Transfer Credit B/O: Shawn M Leary OR Jilllan Marie Saint Johns FL 32269-7370 US',
+    100000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0007', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-11-08',
+    'Expense',
+    '11/05 Basic Online Payroll Payment 5309630262 To ####0870 loan to Joel',
+    0.0, 5688.58, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000010', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0007'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '11/05 Basic Online Payroll Payment 5309630262 To ####0870 loan to Joel',
+    5688.58, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0008', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-11-10',
+    'Expense',
+    'Expense - 2021-11-10',
+    0.0, 6.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000011', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0008'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    6.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0009', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-01',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 211.65, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000012', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0009'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000013', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0009'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID 9864031004 Dase Date 112921 CO Entry Descr:Payment Sec:PPD Trace#·031100205265153 Ee<J-211201 Ind ID:',
+    186.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0010', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-08',
+    'Expense',
+    '12/07 Basic Online Payroll Payment 5313589784 To Loan to Joel Fulford',
+    0.0, 4500.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000014', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0010'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '12/07 Basic Online Payroll Payment 5313589784 To Loan to Joel Fulford',
+    4500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0011', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-09',
+    'Expense',
+    'Check No. 8413 - Pay to The Order Of: United Oilfield Services, Inc',
+    0.0, 6662.55, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000015', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0011'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Check No. 8413 - Pay to The Order Of: United Oilfield Services, Inc',
+    5875.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000016', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0011'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Check No. 9758 - Pay to The Order Of: United Oilfield Services, Inc',
+    787.55, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0012', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-10',
+    'Expense',
+    '12/10 Online Domestic Wire Transfer Via: Central Hous/113001077 A/C: Tric Resources Houston TX 77024 US Ref: October -21 Form 10Netzero, Inc lmad: 1210B1Qgc06C017447 
+Tm: 3417771344Es',
+    0.0, 1922.2, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000017', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0012'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '12/10 Online Domestic Wire Transfer Via: Central Hous/113001077 A/C: Tric Resources Houston TX 77024 US Ref: October -21 Form 10Netzero, Inc lmad: 1210B1Qgc06C017447 
+Tm: 3417771344Es',
+    1897.2, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000018', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0012'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Domestic Wire Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0013', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-13',
+    'Expense',
+    'Check No. 9759 - Pay to The Order Of: W&W Consultant Services Inc.',
+    0.0, 17250.25, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000019', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0013'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Check No. 9759 - Pay to The Order Of: W&W Consultant Services Inc.',
+    3749.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000020', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0013'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Check No. 9760 - Pay to The Order Of: Mathew L. Benson, P.C.',
+    2701.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000021', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0013'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Advanced Crypto Orig ID.0000335892 Desc Date 211213 CO Entry Descr:8554693729Sec:Web Trace#:021000025980127 Eed:211213 Ind ID 3686170 
+Ind Name:Joel ''Fulford',
+    10800.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0014', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-28',
+    'Expense',
+    '12/27 Basic Online Payroll Payment 5316257389 To Loan to Joel Fulford',
+    0.0, 7664.26, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000022', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0014'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '12/27 Basic Online Payroll Payment 5316257389 To Loan to Joel Fulford',
+    2568.17, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000023', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0014'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '12/27 Basic Online Payroll Payment 5316270420 To ####0870 Loan to Joel Fulford',
+    5096.09, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0015', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-31',
+    'Journal Entry',
+    '6% annum on $12,912.50 Loan from S. Bryan Aulds II',
+    0.0, 407.54, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000024', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0015'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '6% annum on $12,912.50 Loan from S. Bryan Aulds II',
+    407.54, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0016', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-31',
+    'Journal Entry',
+    '6% annum on $12,912.50 Loan from Colin Aulds',
+    0.0, 2400.53, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000025', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0016'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '6% annum on $12,912.50 Loan from Colin Aulds',
+    2400.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0017', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-31',
+    'Journal Entry',
+    'Journal Entry - 2021-12-31',
+    0.0, 4662.22, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000026', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0017'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '',
+    4662.22, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0018', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-31',
+    'Journal Entry',
+    'Shwan Leary $100K - 5.46% annum',
+    0.0, 2870.64, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000027', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0018'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    'Shwan Leary $100K - 5.46% annum',
+    2870.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0019', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-31',
+    'Journal Entry',
+    'Scott Aulds Sr Loan $100,000 - Interest accrual on 5.54% annum',
+    0.0, 2911.8, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000028', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0019'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    'Scott Aulds Sr Loan $100,000 - Interest accrual on 5.54% annum',
+    2911.8, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0020', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-31',
+    'Journal Entry',
+    'To record 2021 current year depreciation expense for Hashhut#1',
+    34917.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000029', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0020'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-8000'),
+    'To record 2021 current year depreciation expense for Hashhut#1',
+    34917.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0021', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2021-12-31',
+    'Journal Entry',
+    'To record initial purchase of common stock',
+    360.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000030', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0021'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2610'),
+    'To record initial purchase of common stock',
+    360.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0022', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-01-03',
+    'Expense',
+    '01/03 Online Domestic Wire Transfer Via: Central Hous/113001077 NC: Trio Resources Houston TX 77024 US Ref: October -21 !mad: 0103B1Qgc06C003446 Trn: 3164812003Es',
+    0.0, 16632.91, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000031', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0022'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '01/03 Online Domestic Wire Transfer Via: Central Hous/113001077 NC: Trio Resources Houston TX 77024 US Ref: October -21 !mad: 0103B1Qgc06C003446 Trn: 3164812003Es',
+    5492.08, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000032', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0022'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Domestic Wire Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000033', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0022'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Desc Dale:123021 CO Entry Descr:Payment Soo:PPD Trace#:031100202787423 Eed:220103 Ind ID: Ind Name:Joel Fulford Trn: 0032787423Tc',
+    115.83, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000034', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0022'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '01/02 Online ACH Payment 5317058761 To Austinlawyers ( ####0096)',
+    3500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000035', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0022'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '01/02 Online ACH Payment 5317058824 To Austinlawyers ( ####0096)',
+    7475.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000036', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0022'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Paymenls Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0023', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-01-05',
+    'Expense',
+    '01/05 Withdrawal - Joel Fulford - Loan',
+    0.0, 9000.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000037', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0023'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '01/05 Withdrawal - Joel Fulford - Loan',
+    9000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0024', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-01-06',
+    'Expense',
+    'Check No. 9761 - Pay to The Order Of: United Oilfield Services, Inc',
+    0.0, 6054.23, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000038', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0024'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Check No. 9761 - Pay to The Order Of: United Oilfield Services, Inc',
+    6054.23, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0025', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-01-18',
+    'Expense',
+    '01/16 Online ACH Payment 5318843176 To Advanced Crypto services',
+    0.0, 6297.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000039', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0025'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '01/16 Online ACH Payment 5318843176 To Advanced Crypto services',
+    6297.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0026', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-02-01',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 140.82999999999998, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000040', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0026'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000041', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0026'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Desc Date:013022 CO Entry Descr:Payment Sec:PPD Traceil:031100206015826 Eed:220201 Ind ID: Ind Name:Joel Fulford Trn: 0326015826Tc',
+    115.83, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0027', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-02-08',
+    'Expense',
+    '02/07 Basic Online Payroll Payment 5321551953 To ####0870 Loan to Joel Fulford',
+    0.0, 1764.98, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000042', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0027'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '02/07 Basic Online Payroll Payment 5321551953 To ####0870 Loan to Joel Fulford',
+    982.61, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000043', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0027'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '02/07 Basic Online Payroll Payment 5321551946 To ####0870 Loan to Joel Fulford',
+    782.37, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0028', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-02-18',
+    'Expense',
+    '02/18 Online ACH Paymen15323178663 To Martinlg ( ######7156)',
+    0.0, 5000.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000044', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0028'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '02/18 Online ACH Paymen15323178663 To Martinlg ( ######7156)',
+    5000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0029', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-02-22',
+    'Expense',
+    'Online Domestic Wire Fee',
+    0.0, 4993.4, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000045', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0029'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Domestic Wire Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000046', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0029'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '02/22 Online Domestic Wire Transfer Via: Central Hous/113001077 NC: Trio Resources Houston TX 77024 US lmad: 0222B1Qgc06C005863 Tm: 3294552053Es',
+    4968.4, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0030', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-02-28',
+    'Expense',
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Deso Date:220226 CO Entry Descr:Sale Sec:CCD Trace#:021000022279070 Eed:220228 Ind ID: 
+Ind Name:10Netzero Inc Tm: 0592279070Tc',
+    0.0, 285.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000047', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0030'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Deso Date:220226 CO Entry Descr:Sale Sec:CCD Trace#:021000022279070 Eed:220228 Ind ID: 
+Ind Name:10Netzero Inc Tm: 0592279070Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0031', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-03-01',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 140.82999999999998, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000048', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0031'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000049', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0031'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Dase Data:022722 CO Entry Descr:Payment Sec:PPD Trace#:0311002036054 t 4 Eed:220301 Ind ID: Ind Nam0:Jo0I Futtord Trn: 0603605414Tc',
+    115.83, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0032', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-03-02',
+    'Expense',
+    'Check No. 9763 - Pay to The Order Of: United Oilfield Services, Inc',
+    0.0, 12040.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000050', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0032'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Check No. 9763 - Pay to The Order Of: United Oilfield Services, Inc',
+    725.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000051', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0032'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Check No. 9764 - Pay to The Order Of: United Oilfield Services, Inc',
+    400.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000052', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0032'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Check No. 9762',
+    3515.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000053', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0032'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Advanced Crypto Orig ID:0000335892 Deso Data:220302 CO Entry Descr:8554693729Sec:Web Traoa#:021000020713908 Eed:220302 Ind ID:2487473 
+Ind Name:Joel ''Futtord',
+    7400.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0033', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-03-08',
+    'Expense',
+    '03/08 Online ACH Payment 5325787543 To Oil ( #####7765)',
+    0.0, 2736.25, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000054', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0033'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '03/08 Online ACH Payment 5325787543 To Oil ( #####7765)',
+    2736.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0034', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-03-18',
+    'Expense',
+    'Orig CO Nama:Unchainad Capita Orig ID:814173373 Deso Date:Mar 18 CO Entry Desor:Conclerge Sec:CCD Traoe#:071005255855062 Eed:220318 Ind ID:COncierge Ind Nama:Joel Futtord Trn: 0775855062Tc',
+    0.0, 2950.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000055', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0034'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Nama:Unchainad Capita Orig ID:814173373 Deso Date:Mar 18 CO Entry Desor:Conclerge Sec:CCD Traoe#:071005255855062 Eed:220318 Ind ID:COncierge Ind Nama:Joel Futtord Trn: 0775855062Tc',
+    2950.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0035', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-03-29',
+    'Expense',
+    'Orig CO Nama:Bright Line Busi Orig ID:9215986202 Deso Data:220329 CO Entry Descr:Sale Sec:CCD Trace#:021000024455651 Eed:220329 Ind ID: 
+Ind Name:10Netzaro Inc Trn: 0884455651Tc',
+    0.0, 285.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000056', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0035'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Nama:Bright Line Busi Orig ID:9215986202 Deso Data:220329 CO Entry Descr:Sale Sec:CCD Trace#:021000024455651 Eed:220329 Ind ID: 
+Ind Name:10Netzaro Inc Trn: 0884455651Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0036', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-03-31',
+    'Expense',
+    'Orig CO Name:Att Orig ID:9864031004 Dase Date:033022 CO Entry Dascr:Paymen1 Sec:PPD Trace#:031100209284810 Ead:220331 Ind ID: Ind Nama:Joel Fulford Trn: 0909284810Tc',
+    0.0, 115.83, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000057', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0036'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Dase Date:033022 CO Entry Dascr:Paymen1 Sec:PPD Trace#:031100209284810 Ead:220331 Ind ID: Ind Nama:Joel Fulford Trn: 0909284810Tc',
+    115.83, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0037', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-04-01',
+    'Expense',
+    'Expense - 2022-04-01',
+    0.0, 25.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000058', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0037'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0038', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-04-16',
+    'Deposit',
+    'Deposti: 10 Net Zero (Colin Aulds - Loan) *7668578771',
+    100000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000059', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0038'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Deposti: 10 Net Zero (Colin Aulds - Loan) *7668578771',
+    100000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0039', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-04-20',
+    'Expense',
+    '04/20 Online Domestic Wire Transfer Via: Central Hous/113001077 A/C: Tric Resources Houston TX 77024 US Ref: January & February - 22 lmad: 0420B1Qgc05C001879 Tm: 303527211OEs',
+    0.0, 9290.32, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000060', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0039'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '04/20 Online Domestic Wire Transfer Via: Central Hous/113001077 A/C: Tric Resources Houston TX 77024 US Ref: January & February - 22 lmad: 0420B1Qgc05C001879 Tm: 303527211OEs',
+    9265.32, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000061', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0039'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0040', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-04-25',
+    'Expense',
+    '04/25 Online ACH Payment 5332437579 To United OFS { #####2100)',
+    0.0, 1709.69, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000062', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0040'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '04/25 Online ACH Payment 5332437579 To United OFS { #####2100)',
+    1709.69, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0041', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-04-28',
+    'Expense',
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Deso Date:220428 CO Entry Descr:Sale Sec:CCD Trace#:021000026011550 Eed:220428 Ind ID: 
+Ind Name:10Netzero Inc Tm: 1186011550Tc',
+    0.0, 285.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000063', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0041'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Deso Date:220428 CO Entry Descr:Sale Sec:CCD Trace#:021000026011550 Eed:220428 Ind ID: 
+Ind Name:10Netzero Inc Tm: 1186011550Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0042', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-05-02',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 140.84, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000064', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0042'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000065', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0042'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Deso Date:043022 CO Entry Descr:Payment Sec:PPD Traoeil:031100200476508 Eed:220502 Ind ID: Ind Name:Joel FuHord Tm: 1220476508Tc',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0043', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-05-10',
+    'Expense',
+    '05/10 Online ACH Payment 5334795757 To Unchained ( #############7592)',
+    0.0, 250.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000066', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0043'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '05/10 Online ACH Payment 5334795757 To Unchained ( #############7592)',
+    250.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0044', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-05-16',
+    'Expense',
+    '05/16 Online ACH Payment 5335649287 To Warehouserack ( i/####111990)',
+    0.0, 1542.56, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000067', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0044'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '05/16 Online ACH Payment 5335649287 To Warehouserack ( i/####111990)',
+    1542.56, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0045', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-05-25',
+    'Expense',
+    'Online US Dollar Intl Wire Fee',
+    0.0, 10040.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000068', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0045'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online US Dollar Intl Wire Fee',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000069', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0045'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '05/25 Online International Wire Transfer A/C: Canadian Imperial Bank of Commerce Toronlo On M5L 1-A2 CA Ben:/5008579 Maarschalk Valuations Inc Aef:/Lmpd/Services Rendered Consultancyexpenses Tm: 3457682145Es',
+    10000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0046', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-05-31',
+    'Expense',
+    'Orig CO Name:Att Orig ID:9864031004 Deso Date:053022 CO Entry Descr:Payment Sec:PPD Tracel/:031100202647727 Eed:220531 Ind ID: Ind Name:Joel Fultord Trn: 1512647727Tc',
+    0.0, 400.84000000000003, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000070', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0046'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Deso Date:053022 CO Entry Descr:Payment Sec:PPD Tracel/:031100202647727 Eed:220531 Ind ID: Ind Name:Joel Fultord Trn: 1512647727Tc',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000071', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0046'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '05/31 Orig CO Name:Bright Line Busi Orig ID:9215986202 Deso Dale:220529 CO Entry Descr:Sale Sec:CCD Traoe#:021000025292904 Eed:220531 Ind ID: Ind Name:10Netzero Inc Tm: 1515292904Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0047', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-06-01',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 25.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000072', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0047'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0048', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-06-23',
+    'Expense',
+    '06/22 Basia Online Payroll Payment 5340786668 To ifffffl/0870 Loan to Joel Fulford',
+    0.0, 3548.45, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000073', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0048'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '06/22 Basia Online Payroll Payment 5340786668 To ifffffl/0870 Loan to Joel Fulford',
+    2960.14, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000074', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0048'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '06/22 Basic Online Payroll Payment 5340773000 To #111/#0870 Loan to Joel Fulford',
+    588.31, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0049', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-06-24',
+    'Expense',
+    '06/23 Baslo Online Payroll Payment 5340880809 To #lt##0870 Loan to Joel Fulford',
+    0.0, 2153.63, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000075', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0049'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '06/23 Baslo Online Payroll Payment 5340880809 To #lt##0870 Loan to Joel Fulford',
+    2153.63, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0050', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-06-27',
+    'Expense',
+    'Online Domestic Wire Fee',
+    0.0, 14712.49, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000076', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0050'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Domestic Wire Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000077', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0050'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '06/27 Online Domestic Wire Transfer Via: Central Hous/113001077 A/C: Tri C Resources Houston TX 77024 US Ref: March-April, 2022 Gas Sales',
+    8704.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000078', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0050'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '06/27 Online lntemational Wire Transfer A/0: Foreign Cur Bus Acct Bk 1 Columbus Newark De 197132107 US Org: 00000000766857871 10Netzoro, Inc. Ben:/0030112 Rwt Growth Inc Ref; Invoice 1229',
+    5983.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0051', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-06-28',
+    'Expense',
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Desc Date:220628 CO Entry Descr:Sale Sec:CCD Trace#:021000026915285 Eed:220628 Ind ID:
+Ind Name:10Nelzero Inc Trn: 1796915285Tc',
+    0.0, 285.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000079', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0051'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Desc Date:220628 CO Entry Descr:Sale Sec:CCD Trace#:021000026915285 Eed:220628 Ind ID:
+Ind Name:10Nelzero Inc Trn: 1796915285Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0052', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-06-30',
+    'Expense',
+    'Orig CO Name:Att Orig ID:9864031004 Dase Date:062922 CO Entry Descr:Payment Sec:PPD Trace/l:031100207158731 Eed:220630 Ind ID: Ind Name:Joel Futtord Trn: 1817158731Tc',
+    0.0, 115.84, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000080', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0052'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Dase Date:062922 CO Entry Descr:Payment Sec:PPD Trace/l:031100207158731 Eed:220630 Ind ID: Ind Name:Joel Futtord Trn: 1817158731Tc',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0053', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-07-01',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 25.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000081', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0053'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0054', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-07-05',
+    'Expense',
+    '07/05 Online ACH Payment 5342575612 To Martlnlg ( ######7156)',
+    0.0, 12630.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000082', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0054'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '07/05 Online ACH Payment 5342575612 To Martlnlg ( ######7156)',
+    12630.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0055', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-07-11',
+    'Expense',
+    '07/11 Online ACH Payment 5343434675 To Wwconsultlng (_###1773)',
+    0.0, 2100.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000083', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0055'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '07/11 Online ACH Payment 5343434675 To Wwconsultlng (_###1773)',
+    2100.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0056', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-07-29',
+    'Expense',
+    'Orig co Name:Brlght Line Busl Orig ID:9215986202 Deso Date:220729 co Entry
+Dascr:Sala Sac:CCD Traca#:021000021851095 Eed:220729 Ind ID:
+Ind Name:10Netzero Inc Trn: 2101851095Tc',
+    0.0, 285.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000084', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0056'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig co Name:Brlght Line Busl Orig ID:9215986202 Deso Date:220729 co Entry
+Dascr:Sala Sac:CCD Traca#:021000021851095 Eed:220729 Ind ID:
+Ind Name:10Netzero Inc Trn: 2101851095Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0057', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-08-01',
+    'Expense',
+    'Orig CO Name:Att Orig ID:9864031004 Dase Date.073022 CO Entry Descr:Payment Sec:PPD Trace/I 031100205035566 Eed 220801 Ind ID 
+Ind Name:Joel Futtord Trn: 2135035566To',
+    0.0, 140.84, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000085', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0057'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Dase Date.073022 CO Entry Descr:Payment Sec:PPD Trace/I 031100205035566 Eed 220801 Ind ID 
+Ind Name:Joel Futtord Trn: 2135035566To',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000086', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0057'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fae',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0058', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-08-12',
+    'Expense',
+    'Online Domestic Wire Fee',
+    0.0, 6596.8, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000087', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0058'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Domestic Wire Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000088', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0058'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '08/12 Online Domestic Wire Transfer Via: Central Hous/113001077 /1/C: Trl C Resources Houston TX 77024 US Ref: May- 22 Gas Sales',
+    6571.8, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0059', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-08-19',
+    'Expense',
+    'Online Domestic Wire Fee',
+    0.0, 7871.61, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000089', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0059'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Domestic Wire Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000090', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0059'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '08/19 Online Domestic Wire Transfer Via: Central Hous/113001077 /1/C: Trio Resources',
+    7846.61, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0060', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-08-22',
+    'Expense',
+    '08/19 Basic Online Payroll Payment 5349173717 To ####0870 Loan to Joel Fulford',
+    0.0, 1294.54, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000091', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0060'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '08/19 Basic Online Payroll Payment 5349173717 To ####0870 Loan to Joel Fulford',
+    1294.54, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0061', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-08-29',
+    'Expense',
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Deso Date:220829 CO Entry Descr:Sale Sec:CCD Trace#:021000028244185 Eed:220829 Ind ID: Ind Name:10Netzero Inc Tm: 2416244165To',
+    0.0, 15285.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000092', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0061'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Deso Date:220829 CO Entry Descr:Sale Sec:CCD Trace#:021000028244185 Eed:220829 Ind ID: Ind Name:10Netzero Inc Tm: 2416244165To',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000093', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0061'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '08/28 Same-Day ACH Payroll Payment 5350148912 To ####0870 Loan to Joel Fulford',
+    15000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0062', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-08-31',
+    'Expense',
+    'Orig CO Name:Att Orig ID:9864031004 Dase Date:083022 CO Entry Descr:Payment Sec:PPD Traoel/:031100201905899 Eed:220831 Ind ID: Ind Name:Joel Futtord Trn: 2431905899Tc',
+    0.0, 115.84, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000094', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0062'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Dase Date:083022 CO Entry Descr:Payment Sec:PPD Traoel/:031100201905899 Eed:220831 Ind ID: Ind Name:Joel Futtord Trn: 2431905899Tc',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0063', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-09-01',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 50.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000095', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0063'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000096', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0063'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Rip/Same Day - High Value',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0064', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-09-12',
+    'Expense',
+    '09/12 Onlll1e ACH Payment 5352248562 To Llvlnti ( ###8392)',
+    0.0, 2397.8, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000097', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0064'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '09/12 Onlll1e ACH Payment 5352248562 To Llvlnti ( ###8392)',
+    2397.8, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0065', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-09-15',
+    'Deposit',
+    'Credit Retum: Online ACH Payment 5352248562 To Livinll ( ###8392)',
+    2397.8, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000098', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0065'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Credit Retum: Online ACH Payment 5352248562 To Livinll ( ###8392)',
+    2397.8, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0066', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-09-16',
+    'Expense',
+    'Credit Return Fee: Online Payroll Payment To Livingston international 4678392',
+    0.0, 2.5, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000099', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0066'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Credit Return Fee: Online Payroll Payment To Livingston international 4678392',
+    2.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0067', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-09-23',
+    'Expense',
+    '09/23 Online ACH Payment 5353999763 To Martinlg ( ######7156)',
+    0.0, 4812.8, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000100', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0067'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '09/23 Online ACH Payment 5353999763 To Martinlg ( ######7156)',
+    2415.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000101', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0067'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '09/23 Online ACH Payment 5353998498 To Livintl Ul####i/##1708)',
+    2397.8, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0068', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-09-28',
+    'Expense',
+    'Online Domestic Wire Fee',
+    0.0, 5975.64, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000102', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0068'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Domestic Wire Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000103', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0068'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Domestic Wire Transfer Via: Central Hous/113001077 A/C: Trio Resources Houston TX 77024 US Ref: July - 22 lmad: 0928B1Qgc06C011829 Tm: 3480042271Es',
+    5950.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0069', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-09-29',
+    'Expense',
+    '09/28 Basic Online Payroll Payment 5354623032 To Loan to Joel Fulford',
+    0.0, 10000.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000104', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0069'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '09/28 Basic Online Payroll Payment 5354623032 To Loan to Joel Fulford',
+    10000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0070', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-09-30',
+    'Expense',
+    'Orig CO Name:Att Orig ID:9864031004 Deso Date:092922 CO Eniry Descr:Payment Sec:PPD Traoe#:031100205486994 Eed:220930 Ind ID:Ind Name:Joel Futtord Tm: 2735486994Tc',
+    0.0, 115.84, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000105', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0070'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Deso Date:092922 CO Eniry Descr:Payment Sec:PPD Traoe#:031100205486994 Eed:220930 Ind ID:Ind Name:Joel Futtord Tm: 2735486994Tc',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0071', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-10-03',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 310.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000106', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0071'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000107', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0071'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Desc Date:221002 CO Entry Descr:Sala Sec:CCD Tracall:021000020065521 Eed:221003 Ind ID: Ind Nama:10Natzero Inc Tm: 2760065521Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0072', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-10-27',
+    'Expense',
+    '10/27 Online International Wire Transfer NC: Foreign Cur Bus Acct Bk 1 Columbus Newark De 197132107 US Org: 00000000766857871 10Netzero, Inc. Ben:/0030112 Rwt Growth Inc Ref: Invoice 1249Consultancy Expenses/Ocmt/Cad10000,00/Exch/1.3192/Cntr/610 t 9531/ Tm: 8994800300Re',
+    0.0, 7580.35, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000108', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0072'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '10/27 Online International Wire Transfer NC: Foreign Cur Bus Acct Bk 1 Columbus Newark De 197132107 US Org: 00000000766857871 10Netzero, Inc. Ben:/0030112 Rwt Growth Inc Ref: Invoice 1249Consultancy Expenses/Ocmt/Cad10000,00/Exch/1.3192/Cntr/610 t 9531/ Tm: 8994800300Re',
+    7580.35, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0073', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-10-31',
+    'Expense',
+    '10/28 Basic Online Payroll Payment 11001199706 To Loan to Joel Fulford',
+    0.0, 5000.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000109', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0073'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '10/28 Basic Online Payroll Payment 11001199706 To Loan to Joel Fulford',
+    5000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0074', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-11-01',
+    'Expense',
+    'Orig CO Name:Att Orig ID:9864031004 Desc Date·103022 CO Entry Descr:Payment Seo:PPD Trace#''031100204139858 Eed 221101 Ind ID: Ind Name:Joel Fulford Trn: 3054139858To',
+    0.0, 140.84, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000110', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0074'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Desc Date·103022 CO Entry Descr:Payment Seo:PPD Trace#''031100204139858 Eed 221101 Ind ID: Ind Name:Joel Fulford Trn: 3054139858To',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000111', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0074'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fea',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0075', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-11-02',
+    'Expense',
+    'Orig CO Name:Brighl Une Busi Orig ID:9215986202 Desc Date:221102 CO Entry Descr:Sale Sec:CCD Tracell:021000022968833 Eed:221102 Ind ID: Ind Name:10Netzero Inc Trn: 3D62968833Tc',
+    0.0, 1286.5700000000002, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000112', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0075'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Brighl Une Busi Orig ID:9215986202 Desc Date:221102 CO Entry Descr:Sale Sec:CCD Tracell:021000022968833 Eed:221102 Ind ID: Ind Name:10Netzero Inc Trn: 3D62968833Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000113', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0075'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '11/01 Basic Online Payroll Payment 11001514107 To ###//0870 Loan to Joel Fulford',
+    1001.57, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0076', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-11-14',
+    'Expense',
+    'Check No. 9765 - Pay to The Order Of: Giga Energy Inc.',
+    0.0, 588.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000114', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0076'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Check No. 9765 - Pay to The Order Of: Giga Energy Inc.',
+    588.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0077', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-11-28',
+    'Expense',
+    '11/28 Online ACH Payment 11003847617 To United Oil Field Services ( 11##11#2100)',
+    0.0, 1518.75, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000115', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0077'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '11/28 Online ACH Payment 11003847617 To United Oil Field Services ( 11##11#2100)',
+    1518.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0078', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-12-01',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 140.84, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000116', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0078'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000117', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0078'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Ong ID 9864031004 Desc Dale 112922 CO Entry Desor:Payment Sec:PPD Trace# 031100205806973 Eed 221201 Ind ID Ind Name:Joel Fulford Trn: 3355806973Tc',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0079', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-12-02',
+    'Expense',
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Deso Date:221202 CO Entry 12/02 Orig CO Name:Bright Line Busi Orig ID:9215986202 Deso Date:221202 CO Entry Desor:Sale Sec:CCD Trace#:021000021526905 Eed:221202 Ind ID: Ind Name:10Netzero Inc Trn: 3361526905Tc',
+    0.0, 285.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000118', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0079'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Deso Date:221202 CO Entry 12/02 Orig CO Name:Bright Line Busi Orig ID:9215986202 Deso Date:221202 CO Entry Desor:Sale Sec:CCD Trace#:021000021526905 Eed:221202 Ind ID: Ind Name:10Netzero Inc Trn: 3361526905Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0080', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-12-31',
+    'Journal Entry',
+    '6% annum on $12,912.50 Loan from S. Bryan Aulds II',
+    0.0, 774.75, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000119', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0080'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '6% annum on $12,912.50 Loan from S. Bryan Aulds II',
+    774.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0081', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-12-31',
+    'Journal Entry',
+    '6% annum on $12,912.50 Loan from Colin Aulds',
+    0.0, 4563.52, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000120', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0081'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '6% annum on $12,912.50 Loan from Colin Aulds',
+    4563.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0082', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-12-31',
+    'Journal Entry',
+    'Journal Entry - 2022-12-31',
+    0.0, 2452.46, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000121', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0082'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '',
+    2452.46, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0083', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-12-31',
+    'Journal Entry',
+    'Shwan Leary $100K - 5.46% annum',
+    0.0, 5457.21, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000122', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0083'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    'Shwan Leary $100K - 5.46% annum',
+    5457.21, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0084', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-12-31',
+    'Journal Entry',
+    'Scott Aulds Sr Loan $100,000 - Interest accrual on 5.54% annum',
+    0.0, 5535.45, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000123', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0084'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    'Scott Aulds Sr Loan $100,000 - Interest accrual on 5.54% annum',
+    5535.45, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0085', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2022-12-31',
+    'Journal Entry',
+    'To record 2022 Depreciation expense',
+    55867.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000124', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0085'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-8000'),
+    'To record 2022 Depreciation expense',
+    55867.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0086', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-01-03',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 425.84000000000003, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000125', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0086'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000126', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0086'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Brlght Line Busl Orig ID:9215986202 Deso Date:230102 CO Entry Descr:8ale Sec:CCD Trace/l:021000020986856 Eed:230103 Ind ID: Ind Name:10Netzero Inc Trn: 0030986856Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000127', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0086'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig 10·9864031004 Desc Date·123022 CO Entry Descr:Payment Sec:PPD Trace#.031100206666250 Eed 230103 Ind ID: Ind Name:Joel Futtord Trn: 0036666250Tc',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0087', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-01-09',
+    'Deposit',
+    'Orig CO Name:Google Orig ID:F770493581 Deso Date: CO Entry $0.22
+Descr.Payment Sec:CCD Trace#:091000015785898 Eed:230109 Ind ID:US003Somv0 Ind Name:Joel Fulford
+013023996 Credit Trn: 0095785898Tc',
+    0.22, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000128', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0087'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Google Orig ID:F770493581 Deso Date: CO Entry $0.22
+Descr.Payment Sec:CCD Trace#:091000015785898 Eed:230109 Ind ID:US003Somv0 Ind Name:Joel Fulford
+013023996 Credit Trn: 0095785898Tc',
+    0.22, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0088', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-01-09',
+    'Expense',
+    'Orig CO Name:Google Orig ID:F770493581 Deso Date: CO Entry Descr:Apps_Commesec:CCD Tracell:091000014070852 Eed:230109 Ind ID:US003Sht3K Ind Name:Joel Futtord 013024945 Debit Tm: 0094070852Tc',
+    0.0, 115.75, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000129', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0088'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Google Orig ID:F770493581 Deso Date: CO Entry Descr:Apps_Commesec:CCD Tracell:091000014070852 Eed:230109 Ind ID:US003Sht3K Ind Name:Joel Futtord 013024945 Debit Tm: 0094070852Tc',
+    115.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000130', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0088'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Google Orig ID:F770493581 Deso Date: CO Entry Descr:Payment Sec:CCD Trace#:091000015747015 Eed:230109 Ind ID:US003Sh365 Ind Name:Joel Futtord 013024153 Debit Tm: 0095747015Tc',
+    0.22, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0089', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-01-31',
+    'Expense',
+    'Orig CO Name:Att Orig ID:9864031004 Desc Date:013023 CO Entry Descr:Payment Sec:PPD Traceil:031100204926183 Eed:230131 Ind ID: Ind Name:Joel Futtord Trn: 0314926183Tc',
+    0.0, 115.84, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000131', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0089'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Desc Date:013023 CO Entry Descr:Payment Sec:PPD Traceil:031100204926183 Eed:230131 Ind ID: Ind Name:Joel Futtord Trn: 0314926183Tc',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0090', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-02-01',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 25.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000132', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0090'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0091', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-02-02',
+    'Expense',
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Desc Date:230202 CO Entry Descr:Sale Sec:CCD Trace#:021000021201928 Eed:230202 Ind ID: Ind Name:10Netzero Inc Tm: 0331201928Tc',
+    0.0, 285.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000133', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0091'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Desc Date:230202 CO Entry Descr:Sale Sec:CCD Trace#:021000021201928 Eed:230202 Ind ID: Ind Name:10Netzero Inc Tm: 0331201928Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0092', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-02-06',
+    'Expense',
+    'Orig CO Name:Gocgle Orig ID:F710493581 Desc Date: CO Entry Descr:Apps_Ccmmesec:CCD Trace#:091000010021448 Eed:230206 Ind ID:US003Suagu Ind Name:Joel Fulford 013065208 Debit Tm: 0370021448Tc',
+    0.0, 63.55, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000134', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0092'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Gocgle Orig ID:F710493581 Desc Date: CO Entry Descr:Apps_Ccmmesec:CCD Trace#:091000010021448 Eed:230206 Ind ID:US003Suagu Ind Name:Joel Fulford 013065208 Debit Tm: 0370021448Tc',
+    63.55, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0093', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-02-22',
+    'Journal Entry',
+    'Hushhut #2 and M30 Miners',
+    72333.76, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000135', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0093'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1420'),
+    'Hushhut #2 and M30 Miners',
+    72333.76, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0094', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-02-28',
+    'Expense',
+    'Orig CO Name:Att Orig ID:9864031004 Deso Dale:022723 CO Entry Descr:Payment Sec:PPD Trace#:031100200667215 Eed:230228 Ind ID: Ind Name:Joel Futtord Trn: 0590667215Tc',
+    0.0, 10155.84, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000136', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0094'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Deso Dale:022723 CO Entry Descr:Payment Sec:PPD Trace#:031100200667215 Eed:230228 Ind ID: Ind Name:Joel Futtord Trn: 0590667215Tc',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000137', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0094'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online US Dollar Intl Wire Fee',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000138', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0094'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '02/28 Online International Wire Transfer NC: Canadian Imperial Bank of Commerce Toronto On M5L 1-A2 CA Ben:/7301535 Upstream Data Inc Ref:/Lmpd/Down Payment· 90Kw Hh Combo (IN Houston) Business Expenses Tm: 3512633059Es',
+    10000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0095', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-03-01',
+    'Expense',
+    'Chase ACH Payments Monthly Fee',
+    0.0, 25.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000139', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0095'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Chase ACH Payments Monthly Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0096', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-03-02',
+    'Expense',
+    'Orig CO Name:Brlght Line Busi Orig ID:9215986202 Deso Date:230302 CO Entry Descr:Sale Sec:CCD Trace#:021000025738122 Eed:230302 Ind ID: Ind Name:10Netzero Inc Trn: 06t5738122Tc',
+    0.0, 285.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000140', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0096'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Brlght Line Busi Orig ID:9215986202 Deso Date:230302 CO Entry Descr:Sale Sec:CCD Trace#:021000025738122 Eed:230302 Ind ID: Ind Name:10Netzero Inc Trn: 06t5738122Tc',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0097', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-03-06',
+    'Expense',
+    'Orig CO Name:Google Orig ID:F77D493581 Deso Date: CO Entry Descr:Apps_Commesec:CCD Trace#:091000014422534 Eed:230306 Ind ID:US003T eiz9 Ind Name:Joel Fultord 013109912 Debit Trn: 0654422534Tc',
+    0.0, 101.54, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000141', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0097'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Google Orig ID:F77D493581 Deso Date: CO Entry Descr:Apps_Commesec:CCD Trace#:091000014422534 Eed:230306 Ind ID:US003T eiz9 Ind Name:Joel Fultord 013109912 Debit Trn: 0654422534Tc',
+    101.54, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0098', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-03-30',
+    'Expense',
+    'Counter Check',
+    0.0, 12.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000142', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0098'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Counter Check',
+    6.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000143', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0098'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Counter Check',
+    6.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0099', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-03-31',
+    'Expense',
+    'Orig CO Name AU Orig ID:9864031004 Desc Date:033023 CO Entry Descr:Payrnent Sec:PPD Traceil:031100207614216 Eed:230331 Ind ID: Ind Name:Joel Fulford Tm: 09D7614216Tc',
+    0.0, 115.84, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000144', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0099'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name AU Orig ID:9864031004 Desc Date:033023 CO Entry Descr:Payrnent Sec:PPD Traceil:031100207614216 Eed:230331 Ind ID: Ind Name:Joel Fulford Tm: 09D7614216Tc',
+    115.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0100', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-04-03',
+    'Expense',
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Dase Date:230402 CO Entry Descr:Sale Sec:CCD Trace/l:021000025108083 Eed:230403 Ind ID: Orig CO Name:Bright Line Busi Orig ID:9215986202 Dase Date:230402 CO Entry Descr:Sale Sec:CCD Trace/l:021000025108083 Eed:230403 Ind ID:',
+    0.0, 310.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000145', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0100'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Bright Line Busi Orig ID:9215986202 Dase Date:230402 CO Entry Descr:Sale Sec:CCD Trace/l:021000025108083 Eed:230403 Ind ID: Orig CO Name:Bright Line Busi Orig ID:9215986202 Dase Date:230402 CO Entry Descr:Sale Sec:CCD Trace/l:021000025108083 Eed:230403 Ind ID:',
+    285.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000146', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0100'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Stop Payment Fee',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0101', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-04-04',
+    'Expense',
+    'Check No. 1748 - Pay to The Order Of: Crane Rental Division, Inc.',
+    0.0, 942.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000147', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0101'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Check No. 1748 - Pay to The Order Of: Crane Rental Division, Inc.',
+    942.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0102', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-04-05',
+    'Expense',
+    'Orig CO Name:Google Orig ID:F770493581 Deso Date: CO Entry Descr:Apps_Commesec:CCD Trace/1:091000016369241 Eed:230405 Ind ID:US003Txfwl Ind Name:Joel Fulford 
+013148088 Debit Trn: 0956369241Tc',
+    0.0, 89.54, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000148', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0102'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Google Orig ID:F770493581 Deso Date: CO Entry Descr:Apps_Commesec:CCD Trace/1:091000016369241 Eed:230405 Ind ID:US003Txfwl Ind Name:Joel Fulford 
+013148088 Debit Trn: 0956369241Tc',
+    89.54, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0103', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-04-12',
+    'Expense',
+    'Check No. 1749 - Pay to The Order Of: Dalton Trucking',
+    0.0, 2160.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000149', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0103'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Check No. 1749 - Pay to The Order Of: Dalton Trucking',
+    2160.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0104', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-04-13',
+    'Expense',
+    'Overdraft Fee For Check 111749 IN The Amount of S2 160.00',
+    0.0, 34.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000150', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0104'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Overdraft Fee For Check 111749 IN The Amount of S2 160.00',
+    34.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0105', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-04-17',
+    'Deposit',
+    'Deposit 1155781395 - 10 Net Zero',
+    211.25, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000151', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0105'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Deposit 1155781395 - 10 Net Zero',
+    211.25, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0106', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-06-06',
+    'Deposit',
+    'Write-Off',
+    1986.29, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000152', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0106'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Write-Off',
+    1986.29, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0107', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-07-02',
+    'Journal Entry',
+    'Journal Entry - 2023-07-02',
+    25000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000153', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0107'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-6010'),
+    '',
+    25000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0108', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-07-26',
+    'Deposit',
+    'DEPOSIT  ID NUMBER  44150',
+    50000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000154', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0108'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DEPOSIT  ID NUMBER  44150',
+    50000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0109', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-08',
+    'Expense',
+    'DOMESTIC WIRE TRANSFER VIA: PNCBANK PITT/043000096 A/C: ACARI RESOURCES LTD. REF: DOWN PAYMENT IMAD: 0808B1QGC02C001521 TRN: 3673763219ES 08/08
+
+MWM Generator purchase - sold to Operation Orange',
+    0.0, 50035.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000155', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0109'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DOMESTIC WIRE TRANSFER VIA: PNCBANK PITT/043000096 A/C: ACARI RESOURCES LTD. REF: DOWN PAYMENT IMAD: 0808B1QGC02C001521 TRN: 3673763219ES 08/08
+
+MWM Generator purchase - sold to Operation Orange',
+    50000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000156', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0109'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DOMESTIC WIRE FEE',
+    35.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0110', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-10',
+    'Deposit',
+    'CHIPS CREDIT VIA: BANK OF AMERICA, N.A./0959 B/O: ASIC MINERS US LLC LATHROP, CA, 95330 US REF: NBNF=10NETZERO, INC. HOUSTON TX 77080-1526 US/AC-000000005231 ORG=/325 177590254 LATHROP, CA, 95330 US OGB =BANK OF AMERICA, N.A. NEW YORK NY US OBI=INVOICE 106 BBI=/CHGS/USD0,/ SSN: 0454183 TRN: 1069800222FC',
+    49189.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000157', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0110'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHIPS CREDIT VIA: BANK OF AMERICA, N.A./0959 B/O: ASIC MINERS US LLC LATHROP, CA, 95330 US REF: NBNF=10NETZERO, INC. HOUSTON TX 77080-1526 US/AC-000000005231 ORG=/325 177590254 LATHROP, CA, 95330 US OGB =BANK OF AMERICA, N.A. NEW YORK NY US OBI=INVOICE 106 BBI=/CHGS/USD0,/ SSN: 0454183 TRN: 1069800222FC',
+    49189.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0111', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-10',
+    'Expense',
+    'DOMESTIC INCOMING WIRE FEE',
+    0.0, 15.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000158', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0111'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DOMESTIC INCOMING WIRE FEE',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0112', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-11',
+    'Expense',
+    'ATM WITHDRAWAL                       005935  08/119704 KATY',
+    0.0, 420.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000159', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0112'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATM WITHDRAWAL                       005935  08/119704 KATY',
+    420.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0113', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-14',
+    'Expense',
+    'Online ACH Payment 11027377566 To UnitedOFS (_#####2100)',
+    0.0, 3656.3999999999996, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000160', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0113'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment 11027377566 To UnitedOFS (_#####2100)',
+    1140.6, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000161', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0113'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment 11027378428 To MartinLG (_######7156)',
+    1090.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000162', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0113'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATM WITHDRAWAL                       006886  08/129704 KATY',
+    500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000163', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0113'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATM WITHDRAWAL                       007857  08/139704 KATY',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000164', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0113'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATM WITHDRAWAL                       008174  08/149704 KATY',
+    100.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000165', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0113'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHECK 1139',
+    805.8, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0114', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-17',
+    'Expense',
+    'ATM WITHDRAWAL                       000035  08/179704 KATY',
+    0.0, 660.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000166', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0114'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATM WITHDRAWAL                       000035  08/179704 KATY',
+    660.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0115', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-18',
+    'Expense',
+    'ORIG CO NAME:BANK OF AMERICA        ORIG ID:941687665G DESC DATE:230817 CO ENTRY DESCR:Payment   SEC:TEL    TRACE#:111000027042130 EED:230818   IND ID:qftmlixpr                    IND NAME:FULFORD, JOEL TRN: 2307042130TC',
+    0.0, 1646.31, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000167', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0115'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:BANK OF AMERICA        ORIG ID:941687665G DESC DATE:230817 CO ENTRY DESCR:Payment   SEC:TEL    TRACE#:111000027042130 EED:230818   IND ID:qftmlixpr                    IND NAME:FULFORD, JOEL TRN: 2307042130TC',
+    511.03, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000168', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0115'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:BANK OF AMERICA        ORIG ID:941687665G DESC DATE:230817 CO ENTRY DESCR:Payment   SEC:TEL    TRACE#:111000027042133 EED:230818   IND ID:15uv7rhdt                    IND NAME:FULFORD, JOEL TRN: 2307042133TC',
+    1135.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0116', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-21',
+    'Expense',
+    'GEICO  *AUTO 800-841-3000 DC                 08/20',
+    0.0, 689.48, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000169', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0116'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'GEICO  *AUTO 800-841-3000 DC                 08/20',
+    689.48, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0117', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-22',
+    'Expense',
+    'Online ACH Payment 11028118576 To 2WServices (_###4108)',
+    0.0, 4365.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000170', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0117'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment 11028118576 To 2WServices (_###4108)',
+    4365.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0118', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-23',
+    'Deposit',
+    'DEPOSIT  ID NUMBER  66994',
+    50000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000171', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0118'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DEPOSIT  ID NUMBER  66994',
+    50000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0119', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-23',
+    'Expense',
+    'Online ACH Payment 11028171343 To PPS (_######9165)',
+    0.0, 9027.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000172', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0119'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment 11028171343 To PPS (_######9165)',
+    9027.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0120', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-08-24',
+    'Expense',
+    'ATT*BILL PAYMENT 800-288-2020 TX             08/23',
+    0.0, 583.54, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000173', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0120'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT*BILL PAYMENT 800-288-2020 TX             08/23',
+    343.08, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000174', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0120'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT*BILL PAYMENT 800-288-2020 TX             08/23',
+    240.46, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0121', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-09-01',
+    'Expense',
+    'ONLINE DOMESTIC WIRE FEE',
+    0.0, 27525.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000175', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0121'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE FEE',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000176', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0121'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE TRANSFER VIA: PNCBANK PITT/043000096 A/C: ACARI RESOURCES LTD DALLAS TX 75225 US IMAD: 0901B1QGC08C032111 TRN: 3990393244ES 09/01
+
+MWM Generator purchase - sold to Operation Orange',
+    27500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0122', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-09-05',
+    'Expense',
+    'ONLINE DOMESTIC WIRE FEE',
+    0.0, 50025.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000177', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0122'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE FEE',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000178', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0122'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE TRANSFER VIA: PNCBANK PITT/043000096 A/C: ACARI RESOURCES LTD DALLAS TX 75225 US IMAD: 0905B1QGC01C013925 TRN: 3925283248ES 09/05
+
+MWM Generator purchase - sold to Operation Orange',
+    50000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0123', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-09-06',
+    'Expense',
+    'CIRCLE K # 06983 10537 MATHIS TX             09/06',
+    0.0, 92.46000000000001, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000179', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0123'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # 06983 10537 MATHIS TX             09/06',
+    35.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000180', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0123'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STAR STOP 127 10231 CL HOUSTON TX    743069  09/06',
+    57.46, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0124', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-09-07',
+    'Deposit',
+    'FEDWIRE CREDIT VIA: WELLS FARGO BANK, N.A./121000248 B/O: MACY FULFORD TX 77080 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX 77080-1526 US/AC-00000000 5231 RFB=OW00003603562374 BBI=/CHGS/USD0,00/ IMAD: 0907I1B7032R020448 TRN: 1004230250FF',
+    3535.79, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000181', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0124'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FEDWIRE CREDIT VIA: WELLS FARGO BANK, N.A./121000248 B/O: MACY FULFORD TX 77080 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX 77080-1526 US/AC-00000000 5231 RFB=OW00003603562374 BBI=/CHGS/USD0,00/ IMAD: 0907I1B7032R020448 TRN: 1004230250FF',
+    3535.79, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0125', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-09-07',
+    'Expense',
+    'DOMESTIC INCOMING WIRE FEE',
+    0.0, 15.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000182', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0125'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DOMESTIC INCOMING WIRE FEE',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0126', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-09-11',
+    'Expense',
+    'THE HOME DEPOT #6525 HOUSTON TX      197308  09/11',
+    0.0, 158.09, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000183', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0126'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HOME DEPOT #6525 HOUSTON TX      197308  09/11',
+    44.12, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000184', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0126'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WAL-MART #5460 PORTLAND TX                   09/11',
+    113.97, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0127', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-09-14',
+    'Expense',
+    'HARBOR FREIGHT TOOLS 5 HOUSTON TX            09/14',
+    0.0, 326.93, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000185', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0127'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HARBOR FREIGHT TOOLS 5 HOUSTON TX            09/14',
+    49.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000186', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0127'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WAL-MART #2257 HOUSTON TX                    09/14',
+    277.12, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0128', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-09-15',
+    'Expense',
+    'CIRCLE K # 06979 217 N REFUGIO TX            09/15',
+    0.0, 112.34, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000187', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0128'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # 06979 217 N REFUGIO TX            09/15',
+    50.02, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000188', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0128'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STAR STOP 127 10231 CL HOUSTON TX    419391  09/15',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000189', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0128'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Wal-Mart Super Center PORTLAND TX            09/15',
+    12.32, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0129', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-09-18',
+    'Expense',
+    'THE HOME DEPOT #6525 HOUSTON TX      604317  09/18',
+    0.0, 39.79, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000190', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0129'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HOME DEPOT #6525 HOUSTON TX      604317  09/18',
+    39.79, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0130', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-09-22',
+    'Expense',
+    'CIRCLE K # 06985 PORTLAND TX                 09/20',
+    0.0, 100.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000191', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0130'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # 06985 PORTLAND TX                 09/20',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000192', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0130'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SPEEDY STOP 18 BEAUMONT TX                   09/22',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0131', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-10-12',
+    'Deposit',
+    'DEPOSIT  ID NUMBER 731777',
+    20.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000193', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0131'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DEPOSIT  ID NUMBER 731777',
+    20.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0132', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-10-17',
+    'Expense',
+    'Online ACH Payment 11111604950 To 2WServices (_###4108)',
+    0.0, 3235.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000194', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0132'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment 11111604950 To 2WServices (_###4108)',
+    3235.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0133', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-11-01',
+    'Deposit',
+    'BOOK TRANSFER CREDIT B/O: ASIC MINERS US LLC ANDREW B GILTON LATHROP CA 95330 US TRN: 3740283305ES',
+    20000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000195', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0133'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BOOK TRANSFER CREDIT B/O: ASIC MINERS US LLC ANDREW B GILTON LATHROP CA 95330 US TRN: 3740283305ES',
+    19000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000196', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0133'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BOOK TRANSFER CREDIT B/O: ASIC MINERS US LLC ANDREW B GILTON LATHROP CA 95330 US TRN: 3710463305ES',
+    1000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0134', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-11-01',
+    'Expense',
+    'STANDARD ACH PMNTS INITIAL FEE',
+    0.0, 7716.25, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000197', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0134'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STANDARD ACH PMNTS INITIAL FEE',
+    2.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000198', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0134'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment 11113070562 To 2WServices (_###4108)',
+    7713.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0135', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-11-13',
+    'Expense',
+    'ATT*BILL PAYMENT 800-288-2020 TX             11/10',
+    0.0, 485.01, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000199', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0135'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT*BILL PAYMENT 800-288-2020 TX             11/10',
+    485.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0136', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-11-27',
+    'Expense',
+    'MURPHY7018ATWAL WHARTON TX                   11/27',
+    0.0, 1618.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000200', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0136'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MURPHY7018ATWAL WHARTON TX                   11/27',
+    52.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000201', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0136'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment 11115322057 To PPS (_######9165)',
+    1530.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000202', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0136'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BREAKTIME HOUSTON TX                         11/27',
+    36.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0137', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-11-29',
+    'Expense',
+    'CIRCLE K # 06983 10537 MATHIS TX             11/29',
+    0.0, 140.97, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000203', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0137'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # 06983 10537 MATHIS TX             11/29',
+    49.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000204', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0137'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Alamo Lumber Company M Mathis TX     531499  11/29',
+    59.51, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000205', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0137'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Alamo Lumber Company M Mathis TX     900676  11/29',
+    32.46, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0138', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-11-30',
+    'Expense',
+    'NAPA MATHIS MATHIS TX                        11/29',
+    0.0, 550.61, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000206', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0138'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX                        11/29',
+    7.57, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000207', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0138'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TALBOTT PROPANE 361-5753872 TX               11/29',
+    529.49, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000208', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0138'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FARM INDUSTRIAL VICTORIA TX                  11/29',
+    13.55, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0139', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-01',
+    'Expense',
+    'CIRCLE K # 06983 10537 MATHIS TX             12/01',
+    0.0, 77.00999999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000209', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0139'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # 06983 10537 MATHIS TX             12/01',
+    40.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000210', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0139'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STANDARD ACH PMNTS INITIAL FEE QTY = 2',
+    5.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000211', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0139'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BREAKTIME HOUSTON TX                         12/01',
+    32.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0140', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-04',
+    'Expense',
+    'S M HERSCHAP ORANGE GROVE TX                 12/01',
+    0.0, 91.96, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000212', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0140'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'S M HERSCHAP ORANGE GROVE TX                 12/01',
+    91.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0141', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-05',
+    'Expense',
+    'ORIG CO NAME:ROLLO INSURANCE        ORIG ID:8263863381 DESC DATE:       CO ENTRY DESCR:J1996 OOFFSEC:CCD    TRACE#:111000028580367 EED:231205   IND ID:CZ10000584DAC                IND NAME:10NET ZERO INC.            TRN*1*CZ10000584DACRMR*IK*2D4865EB  CF27 42BD 8DEF B3C95B TRN: 3398580367TC',
+    0.0, 1631.29, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000213', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0141'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:ROLLO INSURANCE        ORIG ID:8263863381 DESC DATE:       CO ENTRY DESCR:J1996 OOFFSEC:CCD    TRACE#:111000028580367 EED:231205   IND ID:CZ10000584DAC                IND NAME:10NET ZERO INC.            TRN*1*CZ10000584DACRMR*IK*2D4865EB  CF27 42BD 8DEF B3C95B TRN: 3398580367TC',
+    1555.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000214', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0141'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # 06983 10537 MATHIS TX             12/05',
+    34.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000215', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0141'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BREAKTIME HOUSTON TX                         12/05',
+    42.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0142', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-07',
+    'Expense',
+    'Alamo Lumber Company M Mathis TX     255758  12/07',
+    0.0, 44.34, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000216', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0142'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Alamo Lumber Company M Mathis TX     255758  12/07',
+    11.34, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000217', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0142'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BREAKTIME HOUSTON TX                         12/07',
+    33.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0143', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-09',
+    'Journal Entry',
+    'Acari Resources Generator Purchase',
+    0.0, 232500.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000218', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0143'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2000'),
+    'Acari Resources Generator Purchase',
+    232500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0144', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-11',
+    'Expense',
+    'STAR STOP 127 10231 CL HOUSTON TX    129164  12/11',
+    0.0, 150.65, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000219', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0144'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STAR STOP 127 10231 CL HOUSTON TX    129164  12/11',
+    42.57, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000220', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0144'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # 06979 REFUGIO TX                  12/07',
+    32.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000221', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0144'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PANTRY STORE G UP BEEVILLE TX        388400  12/11',
+    44.31, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000222', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0144'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AGI*TMO SERVICE FEE 866-866-6285 PA          12/09',
+    30.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0145', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-12',
+    'Expense',
+    'S M HERSCHAP ORANGE GROVE TX                 12/11',
+    0.0, 120.84, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000223', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0145'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'S M HERSCHAP ORANGE GROVE TX                 12/11',
+    120.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0146', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-13',
+    'Expense',
+    'FESCO LTD 3616617000X15 TX                   12/12',
+    0.0, 66.95, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000224', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0146'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FESCO LTD 3616617000X15 TX                   12/12',
+    66.95, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0147', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-21',
+    'Expense',
+    'SHELL OIL 10003969002 FULSHEAR TX            12/20',
+    0.0, 39.38, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000225', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0147'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SHELL OIL 10003969002 FULSHEAR TX            12/20',
+    39.38, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0148', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-28',
+    'Deposit',
+    'Online Transfer from CHK ...5317 transaction#: 19418685359',
+    1165000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000226', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0148'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Transfer from CHK ...5317 transaction#: 19418685359',
+    1165000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0149', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-29',
+    'Journal Entry',
+    'Journal Entry - 2023-12-29',
+    12912.5, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000227', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0149'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1410'),
+    '',
+    12912.5, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0150', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-29',
+    'Deposit',
+    'FEDWIRE CREDIT VIA: GUARANTY BANK & TRUST, N.A./111915327 B/O: OPERATION ORANGE LLC FORT WORTH TEXAS 76109 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX 77080-1526 US/AC-00000000 5231 RFB=O/B GUARANTY BK& IMAD: 1229GMQFMP01037690 TRN: 1304351363FF',
+    250000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000228', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0150'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FEDWIRE CREDIT VIA: GUARANTY BANK & TRUST, N.A./111915327 B/O: OPERATION ORANGE LLC FORT WORTH TEXAS 76109 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX 77080-1526 US/AC-00000000 5231 RFB=O/B GUARANTY BK& IMAD: 1229GMQFMP01037690 TRN: 1304351363FF',
+    250000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0151', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-29',
+    'Expense',
+    'DOMESTIC WIRE FEE',
+    0.0, 361283.27, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000229', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0151'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DOMESTIC WIRE FEE',
+    35.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000230', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0151'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DOMESTIC INCOMING WIRE FEE',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000231', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0151'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DOMESTIC WIRE TRANSFER A/C: HEATCORE INC FRISCO TX 75035-9485 US REF: INVOICE 2312252 TRN: 3889343363ES 12/29
+
+Transfer of Heatcore Containers to Zapata II',
+    361233.27, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0152', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-31',
+    'Journal Entry',
+    '6% annum on $12,912.50 Loan from S. Bryan Aulds II',
+    0.0, 774.75, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000232', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0152'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '6% annum on $12,912.50 Loan from S. Bryan Aulds II',
+    774.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0153', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-31',
+    'Journal Entry',
+    '6% annum on $12,912.50 Loan from Colin Aulds',
+    0.0, 4563.52, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000233', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0153'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '6% annum on $12,912.50 Loan from Colin Aulds',
+    4563.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0154', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-31',
+    'Journal Entry',
+    'Journal Entry - 2023-12-31',
+    0.0, 4662.22, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000234', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0154'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '',
+    4662.22, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0155', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-31',
+    'Journal Entry',
+    'Shwan Leary $100K - 5.46% annum',
+    0.0, 5457.21, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000235', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0155'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    'Shwan Leary $100K - 5.46% annum',
+    5457.21, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0156', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-31',
+    'Journal Entry',
+    'Scott Aulds Sr Loan $100,000 - Interest accrual on 5.54% annum',
+    0.0, 5535.45, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000236', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0156'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    'Scott Aulds Sr Loan $100,000 - Interest accrual on 5.54% annum',
+    5535.45, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0157', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-31',
+    'Journal Entry',
+    'To record 2023 current year depreciation expense for Hashhut#1 and Hashhut#2',
+    52570.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000237', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0157'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-8000'),
+    'To record 2023 current year depreciation expense for Hashhut#1 and Hashhut#2',
+    52570.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0158', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2023-12-31',
+    'Journal Entry',
+    'To record additional purchase of common stocks',
+    0.0, 53.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000238', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0158'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-3110'),
+    'To record additional purchase of common stocks',
+    53.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0159', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-01',
+    'Journal Entry',
+    'Scarborough money to house Andrew''s miners',
+    5000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000239', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0159'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-6400'),
+    'Scarborough money to house Andrew''s miners',
+    5000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0160', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-02',
+    'Deposit',
+    'WIRE REVERSAL B/O: JPMC CB FUNDS TRANSFER SAME DAY TAMPA FL XXXXX-9128 US ORG: ABA/XXXXX8777 SUTTON BANK REF:/BNF/OUR REF JPMXXXXXX-XX9200 CHASEREFXXXXXX1002FF RTN DTD 01/02/20 2 4 TRN XXXXXX4002 ES AS NOT A VALID SUT TON ACCT # NOT A VALID SUTTON ACCT# TRN: XXXXXX0002 HH',
+    3000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000240', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0160'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WIRE REVERSAL B/O: JPMC CB FUNDS TRANSFER SAME DAY TAMPA FL XXXXX-9128 US ORG: ABA/XXXXX8777 SUTTON BANK REF:/BNF/OUR REF JPMXXXXXX-XX9200 CHASEREFXXXXXX1002FF RTN DTD 01/02/20 2 4 TRN XXXXXX4002 ES AS NOT A VALID SUT TON ACCT # NOT A VALID SUTTON ACCT# TRN: XXXXXX0002 HH',
+    3000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0161', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-02',
+    'Expense',
+    'ONLINE DOMESTIC WIRE FEE',
+    0.0, 12245.91, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000241', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0161'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE FEE',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000242', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0161'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE UPS STORE 2667 XXX-XXX6159 TX 01/02',
+    375.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000243', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0161'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Basic Online Payroll Payment XXXXXXX0952 to #####8563',
+    1873.45, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000244', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0161'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Basic Online Payroll Payment XXXXXXX0951 to ######3267',
+    4126.55, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000245', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0161'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE TRANSFER VIA: SUTTON ATTICA/XXXXX8777 A/C: ABA/XXXXX5663 ATTICA OH US BEN: JOEL FULFORD HOUSTON TX X7080 US IMAD: 0102MMQFMP2KXX2010 TRN: 4 XXXXX4002ES 01/02',
+    3000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000246', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0161'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Advanced Crypto Orig ID:0000335892 Deso Data:220302 CO Entry Descr:8554693729Sec:Web Traoa#:021000020713908 Eed:220302 Ind ID:2487473 
+Ind Name:Joel ''Futtord',
+    2325.26, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000247', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0161'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Orig CO Name:Att Orig ID:9864031004 Dase Data:022722 CO Entry Descr:Payment Sec:PPD Trace#:0311002036054 t 4 Eed:220301 Ind ID: Ind Nam0:Jo0I Futtord Trn: 0603605414Tc',
+    520.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0162', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-03',
+    'Expense',
+    'ONLINE DOMESTIC WIRE FEE',
+    0.0, 3025.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000248', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0162'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE FEE',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000249', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0162'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE TRANSFER VIA: WELLS FARGO NA/XXXXX0248 A/C: JOEL FULFORD HOUSTON TX X7080 US REF:/TIME/16:26 IMAD: 0103MMQFMP2MXX8341 TRN: XXXXXX4003 ES 01/ 03',
+    3000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0163', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-04',
+    'Deposit',
+    'ORIG CO NAME:JPMorgan Chase ORIG ID:XXXXXX2233 DESC DATE:240104 CO ENTRY DESCR:ACCTVERIFYSEC:CCD TRACE#:XXXXXXXX2758701 EED:240104 IND ID:XXXXXXX6503 IND NAME:A uth TRN: XXXXXX8701 TC',
+    0.35, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000250', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0163'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:JPMorgan Chase ORIG ID:XXXXXX2233 DESC DATE:240104 CO ENTRY DESCR:ACCTVERIFYSEC:CCD TRACE#:XXXXXXXX2758701 EED:240104 IND ID:XXXXXXX6503 IND NAME:A uth TRN: XXXXXX8701 TC',
+    0.14, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000251', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0163'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:JPMorgan Chase ORIG ID:XXXXXX2233 DESC DATE:240104 CO ENTRY DESCR:ACCTVERIFYSEC:CCD TRACE#:XXXXXXXX2758679 EED:240104 IND ID:XXXXXXX6501 IND NAME:A uth TRN: XXXXXX8679 TC',
+    0.21, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0164', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-04',
+    'Expense',
+    'ORIG CO NAME:JPMorgan Chase ORIG ID:XXXXXX2233 DESC DATE:240104 CO ENTRY DESCR:ACCTVERIFYSEC:CCD TRACE#:XXXXXXXX2206976 EED:240104 IND ID:XXXXXXX6504 IND NAME:A uth TRN: XXXXXX6976 TC',
+    0.0, 0.35, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000252', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0164'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:JPMorgan Chase ORIG ID:XXXXXX2233 DESC DATE:240104 CO ENTRY DESCR:ACCTVERIFYSEC:CCD TRACE#:XXXXXXXX2206976 EED:240104 IND ID:XXXXXXX6504 IND NAME:A uth TRN: XXXXXX6976 TC',
+    0.35, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0165', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-05',
+    'Expense',
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX5505665 EED:240105 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX5665 TC',
+    0.0, 559.66, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000253', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0165'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX5505665 EED:240105 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX5665 TC',
+    559.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0166', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-19',
+    'Deposit',
+    'BOOK TRANSFER CREDIT B/O: ASIC MINERS US LLC ANDREW B GILTON LATHROP CA X5330 US TRN: XXXXXX4019 ES',
+    1500.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000254', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0166'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BOOK TRANSFER CREDIT B/O: ASIC MINERS US LLC ANDREW B GILTON LATHROP CA X5330 US TRN: XXXXXX4019 ES',
+    1500.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0167', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-22',
+    'Expense',
+    'Online ACH Payment XXXXXXX0302 To McKainPower (_######4723)',
+    0.0, 30350.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000255', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0167'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0302 To McKainPower (_######4723)',
+    4050.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000256', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0167'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0317 To McKainPower (_######4723)',
+    26300.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0168', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-23',
+    'Deposit',
+    'BOOK TRANSFER CREDIT B/O: LIQUID IMMERSION WORLDWIDE LLC LATHROP CA X5330 US TRN: XXXXXX4023 ES',
+    1000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000257', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0168'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BOOK TRANSFER CREDIT B/O: LIQUID IMMERSION WORLDWIDE LLC LATHROP CA X5330 US TRN: XXXXXX4023 ES',
+    1000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0169', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-24',
+    'Expense',
+    'TST* BLUE SUSHI HOUSTON Houston TX 01/24',
+    0.0, 124.69, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000258', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0169'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* BLUE SUSHI HOUSTON Houston TX 01/24',
+    124.69, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0170', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-26',
+    'Expense',
+    'TST* SMOLIKS SMOKEHOUSE Mathis TX 01/26',
+    0.0, 75.83, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000259', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0170'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* SMOLIKS SMOKEHOUSE Mathis TX 01/26',
+    57.88, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000260', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0170'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 01/26',
+    17.95, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0171', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-01-30',
+    'Expense',
+    'ATT*BILL PAYMENT XXX-XXX-2020 TX 01/30',
+    0.0, 280.58, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000261', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0171'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT*BILL PAYMENT XXX-XXX-2020 TX 01/30',
+    280.58, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0172', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-01',
+    'Expense',
+    'Online ACH Payment XXXXXXX5778 To AlphaCentauri (_#####4922)',
+    0.0, 24600.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000262', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0172'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX5778 To AlphaCentauri (_#####4922)',
+    24600.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0173', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-01',
+    'Check',
+    'STANDARD ACH PMNTS INITIAL FEE QTY = 5',
+    0.0, 12.5, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000263', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0173'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STANDARD ACH PMNTS INITIAL FEE QTY = 5',
+    12.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0174', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-02',
+    'Expense',
+    'Online Payment XXXXXXX2632 To Petroleum producing services LLC 02/02',
+    0.0, 12761.46, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000264', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0174'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX2632 To Petroleum producing services LLC 02/02',
+    3105.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000265', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0174'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX2159 To Hard Core Supply LLC 02/02',
+    6426.46, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000266', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0174'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX0606 To 2W Services 02/02',
+    2730.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000267', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0174'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'UNCHAINED CAPITAL WWW.UNCHAINED TX 02/02',
+    500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0175', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-06',
+    'Expense',
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX8081591 EED:240206 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX1591 TC',
+    0.0, 559.66, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000268', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0175'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX8081591 EED:240206 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX1591 TC',
+    559.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0176', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-07',
+    'Expense',
+    'Online ACH Payment XXXXXXX4934 To McKainPower (_######4723)',
+    0.0, 2704.12, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000269', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0176'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX4934 To McKainPower (_######4723)',
+    2704.12, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0177', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-10',
+    'Expense',
+    'Conner''s Corner EDNA TX 02/10',
+    0.0, 6191.9400000000005, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000270', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0177'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Conner''s Corner EDNA TX 02/10',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000271', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0177'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STAR STOP X0231 CLAY R HOUSTON TX 02/10',
+    40.8, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000272', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0177'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 02/10',
+    7.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000273', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0177'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1238 MATHIS TX XX4424 02/10',
+    108.17, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000274', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0177'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1238 MATHIS TX XX2881 02/10',
+    232.48, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000275', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0177'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX1475 To Certified Production Services, LLC 02/12',
+    5763.21, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0178', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-12',
+    'Expense',
+    'CITY MARKET LULING TX 02/12',
+    0.0, 549510.71, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000276', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0178'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CITY MARKET LULING TX 02/12',
+    10.71, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000277', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0178'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DOMESTIC WIRE TRANSFER VIA: THIRD COAST SSB/XXXXX4149 A/C: MCKAIN POWER SYSTEMS CONSULTING LLC IMAD: 0212MMQFMP2NXX0383 TRN: XXXXXX4043 ES 02/12',
+    317000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000278', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0178'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DOMESTIC WIRE TRANSFER VIA: PNCBANK PITT/XXXXX0096 A/C: ACARI RESOURCES LLC IMAD: 0212MMQFMP2LXX0624 TRN: XXXXXX4043 ES 02/12',
+    232500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0179', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-13',
+    'Expense',
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 02/13',
+    0.0, 11120.47, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000279', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0179'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 02/13',
+    18.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000280', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0179'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* ROAMING RONIN Corpus Christ TX 02/13',
+    156.76, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000281', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0179'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 02/13',
+    111.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000282', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0179'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B #270 CORPUS CHRIST TX XX0241 02/13',
+    7.3, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000283', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0179'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LYFT *1 RIDE 02-13 HELP.LYFT.COM CA 02/15',
+    25.95, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000284', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0179'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WITHDRAWAL 02/13',
+    10800.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0180', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-14',
+    'Expense',
+    'CIRCLE K #XXX1540 ZAPATA TX XX9309 02/14',
+    0.0, 225.06, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000285', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0180'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1540 ZAPATA TX XX9309 02/14',
+    5.09, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000286', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0180'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SUNOCO XXXXXX1300 MATHIS TX 02/14',
+    83.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000287', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0180'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1540 ZAPATA TX XX8924 02/14',
+    30.03, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000288', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0180'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 02/14',
+    3.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000289', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0180'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 02/14',
+    102.34, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0181', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-16',
+    'Expense',
+    'Online ACH Payment XXXXXXX6184 To GTCrane (_#####3597)',
+    0.0, 1200.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000290', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0181'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX6184 To GTCrane (_#####3597)',
+    1200.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0182', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-19',
+    'Expense',
+    'CIRCLE K # X6979 217 N REFUGIO TX 02/19',
+    0.0, 89.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000291', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0182'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 217 N REFUGIO TX 02/19',
+    35.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000292', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0182'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STAR STOP X0231 CLAY R HOUSTON TX 02/19',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000293', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0182'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 02/19',
+    14.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0183', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-20',
+    'Expense',
+    'SHELL SERVICE STATION EAST BERNARD TXXX2830 02/20',
+    0.0, 81.03, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000294', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0183'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SHELL SERVICE STATION EAST BERNARD TXXX2830 02/20',
+    81.03, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0184', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-21',
+    'Expense',
+    'BUC-EE''S #30 WHARTON TX XX7643 02/21',
+    0.0, 3349.86, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000295', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0184'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX XX7643 02/21',
+    10.8, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000296', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0184'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 217 N REFUGIO TX 02/21',
+    40.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000297', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0184'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 02/21',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000298', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0184'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0351 To MartinLegal (_#####2006)',
+    3290.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0185', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-22',
+    'Expense',
+    'NAPA MATHIS MATHIS TX 02/22',
+    0.0, 64.92, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000299', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0185'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 02/22',
+    64.92, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0186', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-23',
+    'Expense',
+    'FAST BREAK PETTUS TX XX2758 02/23',
+    0.0, 129.10000000000002, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000300', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0186'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FAST BREAK PETTUS TX XX2758 02/23',
+    69.79, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000301', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0186'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PRASEK''S HILLJE SEALY TX 02/23',
+    59.31, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0187', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-27',
+    'Expense',
+    'BUC-EE''S #30 WHARTON TX 02/27',
+    0.0, 2102.8199999999997, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000302', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0187'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 02/27',
+    7.97, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000303', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0187'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 OUTSIDE WHARTON TX XX1466 02/27',
+    30.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000304', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0187'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1540 ZAPATA TX XX2691 02/27',
+    40.9, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000305', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0187'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 OUTSIDE WHARTON TX XX2553 02/27',
+    64.36, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000306', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0187'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX8776 ZAPATA TX 02/27',
+    8.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000307', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0187'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 02/27',
+    13.21, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000308', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0187'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:Express Transpor ORIG ID:204876018 DESC DATE:Feb 27 CO ENTRY DESCR:10 net zerSEC:CCD TRACE#:XXXXXXXX7617945 EED:240227 IND ID:5 -X7295 IND NAME:10 n et zero TRN: XXXXXX7945 TC',
+    1800.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000309', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0187'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B GAS #234 REFUGIO TX XX4753 02/27',
+    81.86, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000310', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0187'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'VICTORIA TX XX2989 02/27',
+    51.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000311', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0187'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AMZN Mktp US*RZ8QA1U Amzn.com/bill WA 02/28',
+    4.97, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0188', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-28',
+    'Expense',
+    'GOODSON CAFE XXX-XXX5213 TX 02/28',
+    0.0, 1059.47, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000312', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0188'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'GOODSON CAFE XXX-XXX5213 TX 02/28',
+    74.47, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000313', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0188'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Zelle payment to Alexis colon JPM99aa96d3w',
+    985.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0189', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-02-29',
+    'Expense',
+    'THE HOME DEPOT #6525 HOUSTON TX XX4299 02/29',
+    0.0, 4227.09, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000314', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0189'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HOME DEPOT #6525 HOUSTON TX XX4299 02/29',
+    62.09, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000315', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0189'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2177 To 2WServices (_###4108)',
+    4165.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0190', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-01',
+    'Deposit',
+    'Credit Return: Online ACH Payment XXXXXXX1555 To AlphaCentauri (_#####4922)',
+    13000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000316', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0190'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Credit Return: Online ACH Payment XXXXXXX1555 To AlphaCentauri (_#####4922)',
+    11700.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000317', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0190'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Credit Return: Online ACH Payment XXXXXXX1288 To JustinBallardLaw (_########9126)',
+    1300.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0191', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-01',
+    'Expense',
+    'Online ACH Payment XXXXXXX4869 To JustinBallardLaw (_########9126)',
+    0.0, 14799.16, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000318', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0191'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX4869 To JustinBallardLaw (_########9126)',
+    1300.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000319', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0191'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX1555 To AlphaCentauri (_#####4922)',
+    11700.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000320', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0191'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HWY 290 WRECKER HOCKLEY TX 02/29',
+    1556.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000321', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0191'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT*BILL PAYMENT XXX-XXX-2020 TX 02/29',
+    242.91, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0192', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-04',
+    'Expense',
+    'CIRCLE K # X6983 X0537 MATHIS TX 03/04',
+    0.0, 21593.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000322', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0192'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6983 X0537 MATHIS TX 03/04',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000323', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0192'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STAR STOP X0231 CLAY R HOUSTON TX 03/04',
+    35.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000324', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0192'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA VALLARTA #2 MATHIS TX 03/04',
+    18.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000325', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0192'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WITHDRAWAL 03/04 - Trailers',
+    4500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000326', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0192'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WITHDRAWAL 03/04',
+    17000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0193', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-05',
+    'Expense',
+    'TIL*TP BLACKROCK BR083 HOUSTON TX 03/05',
+    0.0, 669.87, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000327', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0193'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TIL*TP BLACKROCK BR083 HOUSTON TX 03/05',
+    10.63, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000328', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0193'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* MALA SICHUAN - CHI Houston TX 03/05',
+    99.58, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000329', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0193'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX4595203 EED:240305 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX5203 TC',
+    559.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0194', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-06',
+    'Expense',
+    'CHEVRON XXX3521 TOMBALL TX 03/06',
+    0.0, 2546.87, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000330', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0194'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX3521 TOMBALL TX 03/06',
+    65.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000331', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0194'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'GOODSON CAFE XXX-XXX5213 TX 03/06',
+    61.9, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000332', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0194'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ASAP TRAILER SERVICE AN TOMBALL TX 03/06',
+    29.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000333', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0194'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ASAP TRAILER SERVICE AN TOMBALL TX 03/06',
+    132.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000334', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0194'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Zelle payment to Joey Headly XXXXXXX8602 - Trailer',
+    570.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000335', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0194'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:RIGGING & WELDIN ORIG ID:XXXXXX6202 DESC DATE:240306 CO ENTRY DESCR:SALE SEC:CCD TRACE#:XXXXXXXX4074352 EED:240306 IND ID: IND NAME:10 NET ZERO TRN : XXXXXX4352TC',
+    1688.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0195', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-07',
+    'Expense',
+    'CORPUS MM/GAS 0 CORPUS CHRIS TX 03/07',
+    0.0, 220.71, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000336', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0195'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CORPUS MM/GAS 0 CORPUS CHRIS TX 03/07',
+    73.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000337', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0195'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* SMOLIKS SMOKEHOUSE Mathis TX 03/07',
+    68.97, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000338', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0195'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Alamo Lumber Company M Mathis TX XX6384 03/07',
+    77.93, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0196', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-08',
+    'Deposit',
+    'Credit Return: Online ACH Payment XXXXXXX4869 To JustinBallardLaw (_########9126)',
+    1300.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000339', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0196'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Credit Return: Online ACH Payment XXXXXXX4869 To JustinBallardLaw (_########9126)',
+    1300.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0197', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-08',
+    'Expense',
+    'KROGER FUEL 7361 353 COLLEGE STATI TXXX3392 03/08',
+    0.0, 13104.57, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000340', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0197'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'KROGER FUEL 7361 353 COLLEGE STATI TXXX3392 03/08',
+    20.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000341', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0197'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STAR STOP X0231 CLAY R HOUSTON TX 03/08',
+    35.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000342', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0197'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BLUE BAKER 002 Q25 COLLEGE STATI TX 03/08',
+    22.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000343', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0197'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX4869 To JustinBallardLaw (_########9126)',
+    1300.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000344', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0197'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX5384 To AlphaCentauri (_#####6780) - electrical work',
+    11727.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0198', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-10',
+    'Expense',
+    'WAL-MART #4111 RICHMOND TX 03/10',
+    0.0, 107.06, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000345', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0198'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WAL-MART #4111 RICHMOND TX 03/10',
+    80.02, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000346', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0198'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HOME DEPOT #6587 VICTORIA TX XX2402 03/10',
+    27.04, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0199', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-11',
+    'Expense',
+    'CIRCLE K # X6979 217 N REFUGIO TX 03/11',
+    0.0, 4589.4, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000347', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0199'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 217 N REFUGIO TX 03/11',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000348', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0199'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6983 MATHIS TX 03/11',
+    11.07, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000349', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0199'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* SMOLIKS SMOKEHOUSE Mathis TX 03/11',
+    28.33, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000350', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0199'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WITHDRAWAL 03/11',
+    4500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0200', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-12',
+    'Expense',
+    'JACK IN THE BOX TOMBALL TX XX0612 03/12',
+    0.0, 839.49, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000351', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0200'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'JACK IN THE BOX TOMBALL TX XX0612 03/12',
+    5.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000352', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0200'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCCOYS #57 TOMBALL TX 03/12',
+    26.37, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000353', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0200'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TRACTOR-SUPPLY-C X7400 TOMBALL TX XX9613 03/12',
+    135.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000354', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0200'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Zelle payment to Cody Tedesco JPM99abctlpp',
+    300.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000355', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0200'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PMT*FT BEND CO TAX OFFI RICHMOND TX 03/12',
+    371.87, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0201', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-13',
+    'Expense',
+    'BUC-EE''S #34 BAYTOWN TX 03/13',
+    0.0, 432.37, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000356', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0201'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #34 BAYTOWN TX 03/13',
+    74.76, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000357', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0201'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCCOYS #57 TOMBALL TX 03/13',
+    112.54, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000358', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0201'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCCOYS #57 TOMBALL TX 03/13',
+    225.07, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000359', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0201'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD HOUSTON TX 03/13',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0202', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-14',
+    'Expense',
+    'CIRCLE K #XXX1916 HOCKLEY TX XX8022 03/14',
+    0.0, 9070.55, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000360', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0202'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1916 HOCKLEY TX XX8022 03/14',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000361', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0202'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATM WITHDRAWAL XX9821 03/XXX4202 FM - Driver Fees',
+    500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000362', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0202'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:RIGGING & WELDIN ORIG ID:XXXXXX6202 DESC DATE:240314 CO ENTRY DESCR:SALE SEC:WEB TRACE#:XXXXXXXX5525076 EED:240314 IND ID: IND NAME:10 NET ZERO TRN : XXXXXX5076TC',
+    1688.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000363', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0202'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HOME DEPOT #6525 HOUSTON TX XX5079 03/14',
+    102.55, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000364', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0202'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WITHDRAWAL 03/14',
+    6750.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0203', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-18',
+    'Expense',
+    'MURPHY EXPRESS TOMBALL TX 03/18',
+    0.0, 20480.92, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000365', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0203'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MURPHY EXPRESS TOMBALL TX 03/18',
+    76.18, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000366', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0203'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCCOYS #57 TOMBALL TX 03/18',
+    108.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000367', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0203'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX3120 To MBX (_#####6908)',
+    15749.8, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000368', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0203'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX9435 To JustinBallardLaw (_########9126)',
+    1300.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000369', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0203'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ULINE *SHIP SUPPLIES XXX-XXX-5510 WI 03/19',
+    527.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000370', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0203'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX8491 To UnitedOFS (_#####2100)',
+    1312.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000371', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0203'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WAL-MART SUPER CENTER TOMBALL TX 03/18',
+    145.8, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000372', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0203'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'EMPOWER: ENERGIZING. HTTPSWWW.DIGI TX 03/18',
+    1261.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0204', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-19',
+    'Expense',
+    'CHICK-FIL-A #X1244 TOMBALL TX 03/19',
+    0.0, 2925.09, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000373', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0204'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHICK-FIL-A #X1244 TOMBALL TX 03/19',
+    25.09, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000374', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0204'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SQ *SAMSON PUMP & SUPPL Alice TX 03/19',
+    1400.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000375', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0204'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:Express Transpor ORIG ID:204876018 DESC DATE:Mar 19 CO ENTRY DESCR:10 net zerSEC:CCD TRACE#:XXXXXXXX6006399 EED:240319 IND ID:5 -X7437 IND NAME:10 n et zero TRN: XXXXXX6399 TC',
+    1500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0205', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-20',
+    'Expense',
+    'BUC-EE''S #30 WHARTON TX 03/20',
+    0.0, 2015.04, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000376', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0205'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 03/20',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000377', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0205'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 217 N REFUGIO TX 03/20',
+    35.02, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000378', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0205'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PP*T GREEN SVCS HOUSTON TX 03/20',
+    1920.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000379', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0205'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD HOUSTON TX 03/20',
+    40.02, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0206', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-21',
+    'Expense',
+    'CIRCLE K # X6979 217 N REFUGIO TX 03/21',
+    0.0, 10090.63, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000380', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0206'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 217 N REFUGIO TX 03/21',
+    1.07, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000381', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0206'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX8636 To CactusTanks (_####0979)',
+    7168.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000382', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0206'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TEXAN # 8 VICTO VICTORIA TX 03/21',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000383', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0206'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TEXAN # 8 VICTO VICTORIA TX 03/21',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000384', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0206'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'POSTAL ANNEX X9014 KATY TX XX1883 03/21',
+    50.79, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000385', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0206'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0888 To P3Elevation (_########3380)',
+    2200.77, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000386', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0206'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B #160 MATHIS TX XX2702 03/21',
+    100.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000387', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0206'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B #160 MATHIS TX XX5861 03/21',
+    500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0207', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-22',
+    'Deposit',
+    'BOOK TRANSFER CREDIT B/O: HEATCORE INC FRISCO TX XXXXX-9485 US TRN: XXXXXX4082 ES',
+    20922.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000388', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0207'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BOOK TRANSFER CREDIT B/O: HEATCORE INC FRISCO TX XXXXX-9485 US TRN: XXXXXX4082 ES',
+    20922.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0208', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-22',
+    'Expense',
+    'MCCOYS #57 TOMBALL TX 03/22',
+    0.0, 220.58999999999997, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000389', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0208'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCCOYS #57 TOMBALL TX 03/22',
+    180.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000390', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0208'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCCOYS #57 TOMBALL TX 03/22',
+    39.86, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0209', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-25',
+    'Expense',
+    'CIRCLE K # X1486 X7137 TOMBALL TX 03/25',
+    0.0, 1491.97, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000391', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0209'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X1486 X7137 TOMBALL TX 03/25',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000392', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0209'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHICK-FIL-A #X1244 TOMBALL TX 03/25',
+    21.97, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000393', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0209'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PP*T GREEN SVCS HOUSTON TX 03/25',
+    1050.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000394', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0209'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATM WITHDRAWAL XX3777 03/XXX4202 FM',
+    400.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0210', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-26',
+    'Check',
+    'CHECK # 5668',
+    0.0, 10312.13, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000395', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0210'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHECK # 5668',
+    10312.13, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0211', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-26',
+    'Check',
+    'CHECK # 5674',
+    0.0, 7347.5, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000396', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0211'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHECK # 5674',
+    7347.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0212', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-26',
+    'Check',
+    'CHECK # 5675 - Dec Gas payment',
+    0.0, 430.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000397', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0212'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHECK # 5675 - Dec Gas payment',
+    430.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0213', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-26',
+    'Deposit',
+    'FEDWIRE CREDIT VIA: GUARANTY BANK & TRUST, N.A./XXXXX5327 B/O: OPERATION ORANGE LLC FORT WORTH TX X6109 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX X7092- 6626 US/AC-XXXX0000 5231 RFB=O/B GUARANTY BK& OBI=INVOI CE 121 IMAD: 0326GMQFMPXXXX1572 TRN: XXXXXX1086 FF',
+    69793.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000398', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0213'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FEDWIRE CREDIT VIA: GUARANTY BANK & TRUST, N.A./XXXXX5327 B/O: OPERATION ORANGE LLC FORT WORTH TX X6109 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX X7092- 6626 US/AC-XXXX0000 5231 RFB=O/B GUARANTY BK& OBI=INVOI CE 121 IMAD: 0326GMQFMPXXXX1572 TRN: XXXXXX1086 FF',
+    69793.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0214', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-26',
+    'Check',
+    'CHECK # 5676',
+    0.0, 3475.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000399', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0214'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHECK # 5676',
+    3475.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0215', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-27',
+    'Expense',
+    'Online ACH Payment XXXXXXX2307 To Bernardo (_######3816)',
+    0.0, 13075.359999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000400', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0215'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2307 To Bernardo (_######3816)',
+    12997.4, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000401', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0215'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LYFT *2 RIDES 03-2 HELP.LYFT.COM CA 03/29',
+    44.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000402', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0215'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'GRADUALLYTHENSUDDENL GRADUALLYTHEN TX 03/27',
+    33.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0216', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-28',
+    'Expense',
+    'Online ACH Payment XXXXXXX2307 To Bernardo (_######3816)',
+    0.0, 42143.7, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000403', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0216'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2307 To Bernardo (_######3816)',
+    9680.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000404', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0216'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX3561 To McKainPower (_######4723)',
+    24438.7, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000405', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0216'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX1613 To P3Elevation (_########3380)',
+    6800.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000406', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0216'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Zelle payment to Fernando JPM99aefwldc',
+    1225.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0217', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-03-30',
+    'Expense',
+    'ATT*BILL PAYMENT XXX-XXX-2020 TX 03/30',
+    0.0, 242.91, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000407', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0217'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT*BILL PAYMENT XXX-XXX-2020 TX 03/30',
+    242.91, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0218', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-01',
+    'Expense',
+    'BUC-EE''S #30 WHARTON TX 04/01',
+    0.0, 85.35, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000408', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0218'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 04/01',
+    80.57, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000409', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0218'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B #160 MATHIS TX XX2574 04/01',
+    4.78, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0219', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-02',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX5985 04/02',
+    0.0, 363.76, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000410', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0219'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5985 04/02',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000411', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0219'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 OUTSIDE WHARTON TX XX9719 04/02',
+    88.1, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000412', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0219'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1495 KINGWOOD TX XX5508 04/02',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000413', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0219'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ALAMO LUMBER COMPANY M MATHIS TX XX2395 04/02',
+    205.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0220', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-03',
+    'Expense',
+    'BUC-EE''S #30 WHARTON TX 04/02',
+    0.0, 34842.34, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000414', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0220'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 04/02',
+    74.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000415', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0220'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF MARCH',
+    17.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000416', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0220'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE TRANSFER A/C: HEATCORE INC FRISCO TX XXXXX-9485 US REF: INVOICE XX0401 TRN: XXXXXX4094 ES 04/03',
+    34750.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0221', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-04',
+    'Expense',
+    'IN *SPINDLETOP ENERGY XXX-XXX5863 TX 04/04',
+    0.0, 200342.33, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000417', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0221'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'IN *SPINDLETOP ENERGY XXX-XXX5863 TX 04/04',
+    342.33, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000418', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0221'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DOMESTIC WIRE TRANSFER VIA: PNCBANK PITT/XXXXX0096 A/C: ACARI RESOURCES LTD. IMAD: 0404MMQFMP2MXX1835 TRN: XXXXXX4095 ES 04/04',
+    200000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0222', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-05',
+    'Expense',
+    'CHICK-FIL-A #X3312 BEAUMONT TX 04/05',
+    0.0, 622.8199999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000419', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0222'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHICK-FIL-A #X3312 BEAUMONT TX 04/05',
+    13.16, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000420', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0222'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX0910291 EED:240405 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX0291 TC',
+    559.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000421', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0222'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SPEEDY STOP 18 BEAUMONT TX 04/05',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000422', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0222'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD HOUSTON TX 04/05',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0223', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-08',
+    'Expense',
+    'PANDADOC, INC. XXX-XXX-8755 CA 04/08',
+    0.0, 1177.29, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000423', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0223'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PANDADOC, INC. XXX-XXX-8755 CA 04/08',
+    69.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000424', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0223'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0230 To BobcatCrane (_####4024)',
+    1108.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0224', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-09',
+    'Expense',
+    'EL TIEMPO CANTINA WASH XXX-XXX3645 TX 04/08',
+    0.0, 4921.93, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000425', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0224'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'EL TIEMPO CANTINA WASH XXX-XXX3645 TX 04/08',
+    56.93, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000426', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0224'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0351 To MartinLegal (_#####2006)',
+    4865.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0225', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-10',
+    'Expense',
+    'ADOBE *ADOBE XXX-XXX-6000 CA 04/10',
+    0.0, 68.42, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000427', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0225'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *ADOBE XXX-XXX-6000 CA 04/10',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000428', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0225'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WAL-MART #4111 RICHMOND TX 04/10',
+    46.78, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0226', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-12',
+    'Expense',
+    'ORIG CO NAME:ROLLO INSURANCE ORIG ID:XXXXXX3381 DESC DATE: CO ENTRY DESCR:J2125 OOFFSEC:CCD TRACE#:XXXXXXXX7366559 EED:240412 IND ID:CZXX0006QXNPC IND NAME:10 N ET ZERO INC TRN*1 *CZXX0006QXNPC\RMR*IK*CABE092A B561 4CBC B77B 009B0B\ TRN: XXXXXX6559 TC',
+    0.0, 3129.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000429', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0226'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:ROLLO INSURANCE ORIG ID:XXXXXX3381 DESC DATE: CO ENTRY DESCR:J2125 OOFFSEC:CCD TRACE#:XXXXXXXX7366559 EED:240412 IND ID:CZXX0006QXNPC IND NAME:10 N ET ZERO INC TRN*1 *CZXX0006QXNPC\RMR*IK*CABE092A B561 4CBC B77B 009B0B\ TRN: XXXXXX6559 TC',
+    3129.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0227', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-14',
+    'Expense',
+    'TST* MARQUIS II HOUSTON TX 04/14',
+    0.0, 6.31, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000430', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0227'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* MARQUIS II HOUSTON TX 04/14',
+    6.31, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0228', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-15',
+    'Expense',
+    '7-ELEVEN HOUSTON TX 04/15',
+    0.0, 20.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000431', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0228'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX 04/15',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0229', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-16',
+    'Expense',
+    '7-ELEVEN X1261 CYPRESS TX 04/16',
+    0.0, 15334.81, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000432', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0229'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN X1261 CYPRESS TX 04/16',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000433', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0229'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX2293 To Kebo Oil and Gas, INC 04/16',
+    6109.05, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000434', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0229'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX6028 To Hard Core Supply LLC 04/16',
+    190.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000435', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0229'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX0670 To Hard Core Supply LLC 04/16',
+    1035.83, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000436', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0229'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX5143 To Hard Core Supply LLC 04/16',
+    2240.32, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000437', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0229'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX0663 To Lagarto Rental Tools, Inc 04/16',
+    3717.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000438', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0229'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX3149 To 2W Services 04/16',
+    977.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000439', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0229'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX6581 To HadCo Services 04/16',
+    1044.35, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0230', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-18',
+    'Expense',
+    'CHICK-FIL-A #X1244 TOMBALL TX 04/18',
+    0.0, 10.77, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000440', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0230'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHICK-FIL-A #X1244 TOMBALL TX 04/18',
+    10.77, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0231', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-19',
+    'Expense',
+    'Online ACH Payment XXXXXXX2307 To Bernardo (_######3816)',
+    0.0, 4452.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000441', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0231'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2307 To Bernardo (_######3816)',
+    952.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000442', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0231'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX8996 To Jimmy Canton 04/19 - Gas Meter',
+    3500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0232', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-22',
+    'Check',
+    'CHECK # 1140',
+    0.0, 1125.6, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000443', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0232'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHECK # 1140',
+    1125.6, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0233', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-22',
+    'Expense',
+    'Online ACH Payment XXXXXXX0245 To MckainRentals (_######4889)',
+    0.0, 34796.799999999996, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000444', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0233'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0245 To MckainRentals (_######4889)',
+    23688.7, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000445', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0233'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX3319 To McKainPower (_######4723)',
+    10313.83, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000446', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0233'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX0790 To United Oilfield Services 04/22',
+    794.27, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0234', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-23',
+    'Expense',
+    'HOLT CAT-MC CORPUS CHRIST TX 04/23',
+    0.0, 4651.51, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000447', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0234'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HOLT CAT-MC CORPUS CHRIST TX 04/23',
+    1833.55, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000448', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0234'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HOLT CAT-MC XXX-XXX-2200 TX 04/23',
+    2817.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0235', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-24',
+    'Expense',
+    'CHICK-FIL-A #X1244 TOMBALL TX 04/24',
+    0.0, 2168.35, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000449', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0235'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHICK-FIL-A #X1244 TOMBALL TX 04/24',
+    26.35, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000450', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0235'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX5822 To Bernardo (_######3816)',
+    2142.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0236', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-25',
+    'Deposit',
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX5149',
+    150000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000451', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0236'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX5149',
+    150000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0237', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-25',
+    'Expense',
+    'WITHDRAWAL 04/25 - Generator Repair Tomball',
+    0.0, 40000.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000452', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0237'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WITHDRAWAL 04/25 - Generator Repair Tomball',
+    40000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0238', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-29',
+    'Expense',
+    'ATT* BILL PAYMENT XXX-XXX-0500 TX 04/29',
+    0.0, 242.68, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000453', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0238'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT* BILL PAYMENT XXX-XXX-0500 TX 04/29',
+    242.68, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0239', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-04-30',
+    'Expense',
+    'MURPHY7671ATWAL KATY TX 04/30',
+    0.0, 20.01, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000454', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0239'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MURPHY7671ATWAL KATY TX 04/30',
+    20.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0240', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-02',
+    'Expense',
+    'LinkedIn SN XXXXXX4626 XXX-XXX5653 CA 05/02',
+    0.0, 106.59, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000455', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0240'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LinkedIn SN XXXXXX4626 XXX-XXX5653 CA 05/02',
+    106.59, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0241', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-03',
+    'Expense',
+    'STAR STOP X0231 CLAY R HOUSTON TX 05/03',
+    0.0, 8621.74, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000456', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0241'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STAR STOP X0231 CLAY R HOUSTON TX 05/03',
+    45.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000457', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0241'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF APRIL',
+    25.45, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000458', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0241'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 05/03',
+    8.32, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000459', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0241'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX8090 To 2W Services 05/03',
+    6369.69, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000460', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0241'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ULINE *SHIP SUPPLIES XXX-XXX-5510 WI 05/04',
+    2173.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0242', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-06',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX7787 05/06',
+    0.0, 19.3, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000461', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0242'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX7787 05/06',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000462', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0242'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 05/06',
+    9.3, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0243', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-07',
+    'Expense',
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX7906413 EED:240507 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX6413 TC',
+    0.0, 559.66, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000463', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0243'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX7906413 EED:240507 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX6413 TC',
+    559.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0244', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-08',
+    'Expense',
+    'PANDADOC, INC. XXX-XXX-8755 CA 05/08',
+    0.0, 69.29, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000464', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0244'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PANDADOC, INC. XXX-XXX-8755 CA 05/08',
+    69.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0245', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-09',
+    'Expense',
+    'NETLIFY HTTPSWWW.NETL CA 05/09',
+    0.0, 1.25, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000465', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0245'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY HTTPSWWW.NETL CA 05/09',
+    1.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0246', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-13',
+    'Expense',
+    'PAPA JOHNS #X0035 LETHBRIDGE AB 05/13 CA DOLLAR 48.78 X 0.XXX7023 (EXCHG RTE)',
+    0.0, 35.79, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000466', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0246'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PAPA JOHNS #X0035 LETHBRIDGE AB 05/13 CA DOLLAR 48.78 X 0.XXX7023 (EXCHG RTE)',
+    35.79, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0247', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-15',
+    'Deposit',
+    'Reversal: PAPA JOHNS #X0035 LETHBRIDGE AB 05/13 CA DOLLAR 48.78 X 0.XXX7023 (EXCHG RTE) ClaimId: XXXXX7244',
+    35.79, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000467', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0247'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Reversal: PAPA JOHNS #X0035 LETHBRIDGE AB 05/13 CA DOLLAR 48.78 X 0.XXX7023 (EXCHG RTE) ClaimId: XXXXX7244',
+    35.79, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0248', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-15',
+    'Expense',
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 05/15',
+    0.0, 371.72999999999996, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000468', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0248'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 05/15',
+    24.08, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000469', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0248'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1238 MATHIS TX XX0318 05/15',
+    64.92, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000470', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0248'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1238 MATHIS TX XX1511 05/15',
+    35.71, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000471', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0248'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SQ *FARMER TRAILER RENT RICHMOND TX 05/15',
+    110.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000472', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0248'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B GAS #234 REFUGIO TX XX3085 05/15',
+    71.82, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000473', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0248'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TEXAN # 8 VICTO VICTORIA TX 05/15',
+    65.2, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0249', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-16',
+    'Expense',
+    'CHEVRON XXX8122 RICHMOND TX 05/16',
+    0.0, 1367.68, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000474', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0249'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX8122 RICHMOND TX 05/16',
+    83.42, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000475', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0249'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* SMOLIKS SMOKEHOUSE Mathis TX 05/15',
+    83.74, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000476', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0249'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AZTEC RENTAL CENTER NO2 HOUSTON TX 05/16',
+    1180.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000477', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0249'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD HOUSTON TX 05/16',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0250', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-17',
+    'Expense',
+    'REVEILLE BARBECUE CO PINEHURST TX 05/17',
+    0.0, 129.08, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000478', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0250'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'REVEILLE BARBECUE CO PINEHURST TX 05/17',
+    56.74, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000479', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0250'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCCOYS #57 TOMBALL TX 05/17',
+    37.88, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000480', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0250'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:LYFT RIDE ORIG ID:XXXXXX2264 DESC DATE:240516 CO ENTRY DESCR:PAYMENTS SEC:WEB TRACE#:XXXXXXXX7772966 EED:240517 IND ID:XXXXXXXX2051676 IND NAME:INC 10NETZERO TELECHK XXX-XXX-9263 TRN: XXXXXX2966 TC',
+    34.46, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0251', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-18',
+    'Expense',
+    'HANDI STOP # 54 HOUSTON TX 05/18',
+    0.0, 1693.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000481', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0251'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HANDI STOP # 54 HOUSTON TX 05/18',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000482', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0251'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:Express Transpor ORIG ID:204876018 DESC DATE:May 20 CO ENTRY DESCR:10 net zerSEC:CCD TRACE#:XXXXXXXX3742200 EED:240520 IND ID:5 -X8615 IND NAME:10 n et zero TRN: XXXXXX2200 TC',
+    1683.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0252', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-20',
+    'Deposit',
+    'Credit Return: Online Payment XXXXXXX1475 To Certified Production Services, LLC',
+    5763.21, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000483', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0252'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Credit Return: Online Payment XXXXXXX1475 To Certified Production Services, LLC',
+    5763.21, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0253', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-20',
+    'Expense',
+    'AZTEC RENTAL CENTER NO2 HOUSTON TX 05/20',
+    0.0, 620.33, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000484', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0253'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AZTEC RENTAL CENTER NO2 HOUSTON TX 05/20',
+    620.33, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0254', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-21',
+    'Expense',
+    'CHEVRON XXX3521 TOMBALL TX 05/21',
+    0.0, 1113.17, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000485', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0254'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX3521 TOMBALL TX 05/21',
+    46.15, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000486', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0254'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX3521 TOMBALL TX 05/21',
+    19.74, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000487', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0254'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TOMBALL RENTAL CENTER TOMBALL TX 05/21',
+    1047.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0255', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-22',
+    'Expense',
+    'SONIC DRIVE IN #5047 TOMBALL TX 05/22',
+    0.0, 124.41, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000488', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0255'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SONIC DRIVE IN #5047 TOMBALL TX 05/22',
+    7.56, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000489', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0255'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX6519 05/22',
+    96.85, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000490', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0255'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD HOUSTON TX 05/22',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0256', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-23',
+    'Deposit',
+    'TOMBALL RENTAL CENTER TOMBALL TX 05/23',
+    500.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000491', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0256'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TOMBALL RENTAL CENTER TOMBALL TX 05/23',
+    500.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0257', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-23',
+    'Expense',
+    'CHEVRON XXX3521 TOMBALL TX 05/23',
+    0.0, 118.78, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000492', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0257'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX3521 TOMBALL TX 05/23',
+    8.42, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000493', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0257'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WHATABURGER 134 Q26 HOUSTON TX 05/23',
+    24.93, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000494', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0257'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ELLIOTT ELECTRIC XXXXXX7941 TX 05/23',
+    60.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000495', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0257'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX1633 05/23',
+    24.79, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0258', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-24',
+    'Expense',
+    'RAISING CANES 0419 TOMBALL TX 05/24',
+    0.0, 39.71, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000496', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0258'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RAISING CANES 0419 TOMBALL TX 05/24',
+    29.71, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000497', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0258'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD HOUSTON TX 05/24',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0259', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-25',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX4588 05/25',
+    0.0, 14.98, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000498', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0259'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX4588 05/25',
+    14.98, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0260', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-26',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX9329 05/26',
+    0.0, 10.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000499', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0260'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9329 05/26',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0261', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-27',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX1665 05/27',
+    0.0, 21.990000000000002, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000500', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0261'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX1665 05/27',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000501', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0261'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 05/27',
+    11.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0262', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-28',
+    'Expense',
+    'Online ACH Payment XXXXXXX6271 To Bernardo (_######3816)',
+    0.0, 15824.53, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000502', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0262'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX6271 To Bernardo (_######3816)',
+    1904.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000503', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0262'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX7134 To Lagarto Rental Tools, Inc 05/28',
+    1388.34, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000504', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0262'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX7346 To 2W Services 05/28',
+    12532.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0263', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-29',
+    'Expense',
+    'POTBELLY #522 TOMBALL TX 05/29',
+    0.0, 59.02, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000505', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0263'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'POTBELLY #522 TOMBALL TX 05/29',
+    39.02, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000506', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0263'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD HOUSTON TX 05/29',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0264', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-30',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX8519 05/30',
+    0.0, 54657.28999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000507', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0264'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX8519 05/30',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000508', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0264'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ELLIOTT ELECTRIC SUPPL NACOGDOCHES TXXX7167 05/30',
+    33.02, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000509', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0264'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0547 To HeatCore (_#####1037)',
+    54184.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000510', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0264'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ELLIOTT ELECTRIC SUPPL NACOGDOCHES TXXX2240 05/30',
+    360.47, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000511', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0264'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ELLIOTT ELECTRIC SUPPL NACOGDOCHES TXXX6106 05/30',
+    17.32, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000512', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0264'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ELLIOTT ELECTRIC SUPPL NACOGDOCHES TXXX0306 05/30',
+    42.09, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000513', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0264'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX1092 05/30',
+    5.39, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0265', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-05-31',
+    'Expense',
+    'WM SUPERC WAL-MART SUP RICHMOND TX 05/31',
+    0.0, 84.75, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000514', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0265'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WM SUPERC WAL-MART SUP RICHMOND TX 05/31',
+    84.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0266', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-01',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX6109 06/01',
+    0.0, 20.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000515', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0266'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX6109 06/01',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0267', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-03',
+    'Expense',
+    'CHEVRON XXX3521 TOMBALL TX 05/31',
+    0.0, 158.70000000000002, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000516', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0267'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX3521 TOMBALL TX 05/31',
+    10.77, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000517', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0267'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SONIC DRIVE IN #5047 TOMBALL TX 06/03',
+    14.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000518', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0267'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HUNT ROAD PIT S BROOKSHIRE TX 06/03',
+    89.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000519', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0267'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX5288 06/03',
+    34.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000520', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0267'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HOME DEPOT #6525 HOUSTON TX XX0542 06/03',
+    9.4, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0268', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-04',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX8601 06/04',
+    0.0, 9.99, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000521', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0268'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX8601 06/04',
+    9.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0269', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-05',
+    'Expense',
+    'Online Payment XXXXXXX1641 To Kebo Oil and Gas, INC 06/05',
+    0.0, 9661.94, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000522', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0269'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX1641 To Kebo Oil and Gas, INC 06/05',
+    3230.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000523', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0269'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF MAY',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000524', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0269'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* RUDY''S COUNTRY STO TOMBALL TX 06/06',
+    32.9, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000525', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0269'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX6161358 EED:240605 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX1358 TC',
+    559.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000526', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0269'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX9293 To MartinLegal (_#####2006)',
+    1587.7, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000527', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0269'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX6845 To Hard Core Supply LLC 06/05',
+    4171.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000528', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0269'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WM SUPERC WAL-MART SUP RICHMOND TX 06/05',
+    65.18, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0270', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-06',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX5718 06/06',
+    0.0, 7840.379999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000529', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0270'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5718 06/06',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000530', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0270'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 06/06',
+    9.3, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000531', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0270'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TARGET XXXX9042 TOMBALL TX 06/06',
+    24.89, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000532', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0270'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX1449 To ACSJames (_########1332)',
+    7796.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0271', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-07',
+    'Expense',
+    'WITHDRAWAL 06/07',
+    0.0, 11970.94, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000533', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0271'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WITHDRAWAL 06/07',
+    9400.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000534', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0271'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '4TE*CULLIGAN OF HOUST XXX-XXX-6400 TX 06/08',
+    2570.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0272', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-09',
+    'Expense',
+    'NETLIFY HTTPSWWW.NETL CA 06/09',
+    0.0, 20.25, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000535', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0272'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY HTTPSWWW.NETL CA 06/09',
+    20.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0273', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-10',
+    'Expense',
+    'FLYING J #740 HOUSTON TX XX2606 06/10',
+    0.0, 1987.38, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000536', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0273'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FLYING J #740 HOUSTON TX XX2606 06/10',
+    123.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000537', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0273'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9ER''S GRILL @ WHARTON WHARTON TX 06/10',
+    33.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000538', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0273'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PMT*FT BEND CO TAX OFFI RICHMOND TX 06/10',
+    1830.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0274', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-11',
+    'Expense',
+    'HINZE COUNTRY KITCHEN WHARTON TX 06/11',
+    0.0, 1719.91, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000539', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0274'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HINZE COUNTRY KITCHEN WHARTON TX 06/11',
+    38.43, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000540', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0274'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BARBEE SERVICES INC WHARTON TX 06/11',
+    1260.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000541', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0274'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ENTERPRISE RENT-A-CAR KATY TX 06/11',
+    421.48, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0275', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-12',
+    'Expense',
+    'CHEVRON XXX3521 TOMBALL TX 06/12',
+    0.0, 23.49, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000542', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0275'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX3521 TOMBALL TX 06/12',
+    3.59, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000543', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0275'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'JACK IN THE BOX 3980 TOMBALL TX 06/12',
+    11.03, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000544', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0275'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 06/12',
+    8.87, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0276', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-13',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX5635 06/13',
+    0.0, 957.45, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000545', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0276'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5635 06/13',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000546', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0276'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TEJAS CHOCOLATE & BARB XXX-XXX0670 TX 06/13',
+    80.11, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000547', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0276'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ELLIOTT ELECTRIC XXXXXX7941 TX 06/13',
+    857.34, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0277', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-14',
+    'Expense',
+    'ACADEMY SPORTS & OUTDO HOUSTON TX XX5544 06/14',
+    0.0, 1066.94, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000548', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0277'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ACADEMY SPORTS & OUTDO HOUSTON TX XX5544 06/14',
+    238.13, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000549', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0277'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'IN *SCHILLEREFF POWER XXX-XXX0410 TX 06/14',
+    828.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0278', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-15',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX3824 06/15',
+    0.0, 47.87, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000550', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0278'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX3824 06/15',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000551', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0278'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SAM''S CLUB HOUSTON TX 06/15',
+    37.87, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0279', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-17',
+    'Expense',
+    'CIRCLE K # X6979 217 N REFUGIO TX 06/17',
+    0.0, 2020.1699999999998, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000552', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0279'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 217 N REFUGIO TX 06/17',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000553', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0279'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MURPHY7018ATWAL WHARTON TX 06/17',
+    35.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000554', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0279'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1652 REFUGIO TX XX8012 06/17',
+    438.08, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000555', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0279'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'IN *SCHILLEREFF POWER XXX-XXX0410 TX 06/17',
+    1497.1, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000556', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0279'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:LYFT MEMBERSHIP ORIG ID:XXXXXX2264 DESC DATE:240615 CO ENTRY DESCR:PAYMENTS SEC:CCD TRACE#:XXXXXXXX6355768 EED:240617 IND ID:XXXXXXXX2863374 IND NA ME:XXXXXXXXXXXXXXXXXX0906 TELECHK XXX-XXX-9263 TRN: XXXXXX5768 TC',
+    9.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0280', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-18',
+    'Expense',
+    'Claim reversal: ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 05/11 ClaimId: XXXXXXXXXXX0001',
+    0.0, 21.64, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000557', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0280'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Claim reversal: ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 05/11 ClaimId: XXXXXXXXXXX0001',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0281', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-19',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX8989 06/19',
+    0.0, 28.91, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000558', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0281'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX8989 06/19',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000559', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0281'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHIPOTLE 2794 TOMBALL TX 06/19',
+    13.91, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0282', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-20',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX8421 06/20',
+    0.0, 516.76, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000560', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0282'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX8421 06/20',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000561', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0282'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'UNITED XXXXXXX7315 UNITED.COM TX 06/20',
+    246.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000562', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0282'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SPYPOINT PREM-ANNUAL VICTORIAVILLE QC 06/20',
+    129.9, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000563', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0282'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SPYPOINT PREM-ANNUAL VICTORIAVILLE QC 06/20',
+    129.9, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0283', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-21',
+    'Expense',
+    'PILOT #472 BEASLEY TX XX0530 06/21',
+    0.0, 20.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000564', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0283'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PILOT #472 BEASLEY TX XX0530 06/21',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0284', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-22',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX0442 06/22',
+    0.0, 10.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000565', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0284'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX0442 06/22',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0285', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-23',
+    'Expense',
+    'UNITED XXXXXXX3607 UNITED.COM TX 06/23',
+    0.0, 631.99, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000566', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0285'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'UNITED XXXXXXX3607 UNITED.COM TX 06/23',
+    542.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000567', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0285'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'UNITED XXXXXXX9479 UNITED.COM TX 06/23',
+    89.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0286', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-24',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX8875 06/24',
+    0.0, 10.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000568', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0286'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX8875 06/24',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0287', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-25',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX0566 06/25',
+    0.0, 25.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000569', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0287'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX0566 06/25',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000570', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0287'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9067 06/25',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0288', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-26',
+    'Expense',
+    'CIRCLE K #XXX2255 HOUSTON TX XX1915 06/26',
+    0.0, 314.78999999999996, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000571', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0288'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2255 HOUSTON TX XX1915 06/26',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000572', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0288'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HONEY FARMS #81 HOUSTON TX 06/26',
+    46.63, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000573', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0288'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HOME DEPOT #6525 HOUSTON TX XX8568 06/26',
+    248.16, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0289', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-27',
+    'Expense',
+    'PANDA EXPRESS 1215 TOMBALL TX 06/27',
+    0.0, 492.05, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000574', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0289'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PANDA EXPRESS 1215 TOMBALL TX 06/27',
+    13.1, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000575', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0289'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'UNITED XXXXXXX5426 UNITED.COM TX 06/27',
+    478.95, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0290', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-28',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX2893 06/28',
+    0.0, 15.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000576', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0290'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX2893 06/28',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0291', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-06-30',
+    'Expense',
+    'SHELL SERVICE STATION HOCKLEY TX XX9539 06/30',
+    0.0, 523.0699999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000577', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0291'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SHELL SERVICE STATION HOCKLEY TX XX9539 06/30',
+    94.07, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000578', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0291'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DELAWARE CORP & TAX W XXX-XXX-3073 DE 06/28',
+    429.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0292', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-01',
+    'Expense',
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 07/02',
+    0.0, 250.88, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000579', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0292'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 07/02',
+    4.71, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000580', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0292'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX5219 To Bernardo (_######3816)',
+    246.17, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0293', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-02',
+    'Deposit',
+    'FEDWIRE CREDIT VIA: FIRST FINANCIAL BANK, N.A./XXXXX1122 B/O: WASTEWATT VENTUR FORT WORTH, TX XXXXX4071 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX X7092- 6626 US/AC-XXXX0000 5231 RFB=#108 OBI=INVOICE 108 -180K W HASHUT GENERATOR AND 900KW HASHHU T IMAD: 0702MMQFMPXXXX0293 TRN: XXXXXX1184 FF',
+    249290.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000581', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0293'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FEDWIRE CREDIT VIA: FIRST FINANCIAL BANK, N.A./XXXXX1122 B/O: WASTEWATT VENTUR FORT WORTH, TX XXXXX4071 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX X7092- 6626 US/AC-XXXX0000 5231 RFB=#108 OBI=INVOICE 108 -180K W HASHUT GENERATOR AND 900KW HASHHU T IMAD: 0702MMQFMPXXXX0293 TRN: XXXXXX1184 FF',
+    249290.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0294', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-02',
+    'Expense',
+    'ONLINE INTERNATIONAL WIRE TRANSFER VIA: BANK OF AMERICA, N.A./0959 A/C: TORONTO-DOMINION BANK, THE TORONTO CANADA M5K 1A2 CA BEN: UPSTREAM DATA INC LLOYDMINSTER AB T9V2X1 CA REF: BUSINESS EXPENSES SSN: XXXX8639 TRN: XXXXXX4184 ES 07/02',
+    0.0, 228986.69, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000582', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0294'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE INTERNATIONAL WIRE TRANSFER VIA: BANK OF AMERICA, N.A./0959 A/C: TORONTO-DOMINION BANK, THE TORONTO CANADA M5K 1A2 CA BEN: UPSTREAM DATA INC LLOYDMINSTER AB T9V2X1 CA REF: BUSINESS EXPENSES SSN: XXXX8639 TRN: XXXXXX4184 ES 07/02',
+    228986.69, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0295', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-03',
+    'Expense',
+    'CORPUS MM/GAS 0 CORPUS CHRIS TX 07/03',
+    0.0, 501.33000000000004, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000583', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0295'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CORPUS MM/GAS 0 CORPUS CHRIS TX 07/03',
+    71.88, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000584', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0295'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF JUNE',
+    35.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000585', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0295'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* SMOLIKS SMOKEHOUSE Mathis TX 07/03',
+    28.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000586', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0295'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 07/03',
+    154.54, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000587', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0295'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 07/03',
+    7.57, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000588', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0295'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1825 CORPUS CHRSTI TX XX4487 07/03',
+    203.4, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0296', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-06',
+    'Expense',
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX1311125 EED:240708 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX1125 TC',
+    0.0, 651.5799999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000589', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0296'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX1311125 EED:240708 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX1125 TC',
+    559.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000590', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0296'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WM SUPERCENTER #4111 RICHMOND TX XX3060 07/06',
+    91.92, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0297', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-07',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX3725 07/07',
+    0.0, 250.29999999999998, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000591', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0297'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX3725 07/07',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000592', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0297'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MINUTEKEY BOULDER CO 07/07',
+    8.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000593', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0297'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BEST BUY XXXX5172 RICHMOND TX 07/07',
+    231.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0298', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-08',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX0469 07/08',
+    0.0, 18.52, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000594', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0298'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX0469 07/08',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000595', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0298'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 07/09',
+    8.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0299', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-09',
+    'Expense',
+    'JACK IN THE BOX 3901 HOUSTON TX 07/09',
+    0.0, 35.6, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000596', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0299'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'JACK IN THE BOX 3901 HOUSTON TX 07/09',
+    15.35, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000597', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0299'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY HTTPSWWW.NETL CA 07/09',
+    20.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0300', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-10',
+    'Expense',
+    'LOVE''S #0290 OUTSIDE LUFKIN TX 07/10',
+    0.0, 92.22, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000598', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0300'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOVE''S #0290 OUTSIDE LUFKIN TX 07/10',
+    76.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000599', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0300'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 07/11',
+    16.22, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0301', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-11',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX4837 07/11',
+    0.0, 30.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000600', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0301'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX4837 07/11',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0302', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-12',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX 07/12',
+    0.0, 163.65, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000601', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0302'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX 07/12',
+    83.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000602', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0302'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RAISING CANES 0419 TOMBALL TX 07/12',
+    29.71, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000603', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0302'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SAMS CLUB RENEWAL HOUSTON TX 07/12',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0303', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-13',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX3480 07/13',
+    0.0, 27.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000604', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0303'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX3480 07/13',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000605', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0303'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 07/13',
+    12.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0304', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-15',
+    'Expense',
+    'Online Payment XXXXXXX5965 To Petroleum producing services LLC 07/15',
+    0.0, 7917.549999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000606', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0304'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX5965 To Petroleum producing services LLC 07/15',
+    3228.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000607', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0304'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'JACK IN THE BOX TOMBALL TX XX5801 07/15',
+    12.97, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000608', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0304'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HARBOR FREIGHT TOOLS 5 HOUSTON TX 07/15',
+    10.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000609', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0304'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:F3X ENERGY SERVI ORIG ID:XXXXXX6202 DESC DATE:240715 CO ENTRY DESCR:SALE SEC:WEB TRACE#:XXXXXXXX8662869 EED:240715 IND ID: IND NAME:10NETZERO INC T RN: XXXXXX2869TC',
+    2165.77, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000610', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0304'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:SCHILLEREFF POWE ORIG ID:XXXXXX6202 DESC DATE:240715 CO ENTRY DESCR:SALE SEC:CCD TRACE#:XXXXXXXX8671457 EED:240715 IND ID: IND NAME:10NETZERO INC T RN: XXXXXX1457TC',
+    500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000611', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0304'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Zelle payment to AJ Garcia XXXXXXX5659',
+    2000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0305', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-16',
+    'Expense',
+    'Zelle payment to AJ Garcia XXXXXXX1534',
+    0.0, 900.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000612', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0305'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Zelle payment to AJ Garcia XXXXXXX1534',
+    900.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0306', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-17',
+    'Expense',
+    'Online ACH Payment XXXXXXX6122 To JohnSchillereff (_#####5067)',
+    0.0, 7339.35, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000613', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0306'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX6122 To JohnSchillereff (_#####5067)',
+    7339.35, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0307', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-18',
+    'Expense',
+    'CIRCLE K #XXX0719 WHARTON TX XX3917 07/18',
+    0.0, 30.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000614', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0307'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX0719 WHARTON TX XX3917 07/18',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0308', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-19',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX7597 07/19',
+    0.0, 29.3, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000615', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0308'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX7597 07/19',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000616', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0308'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 07/19',
+    9.3, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0309', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-20',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX9482 07/20',
+    0.0, 30.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000617', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0309'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9482 07/20',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000618', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0309'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX2067 07/20',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0310', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-21',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX9991 07/21',
+    0.0, 14.940000000000001, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000619', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0310'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9991 07/21',
+    4.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000620', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0310'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5047 07/21',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0311', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-22',
+    'Expense',
+    'AGI*TMO SERVICE FEE XXX-XXX-6285 PA 07/23',
+    0.0, 3112.73, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000621', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0311'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AGI*TMO SERVICE FEE XXX-XXX-6285 PA 07/23',
+    105.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000622', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0311'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX3205 To JohnSchillereff (_#####5067)',
+    1711.54, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000623', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0311'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX4724 To Bernardo (_######3816)',
+    476.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000624', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0311'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DRAKE CONTROLS LLC XXX-XXX0190 TX 07/22',
+    820.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0312', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-23',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX7416 07/23',
+    0.0, 20.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000625', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0312'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX7416 07/23',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0313', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-24',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX9521 07/24',
+    0.0, 531.89, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000626', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0313'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9521 07/24',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000627', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0313'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AT&T BILL PAYMENT XXX-XXX-0500 TX 07/24',
+    400.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000628', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0313'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ALAMO LUMBER COMPANY M MATHIS TX XX8914 07/24',
+    11.89, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000629', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0313'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AT&T BILL PAYMENT XXX-XXX-0500 TX 07/24',
+    100.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0314', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-25',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX5479 07/25',
+    0.0, 94.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000630', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0314'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5479 07/25',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000631', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0314'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CORPUS MM/GAS 0 CORPUS CHRIS TX 07/25',
+    74.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0315', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-26',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX3543 07/26',
+    0.0, 35.41, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000632', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0315'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX3543 07/26',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000633', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0315'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX7220 HOUSTON TX 07/26',
+    5.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0316', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-28',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX3335 07/28',
+    0.0, 70.83, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000634', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0316'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX3335 07/28',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000635', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0316'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX6413 07/28',
+    50.83, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0317', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-29',
+    'Journal Entry',
+    'Journal Entry - 2024-07-29',
+    0.0, 18216.89, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000636', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0317'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-5100'),
+    '',
+    18216.89, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0318', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-29',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX7482 07/29',
+    0.0, 36.53, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000637', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0318'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX7482 07/29',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000638', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0318'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Store Cypress TX 07/30',
+    16.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0319', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-30',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX5419 07/30',
+    0.0, 19.47, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000639', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0319'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5419 07/30',
+    19.47, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0320', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-07-31',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX9874 07/31',
+    0.0, 70.67, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000640', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0320'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9874 07/31',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000641', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0320'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WAL-MART #0703 TOMBALL TX XX0171 07/31',
+    55.67, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0321', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-01',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX0323 08/01',
+    0.0, 145.17000000000002, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000642', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0321'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX0323 08/01',
+    14.17, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000643', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0321'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1906 COLLEGE STATI TX XX1902 08/01',
+    40.59, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000644', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0321'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX2848 NAVASOTA TX 08/01',
+    10.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000645', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0321'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHIPOTLE 2794 TOMBALL TX 07/31',
+    13.91, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000646', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0321'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'GRAINGER XXX-XXX4643 IL 07/31',
+    66.44, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0322', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-02',
+    'Expense',
+    'APACHE OIL COMPANY PASADENA TX 08/02',
+    0.0, 1140.87, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000647', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0322'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APACHE OIL COMPANY PASADENA TX 08/02',
+    1140.87, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0323', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-05',
+    'Deposit',
+    'FEDWIRE CREDIT VIA: FIRST FINANCIAL BANK/XXXXX1122 B/O: WASTEWATT VENTUR FORT WORTH, TX XXXXX4071 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX XXXXX-6626 U S/AC-XXXX0000 5231 RFB=O/B FFIN ABILENE IMAD: 0805MMQFMPXXXX0012 TRN: XXXXXX1218 FF',
+    20000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000648', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0323'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FEDWIRE CREDIT VIA: FIRST FINANCIAL BANK/XXXXX1122 B/O: WASTEWATT VENTUR FORT WORTH, TX XXXXX4071 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX XXXXX-6626 U S/AC-XXXX0000 5231 RFB=O/B FFIN ABILENE IMAD: 0805MMQFMPXXXX0012 TRN: XXXXXX1218 FF',
+    20000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0324', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-05',
+    'Expense',
+    'SHELL SERVICE STATION EAST BERNARD TXXX2760 08/05',
+    0.0, 659.35, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000649', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0324'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SHELL SERVICE STATION EAST BERNARD TXXX2760 08/05',
+    91.51, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000650', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0324'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SHELL OIL XXXXXXX1528 EAST BERNARD TX 08/05',
+    80.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000651', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0324'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9032 08/05',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000652', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0324'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 08/05',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000653', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0324'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF JULY',
+    75.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000654', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0324'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 08/05',
+    62.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000655', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0324'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1652 REFUGIO TX XX9484 08/05',
+    259.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000656', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0324'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Gas',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0325', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-05',
+    'Journal Entry',
+    'Journal Entry - 2024-08-05',
+    0.0, 18216.89, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000657', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0325'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1300'),
+    '',
+    18216.89, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0326', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-06',
+    'Deposit',
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX1342',
+    18820.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000658', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0326'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX1342',
+    18820.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0327', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-06',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX3866 08/06',
+    0.0, 26059.309999999998, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000659', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0327'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX3866 08/06',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000660', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0327'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1487 CYPRESS TX XX3296 08/06',
+    20.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000661', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0327'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX2177554 EED:240806 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX7554 TC',
+    559.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000662', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0327'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX9619 To JohnSchillereff (_#####5067)',
+    6644.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000663', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0327'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0877 To BarbeeCrane (_##4802)',
+    1920.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000664', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0327'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX6567 To JoeSingleSourceLufkin (_#####6386)',
+    16900.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0328', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-07',
+    'Deposit',
+    'BEST BUY MHT XXXX4134 CYPRESS TX 08/07',
+    216.49, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000665', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0328'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BEST BUY MHT XXXX4134 CYPRESS TX 08/07',
+    216.49, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0329', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-07',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX4757 08/07',
+    0.0, 231.49, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000666', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0329'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX4757 08/07',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000667', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0329'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BEST BUY XXXX5172 RICHMOND TX XX2095 08/07',
+    216.49, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0330', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-08',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX8093 08/08',
+    0.0, 35.019999999999996, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000668', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0330'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX8093 08/08',
+    6.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000669', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0330'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX4948 08/08',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000670', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0330'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 08/09',
+    8.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0331', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-09',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX1289 08/09',
+    0.0, 855.6999999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000671', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0331'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX1289 08/09',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000672', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0331'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SOUTHWELLS HAMBURGER G HOUSTON TX 08/09',
+    40.05, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000673', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0331'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* KIRBY ICE HOUSE - HOUSTON TX 08/10',
+    14.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000674', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0331'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY HTTPSWWW.NETL CA 08/09',
+    20.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000675', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0331'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX4299 To Bernardo (_######3816)',
+    760.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0332', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-10',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX5860 08/10',
+    0.0, 55.69, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000676', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0332'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5860 08/10',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000677', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0332'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9378 08/10',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000678', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0332'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 08/10',
+    4.05, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000679', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0332'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 08/11',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0333', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-11',
+    'Expense',
+    '9235 CLAY ROAD BUSINES HOUSTON TX XX3906 08/11',
+    0.0, 20.01, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000680', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0333'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD BUSINES HOUSTON TX XX3906 08/11',
+    20.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0334', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-12',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX8419 08/12',
+    0.0, 99.16999999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000681', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0334'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX8419 08/12',
+    11.69, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000682', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0334'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5727 08/12',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000683', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0334'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 08/12',
+    6.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000684', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0334'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'GRAINGER XXX-XXX4643 IL 08/12',
+    60.98, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0335', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-13',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX5821 08/13',
+    0.0, 2546.5299999999997, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000685', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0335'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5821 08/13',
+    9.09, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000686', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0335'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PANDA EXPRESS #1900 HOUSTON TX 08/13',
+    14.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000687', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0335'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT*BILL PAYMENT XXX-XXX-2020 TX 08/13',
+    500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000688', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0335'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX6184 To GTCrane (_#####3597)',
+    2022.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0336', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-14',
+    'Deposit',
+    'BOOK TRANSFER CREDIT B/O: ENGINEERED FLUIDS, INC. ST PETERSBURG FL XXXXX-2704 US REF: INV. 152 TRN: XXXXXX4227 ES',
+    24000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000689', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0336'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BOOK TRANSFER CREDIT B/O: ENGINEERED FLUIDS, INC. ST PETERSBURG FL XXXXX-2704 US REF: INV. 152 TRN: XXXXXX4227 ES',
+    24000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0337', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-14',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX9406 08/14',
+    0.0, 26.5, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000690', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0337'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9406 08/14',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000691', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0337'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 08/14',
+    6.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0338', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-15',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX8393 08/15',
+    0.0, 140.39, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000692', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0338'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX8393 08/15',
+    5.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000693', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0338'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FESCO LTD XXXXXX7000X15 TX 08/15',
+    67.6, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000694', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0338'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FESCO LTD XXXXXX7000X15 TX 08/15',
+    67.6, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0339', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-16',
+    'Deposit',
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX4554',
+    50000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000695', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0339'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX4554',
+    50000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0340', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-16',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX5258 08/16',
+    0.0, 50030.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000696', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0340'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5258 08/16',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000697', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0340'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX4372 To F3XJamesandDusty (_#####7276)',
+    50000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0341', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-20',
+    'Expense',
+    'Online Payment XXXXXXX0394 To Kebo Oil and Gas, INC 08/20',
+    0.0, 15665.3, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000698', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0341'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX0394 To Kebo Oil and Gas, INC 08/20',
+    3421.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000699', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0341'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2856 To JohnSchillereff (_#####5067)',
+    9555.3, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000700', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0341'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2779 To Bernardo (_######3816)',
+    2689.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0342', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-23',
+    'Journal Entry',
+    'To reclassify the shipping expense from the balance sheet to the P&L under "Shipping & postage."',
+    0.0, 1300.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0343', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-23',
+    'Expense',
+    'Online Payment XXXXXXX8633 To Kebo Oil and Gas, INC 08/23',
+    0.0, 11598.51, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000702', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0343'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX8633 To Kebo Oil and Gas, INC 08/23',
+    2250.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000703', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0343'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX8213 To Kebo Oil and Gas, INC 08/23',
+    2325.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000704', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0343'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX5973 To Bernardo (_######3816)',
+    5723.51, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000705', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0343'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:Express Transpor ORIG ID:204876018 DESC DATE:Aug 23 CO ENTRY DESCR:10 net zerSEC:CCD TRACE#:XXXXXXXX1320822 EED:240823 IND ID:connie IND NAME:10 ne t zero TRN: XXXXXX0822 TC',
+    1300.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0344', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-26',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX1601 08/26',
+    0.0, 33.44, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000706', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0344'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX1601 08/26',
+    3.44, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000707', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0344'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX7030 08/26',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0345', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-27',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX0503 08/27',
+    0.0, 520.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000708', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0345'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX0503 08/27',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000709', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0345'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WITHDRAWAL 08/27',
+    500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0346', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-28',
+    'Deposit',
+    'FEDWIRE CREDIT VIA: WELLS FARGO BANK, N.A./XXXXX0248 B/O: MALAMA ENERGY INC CA X0803 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX XXXXX-6626 US/AC-XXXX0000 5231 RFB=OWXXXXXXXXXX7284 BBI=/CHGS/USD0,00/ IMAD: 0828I1B7033RXX2415 TRN: XXXXXX1241 FF',
+    8800.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000710', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0346'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FEDWIRE CREDIT VIA: WELLS FARGO BANK, N.A./XXXXX0248 B/O: MALAMA ENERGY INC CA X0803 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX XXXXX-6626 US/AC-XXXX0000 5231 RFB=OWXXXXXXXXXX7284 BBI=/CHGS/USD0,00/ IMAD: 0828I1B7033RXX2415 TRN: XXXXXX1241 FF',
+    8800.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0347', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-28',
+    'Expense',
+    'RAISING CANES 0419 TOMBALL TX 08/28',
+    0.0, 256.19, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000711', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0347'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RAISING CANES 0419 TOMBALL TX 08/28',
+    29.63, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000712', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0347'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX5955 08/28',
+    6.56, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000713', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0347'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SQ *FARMER TRAILER RENT RICHMOND TX 08/28',
+    220.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0348', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-29',
+    'Expense',
+    'LOVE''S #0617 OUTSIDE HUNGERFORD TX 08/29',
+    0.0, 4012.13, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000714', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0348'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOVE''S #0617 OUTSIDE HUNGERFORD TX 08/29',
+    77.05, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000715', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0348'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Basic Online Payroll Payment XXXXXXX1202 to #########4504',
+    3500.08, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000716', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0348'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD BUSINES HOUSTON TX XX3890 08/29',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000717', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0348'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0322 To GTCrane (_#####3597)',
+    425.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0349', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-30',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX1625 08/30',
+    0.0, 4595.88, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000718', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0349'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX1625 08/30',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000719', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0349'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1487 CYPRESS TX XX8073 08/30',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000720', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0349'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX3776 To Encore (_######6224)',
+    1676.16, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000721', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0349'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX3585 To Encore (_######6224)',
+    1902.59, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000722', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0349'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX1375 To Encore (_######6224)',
+    937.13, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000723', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0349'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WAL-MART SUPER CENTER TOMBALL TX XX9084 08/30',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0350', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-08-31',
+    'Expense',
+    'CHEVRON XXX4813 TOMBALL TX 08/30',
+    0.0, 202.19, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000724', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0350'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX4813 TOMBALL TX 08/30',
+    92.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000725', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0350'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SQ *FARMER TRAILER RENT RICHMOND TX 08/30',
+    110.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0351', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-03',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX7201 09/03',
+    0.0, 2475.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000726', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0351'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX7201 09/03',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000727', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0351'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX7962 To BobcatCrane (_####4024)',
+    2455.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0352', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-04',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX0473 09/04',
+    0.0, 84.93, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000728', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0352'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX0473 09/04',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000729', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0352'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX2068 09/04',
+    64.93, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0353', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-05',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX2027 09/05',
+    0.0, 2147.66, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000730', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0353'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX2027 09/05',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000731', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0353'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF AUGUST',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000732', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0353'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX3590087 EED:240905 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX0087 TC',
+    559.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000733', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0353'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2982 To JohnSchillereff (_#####5067)',
+    1538.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0354', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-08',
+    'Expense',
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 09/09',
+    0.0, 8.52, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000734', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0354'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 09/09',
+    8.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0355', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-09',
+    'Expense',
+    'NETLIFY HTTPSWWW.NETL CA 09/09',
+    0.0, 20.25, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000735', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0355'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY HTTPSWWW.NETL CA 09/09',
+    20.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0356', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-10',
+    'Expense',
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 09/11',
+    0.0, 21.64, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000736', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0356'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 09/11',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0357', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-11',
+    'Expense',
+    'Online ACH Payment XXXXXXX2346 To JoeSingleSourceLufkin (_#####6386)',
+    0.0, 6765.63, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000737', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0357'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2346 To JoeSingleSourceLufkin (_#####6386)',
+    6765.63, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0358', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-12',
+    'Expense',
+    'PHOENICIA MKT BAR HOUSTON TX 09/12',
+    0.0, 135.06, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000738', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0358'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PHOENICIA MKT BAR HOUSTON TX 09/12',
+    135.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0359', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-13',
+    'Expense',
+    'Online ACH Payment XXXXXXX7421 To Spindletop (_####7533)',
+    0.0, 2809.37, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000739', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0359'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX7421 To Spindletop (_####7533)',
+    2790.71, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000740', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0359'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 09/13',
+    18.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0360', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-13',
+    'Invoice',
+    'WasteWatt Miner Install -  Mathis',
+    4942.76, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000741', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0360'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    'WasteWatt Miner Install -  Mathis',
+    4942.76, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0361', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-13',
+    'Payment',
+    'Payment - 2024-09-13',
+    4942.76, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000742', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0361'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    4942.76, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0362', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-17',
+    'Expense',
+    'Online ACH Payment XXXXXXX0676 To MBX (_#####6908)',
+    0.0, 3800.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000743', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0362'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0676 To MBX (_#####6908)',
+    3800.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0363', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-19',
+    'Expense',
+    'WHATABURGER 428 Q26 EDNA TX 09/19',
+    0.0, 213.16, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000744', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0363'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WHATABURGER 428 Q26 EDNA TX 09/19',
+    12.22, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000745', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0363'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 09/19',
+    18.68, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000746', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0363'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SUNOCO XXXXXX2300 REFUGIO TX 09/19',
+    67.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000747', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0363'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 09/19',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000748', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0363'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOVE''S #0297 OUTSIDE EDNA TX 09/19',
+    44.32, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000749', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0363'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CONNER''S CORNER STORE EDNA TX XX5529 09/19',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0364', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-23',
+    'Expense',
+    'Online Payment XXXXXXX3453 To Kebo Oil and Gas, INC 09/23',
+    0.0, 3214.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000750', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0364'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX3453 To Kebo Oil and Gas, INC 09/23',
+    3214.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0365', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-24',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX3913 09/24',
+    0.0, 10.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000751', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0365'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX3913 09/24',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0366', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-09-26',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX3641 09/26',
+    0.0, 48.7, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000752', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0366'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX3641 09/26',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000753', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0366'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 09/27',
+    28.7, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0367', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-02',
+    'Expense',
+    '9235 CLAY ROAD BUSINES HOUSTON TX XX7729 10/02',
+    0.0, 79.34, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000754', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0367'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD BUSINES HOUSTON TX XX7729 10/02',
+    40.17, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000755', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0367'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PICK N PAY BEAUMONT TX XX5019 10/02',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000756', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0367'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MAX DONUTS HOUSTON TX 10/02',
+    6.76, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000757', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0367'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RAISING CANES 0393 BEAUMONT TX 10/02',
+    12.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0368', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-03',
+    'Deposit',
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX4854',
+    6765.63, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000758', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0368'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX4854',
+    6765.63, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0369', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-03',
+    'Expense',
+    'SERVICE CHARGES FOR THE MONTH OF SEPTEMBER',
+    0.0, 55.9, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000759', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0369'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF SEPTEMBER',
+    55.9, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0370', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-05',
+    'Expense',
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX1114351 EED:241007 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX4351 TC',
+    0.0, 559.66, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000760', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0370'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:IPFSXXX-XXX-2621 ORIG ID:0 ADXXX4370 DESC DATE: CO ENTRY DESCR:IPFSPMTTXPSEC:CCD TRACE#:XXXXXXXX1114351 EED:241007 IND ID:62397 IND NAME:10 NET ZERO INC. GDxLk2vV TRN: XXXXXX4351 TC',
+    559.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0371', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-07',
+    'Expense',
+    'O''REILLY 1238 MATHIS TX XX2145 10/07',
+    0.0, 646.96, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000761', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0371'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1238 MATHIS TX XX2145 10/07',
+    401.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000762', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0371'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 REFUGIO TX 10/07',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000763', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0371'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 10/07',
+    65.02, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000764', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0371'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 10/07',
+    17.68, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000765', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0371'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 10/09',
+    8.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000766', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0371'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B #234 REFUGIO TX XX1371 10/07',
+    19.46, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000767', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0371'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B GAS #234 REFUGIO TX XX7209 10/07',
+    59.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000768', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0371'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD BUSINES HOUSTON TX XX4927 10/07',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000769', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0371'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD BUSINES HOUSTON TX XX4927 10/07',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0372', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-09',
+    'Expense',
+    'NETLIFY HTTPSWWW.NETL CA 10/09',
+    0.0, 20.25, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000770', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0372'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY HTTPSWWW.NETL CA 10/09',
+    20.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0373', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-10',
+    'Expense',
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 10/11',
+    0.0, 21.64, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000771', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0373'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 10/11',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0374', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-10',
+    'Invoice',
+    'Invoice - 2024-10-10',
+    1000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000772', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0374'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    1000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0375', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-10',
+    'Payment',
+    'Payment - 2024-10-10',
+    1000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000773', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0375'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    1000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0376', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-11',
+    'Expense',
+    'Online ACH Payment XXXXXXX0351 To MartinLegal (_#####2006)',
+    0.0, 3099.36, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000774', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0376'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0351 To MartinLegal (_#####2006)',
+    3099.36, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0377', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-13',
+    'Expense',
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 10/13',
+    0.0, 69.29, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000775', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0377'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 10/13',
+    69.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0378', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-15',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX5591 10/15',
+    0.0, 864.83, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000776', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0378'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5591 10/15',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000777', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0378'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9021 10/15',
+    10.59, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000778', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0378'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 10/15',
+    120.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000779', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0378'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX8097 10/15',
+    77.88, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000780', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0378'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ACADEMY SPORTS #165 KATY TX 10/15',
+    378.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000781', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0378'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ACADEMY SPORTS & OUTDO TOMBALL TX XX8747 10/15',
+    162.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000782', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0378'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 10/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000783', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0378'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 10/15',
+    96.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0379', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-16',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX8717 10/16',
+    0.0, 704.4499999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000784', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0379'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX8717 10/16',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000785', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0379'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ACADEMY SPORTS #165 KATY TX 10/16',
+    238.12, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000786', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0379'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 10/16',
+    95.76, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000787', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0379'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SPYPOINT PREM-ANNUAL VICTORIAVILLE QC 10/16',
+    129.9, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000788', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0379'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 10/16',
+    95.77, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000789', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0379'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SPYPOINT PREM-ANNUAL VICTORIAVILLE QC 10/16',
+    129.9, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0380', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-17',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX2852 10/17',
+    0.0, 2578.79, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000790', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0380'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX2852 10/17',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000791', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0380'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX1772 To BOC LOGISTICS LLC 10/17',
+    1440.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000792', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0380'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX5121 To BOC LOGISTICS LLC 10/17',
+    1020.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000793', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0380'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TARGET T-1904 TOMBALL TX XX5238 10/17',
+    23.79, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000794', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0380'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THECOMMONDESK WWW.THECOMMON TX 10/17',
+    80.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0381', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-18',
+    'Expense',
+    'Zelle payment to Joel Fulford JPM99apltaae',
+    0.0, 1024.16, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000795', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0381'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Zelle payment to Joel Fulford JPM99apltaae',
+    353.09, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000796', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0381'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WWW.REVEALCELLCAM.CO WWW.REVEALCEL MN 10/18',
+    671.07, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0382', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-21',
+    'Expense',
+    'WAL-MART #4512 KATY TX XX1300 10/21',
+    0.0, 45.12, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000797', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0382'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WAL-MART #4512 KATY TX XX1300 10/21',
+    45.12, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0383', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-23',
+    'Expense',
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 10/23',
+    0.0, 351.62, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000798', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0383'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 10/23',
+    57.6, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000799', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0383'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B GAS #234 REFUGIO TX XX0232 10/23',
+    42.34, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000800', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0383'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 10/24',
+    117.33, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000801', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0383'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 10/23',
+    6.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000802', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0383'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 10/23',
+    117.34, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000803', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0383'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ALAMO LUMBER COMPANY M MATHIS TX XX8061 10/23',
+    10.35, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0384', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-28',
+    'Expense',
+    'Online Payment XXXXXXX5518 To Kebo Oil and Gas, INC 10/28',
+    0.0, 4793.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000804', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0384'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX5518 To Kebo Oil and Gas, INC 10/28',
+    4793.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0385', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-31',
+    'Journal Entry',
+    'Shwan Leary $100K - 5.46% annum',
+    0.0, 4560.14, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000805', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0385'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    'Shwan Leary $100K - 5.46% annum',
+    4560.14, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0386', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-10-31',
+    'Journal Entry',
+    'Scott Aulds Sr Loan $100,000 - Interest accrual on 5.45% annum',
+    0.0, 4625.52, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000806', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0386'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    'Scott Aulds Sr Loan $100,000 - Interest accrual on 5.45% annum',
+    4625.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0387', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-01',
+    'Journal Entry',
+    'Convertible Note Converted to equity',
+    100000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000807', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0387'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2520'),
+    'Convertible Note Converted to equity',
+    100000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0388', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-01',
+    'Journal Entry',
+    'Convertible Note Converted to equity',
+    12912.5, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000808', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0388'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2530'),
+    'Convertible Note Converted to equity',
+    12912.5, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0389', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-01',
+    'Journal Entry',
+    '6% annum on $12,912.50 Loan from S. Bryan Aulds II',
+    0.0, 651.64, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000809', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0389'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '6% annum on $12,912.50 Loan from S. Bryan Aulds II',
+    651.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0390', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-01',
+    'Journal Entry',
+    '6% annum on $12,912.50 Loan from Colin Aulds',
+    0.0, 3825.85, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000810', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0390'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '6% annum on $12,912.50 Loan from Colin Aulds',
+    3825.85, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0391', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-01',
+    'Journal Entry',
+    'Journal Entry - 2024-11-01',
+    0.0, 3908.6, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000811', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0391'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    '',
+    3908.6, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0392', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-01',
+    'Journal Entry',
+    'converted loan is converted to equity',
+    15685.51, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000812', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0392'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2200'),
+    'converted loan is converted to equity',
+    15685.51, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0393', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-01',
+    'Journal Entry',
+    'Convertible Loan conversion',
+    100000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000813', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0393'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2550'),
+    'Convertible Loan conversion',
+    100000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0394', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-01',
+    'Journal Entry',
+    'Convertible Loan converted to equity',
+    100000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000814', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0394'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-2540'),
+    'Convertible Loan converted to equity',
+    100000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0395', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-04',
+    'Expense',
+    'AT&T BILL PAYMENT XXX-XXX-0500 TX 11/05',
+    0.0, 500.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000815', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0395'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AT&T BILL PAYMENT XXX-XXX-0500 TX 11/05',
+    500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0396', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-05',
+    'Expense',
+    'SERVICE CHARGES FOR THE MONTH OF OCTOBER',
+    0.0, 42.5, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000816', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0396'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF OCTOBER',
+    42.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0397', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-06',
+    'Invoice',
+    'Invoice - 2024-11-06',
+    1616.6, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000817', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0397'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    1616.6, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0398', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-06',
+    'Expense',
+    'HUNT ROAD PIT STOP EXP BROOKSHIRE TX XX9571 11/06',
+    0.0, 68.34, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000818', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0398'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HUNT ROAD PIT STOP EXP BROOKSHIRE TX XX9571 11/06',
+    68.34, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0399', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-06',
+    'Invoice',
+    'Invoice - 2024-11-06',
+    1210.52, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000819', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0399'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    1210.52, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0400', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-07',
+    'Expense',
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 11/09',
+    0.0, 657.52, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000820', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0400'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 11/09',
+    8.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000821', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0400'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LEGALZOOM* TRADEMARK XXX-XXX0151 CA 11/07',
+    649.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0401', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-09',
+    'Expense',
+    'NETLIFY NETLIFY.COM CA 11/09',
+    0.0, 20.25, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000822', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0401'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY NETLIFY.COM CA 11/09',
+    20.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0402', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-10',
+    'Expense',
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 11/11',
+    0.0, 21.64, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000823', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0402'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 11/11',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0403', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-13',
+    'Expense',
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    0.0, 69.29, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000824', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0403'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    69.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0404', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-15',
+    'Expense',
+    'TACTACAM WWW.REVEALCEL MN 11/15',
+    0.0, 18.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000825', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0404'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 11/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000826', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0404'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 11/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0405', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-15',
+    'Invoice',
+    'Invoice - 2024-11-15',
+    3498.33, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000827', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0405'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    3498.33, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0406', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-15',
+    'Payment',
+    'Payment - 2024-11-15',
+    1210.52, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000828', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0406'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    1210.52, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0407', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-16',
+    'Payment',
+    'Payment - 2024-11-16',
+    5114.93, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000829', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0407'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    3498.33, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000830', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0407'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    1616.6, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0408', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-19',
+    'Expense',
+    'CIRCLE K #XXX1403 ROSENBERG TX XX8454 11/19',
+    0.0, 3241.14, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000831', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0408'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1403 ROSENBERG TX XX8454 11/19',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000832', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0408'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HINZE COUNTRY KITCHEN WHARTON TX 11/19',
+    83.14, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000833', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0408'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX6615 To Kebo Oil and Gas, INC 11/19',
+    3128.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000834', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0408'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B GAS #233 WHARTON TX XX1751 11/19',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0409', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-20',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX7305 11/20',
+    0.0, 10.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000835', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0409'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX7305 11/20',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0410', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-21',
+    'Expense',
+    'BUC-EE''S #48 ENNIS TX 11/21',
+    0.0, 123.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000836', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0410'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #48 ENNIS TX 11/21',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000837', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0410'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #26 MADISONVILLE TX 11/21',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000838', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0410'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX5974 HOUSTON TX 11/21',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000839', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0410'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'X1272 - DALLAS ON STREE DALLAS TX 11/21',
+    3.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000840', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0410'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SP BUSH CENTER XXX-XXXX4300 TX 11/21',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0411', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-22',
+    'Expense',
+    'BUC-EE''S #40 KATY TX 11/22',
+    0.0, 85.19, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000841', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0411'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #40 KATY TX 11/22',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000842', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0411'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'COSTCO GAS #1167 KATY TX XX9453 11/22',
+    65.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0412', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-11-29',
+    'Expense',
+    'ATT*BILL PAYMENT XXX-XXX-2020 TX 11/29',
+    0.0, 280.93, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000843', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0412'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT*BILL PAYMENT XXX-XXX-2020 TX 11/29',
+    280.93, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0413', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-02',
+    'Expense',
+    'NAPA MATHIS MATHIS TX 12/02',
+    0.0, 312.95, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000844', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0413'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 12/02',
+    104.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000845', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0413'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 12/02',
+    104.27, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000846', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0413'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 12/02',
+    104.27, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0414', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-04',
+    'Expense',
+    'SERVICE CHARGES FOR THE MONTH OF NOVEMBER',
+    0.0, 1337.99, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000847', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0414'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF NOVEMBER',
+    168.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000848', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0414'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CORPUS MM/GAS XX0273 CORPUS CHRIS TX XX9491 12/04',
+    39.49, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000849', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0414'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0351 To MartinLegal (_#####2006)',
+    805.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000850', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0414'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CORPORATE FILINGS LLC XXX-XXX8466 WY 12/04',
+    325.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0415', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-07',
+    'Expense',
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 12/09',
+    0.0, 8.52, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000851', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0415'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 12/09',
+    8.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0416', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-08',
+    'Expense',
+    'MCDONALD''S FX6227 CYPRESS TX 12/08',
+    0.0, 42.66, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000852', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0416'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX6227 CYPRESS TX 12/08',
+    7.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000853', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0416'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STAR STOP 127 HOUSTON TX XX6567 12/08',
+    35.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0417', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-09',
+    'Deposit',
+    'FEDWIRE CREDIT VIA: THIRD COAST BANK/XXXXX4149 B/O: MCKAIN POWER SYSTEMS CONSULTING LLCKATY TX XXXXX-0000 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX 7709 X-6626 US/AC-XXXX0000 5231 RFB=O/B THIRD COAST IMAD: 1209MMQFMPGXXX0090 TRN: XXXXXX1344 FF',
+    260234.83, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000854', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0417'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FEDWIRE CREDIT VIA: THIRD COAST BANK/XXXXX4149 B/O: MCKAIN POWER SYSTEMS CONSULTING LLCKATY TX XXXXX-0000 REF: CHASE NYC/CTR/BNF=10NETZERO, INC. HOUSTON TX 7709 X-6626 US/AC-XXXX0000 5231 RFB=O/B THIRD COAST IMAD: 1209MMQFMPGXXX0090 TRN: XXXXXX1344 FF',
+    260234.83, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0418', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-09',
+    'Expense',
+    'CHIPOTLE 1808 DALLAS TX 12/09',
+    0.0, 94.87, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000855', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0418'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHIPOTLE 1808 DALLAS TX 12/09',
+    13.37, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000856', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0418'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY NETLIFY.COM CA 12/09',
+    40.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000857', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0418'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'QT 874 FORT WORTH TX 12/09',
+    41.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0419', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-10',
+    'Expense',
+    'CHEVRON XXX4712 BELLVILLE TX 12/10',
+    0.0, 25111.3, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000858', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0419'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX4712 BELLVILLE TX 12/10',
+    74.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000859', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0419'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 12/11',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000860', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0419'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2955 To Chiron (_#####8441)',
+    25000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000861', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0419'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B GAS #577 HOUSTON TX XX3696 12/10',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0420', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-11',
+    'Expense',
+    'TST*COLLINAS ITALIAN CA Houston TX 12/11',
+    0.0, 78.96, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000862', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0420'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*COLLINAS ITALIAN CA Houston TX 12/11',
+    78.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0421', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-13',
+    'Expense',
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    0.0, 812.4700000000001, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000863', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0421'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    69.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000864', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0421'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 REFUGIO TX XX0711 12/13',
+    44.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000865', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0421'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1652 REFUGIO TX XX9702 12/13',
+    93.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000866', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0421'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SUNOCO XXXXXX2300 REFUGIO TX XX8000 12/13',
+    50.39, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000867', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0421'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1652 REFUGIO TX XX0308 12/13',
+    378.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000868', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0421'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B #234 REFUGIO TX XX9523 12/13',
+    2.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000869', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0421'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 12/13',
+    100.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000870', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0421'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 12/13',
+    26.51, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000871', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0421'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STAR STOP 127 HOUSTON TX 12/13',
+    37.09, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000872', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0421'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 12/13',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0422', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-15',
+    'Expense',
+    'TACTACAM WWW.REVEALCEL MN 12/15',
+    0.0, 18.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000873', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0422'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 12/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000874', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0422'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 12/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0423', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-16',
+    'Invoice',
+    'Invoice - 2024-12-16',
+    3682.23, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000875', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0423'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    3682.23, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0424', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-16',
+    'Expense',
+    'Online Payment XXXXXXX5500 To Kebo Oil and Gas, INC 12/16',
+    0.0, 1923.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000876', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0424'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX5500 To Kebo Oil and Gas, INC 12/16',
+    1923.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0425', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-16',
+    'Invoice',
+    'Invoice - 2024-12-16',
+    27602.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000877', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0425'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    27602.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0426', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-17',
+    'Expense',
+    'FSP*TEXAS GRIME DUMPS XXX-XXX-2979 TX 12/17',
+    0.0, 412.97, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000878', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0426'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FSP*TEXAS GRIME DUMPS XXX-XXX-2979 TX 12/17',
+    412.97, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0427', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-17',
+    'Journal Entry',
+    '2month - RSU vested',
+    0.0, 0.29, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000879', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0427'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-3160'),
+    '2month - RSU vested',
+    0.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0428', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-18',
+    'Expense',
+    'CIRCLE K # X6983 MATHIS TX XX7145 12/18',
+    0.0, 32226.350000000002, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000880', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0428'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6983 MATHIS TX XX7145 12/18',
+    2.47, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000881', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0428'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'EXXON 7-ELEVEN X6525 VICTORIA TX 12/18',
+    74.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000882', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0428'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 12/18',
+    70.27, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000883', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0428'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX4752 To JohnSchillereff (_#####5067)',
+    32066.79, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000884', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0428'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B #234 REFUGIO TX XX5278 12/18',
+    12.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0429', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-19',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX3913 12/19',
+    0.0, 9725.5, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000885', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0429'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX3913 12/19',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000886', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0429'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'JACK IN THE BOX 3980 TOMBALL TX 12/19',
+    8.43, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000887', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0429'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTIME CLAY HOUSTON TX XX1353 12/19',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000888', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0429'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WM SUPERCENTER #4512 KATY TX XX7603 12/19',
+    59.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000889', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0429'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Basic Online Payroll Payment XXXXXXX6485 to #########4504',
+    5033.04, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000890', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0429'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Basic Online Payroll Payment XXXXXXX6484 to ######3267',
+    4574.09, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0430', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-20',
+    'Expense',
+    'MIDWEST HOSE - HOUSTO XXX-XXX-9092 TX 12/20',
+    0.0, 193.82999999999998, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000891', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0430'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MIDWEST HOSE - HOUSTO XXX-XXX-9092 TX 12/20',
+    188.42, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000892', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0430'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MIDWEST HOSE - HOUSTO XXX-XXX-9092 TX 12/20',
+    5.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0431', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-23',
+    'Expense',
+    'EASY MART 2 CYPRESS TX 12/23',
+    0.0, 66.68, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000893', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0431'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'EASY MART 2 CYPRESS TX 12/23',
+    66.68, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0432', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-23',
+    'Invoice',
+    'Invoice - 2024-12-23',
+    25000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000894', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0432'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    25000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0433', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-23',
+    'Payment',
+    'Payment - 2024-12-23',
+    3682.23, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000895', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0433'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    3682.23, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0434', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-24',
+    'Expense',
+    'FSP*TEXAS GRIME DUMPS XXX-XXX-2979 TX 12/24',
+    0.0, 56.3, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000896', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0434'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FSP*TEXAS GRIME DUMPS XXX-XXX-2979 TX 12/24',
+    56.3, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0435', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-24',
+    'Payment',
+    'Payment - 2024-12-24',
+    52602.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000897', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0435'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    27602.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000898', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0435'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    25000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0436', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-27',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX3674 12/26',
+    0.0, 31.34, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000899', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0436'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX3674 12/26',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000900', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0436'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX1040 12/27',
+    11.34, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0437', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-30',
+    'Expense',
+    'HARBOR FREIGHT TOOLS 5 HOUSTON TX XX1243 12/30',
+    0.0, 673.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000901', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0437'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HARBOR FREIGHT TOOLS 5 HOUSTON TX XX1243 12/30',
+    197.18, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000902', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0437'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX6144 12/30',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000903', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0437'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AUTOZONE 1477 X8764 T TOMBALL TX XX4270 12/30',
+    173.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000904', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0437'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT*BILL PAYMENT XXX-XXX-2020 TX 12/30',
+    242.91, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000905', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0437'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'POPEYES X3790 CYPRESS TX 12/30',
+    24.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000906', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0437'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AUTOZONE 1477 X8764 T TOMBALL TX XX8502 12/30',
+    9.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0438', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-31',
+    'Expense',
+    'CIRCLE K #XXX2255 HOUSTON TX XX5867 12/31',
+    0.0, 30.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000907', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0438'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2255 HOUSTON TX XX5867 12/31',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0439', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2024-12-31',
+    'Journal Entry',
+    'Journal Entry - 2024-12-31',
+    59008.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000908', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0439'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-8000'),
+    '',
+    59008.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0440', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-01',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX9221 01/01',
+    0.0, 20.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000909', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0440'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9221 01/01',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0441', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-02',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX4480 01/02',
+    0.0, 22.310000000000002, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000910', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0441'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX4480 01/02',
+    9.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000911', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0441'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'JACK IN THE BOX 3980 TOMBALL TX 01/02',
+    12.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0442', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-03',
+    'Expense',
+    'Online ACH Payment XXXXXXX6184 To GTCrane (_#####3597)',
+    0.0, 1915.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000912', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0442'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX6184 To GTCrane (_#####3597)',
+    1890.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000913', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0442'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX6927 01/03',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0443', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-04',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX7996 01/04',
+    0.0, 20.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000914', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0443'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX7996 01/04',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0444', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-05',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX9323 01/05',
+    0.0, 13.44, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000915', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0444'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX9323 01/05',
+    8.03, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000916', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0444'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALDS F5181 TOMBALL TX 01/05',
+    5.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0445', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-06',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX6917 01/06',
+    0.0, 156.27, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000917', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0445'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX6917 01/06',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000918', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0445'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX0749 01/06',
+    115.72, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000919', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0445'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B #577 HOUSTON TX XX7791 01/06',
+    20.55, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0446', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-07',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX5630 01/07',
+    0.0, 18.52, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000920', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0446'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5630 01/07',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000921', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0446'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 01/09',
+    8.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0447', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-08',
+    'Expense',
+    'MURPHY EXPRESS 8669 TOMBALL TX XX2270 01/08',
+    0.0, 12779.939999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000922', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0447'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MURPHY EXPRESS 8669 TOMBALL TX XX2270 01/08',
+    27.38, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000923', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0447'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX3521 TOMBALL TX 01/08',
+    25.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000924', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0447'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX6388 To JohnSchillereff (_#####5067)',
+    1200.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000925', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0447'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX7396 To Hard Core Supply LLC 01/08',
+    95.26, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000926', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0447'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PLANET THREE ELEVATI P3ELEVATION.C TX 01/08',
+    4961.04, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000927', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0447'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX7202 01/08',
+    58.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000928', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0447'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARBYS 8033 TOMBALL TX 01/08',
+    13.63, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000929', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0447'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX6448 To JohnSchillereff (_#####5067)',
+    600.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000930', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0447'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Same-Day ACH Payment XXXXXXX6119 to JohnSchillereff (_#####5067)',
+    5798.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0448', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-09',
+    'Expense',
+    'WHATABURGER 605 Q26 HOUSTON TX 01/09',
+    0.0, 345.96000000000004, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000931', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0448'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WHATABURGER 605 Q26 HOUSTON TX 01/09',
+    14.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000932', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0448'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX5324 01/09',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000933', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0448'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 01/09',
+    12.38, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000934', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0448'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 01/09',
+    32.62, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000935', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0448'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOVE''S #0617 OUTSIDE HUNGERFORD TX XX9763 01/09',
+    61.45, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000936', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0448'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 01/09',
+    125.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000937', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0448'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TEXAN # 8 VICTORIA VICTORIA TX XX9618 01/09',
+    59.67, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000938', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0448'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY NETLIFY.COM CA 01/09',
+    20.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0449', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-10',
+    'Expense',
+    'ORIG CO NAME:ROLLO INSURANCE ORIG ID:XXXXXX3381 DESC DATE: CO ENTRY DESCR:J2398 OOFFSEC:CCD TRACE#:XXXXXXXX7639738 EED:250110 IND ID:CZX0000BQ842C IND NAME:10NE TZERO INC TRN*1 *CZX0000BQ842C\RMR*IK*ROLLO IN SURANCE GROUP, INC\ TRN: XXXXXX9738 TC',
+    0.0, 3692.5199999999995, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000939', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0449'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:ROLLO INSURANCE ORIG ID:XXXXXX3381 DESC DATE: CO ENTRY DESCR:J2398 OOFFSEC:CCD TRACE#:XXXXXXXX7639738 EED:250110 IND ID:CZX0000BQ842C IND NAME:10NE TZERO INC TRN*1 *CZX0000BQ842C\RMR*IK*ROLLO IN SURANCE GROUP, INC\ TRN: XXXXXX9738 TC',
+    3047.88, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000940', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0449'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WM SUPERCENTER #4111 RICHMOND TX XX7779 01/10',
+    48.31, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000941', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0449'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 01/11',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000942', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0449'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCCOYS #96 EL CAMPO TX 01/10',
+    493.45, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000943', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0449'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'GARWOOD LUMBER COMPANY GARWOOD TX 01/10',
+    81.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0450', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-10',
+    'Invoice',
+    'Invoice - 2025-01-10',
+    11389.62, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000944', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0450'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    11389.62, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0451', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-11',
+    'Expense',
+    'Online Payment XXXXXXX8994 To Kebo Oil and Gas, INC 01/13',
+    0.0, 1752.65, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000945', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0451'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX8994 To Kebo Oil and Gas, INC 01/13',
+    1717.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000946', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0451'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WM SUPERCENTER #4111 RICHMOND TX XX8833 01/10',
+    35.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0452', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-12',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX7799 01/12',
+    0.0, 10.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000947', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0452'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX7799 01/12',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0453', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-13',
+    'Expense',
+    'O''REILLY 6123 EAGLE LAKE TX XX7200 01/13',
+    0.0, 11161.47, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000948', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0453'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX7200 01/13',
+    321.36, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000949', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0453'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    69.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000950', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0453'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2310 To 2WServices (_###4108)',
+    9607.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000951', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0453'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX3231 To 2WServices (_###4108)',
+    1062.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000952', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0453'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 01/13',
+    80.82, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000953', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0453'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'J & K KORNER STORE EAGLE LAKE TX 01/13',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0454', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-13',
+    'Payment',
+    'Payment - 2025-01-13',
+    11389.62, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000954', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0454'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    11389.62, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0455', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-14',
+    'Expense',
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 01/14',
+    0.0, 1475.1900000000003, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000955', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 01/14',
+    9.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000956', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 01/14',
+    240.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000957', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1238 MATHIS TX XX8207 01/14',
+    238.11, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000958', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 01/14',
+    251.14, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000959', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1652 REFUGIO TX XX4205 01/14',
+    384.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000960', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 01/14',
+    76.32, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000961', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 01/14',
+    3.31, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000962', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 01/14',
+    64.36, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000963', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX6599 01/14',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000964', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RAISING CANES 0603 HOUSTON TX 01/14',
+    11.9, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000965', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MURPHY USA 7826 ALICE TX XX3175 01/14',
+    78.49, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000966', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'KLATT HARDWARE ORANGE GROVE TX 01/14',
+    8.7, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000967', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0455'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'EXXON SPEEDY EXPRESS # MATHIS TX 01/14',
+    78.7, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0456', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-15',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX1774 01/15',
+    0.0, 28.1, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000968', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0456'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX1774 01/15',
+    10.1, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000969', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0456'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 01/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000970', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0456'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 01/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0457', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-16',
+    'Expense',
+    'LOVE''S #0617 OUTSIDE HUNGERFORD TX XX4383 01/16',
+    0.0, 338.91, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000971', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0457'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOVE''S #0617 OUTSIDE HUNGERFORD TX XX4383 01/16',
+    39.74, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000972', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0457'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 01/16',
+    100.12, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000973', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0457'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 01/16',
+    37.87, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000974', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0457'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FESCO LTD XXXXXX7000X15 TX 01/16',
+    67.6, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000975', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0457'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Valero VICTORIA TX XX2106 01/16',
+    64.35, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000976', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0457'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ALAMO LUMBER COMPANY M MATHIS TX XX3568 01/16',
+    29.23, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0458', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-17',
+    'Invoice',
+    'Invoice - 2025-01-17',
+    4871.69, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000977', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0458'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    4871.69, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0459', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-17',
+    'Invoice',
+    'Invoice - 2025-01-17',
+    6505.6, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000978', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0459'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    6505.6, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0460', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-17',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX7658 01/17',
+    0.0, 1874.9099999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000979', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0460'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX7658 01/17',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000980', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0460'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX9431 CYPRESS TX 01/17',
+    5.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000981', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0460'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX8599 To LYNN PINKER HURST & SCHWEGMANN, L.L.P 01/17',
+    706.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000982', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0460'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Basic Online Payroll Payment XXXXXXX4634 to #########4504',
+    1143.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0461', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-17',
+    'Invoice',
+    'Invoice - 2025-01-17',
+    5838.4, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000983', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0461'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    5838.4, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0462', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-18',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX8112 01/18',
+    0.0, 128.25, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000984', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0462'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX8112 01/18',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000985', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0462'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SQ *BLUE MOON ESTATE SA Katy TX 01/18',
+    108.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0463', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-18',
+    'Payment',
+    'Payment - 2025-01-18',
+    4871.69, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000986', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0463'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    4871.69, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0464', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-19',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX 01/18',
+    0.0, 172.49, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000987', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0464'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX 01/18',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000988', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0464'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX3367 01/19',
+    131.21, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000989', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0464'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX1203 01/19',
+    6.37, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000990', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0464'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FULSHEAR ACE HARDWARE FULSHEAR TX 01/19',
+    14.91, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0465', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-20',
+    'Expense',
+    'MCDONALD''S FX2340 WILLIS TX 01/20',
+    0.0, 3337.04, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000991', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0465'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX2340 WILLIS TX 01/20',
+    5.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000992', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0465'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1901 MAGNOLIA TX XX1991 01/20',
+    19.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000993', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0465'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #40 OUTSIDE KATY TX XX6320 01/20',
+    63.79, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000994', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0465'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #40 KATY TX 01/20',
+    98.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000995', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0465'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TEXAS STATE RENTALS XXX-XXX0300 TX 01/20',
+    3116.82, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000996', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0465'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DUMAS''S TACO COMPANY TOMBALL TX 01/20',
+    33.43, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0466', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-21',
+    'Deposit',
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX6528',
+    100000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000997', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0466'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX6528',
+    100000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0467', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-21',
+    'Expense',
+    'Online ACH Payment XXXXXXX6184 To GTCrane (_#####3597)',
+    0.0, 53152.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000998', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0467'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX6184 To GTCrane (_#####3597)',
+    1262.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-000999', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0467'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX6184 To GTCrane (_#####3597)',
+    1890.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001000', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0467'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE TRANSFER VIA: WELLS FARGO NA/XXXXX0248 A/C: MUSTANG MACHINERY COMPANY HOUSTON TX X7210 US REF: DEPOSIT FOR 2X CAT GENERATORS/TIME/13:36 IMA D: 0121MMQFMP2MXX8028 TRN: XXXXXX5021 ES 01/21',
+    50000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0468', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-22',
+    'Expense',
+    '9235 CLAY ROAD BUSINES HOUSTON TX XX4927 10/07',
+    0.0, 150310.22999999998, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001001', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0468'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD BUSINES HOUSTON TX XX4927 10/07',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001002', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0468'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE TRANSFER VIA: WELLS FARGO NA/XXXXX0248 A/C: MUSTANG MACHINERY COMPANY LLC HOUSTON TX X7210 US REF: REMAINING DEPOSIT FOR 2X CAT XQ1475/TIME /14:30 IMAD: 0122MMQFMP2KXX5696 TRN: XXXXXX5022 ES 01/22',
+    150000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001003', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0468'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1420 KATY TX XX7893 01/22',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001004', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0468'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 01/22',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001005', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0468'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MINUTEKEY BOULDER CO 01/23',
+    14.07, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001006', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0468'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MINUTEKEY BOULDER CO 01/23',
+    10.83, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001007', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0468'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX3876 01/22',
+    175.33, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0469', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-22',
+    'Invoice',
+    'Invoice - 2025-01-22',
+    20218.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001008', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0469'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    20218.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0470', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-22',
+    'Payment',
+    'Payment - 2025-01-22',
+    6505.6, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001009', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0470'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    6505.6, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0471', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-23',
+    'Expense',
+    'CIRCLE K #XXX1915 CYPRESS TX XX0407 01/23',
+    0.0, 92.42, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001010', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0471'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX0407 01/23',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001011', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0471'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TEJAS CHOCOLATE & BARB XXX-XXX0670 TX 01/23',
+    61.61, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001012', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0471'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BEST BUY #235 CORPUS CHRIST TX XX6533 01/23',
+    10.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0472', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-24',
+    'Expense',
+    'CIRCLE K #XXX1901 MAGNOLIA TX XX4637 01/24',
+    0.0, 381.82000000000005, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001013', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0472'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1901 MAGNOLIA TX XX4637 01/24',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001014', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0472'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX1738 TRINITY TX 01/24',
+    5.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001015', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0472'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STRIPES XXXXXX2700 CORPUS CHRIST TX 01/24',
+    78.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001016', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0472'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOWE''S #1052 TOMBALL TX XX3590 01/24',
+    227.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001017', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0472'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TARGET T-1904 TOMBALL TX XX0342 01/24',
+    20.36, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0473', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-25',
+    'Expense',
+    'CIRCLE K #XXX2369 HOUSTON TX XX9969 01/25',
+    0.0, 57.24, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001018', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0473'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2369 HOUSTON TX XX9969 01/25',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001019', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0473'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX2340 WILLIS TX 01/25',
+    7.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0474', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-26',
+    'Invoice',
+    'Invoice - 2025-01-26',
+    37627.87, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001020', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0474'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    37627.87, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0475', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-26',
+    'Invoice',
+    'Invoice - 2025-01-26',
+    2831.25, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001021', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0475'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2831.25, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0476', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-27',
+    'Deposit',
+    'TRACTOR SUPPLY #1106 CROCKETT TX 01/27',
+    43.3, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001022', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0476'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TRACTOR SUPPLY #1106 CROCKETT TX 01/27',
+    43.3, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0477', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-27',
+    'Expense',
+    'TRACTOR SUPPLY # 1408 CROCKETT TX XX1174 01/27',
+    0.0, 386.71999999999997, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001023', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0477'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TRACTOR SUPPLY # 1408 CROCKETT TX XX1174 01/27',
+    10.69, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001024', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0477'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MURPHY EXPRESS 8669 TOMBALL TX XX8561 01/27',
+    57.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001025', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0477'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1915 CYPRESS TX XX1520 01/27',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001026', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0477'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TRACTOR SUPPLY # 1408 CROCKETT TX XX4779 01/27',
+    219.72, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001027', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0477'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CASTANEDA''S MEAT MARKE XXX-XXX3627 TX 01/27',
+    42.2, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001028', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0477'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STOWE LMB CO CROCKETT TX 01/27',
+    16.83, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0478', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-28',
+    'Expense',
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 01/28',
+    0.0, 688.87, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001029', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0478'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 01/28',
+    10.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001030', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0478'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1403 ROSENBERG TX XX8864 01/28',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001031', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0478'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WHATABURGER 319 Q26 REFUGIO TX 01/28',
+    13.47, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001032', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0478'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 REFUGIO TX XX2951 01/28',
+    9.74, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001033', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0478'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6983 MATHIS TX XX5689 01/28',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001034', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0478'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Valero1286 SINTON TX XX0289 01/28',
+    11.31, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001035', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0478'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE TEXAN #7 - GOLIAD GOLIAD TX XX2968 01/28',
+    35.88, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001036', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0478'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Valero VICTORIA TX XX5898 01/28',
+    73.47, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001037', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0478'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FSP*TEXAS GRIME DUMPS XXX-XXX-2979 TX 01/28',
+    464.72, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0479', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-29',
+    'Expense',
+    'CIRCLE K #XXX0595 RIVERSIDE TX XX5909 01/29',
+    0.0, 40.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001038', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0479'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX0595 RIVERSIDE TX XX5909 01/29',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0480', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-29',
+    'Invoice',
+    'Invoice - 2025-01-29',
+    10990.99, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001039', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0480'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    10990.99, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0481', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-30',
+    'Expense',
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250130 CO ENTRY DESCR:TAX XX1696SEC:CCD TRACE#:XXXXXXXX2645206 EED:250130 IND ID:6 semk3h0sr4 IND NAME:10NetZero, Inc. 6semjnbv8o0 TRN: XXXXXX5206 TC',
+    0.0, 27295.33, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001040', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250130 CO ENTRY DESCR:TAX XX1696SEC:CCD TRACE#:XXXXXXXX2645206 EED:250130 IND ID:6 semk3h0sr4 IND NAME:10NetZero, Inc. 6semjnbv8o0 TRN: XXXXXX5206 TC',
+    8057.56, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001041', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250130 CO ENTRY DESCR:NET XX1698SEC:CCD TRACE#:XXXXXXXX2647273 EED:250130 IND ID:6 semk3h0sr3 IND NAME:10NetZero, Inc. 6semjnbv8o2 TRN: XXXXXX7273 TC',
+    13904.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001042', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT*BILL PAYMENT XXX-XXX-2020 TX 01/30',
+    242.91, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001043', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250130 CO ENTRY DESCR:NET XX1704SEC:CCD TRACE#:XXXXXXXX2645817 EED:250130 IND ID:6 semk3h0roo IND NAME:10NetZero, Inc. 6semjnbv8o8 TRN: XXXXXX5817 TC',
+    3280.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001044', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250130 CO ENTRY DESCR:TAX XX1522SEC:CCD TRACE#:XXXXXXXX2644554 EED:250130 IND ID:6 semk3h0rop IND NAME:10NetZero, Inc. 6semjnbv8ii TRN: XXXXXX4554 TC',
+    1342.27, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001045', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CPA TEXAS TAX WWW.TEXAS.GOV TX 01/30',
+    52.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001046', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CPA TEXAS TAX WWW.TEXAS.GOV TX 01/30',
+    51.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001047', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CPA TEXAS TAX WWW.TEXAS.GOV TX 01/30',
+    52.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001048', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CPA TEXAS TAX WWW.TEXAS.GOV TX 01/30',
+    52.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001049', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CPA TEXAS TAX WWW.TEXAS.GOV TX 01/30',
+    52.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001050', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CPA TEXAS TAX WWW.TEXAS.GOV TX 01/30',
+    52.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001051', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CPA TEXAS TAX WWW.TEXAS.GOV TX 01/30',
+    52.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001052', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CPA TEXAS TAX WWW.TEXAS.GOV TX 01/30',
+    52.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001053', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0481'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CPA TEXAS TAX WWW.TEXAS.GOV TX 01/30',
+    52.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0482', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-01-31',
+    'Expense',
+    'H-E-B GAS/CARWASH #109 HOUSTON TX XX4753 01/31',
+    0.0, 311.74, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001054', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0482'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B GAS/CARWASH #109 HOUSTON TX XX4753 01/31',
+    42.12, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001055', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0482'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PERRYS STEAK HOUSE & G HOUSTON TX 01/31',
+    192.38, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001056', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0482'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'EXXON FULSHEAR RE LLC FULSHEAR TX 01/31',
+    28.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001057', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0482'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX7221 01/31',
+    48.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0483', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-01',
+    'Expense',
+    'RAISING CANES 0162 CONROE TX 02/01',
+    0.0, 85.34, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001058', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0483'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RAISING CANES 0162 CONROE TX 02/01',
+    17.31, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001059', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0483'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'KROGER FUEL CTR X0355 CYPRESS TX XX3532 02/01',
+    68.03, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0484', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-02',
+    'Expense',
+    'UNCHAINED CAPITAL WWW.UNCHAINED TX 02/02',
+    0.0, 500.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001060', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0484'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'UNCHAINED CAPITAL WWW.UNCHAINED TX 02/02',
+    500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0485', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-03',
+    'Expense',
+    'CIRCLE K # X6979 REFUGIO TX XX1175 02/03',
+    0.0, 538.93, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001061', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 REFUGIO TX XX1175 02/03',
+    4.69, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001062', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1652 REFUGIO TX XX3513 02/03',
+    205.63, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001063', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6983 MATHIS TX XX6971 02/03',
+    43.49, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001064', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 02/03',
+    7.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001065', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 02/03',
+    36.63, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001066', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX0850 MATHIS TX 02/03',
+    10.82, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001067', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 02/03',
+    37.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001068', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SHELL OIL XXXXXXX2008 EL CAMPO TX 02/03',
+    25.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001069', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 02/03',
+    50.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001070', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'EXXON SPEEDY EXPRESS # MATHIS TX 02/03',
+    2.89, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001071', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Valero VICTORIA TX XX5329 02/03',
+    76.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001072', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0485'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ALAMO LUMBER COMPANY M MATHIS TX XX8596 02/03',
+    38.4, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0486', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-03',
+    'Payment',
+    'Payment - 2025-02-03',
+    10990.99, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001073', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0486'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    10990.99, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0487', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-04',
+    'Expense',
+    'MCDONALD''S FX0850 MATHIS TX 02/04',
+    0.0, 240.55, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001074', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0487'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX0850 MATHIS TX 02/04',
+    8.87, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001075', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0487'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6983 MATHIS TX XX4220 02/04',
+    5.4, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001076', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0487'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6983 MATHIS TX XX2885 02/04',
+    53.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001077', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0487'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2369 HOUSTON TX XX4893 02/04',
+    41.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001078', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0487'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FOREMAN.MN FOREMAN.MN MD 02/05',
+    132.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0488', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-05',
+    'Expense',
+    'SERVICE CHARGES FOR THE MONTH OF JANUARY',
+    0.0, 200.17000000000002, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001079', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0488'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF JANUARY',
+    12.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001080', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0488'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOVE''S #0617 OUTSIDE HUNGERFORD TX XX7664 02/05',
+    65.51, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001081', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0488'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WHATABURGER 428 Q26 EDNA TX 02/05',
+    16.39, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001082', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0488'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 02/05',
+    9.83, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001083', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0488'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4007 DESC DATE:250205 CO ENTRY DESCR:FEE XX5253SEC:CCD TRACE#:XXXXXXXX2468539 EED:250205 IND ID:6 semk3jcn9p IND NAME:10NetZero, Inc. 6semjnc7tl5 TRN: XXXXXX8539 TC',
+    95.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0489', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-06',
+    'Expense',
+    'O''REILLY 6123 EAGLE LAKE TX XX5049 02/06',
+    0.0, 109.97, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001084', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0489'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX5049 02/06',
+    9.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001085', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0489'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DEL FRISCOS HOUSTON HOUSTON TX 02/07',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001086', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0489'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'EXXON FULSHEAR RE LLC FULSHEAR TX 02/06',
+    76.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001087', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0489'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'VINCEKS SMOKEHOUSE IN EAST BERNARD TX 02/06',
+    14.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0490', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-07',
+    'Expense',
+    'CORPUS MM/GAS XX0273 CORPUS CHRIS TX XX4618 02/07',
+    0.0, 25144.570000000003, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001088', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0490'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CORPUS MM/GAS XX0273 CORPUS CHRIS TX XX4618 02/07',
+    61.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001089', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0490'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX0565 HOUSTON TX XX5077 02/07',
+    33.38, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001090', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0490'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE TRANSFER VIA: PROSPERITY BK ELCA/XXXXX2655 A/C: CHIRON FINANCIAL LLC HOUSTON TX X7010 US REF: ATTENTION TODD A. HASS - INVOICE XXXX25-01/TI ME/17:07 IMAD: 0207MMQFMP2LXX4630 TRN: XXXXXX5038 ES 02/07',
+    25000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001091', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0490'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 02/09',
+    10.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001092', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0490'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LYFT *1 RIDE 02-05 HELP.LYFT.COM CA 02/07',
+    38.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0491', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-08',
+    'Expense',
+    'LYFT *1 RIDE 02-06 HELP.LYFT.COM CA 02/08',
+    0.0, 25.36, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001093', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0491'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LYFT *1 RIDE 02-06 HELP.LYFT.COM CA 02/08',
+    25.36, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0492', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-09',
+    'Expense',
+    'Valero VICTORIA TX XX3296 02/09',
+    0.0, 108.02, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001094', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0492'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Valero VICTORIA TX XX3296 02/09',
+    67.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001095', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0492'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY NETLIFY.COM CA 02/09',
+    40.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0493', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-10',
+    'Expense',
+    'CIRCLE K #XXX2369 HOUSTON TX XX6235 02/10',
+    0.0, 14577.65, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001096', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0493'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2369 HOUSTON TX XX6235 02/10',
+    41.1, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001097', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0493'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PANDA EXPRESS # 3059 WILLIS TX 02/10',
+    13.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001098', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0493'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 02/11',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001099', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0493'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DARK HORSE CPAS WWW.DARKHORSE CA 02/10',
+    1050.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001100', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0493'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LEGALZOOM* TRADEMARK XXX-XXX0151 CA 02/10',
+    350.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001101', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0493'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CORPORATE FILINGS LLC XXX-XXX8466 WY 02/10',
+    135.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001102', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0493'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2049 To 2WServices (_###4108)',
+    12966.38, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0494', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-10',
+    'Invoice',
+    'Invoice - 2025-02-10',
+    27835.88, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001103', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0494'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    27835.88, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0495', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-10',
+    'Payment',
+    'Payment - 2025-02-10',
+    20218.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001104', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0495'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    20218.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0496', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-11',
+    'Expense',
+    'CIRCLE K #XXX2369 HOUSTON TX XX2986 02/11',
+    0.0, 5323.57, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001105', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0496'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2369 HOUSTON TX XX2986 02/11',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001106', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0496'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CORPUS MM/GAS XX0273 CORPUS CHRIS TX XX0421 02/11',
+    53.57, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001107', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0496'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DARK HORSE CPAS WWW.DARKHORSE CA 02/11',
+    5250.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0497', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-12',
+    'Expense',
+    'BUC-EE''S #30 WHARTON TX 02/12',
+    0.0, 166.81, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001108', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0497'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 02/12',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001109', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0497'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SUNOCO XXXXXX1300 MATHIS TX XX4856 02/12',
+    4.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001110', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0497'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 REFUGIO TX XX7712 02/12',
+    19.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001111', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0497'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 REFUGIO TX XX1347 02/12',
+    42.07, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001112', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0497'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SPEEDY EXPRESS #38 MATHIS TX XX3818 02/12',
+    6.81, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001113', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0497'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TEXAN # 8 VICTORIA VICTORIA TX XX7250 02/12',
+    63.44, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0498', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-12',
+    'Payment',
+    'Payment - 2025-02-12',
+    27835.88, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001114', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0498'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    27835.88, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0499', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-13',
+    'Expense',
+    'O''REILLY 1652 REFUGIO TX XX6433 02/13',
+    0.0, 4466.85, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001115', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0499'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1652 REFUGIO TX XX6433 02/13',
+    154.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001116', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0499'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 REFUGIO TX XX6135 02/13',
+    50.14, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001117', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0499'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    69.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001118', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0499'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAPA MATHIS MATHIS TX 02/13',
+    43.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001119', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0499'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 02/13',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001120', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0499'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX2899 REFUGIO TX 02/13',
+    5.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001121', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0499'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 02/13',
+    2.98, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001122', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0499'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX9718 To Easley''s Crane Service 02/13',
+    1611.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001123', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0499'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX9887 To 6J Farm & Ranch Construction , LLC 02/13',
+    2500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0500', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-14',
+    'Deposit',
+    'ORIG CO NAME:INTUIT ORIG ID:XXXXXX6206 DESC DATE:250214 CO ENTRY DESCR:ACCTVERIFYSEC:PPD TRACE#:XXXXXXXX3003159 EED:250214 IND ID: IND NAME:10NETZERO, INC. TRN: XXXXXX3159TC',
+    0.17, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001124', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0500'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:INTUIT ORIG ID:XXXXXX6206 DESC DATE:250214 CO ENTRY DESCR:ACCTVERIFYSEC:PPD TRACE#:XXXXXXXX3003159 EED:250214 IND ID: IND NAME:10NETZERO, INC. TRN: XXXXXX3159TC',
+    0.17, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0501', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-14',
+    'Expense',
+    'Online ACH Payment XXXXXXX0351 To MartinLegal (_#####2006)',
+    0.0, 840.19, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001125', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0501'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0351 To MartinLegal (_#####2006)',
+    840.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001126', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0501'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    0.19, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0502', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-14',
+    'Check',
+    'CHECK # 5670',
+    0.0, 1900.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001127', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0502'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHECK # 5670',
+    1900.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0503', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-15',
+    'Expense',
+    'TACTACAM WWW.REVEALCEL MN 02/15',
+    0.0, 18.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001128', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0503'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 02/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001129', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0503'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 02/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0504', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-17',
+    'Expense',
+    'CIRCLE K #XXX0595 RIVERSIDE TX XX1442 02/17',
+    0.0, 117.78999999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001130', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0504'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX0595 RIVERSIDE TX XX1442 02/17',
+    45.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001131', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0504'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHIPOTLE 0170 HOUSTON TX 02/17',
+    22.79, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001132', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0504'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BROOKSHIRE BROTHERS #8 CROCKETT TX XX6896 02/17',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0505', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-18',
+    'Expense',
+    'WAL-MART #4111 RICHMOND TX XX1300 02/18',
+    0.0, 61.89, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001133', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0505'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WAL-MART #4111 RICHMOND TX XX1300 02/18',
+    61.89, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0506', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-19',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 02/19',
+    0.0, 2388.34, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001134', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0506'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 02/19',
+    45.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001135', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0506'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX4220 To UNITED RENTALS (NORTH AMERICA),INC. 02/19',
+    2262.21, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001136', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0506'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FEDEXXXXXX3729 XXX-XXX3339 TN 02/20',
+    81.13, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0507', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-20',
+    'Expense',
+    'TX.GOV*SERVICEFEE-DI WWW.TEXAS.GOV TX 02/20',
+    0.0, 5373.93, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001137', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0507'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TX.GOV*SERVICEFEE-DI WWW.TEXAS.GOV TX 02/20',
+    6.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001138', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0507'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250220 CO ENTRY DESCR:NET XX2394SEC:CCD TRACE#:XXXXXXXX0705880 EED:250220 IND ID:6 semk3nvpst IND NAME:10NetZero, Inc. 6semjncmfjq TRN: XXXXXX5880 TC',
+    3280.67, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001139', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0507'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250220 CO ENTRY DESCR:TAX XX2424SEC:CCD TRACE#:XXXXXXXX0730773 EED:250220 IND ID:6 semk3nvpsu IND NAME:10NetZero, Inc. 6semjncmfko TRN: XXXXXX0773 TC',
+    1204.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001140', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0507'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FORT BEND VEHREG WWW.TEXAS.GOV TX 02/20',
+    574.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001141', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0507'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'J & W PARTS EAGLE LAKE TX 02/20',
+    179.76, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001142', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0507'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'J & W PARTS EAGLE LAKE TX 02/20',
+    128.02, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0508', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-21',
+    'Deposit',
+    'J & W PARTS EAGLE LAKE TX 02/21',
+    244.57, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001143', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0508'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'J & W PARTS EAGLE LAKE TX 02/21',
+    244.57, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0509', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-21',
+    'Expense',
+    'O''REILLY 6123 EAGLE LAKE TX 02/21',
+    0.0, 529.02, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001144', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0509'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX 02/21',
+    242.33, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001145', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0509'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX5596 02/21',
+    6.32, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001146', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0509'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 02/21',
+    57.39, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001147', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0509'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX8523 02/21',
+    222.98, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0510', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-24',
+    'Expense',
+    'CIRCLE K #XXX2369 HOUSTON TX XX1769 02/24',
+    0.0, 126.87, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001148', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0510'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2369 HOUSTON TX XX1769 02/24',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001149', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0510'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PHOENICIA MKT BAR HOUSTON TX 02/24',
+    15.59, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001150', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0510'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'J & K KORNER STORE EAGLE LAKE TX XX9516 02/24',
+    66.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001151', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0510'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'X1538-HOUSTON CENTER GA HOUSTON TX 02/24',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0511', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-25',
+    'Expense',
+    'Online ACH Payment XXXXXXX0977 To Zedcire (_########0274)',
+    0.0, 11618.35, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001152', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0511'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0977 To Zedcire (_########0274)',
+    2435.63, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001153', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0511'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DARK HORSE CPAS WWW.DARKHORSE CA 02/25',
+    2500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001154', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0511'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0489 To MaximalistIII (_####9857)',
+    5500.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001155', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0511'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX1411 To Zedcire (_########0274)',
+    1104.15, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001156', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0511'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX3838 To Zedcire (_########0274)',
+    78.57, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0512', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-26',
+    'Expense',
+    'TST*TACOS DONA LENA Houston TX 02/26',
+    0.0, 1788.45, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001157', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0512'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*TACOS DONA LENA Houston TX 02/26',
+    34.21, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001158', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0512'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FEDEXXXXXX5675 XXX-XXX3339 TN 02/27',
+    1754.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0513', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-02-27',
+    'Expense',
+    'CORPUS MM/GAS XX0273 CORPUS CHRIS TX XX9531 02/27',
+    0.0, 7609.3, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001159', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0513'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CORPUS MM/GAS XX0273 CORPUS CHRIS TX XX9531 02/27',
+    74.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001160', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0513'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX2209 To Kebo Oil and Gas, INC 02/27',
+    2162.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001161', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0513'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6983 MATHIS TX XX5629 02/27',
+    44.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001162', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0513'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX0850 MATHIS TX 02/27',
+    6.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001163', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0513'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX1403 ROSENBERG TX XX6977 02/27',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001164', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0513'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ATT*BILL PAYMENT XXX-XXX-2020 TX 02/28',
+    559.27, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001165', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0513'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250227 CO ENTRY DESCR:NET XX2028SEC:CCD TRACE#:XXXXXXXX0527508 EED:250227 IND ID:6 semk3pkgj4 IND NAME:10NetZero, Inc. 6semjncsiic TRN: XXXXXX7508 TC',
+    3280.67, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001166', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0513'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250227 CO ENTRY DESCR:TAX XX2096SEC:CCD TRACE#:XXXXXXXX0525579 EED:250227 IND ID:6 semk3pkgj5 IND NAME:10NetZero, Inc. 6semjncsikg TRN: XXXXXX5579 TC',
+    1204.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001167', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0513'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BEST BUY XXXX6031 VICTORIA TX XX2038 02/27',
+    238.13, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0514', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-04',
+    'Invoice',
+    'Invoice - 2025-03-04',
+    3332.33, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001168', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0514'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    3332.33, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0515', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-04',
+    'Invoice',
+    'Invoice - 2025-03-04',
+    3110.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001169', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0515'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    3110.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0516', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-04',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 03/04',
+    0.0, 162.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001170', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0516'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 03/04',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001171', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0516'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FOREMAN.MN FOREMAN.MN MD 03/05',
+    132.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0517', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-04',
+    'Invoice',
+    'Invoice - 2025-03-04',
+    6759.74, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001172', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0517'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    6759.74, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0518', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-05',
+    'Expense',
+    'SERVICE CHARGES FOR THE MONTH OF FEBRUARY',
+    0.0, 146.99, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001173', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0518'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF FEBRUARY',
+    51.05, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001174', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0518'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4007 DESC DATE:250305 CO ENTRY DESCR:FEE XX0183SEC:CCD TRACE#:XXXXXXXX1590107 EED:250305 IND ID:6 semk3s5sqo IND NAME:10NetZero, Inc. 6semjnd526n TRN: XXXXXX0107 TC',
+    95.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0519', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-05',
+    'Payment',
+    'Payment - 2025-03-05',
+    3332.33, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001175', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0519'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    3332.33, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0520', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-07',
+    'Deposit',
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX2766',
+    66412.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001176', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0520'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Transfer from CHK ...5317 transaction#: XXXXXXX2766',
+    66412.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0521', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-07',
+    'Expense',
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 03/09',
+    0.0, 68856.57, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001177', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0521'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 03/09',
+    10.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001178', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0521'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'EXPEDIA XXXXXXXXXX9804 EXPEDIA.COM WA 03/07',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001179', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0521'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'UNITED XXXXXXX5567 UNITED.COM TX 03/07',
+    1206.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001180', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0521'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'UNITED XXXXXXX5567 UNITED.COM TX 03/07',
+    1206.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001181', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0521'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE INTERNATIONAL WIRE TRANSFER VIA: WELLSFARGO NY INTL/XXXXX5092 A/C: BOFMCAM2XXX MONTREAL H5A 1K8 CA BEN: POWERPRO SOLUTIONS CALGARY T3M2X2 CA REF: ESTIMAT E 214 BUSINESS EXPENSES IMAD: 0307MMQFMP2NXX2112 TRN: XXXXXX5066 ES 03/07',
+    66412.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0522', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-09',
+    'Expense',
+    'NETLIFY NETLIFY.COM CA 03/09',
+    0.0, 20.25, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001182', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0522'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY NETLIFY.COM CA 03/09',
+    20.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0523', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-10',
+    'Deposit',
+    'System-recorded deposit for QuickBooks Payments',
+    37627.87, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001183', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0523'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'System-recorded deposit for QuickBooks Payments',
+    37627.87, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0524', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-10',
+    'Expense',
+    'System-recorded fee for QuickBooks Payments. Fee-name: DiscountRateFee, fee-type: Daily.',
+    0.0, 1977.48, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001184', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0524'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'System-recorded fee for QuickBooks Payments. Fee-name: DiscountRateFee, fee-type: Daily.',
+    1053.58, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001185', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0524'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX1799 To Hard Core Supply LLC 03/10',
+    902.26, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001186', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0524'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 03/11',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0525', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-10',
+    'Payment',
+    'Paid via QuickBooks Payments: Payment ID 252359',
+    37627.87, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001187', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0525'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Paid via QuickBooks Payments: Payment ID 252359',
+    37627.87, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0526', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-11',
+    'Expense',
+    'UNITED XXXXXXX3827 UNITED.COM TX 03/11',
+    0.0, 1493.6299999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001188', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0526'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'UNITED XXXXXXX3827 UNITED.COM TX 03/11',
+    39.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001189', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0526'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'UNITED XXXXXXX3849 UNITED.COM TX 03/11',
+    39.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001190', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0526'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'COUNTRY MART FULSHEAR TX 03/11',
+    76.31, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001191', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0526'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'OPENAI OPENAI.COM CA 03/11',
+    21.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001192', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0526'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX8814 To BitCruiser (_########1093)',
+    1316.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0527', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-12',
+    'Expense',
+    'MISSOURI RENTAL AND LE SAINT LOUIS MO 03/16',
+    0.0, 250.35, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001193', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0527'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MISSOURI RENTAL AND LE SAINT LOUIS MO 03/16',
+    131.07, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001194', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0527'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BP#XXX7169AIRPORT BP ST. LOUIS MO XX7600 03/12',
+    27.6, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001195', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0527'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STARBUCKS X1390 IAH B20 HOUSTON TX 03/12',
+    17.21, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001196', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0527'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MAGGIE OBRIENS XXX-XXX8906 MO 03/12',
+    42.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001197', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0527'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STEAK-N-SHAKE#0172 Q99 MT VERNON IL 03/12',
+    9.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001198', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0527'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOVE''S #0824 INSIDE MT. VERNON IL 03/12',
+    8.51, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001199', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0527'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STEAK-N-SHAKE#0172 Q99 MT VERNON IL 03/12',
+    13.97, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0528', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-13',
+    'Expense',
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    0.0, 14584.56, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001200', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0528'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    69.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001201', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0528'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STARBUCKS A-05 STL ST. LOUIS MO 03/13',
+    6.79, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001202', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0528'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250313 CO ENTRY DESCR:TAX XX4661SEC:CCD TRACE#:XXXXXXXX9952086 EED:250313 IND ID:6 semk3u91ef IND NAME:10NetZero, Inc. 6semjndbjl5 TRN: XXXXXX2086 TC',
+    1204.77, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001203', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0528'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SQ *PRELUDE COFFEE & TE Houston TX 03/13',
+    6.95, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001204', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0528'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX4034 To Chiron (_#####8441)',
+    10000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001205', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0528'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250313 CO ENTRY DESCR:NET XX5553SEC:CCD TRACE#:XXXXXXXX9952565 EED:250313 IND ID:6 semk3u91ee IND NAME:10NetZero, Inc. 6semjndbkh1 TRN: XXXXXX2565 TC',
+    3280.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001206', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0528'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HALAL GUYS DOWNTOWN HOUSTON TX 03/13',
+    16.11, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0529', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-13',
+    'Invoice',
+    'Invoice - 2025-03-13',
+    7792.75, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001207', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0529'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    7792.75, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0530', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-14',
+    'Expense',
+    'CIRCLE K #XXX2255 HOUSTON TX XX2426 03/14',
+    0.0, 2950.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001208', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0530'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2255 HOUSTON TX XX2426 03/14',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001209', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0530'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX1046 To Kebo Oil and Gas, INC 03/14',
+    2850.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001210', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0530'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #16 GIDDINGS TX 03/14',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001211', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0530'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Perry Brooks Garage Austin TX 03/14',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0531', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-14',
+    'Invoice',
+    'Invoice - 2025-03-14',
+    17203.53, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001212', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0531'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    17203.53, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0532', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-15',
+    'Expense',
+    'LYFT *1 RIDE 03-12 HELP.LYFT.COM CA 03/15',
+    0.0, 44.31, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001213', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0532'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LYFT *1 RIDE 03-12 HELP.LYFT.COM CA 03/15',
+    26.31, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001214', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0532'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 03/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001215', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0532'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 03/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0533', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-17',
+    'Invoice',
+    'Invoice - 2025-03-17',
+    14381.04, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001216', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0533'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    14381.04, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0534', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-17',
+    'Payment',
+    'Payment - 2025-03-17',
+    7792.75, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001217', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0534'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    7792.75, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0535', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-18',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 03/18',
+    0.0, 575.1800000000001, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001218', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0535'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 03/18',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001219', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0535'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2255 HOUSTON TX 03/18',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001220', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0535'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'J & W PARTS EAGLE LAKE TX 03/18',
+    24.89, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001221', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0535'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'J & W PARTS EAGLE LAKE TX 03/18',
+    453.85, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001222', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0535'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'J & W PARTS EAGLE LAKE TX 03/18',
+    7.57, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001223', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0535'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 03/18',
+    38.87, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0536', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-19',
+    'Expense',
+    'CIRCLE K # X6979 REFUGIO TX XX8737 03/19',
+    0.0, 175.54, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001224', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0536'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 REFUGIO TX XX8737 03/19',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001225', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0536'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 REFUGIO TX XX8427 03/19',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001226', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0536'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WHATABURGER 319 Q26 REFUGIO TX 03/19',
+    15.04, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001227', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0536'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 03/19',
+    14.85, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001228', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0536'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SUNOCO XXXXXX3800 CORPUS CHRIST TX 03/19',
+    85.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0537', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-19',
+    'Payment',
+    'Payment - 2025-03-19',
+    14381.04, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001229', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0537'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    14381.04, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0538', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-20',
+    'Expense',
+    'CHEVRON XXX3622 NACOGDOCHES TX 03/20',
+    0.0, 7.12, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001230', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0538'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX3622 NACOGDOCHES TX 03/20',
+    7.12, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0539', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-21',
+    'Expense',
+    'O''REILLY 6123 EAGLE LAKE TX XX7297 03/21',
+    0.0, 320.36999999999995, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001231', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0539'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX7297 03/21',
+    208.79, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001232', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0539'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 03/21',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001233', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0539'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 03/21',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001234', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0539'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX9466 03/21',
+    51.58, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0540', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-22',
+    'Expense',
+    'TEXAN # 8 VICTORIA VICTORIA TX XX3610 03/22',
+    0.0, 70.28, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001235', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0540'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TEXAN # 8 VICTORIA VICTORIA TX XX3610 03/22',
+    70.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0541', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-23',
+    'Invoice',
+    'Invoice - 2025-03-23',
+    17310.41, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001236', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0541'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    17310.41, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0542', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-24',
+    'Expense',
+    'Online ACH Payment XXXXXXX9953 To JohnSchillereff (_#####5067)',
+    0.0, 46104.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001237', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0542'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX9953 To JohnSchillereff (_#####5067)',
+    33493.91, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001238', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0542'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 03/24',
+    29.6, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001239', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0542'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0113 To 2WServices (_###4108)',
+    12580.49, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0543', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-25',
+    'Expense',
+    'CIRCLE K #XXX2369 HOUSTON TX XX5666 03/25',
+    0.0, 55.41, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001240', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0543'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2369 HOUSTON TX XX5666 03/25',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001241', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0543'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'JERSEY MIKES X5204 WILLIS TX 03/25',
+    15.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0544', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-27',
+    'Invoice',
+    'Invoice - 2025-03-27',
+    960.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001242', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0544'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    960.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0545', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-27',
+    'Expense',
+    'CIRCLE K #XXX2369 HOUSTON TX XX8345 03/27',
+    0.0, 21052.89, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001243', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0545'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2369 HOUSTON TX XX8345 03/27',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001244', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0545'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ONLINE DOMESTIC WIRE TRANSFER VIA: WELLS FARGO NA/XXXXX0248 A/C: MUSTANG MACHINERY COMPANY HOUSTON TX X7210 US REF: JOB NUMBER UEIDX0493/TIME/14:20 IMAD: 0327MM QFMP2NXX9803 TRN: XXXXXX5086 ES 03/27',
+    21001.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001245', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0545'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Subway X3623 Trinity TX 03/27',
+    11.89, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0546', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-27',
+    'Invoice',
+    'Invoice - 2025-03-27',
+    726.41, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001246', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0546'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    726.41, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0547', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-27',
+    'Payment',
+    'Payment - 2025-03-27',
+    18996.82, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001247', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0547'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    17310.41, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001248', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0547'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    726.41, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001249', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0547'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    960.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0548', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-28',
+    'Expense',
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250328 CO ENTRY DESCR:REM XX2041SEC:CCD TRACE#:XXXXXXXX0365939 EED:250328 IND ID:6 semk4220fa IND NAME:10NetZero, Inc. 6semjndstnp TRN: XXXXXX5939 TC',
+    0.0, 12485.4, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001250', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0548'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250328 CO ENTRY DESCR:REM XX2041SEC:CCD TRACE#:XXXXXXXX0365939 EED:250328 IND ID:6 semk4220fa IND NAME:10NetZero, Inc. 6semjndstnp TRN: XXXXXX5939 TC',
+    8000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001251', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0548'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250328 CO ENTRY DESCR:TAX XX2432SEC:CCD TRACE#:XXXXXXXX0366841 EED:250328 IND ID:6 semk4220f9 IND NAME:10NetZero, Inc. 6semjndsu40 TRN: XXXXXX6841 TC',
+    1204.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001252', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0548'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250328 CO ENTRY DESCR:NET XX2204SEC:CCD TRACE#:XXXXXXXX0366133 EED:250328 IND ID:6 semk4220f8 IND NAME:10NetZero, Inc. 6semjndstss TRN: XXXXXX6133 TC',
+    3280.67, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0549', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-03-31',
+    'Expense',
+    'FOSSATIS DELICATESSEN VICTORIA TX 03/31',
+    0.0, 91.52, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001253', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0549'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FOSSATIS DELICATESSEN VICTORIA TX 03/31',
+    31.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001254', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0549'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TEXAN # 8 VICTORIA VICTORIA TX XX9400 03/31',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001255', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0549'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2255 HOUSTON TX 03/31',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0550', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-02',
+    'Expense',
+    'CIRCLE K #XXX2369 HOUSTON TX 04/02',
+    0.0, 1416.14, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001256', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0550'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2369 HOUSTON TX 04/02',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001257', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0550'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PANDA EXPRESS #1900 HOUSTON TX 04/02',
+    13.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001258', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0550'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S F2856 HOUSTON TX 04/02',
+    5.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001259', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0550'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCCOYS #96 EL CAMPO TX 04/02',
+    1357.2, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0551', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-02',
+    'Invoice',
+    'Invoice - 2025-04-02',
+    5559.75, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001260', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0551'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    5559.75, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0552', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-03',
+    'Expense',
+    'SERVICE CHARGES FOR THE MONTH OF MARCH',
+    0.0, 117.53, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001261', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0552'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF MARCH',
+    65.9, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001262', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0552'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #40 KATY TX 04/03',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001263', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0552'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX3468 04/03',
+    21.63, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0553', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-03',
+    'Invoice',
+    'Invoice - 2025-04-03',
+    1897.5, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001264', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0553'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    1897.5, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0554', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-04',
+    'Invoice',
+    'Invoice - 2025-04-04',
+    18586.32, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001265', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0554'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    18586.32, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0555', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-07',
+    'Expense',
+    'CIRCLE K #XXX2255 HOUSTON TX XX0381 04/07',
+    0.0, 1337.9, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001266', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0555'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2255 HOUSTON TX XX0381 04/07',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001267', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0555'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCCOYS *XXX-XXX-3878 MCCOYS.COM TX 04/08',
+    1253.51, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001268', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0555'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 04/09',
+    10.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001269', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0555'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*TX BURGER - CROCKET Crockett TX 04/07',
+    13.74, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001270', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0555'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B GAS/CARWASH #791 WILLIS TX XX4691 04/07',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0556', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-07',
+    'Payment',
+    'Payment - 2025-04-07',
+    28874.82, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001271', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0556'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    2831.25, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001272', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0556'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    5559.75, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001273', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0556'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    1897.5, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001274', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0556'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    18586.32, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0557', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-08',
+    'Invoice',
+    'Invoice - 2025-04-08',
+    10799.73, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001275', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0557'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    10799.73, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0558', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-08',
+    'Invoice',
+    'Invoice - 2025-04-08',
+    27545.22, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001276', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0558'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    27545.22, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0559', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-08',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/08',
+    0.0, 1319.71, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001277', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0559'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/08',
+    51.38, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001278', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0559'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX6821 To Brett Burgeson 04/08',
+    974.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001279', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0559'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX6502 04/08',
+    125.34, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001280', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0559'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SOI*SNAPON TOOLS CO XXX-XXX-7664 WI 04/08',
+    137.43, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001281', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0559'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DOLLAR-GENERAL #3426 EAGLE LAKE TX XX0309 04/08',
+    4.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001282', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0559'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ANTHROPIC ANTHROPIC.COM CA 04/08',
+    26.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0560', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-08',
+    'Invoice',
+    'Invoice - 2025-04-08',
+    2665.85, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001283', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0560'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2665.85, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0561', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-09',
+    'Expense',
+    'NETLIFY NETLIFY.COM CA 04/09',
+    0.0, 90.25, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001284', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0561'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY NETLIFY.COM CA 04/09',
+    20.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001285', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0561'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 04/09',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001286', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0561'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '9235 CLAY ROAD BUSINES HOUSTON TX XX1690 04/09',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0562', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-09',
+    'Check',
+    'CHECK # 5669',
+    0.0, 8550.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001287', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0562'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHECK # 5669',
+    8550.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0563', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-10',
+    'Expense',
+    'CIRCLE K #XXX2255 HOUSTON TX XX0127 04/10',
+    0.0, 6688.64, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001288', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0563'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2255 HOUSTON TX XX0127 04/10',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001289', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0563'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 04/10',
+    43.26, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001290', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0563'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:CARROLL INSURANC ORIG ID:XXXXXX3381 DESC DATE: CO ENTRY DESCR:J2488 OOFFSEC:CCD TRACE#:XXXXXXXX9236028 EED:250410 IND ID:CZX0000DWDKYC IND NAME:10N ETZERO INC TRN*1 *CZX0000DWDKYC\RMR*IK*CARROLL INSURANCE AGENCY LTD\ TRN: XXXXXX6028 TC',
+    6454.74, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001291', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0563'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 04/11',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001292', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0563'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TODOIST TODOIST.COM CA 04/11',
+    144.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0564', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-11',
+    'Invoice',
+    'Invoice - 2025-04-11',
+    2690.05, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001293', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0564'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2690.05, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0565', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-11',
+    'Expense',
+    'O''REILLY 6123 EAGLE LAKE TX XX8688 04/11',
+    0.0, 118.05, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001294', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0565'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX8688 04/11',
+    10.27, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001295', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0565'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX 04/11',
+    15.14, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001296', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0565'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/11',
+    52.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001297', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0565'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/11',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0566', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-11',
+    'Invoice',
+    'Invoice - 2025-04-11',
+    5487.91, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001298', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0566'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    5487.91, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0567', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-13',
+    'Expense',
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    0.0, 69.29, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001299', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0567'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    69.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0568', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-13',
+    'Invoice',
+    'Invoice - 2025-04-13',
+    21315.36, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001300', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0568'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    21315.36, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0569', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-14',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/14',
+    0.0, 25.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001301', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0569'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/14',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0570', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-15',
+    'Payment',
+    'Payment - 2025-04-15',
+    27545.22, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001302', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0570'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    27545.22, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0571', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-15',
+    'Invoice',
+    'Invoice - 2025-04-15',
+    6252.37, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001303', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0571'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    6252.37, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0572', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-15',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/15',
+    0.0, 4471.68, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001304', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0572'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/15',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001305', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0572'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/15',
+    49.58, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001306', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0572'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX9005 To BobcatCrane (_####4024)',
+    2493.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001307', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0572'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX7651 To MonarchSparkPlugs (_########7762)',
+    1904.1, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0573', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-15',
+    'Invoice',
+    'Invoice - 2025-04-15',
+    20448.9, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001308', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0573'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    20448.9, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0574', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-15',
+    'Payment',
+    'Payment - 2025-04-15',
+    15893.580000000002, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001309', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0574'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    2690.05, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001310', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0574'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    13203.53, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0575', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-16',
+    'Expense',
+    'OPENROUTER, INC OPENROUTER.AI NY 04/17',
+    0.0, 304.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001311', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0575'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'OPENROUTER, INC OPENROUTER.AI NY 04/17',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001312', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0575'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SMOLIK''S MEATS AND BBQ XXX-XXX3459 TX 04/16',
+    60.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001313', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0575'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WWW.PERPLEXITY.AI WWW.PERPLEXIT CA 04/16',
+    5.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001314', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0575'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TYPINGMIND.COM WWW.TYPINGMIN WY 04/16',
+    170.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001315', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0575'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WWW.PERPLEXITY.AI WWW.PERPLEXIT CA 04/16',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001316', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0575'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 04/16',
+    8.47, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0576', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-17',
+    'Invoice',
+    'Invoice - 2025-04-17',
+    30284.1, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001317', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0576'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    30284.1, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0577', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-17',
+    'Invoice',
+    'Invoice - 2025-04-17',
+    19499.13, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001318', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0577'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    19499.13, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0578', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-17',
+    'Invoice',
+    'Invoice - 2025-04-17',
+    7910.83, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001319', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0578'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    7910.83, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0579', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-17',
+    'Expense',
+    'Online Payment XXXXXXX3283 To Kebo Oil and Gas, INC 04/17',
+    0.0, 4373.360000000001, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001320', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0579'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX3283 To Kebo Oil and Gas, INC 04/17',
+    2897.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001321', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0579'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PAPPAS BROTHERS STKHSE HOUSTON TX 04/17',
+    1428.18, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001322', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0579'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AIRTABLE.COM/BILL AIRTABLE.COM CA 04/17',
+    25.58, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001323', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0579'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LYFT *1 RIDE 04-17 LYFT.COM CA 04/18',
+    22.6, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0580', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-17',
+    'Invoice',
+    'Invoice - 2025-04-17',
+    4675.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001324', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0580'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    4675.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0581', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-18',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/18',
+    0.0, 88.34, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001325', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0581'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/18',
+    4.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001326', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0581'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/18',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001327', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0581'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ZORO TOOLS INC XXX-XXX9676 IL 04/18',
+    53.82, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0582', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-19',
+    'Payment',
+    'Payment - 2025-04-19',
+    8315.36, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001328', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0582'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    4000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001329', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0582'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    315.36, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001330', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0582'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    4000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0583', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-21',
+    'Expense',
+    'WAL SAMSCLUB #4712 000 HOUSTON TX XX4521 04/21',
+    0.0, 194.56, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001331', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0583'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WAL SAMSCLUB #4712 000 HOUSTON TX XX4521 04/21',
+    129.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001332', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0583'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ZORO TOOLS INC XXX-XXX9676 IL 04/21',
+    64.83, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0584', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-21',
+    'Invoice',
+    'Invoice - 2025-04-21',
+    2435.63, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001333', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0584'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2435.63, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0585', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-22',
+    'Expense',
+    'HONEY FARMS #845 HOUSTON TX XX9000 04/22',
+    0.0, 759.8100000000001, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001334', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0585'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HONEY FARMS #845 HOUSTON TX XX9000 04/22',
+    20.15, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001335', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0585'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SUNOCO XXXXXX2300 REFUGIO TX XX4600 04/22',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001336', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0585'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2369 HOUSTON TX XX4980 04/22',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001337', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0585'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 04/22',
+    9.56, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001338', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0585'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AIRTABLE.COM/BILL AIRTABLE.COM CA 04/22',
+    25.58, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001339', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0585'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOVE''S #0617 OUTSIDE HUNGERFORD TX XX3480 04/22',
+    70.03, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001340', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0585'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAVY EXCHANGE XX0060 CORPUS CHRIST TXXX9787 04/22',
+    206.49, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001341', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0585'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TYPINGMIND.COM WWW.TYPINGMIN WY 04/22',
+    299.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001342', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0585'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CURSOR, AI POWERED IDE CURSOR.COM NY 04/22',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001343', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0585'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'UIZARD COPENHAGEN 04/22',
+    19.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001344', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0585'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 04/22',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0586', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-23',
+    'Expense',
+    'TST* ROAMING RONIN CORPUS CHRIST TX 04/23',
+    0.0, 239.03, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001345', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0586'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* ROAMING RONIN CORPUS CHRIST TX 04/23',
+    115.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001346', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0586'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MIDWEST HOSE - HOUSTO XXX-XXX-9092 TX 04/23',
+    69.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001347', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0586'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*TX BURGER - CROCKET Crockett TX 04/23',
+    14.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001348', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0586'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BIG''S 3830 CROCKETT TX XX0214 04/23',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0587', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-25',
+    'Expense',
+    'O''REILLY 1238 MATHIS TX XX3749 04/25',
+    0.0, 109.96000000000001, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001349', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0587'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1238 MATHIS TX XX3749 04/25',
+    29.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001350', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0587'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6983 MATHIS TX XX1086 04/25',
+    1.07, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001351', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0587'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6983 MATHIS TX XX0082 04/25',
+    79.48, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0588', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-28',
+    'Payment',
+    'Payment - 2025-04-28',
+    88524.69, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001352', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0588'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    10799.73, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001353', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0588'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    2665.85, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001354', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0588'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    5487.91, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001355', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0588'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    6252.37, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001356', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0588'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    20448.9, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001357', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0588'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    7910.83, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001358', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0588'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    4675.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001359', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0588'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    30284.1, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0589', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-29',
+    'Expense',
+    'TRACTOR SUPPLY C 2340 SEALY TX XX1195 04/29',
+    0.0, 160.73, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001360', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0589'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TRACTOR SUPPLY C 2340 SEALY TX XX1195 04/29',
+    31.36, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001361', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0589'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX6292 04/29',
+    7.89, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001362', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0589'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #18 WALLER TX 04/29',
+    68.32, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001363', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0589'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/29',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001364', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0589'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 04/29',
+    13.16, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0590', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-04-30',
+    'Expense',
+    'SUNOCO XXXXXX2300 REFUGIO TX XX9300 04/30',
+    0.0, 119.49999999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001365', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0590'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SUNOCO XXXXXX2300 REFUGIO TX XX9300 04/30',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001366', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0590'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SUNOCO XXXXXX1300 MATHIS TX XX1573 04/30',
+    20.07, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001367', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0590'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 04/30',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001368', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0590'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 04/30',
+    13.77, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001369', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0590'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 REFUGIO TX XX5818 04/30',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001370', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0590'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NAME-CHEAP.COM* JAZS WWW.NAMECHEAP AZ 05/01',
+    10.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0591', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-01',
+    'Expense',
+    'SUNOCO XXXXXX1300 MATHIS TX XX8146 05/01',
+    0.0, 609.81, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001371', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0591'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SUNOCO XXXXXX1300 MATHIS TX XX8146 05/01',
+    14.86, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001372', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0591'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'REPLIT, INC. REPLIT.COM CA 05/01',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001373', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0591'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BEST BUY #235 CORPUS CHRIST TX XX0005 05/01',
+    497.92, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001374', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0591'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STRIPES XXXXXX2700 CORPUS CHRIST TX XX2400 05/01',
+    34.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001375', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0591'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STRIPES XXXXXX2700 CORPUS CHRIST TX XX5286 05/01',
+    22.97, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0592', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-02',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX1471 05/02',
+    0.0, 235.82999999999998, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001376', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0592'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX1471 05/02',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001377', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0592'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'GLAMA.AI GLAMA.AI WY 05/02',
+    11.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001378', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0592'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Amazon web services aws.amazon.co WA 05/03',
+    122.57, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001379', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0592'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ZAPIER.COM/CHARGE ZAPIER.COM CA 05/02',
+    10.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001380', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0592'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 05/02',
+    21.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001381', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0592'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RENDER.COM RENDER.COM CA 05/02',
+    3.82, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001382', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0592'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX3468 05/02',
+    36.78, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0593', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-03',
+    'Expense',
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4007 DESC DATE:250505 CO ENTRY DESCR:FEE XX2756SEC:CCD TRACE#:XXXXXXXX9784427 EED:250505 IND ID:6 semk4fu58d IND NAME:10NetZero, Inc. 6semjnfchs4 TRN: XXXXXX4427 TC',
+    0.0, 127.92, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001383', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0593'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4007 DESC DATE:250505 CO ENTRY DESCR:FEE XX2756SEC:CCD TRACE#:XXXXXXXX9784427 EED:250505 IND ID:6 semk4fu58d IND NAME:10NetZero, Inc. 6semjnfchs4 TRN: XXXXXX4427 TC',
+    127.92, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0594', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-04',
+    'Expense',
+    'FOREMAN.MN FOREMAN.MN MD 05/05',
+    0.0, 132.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001384', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0594'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FOREMAN.MN FOREMAN.MN MD 05/05',
+    132.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0595', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-05',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX8049 05/05',
+    0.0, 166.37, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001385', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0595'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX8049 05/05',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001386', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0595'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF APRIL',
+    52.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001387', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0595'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/05',
+    62.62, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001388', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0595'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/05',
+    11.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0596', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-06',
+    'Expense',
+    'BUC-EE''S #30 WHARTON TX 05/06',
+    0.0, 116.74000000000001, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001389', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0596'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 05/06',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001390', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0596'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6983 MATHIS TX XX6936 05/06',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001391', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0596'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 05/06',
+    19.43, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001392', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0596'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX4308 05/06',
+    17.31, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0597', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-07',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/07',
+    0.0, 75.65, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001393', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0597'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/07',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001394', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0597'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX5097 05/07',
+    25.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001395', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0597'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 05/09',
+    10.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0598', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-08',
+    'Expense',
+    'TEXAN # 8 VICTORIA VICTORIA TX XX0900 05/08',
+    0.0, 149.57999999999998, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001396', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0598'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TEXAN # 8 VICTORIA VICTORIA TX XX0900 05/08',
+    45.09, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001397', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0598'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CONNER''S CORNER STORE EDNA TX XX7000 05/08',
+    86.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001398', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0598'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/08',
+    15.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001399', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0598'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CTLP*Glitz Air RICHMOND TX 05/08',
+    2.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0599', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-09',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX9875 05/09',
+    0.0, 1716.4, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001400', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0599'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX9875 05/09',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001401', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0599'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TRACTOR SUPPLY C 2340 SEALY TX XX8766 05/09',
+    793.35, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001402', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0599'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TX.GOV*SERVICEFEE-DI WWW.TEXAS.GOV TX 05/09',
+    2.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001403', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0599'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TX.GOV*SERVICEFEE-DI WWW.TEXAS.GOV TX 05/09',
+    2.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001404', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0599'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TX.GOV*SERVICEFEE-DI WWW.TEXAS.GOV TX 05/09',
+    2.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001405', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0599'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'J & K KORNER STORE EAGLE LAKE TX 05/09',
+    12.3, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001406', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0599'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FORT BEND VEHREG WWW.TEXAS.GOV TX 05/09',
+    225.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001407', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0599'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY NETLIFY.COM CA 05/09',
+    20.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001408', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0599'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FORT BEND VEHREG WWW.TEXAS.GOV TX 05/09',
+    225.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001409', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0599'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FORT BEND VEHREG WWW.TEXAS.GOV TX 05/09',
+    225.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001410', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0599'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX2823 05/09',
+    187.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0600', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-09',
+    'Invoice',
+    'Invoice - 2025-05-09',
+    2435.63, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001411', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0600'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2435.63, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0601', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-10',
+    'Expense',
+    'ADOBE *XXX-XXX-6687 XXX-XXX-6687 CA 05/10',
+    0.0, 21.64, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001412', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0601'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 XXX-XXX-6687 CA 05/10',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0602', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-12',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX4825 05/12',
+    0.0, 54.010000000000005, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001413', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0602'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX4825 05/12',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001414', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0602'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #24 LAKE JACKSON TX XX2179 05/12',
+    24.01, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0603', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-13',
+    'Expense',
+    'CIRCLE K # X6979 REFUGIO TX XX7998 05/13',
+    0.0, 376.27, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001415', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0603'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K # X6979 REFUGIO TX XX7998 05/13',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001416', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0603'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 1238 MATHIS TX XX7007 05/13',
+    43.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001417', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0603'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    69.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001418', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0603'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '0883 VICTORIA TX XX2019 05/13',
+    16.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001419', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0603'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'H-E-B GAS #234 REFUGIO TX XX1599 05/13',
+    65.4, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001420', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0603'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CONNER''S CORNER STORE EDNA TX XX6063 05/13',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001421', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0603'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LA RIBERA TAQUERIA & RE REFUGIO TX 05/13',
+    9.56, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001422', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0603'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*SMOLIKS SMOKEHOUSE Mathis TX 05/13',
+    102.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0604', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-13',
+    'Payment',
+    'Payment - 2025-05-13',
+    25315.36, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001423', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0604'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    21315.36, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001424', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0604'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    4000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0605', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-14',
+    'Invoice',
+    'Invoice - 2025-05-14',
+    15172.98, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001425', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0605'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    15172.98, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0606', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-14',
+    'Invoice',
+    'Invoice - 2025-05-14',
+    9730.25, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001426', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0606'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    9730.25, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0607', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-15',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX7203 05/15',
+    0.0, 13826.6, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001427', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0607'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX7203 05/15',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001428', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0607'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX2305 To Kebo Oil and Gas, INC 05/15',
+    3623.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001429', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0607'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/15',
+    7.43, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001430', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0607'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/15',
+    66.54, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001431', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0607'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 05/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001432', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0607'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 05/15',
+    64.13, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001433', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0607'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 05/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001434', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0607'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX8253 05/15',
+    17.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001435', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0607'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX2589 To Chiron (_#####8441)',
+    10000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0608', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-15',
+    'Invoice',
+    'Invoice - 2025-05-15',
+    28904.9, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001436', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0608'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    28904.9, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0609', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-16',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX7852 05/16',
+    0.0, 253.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001437', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0609'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX7852 05/16',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001438', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0609'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/16',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001439', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0609'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TYPINGMIND.COM WWW.TYPINGMIN WY 05/16',
+    170.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001440', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0609'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 05/16',
+    43.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0610', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-17',
+    'Deposit',
+    'O''REILLY 6123 EAGLE LAKE TX XX5885 05/17',
+    58.44, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001441', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0610'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX5885 05/17',
+    58.44, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0611', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-17',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/17',
+    0.0, 764.4599999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001442', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0611'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/17',
+    31.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001443', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0611'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TRACTOR SUPPLY C 2340 SEALY TX XX5090 05/17',
+    32.43, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001444', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0611'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX5061 05/17',
+    563.42, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001445', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0611'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN X1119 HOUSTON TX 05/17',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001446', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0611'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AIRTABLE.COM/BILL AIRTABLE.COM CA 05/17',
+    76.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001447', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0611'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AUTOZONE 4000 5121 AN HOUSTON TX XX4703 05/17',
+    31.37, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0612', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-19',
+    'Invoice',
+    'Invoice - 2025-05-19',
+    2580.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001448', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0612'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2580.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0613', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-19',
+    'Invoice',
+    'Invoice - 2025-05-19',
+    1542.5, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001449', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0613'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    1542.5, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0614', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-19',
+    'Invoice',
+    'Invoice - 2025-05-19',
+    2848.75, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001450', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0614'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2848.75, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0615', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-19',
+    'Invoice',
+    'Invoice - 2025-05-19',
+    1526.25, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001451', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0615'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    1526.25, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0616', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-19',
+    'Invoice',
+    'Invoice - 2025-05-19',
+    2850.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001452', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0616'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2850.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0617', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-19',
+    'Invoice',
+    'Invoice - 2025-05-19',
+    2132.5, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001453', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0617'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2132.5, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0618', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-19',
+    'Invoice',
+    'Invoice - 2025-05-19',
+    1598.75, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001454', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0618'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    1598.75, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0619', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-19',
+    'Invoice',
+    'Invoice - 2025-05-19',
+    2985.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001455', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0619'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2985.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0620', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-19',
+    'Invoice',
+    'Invoice - 2025-05-19',
+    1967.5, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001456', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0620'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    1967.5, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0621', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-19',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX8636 05/19',
+    0.0, 40.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001457', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0621'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX8636 05/19',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0622', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-19',
+    'Invoice',
+    'Invoice - 2025-05-19',
+    2572.35, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001458', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0622'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2572.35, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0623', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-20',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/20',
+    0.0, 74.03999999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001459', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0623'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/20',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001460', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0623'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WM SUPERCENTER #437 SEALY TX XX9542 05/20',
+    34.04, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0624', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-21',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX7774 05/21',
+    0.0, 61.97, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001461', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0624'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX7774 05/21',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001462', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0624'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/21',
+    21.97, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0625', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-22',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX2511 05/22',
+    0.0, 440.04, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001463', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0625'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX2511 05/22',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001464', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0625'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MCDONALD''S FX0949 SEALY TX 05/22',
+    9.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001465', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0625'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TRACTOR SUPPLY C 2340 SEALY TX XX7864 05/22',
+    54.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001466', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0625'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AIRTABLE.COM/BILL AIRTABLE.COM CA 05/22',
+    25.58, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001467', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0625'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TYPINGMIND.COM WWW.TYPINGMIN WY 05/22',
+    299.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001468', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0625'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CURSOR, AI POWERED IDE CURSOR.COM NY 05/22',
+    21.32, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0626', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-23',
+    'Expense',
+    'O''REILLY 6123 EAGLE LAKE TX XX7200 05/23',
+    0.0, 167.87, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001469', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0626'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX7200 05/23',
+    42.61, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001470', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0626'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX7974 05/23',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001471', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0626'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/23',
+    49.2, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001472', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0626'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/23',
+    8.93, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001473', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0626'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/23',
+    10.48, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001474', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0626'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/23',
+    16.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0627', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-26',
+    'Invoice',
+    'Invoice - 2025-05-26',
+    1823.4, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001475', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0627'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    1823.4, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0628', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-26',
+    'Deposit',
+    'O''REILLY 6123 EAGLE LAKE TX XX1341 05/26',
+    12.99, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001476', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0628'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX1341 05/26',
+    12.99, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0629', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-26',
+    'Expense',
+    'O''REILLY 6123 EAGLE LAKE TX XX8524 05/26',
+    0.0, 213.54, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001477', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0629'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX8524 05/26',
+    116.85, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001478', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0629'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/26',
+    11.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001479', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0629'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 05/26',
+    29.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001480', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0629'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX8341 05/26',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001481', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0629'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #30 WHARTON TX 05/26',
+    6.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001482', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0629'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 05/26',
+    19.43, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0630', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-26',
+    'Invoice',
+    'Invoice - 2025-05-26',
+    57916.27, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001483', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0630'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    57916.27, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0631', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-26',
+    'Payment',
+    'Paid via QuickBooks Payments: Payment ID 236134',
+    4871.26, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001484', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0631'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Paid via QuickBooks Payments: Payment ID 236134',
+    2435.63, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001485', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0631'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Paid via QuickBooks Payments: Payment ID 220260',
+    2435.63, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0632', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-27',
+    'Deposit',
+    'System-recorded deposit for QuickBooks Payments',
+    4871.26, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001486', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0632'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'System-recorded deposit for QuickBooks Payments',
+    4871.26, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0633', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-27',
+    'Expense',
+    'System-recorded fee for QuickBooks Payments. Fee-name: DiscountRateFee, fee-type: Daily.',
+    0.0, 506.12, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001487', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0633'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'System-recorded fee for QuickBooks Payments. Fee-name: DiscountRateFee, fee-type: Daily.',
+    136.4, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001488', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0633'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SAN DONG NOODLE HOUSE HOUSTON TX 05/27',
+    100.71, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001489', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0633'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HOMEDEPOT.COM XXX-XXX-3376 GA 05/27',
+    20.57, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001490', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0633'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'HOMEDEPOT.COM XXX-XXX-3376 GA 05/27',
+    119.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001491', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0633'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MINT MOBILE XXX-XXX-7392 CA 05/27',
+    129.38, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0634', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-27',
+    'Payment',
+    'Payment - 2025-05-27',
+    37776.579999999994, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001492', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0634'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    15172.98, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001493', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0634'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    2580.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001494', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0634'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    1542.5, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001495', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0634'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    2848.75, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001496', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0634'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    2132.5, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001497', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0634'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    1526.25, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001498', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0634'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    2850.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001499', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0634'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    1598.75, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001500', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0634'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    2985.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001501', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0634'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    1967.5, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001502', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0634'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    2572.35, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0635', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-28',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX1776 05/28',
+    0.0, 4611.24, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001503', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0635'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX1776 05/28',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001504', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0635'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250528 CO ENTRY DESCR:NET XX0973SEC:CCD TRACE#:XXXXXXXX2000526 EED:250528 IND ID:6 semk4mpaud IND NAME:10NetZero, Inc. 6semjng2p0t TRN: XXXXXX0526 TC',
+    3280.67, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001505', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0635'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250528 CO ENTRY DESCR:TAX XX3247SEC:CCD TRACE#:XXXXXXXX2002593 EED:250528 IND ID:6 semk4mpaue IND NAME:10NetZero, Inc. 6semjng2hff TRN: XXXXXX2593 TC',
+    1204.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001506', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0635'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APIFY* INV#XXXXXXX9014 PRAGUE 05/29',
+    95.84, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0636', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-29',
+    'Deposit',
+    'THE HOME DEPOT #0577 HOUSTON TX 05/29',
+    37.42, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001507', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0636'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HOME DEPOT #0577 HOUSTON TX 05/29',
+    37.42, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0637', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-29',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/29',
+    0.0, 4962.41, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001508', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0637'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/29',
+    12.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001509', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0637'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 05/29',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001510', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0637'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RAISING CANES 0103 HOUSTON TX 05/29',
+    12.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001511', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0637'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PRASEK''S HILLJE SMOKEH SEALY TX XX0013 05/29',
+    7.41, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001512', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0637'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250529 CO ENTRY DESCR:NET XX7924SEC:CCD TRACE#:XXXXXXXX7201963 EED:250529 IND ID:6 semk4mpavf IND NAME:10NetZero, Inc. 6semjng4gkk TRN: XXXXXX1963 TC',
+    3280.67, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001513', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0637'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250529 CO ENTRY DESCR:TAX XX5272SEC:CCD TRACE#:XXXXXXXX7208487 EED:250529 IND ID:6 semk4mpavg IND NAME:10NetZero, Inc. 6semjng3qgo TRN: XXXXXX8487 TC',
+    1204.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001514', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0637'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HOME DEPOT #0577 HOUSTON TX 05/29',
+    150.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001515', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0637'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HOME DEPOT #0577 HOUSTON TX XX7957 05/29',
+    204.48, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001516', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0637'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX1019 05/29',
+    69.89, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0638', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-05-30',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX5182 05/30',
+    0.0, 30.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001517', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0638'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX5182 05/30',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0639', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-01',
+    'Expense',
+    'REPLIT, INC. REPLIT.COM CA 06/01',
+    0.0, 40.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001518', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0639'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'REPLIT, INC. REPLIT.COM CA 06/01',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0640', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-02',
+    'Expense',
+    'SUNOCO XXXXXX2600 KINGWOOD TX XX0600 06/02',
+    0.0, 195.36, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001519', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0640'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SUNOCO XXXXXX2600 KINGWOOD TX XX0600 06/02',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001520', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0640'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SHELL OIL XXXXXXX1528 EAST BERNARD TX 06/02',
+    10.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001521', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0640'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SHELL OIL XXXXXXX1528 EAST BERNARD TX 06/02',
+    77.87, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001522', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0640'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'QUICK TRACK #98 MARSHALL TX XX3200 06/02',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001523', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0640'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RENDER.COM RENDER.COM CA 06/02',
+    7.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0641', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-03',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX3568 06/03',
+    0.0, 6635.009999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001524', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0641'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX3568 06/03',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001525', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0641'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX5151 06/03',
+    33.51, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001526', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0641'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX3767 06/03',
+    9.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001527', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0641'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX6346 06/03',
+    140.71, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001528', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0641'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX7272 06/03',
+    12.77, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001529', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0641'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX5826 06/03',
+    18.39, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001530', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0641'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 06/03',
+    74.69, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001531', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0641'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX1236 To Cimarron (_##1169)',
+    6305.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0642', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-04',
+    'Expense',
+    'SERVICE CHARGES FOR THE MONTH OF MAY',
+    0.0, 447.01, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001532', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0642'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF MAY',
+    55.45, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001533', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0642'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX1340 06/04',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001534', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0642'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX3478 06/04',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001535', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0642'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 06/04',
+    60.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001536', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0642'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4007 DESC DATE:250604 CO ENTRY DESCR:FEE XX7482SEC:CCD TRACE#:XXXXXXXX9190862 EED:250604 IND ID:6 semk4pnusi IND NAME:10NetZero, Inc. 6semjngd1kq TRN: XXXXXX0862 TC',
+    127.92, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001537', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0642'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FOREMAN.MN FOREMAN.MN MD 06/05',
+    132.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0643', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-04',
+    'Payment',
+    'Payment - 2025-06-04',
+    20589.54, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001538', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0643'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    20589.54, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0644', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-05',
+    'Deposit',
+    'System-recorded deposit for QuickBooks Payments',
+    9730.25, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001539', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0644'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'System-recorded deposit for QuickBooks Payments',
+    9730.25, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0645', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-05',
+    'Expense',
+    'System-recorded fee for QuickBooks Payments. Fee-name: DiscountRateFee, fee-type: Daily.',
+    0.0, 333.15, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001540', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0645'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'System-recorded fee for QuickBooks Payments. Fee-name: DiscountRateFee, fee-type: Daily.',
+    272.45, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001541', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0645'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX0595 RIVERSIDE TX XX3041 06/05',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001542', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0645'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 765 CROCKETT TX 06/05',
+    30.7, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0646', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-05',
+    'Payment',
+    'Paid via QuickBooks Payments: Payment ID 292594',
+    9730.25, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001543', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0646'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Paid via QuickBooks Payments: Payment ID 292594',
+    9730.25, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0647', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-06',
+    'Expense',
+    'TRACTOR SUPPLY C 2340 SEALY TX XX7381 06/06',
+    0.0, 63.6, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001544', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0647'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TRACTOR SUPPLY C 2340 SEALY TX XX7381 06/06',
+    43.6, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001545', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0647'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MURPHY7701ATWALMART SEALY TX XX7245 06/06',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0648', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-07',
+    'Expense',
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 06/09',
+    0.0, 10.65, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001546', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0648'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 06/09',
+    10.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0649', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-09',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX8892 06/09',
+    0.0, 114.2, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001547', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0649'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX8892 06/09',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001548', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0649'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 06/09',
+    14.67, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001549', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0649'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'NETLIFY NETLIFY.COM CA 06/09',
+    40.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001550', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0649'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX5383 06/09',
+    19.03, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0650', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-10',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 06/10',
+    0.0, 217.06, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001551', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0650'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 06/10',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001552', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0650'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ADOBE *XXX-XXX-6687 ADOBE.LY/ENUS CA 06/11',
+    21.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001553', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0650'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RAISING CANES 0900 HOUSTON TX 06/10',
+    12.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001554', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0650'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'THE HOME DEPOT #6525 HOUSTON TX XX7710 06/10',
+    27.92, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001555', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0650'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ASAPPARTS SAN JOSE CA XX5031 06/09',
+    114.77, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0651', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-11',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX5063 06/11',
+    0.0, 54.64, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001556', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0651'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX5063 06/11',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001557', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0651'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST* RUDY''S COUNTRY STO KATY TX 06/12',
+    24.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0652', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-13',
+    'Expense',
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    0.0, 119.29, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001558', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0652'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    69.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001559', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0652'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 06/13',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001560', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0652'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'DELAWARE CORP & TAX W XXX-XXX-3073 DE 06/13',
+    10.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0653', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-15',
+    'Expense',
+    'TACTACAM WWW.REVEALCEL MN 06/15',
+    0.0, 18.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001561', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0653'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 06/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001562', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0653'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TACTACAM WWW.REVEALCEL MN 06/15',
+    9.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0654', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-16',
+    'Expense',
+    'BUC-EE''S #24 OUTSIDE EAGLE LAKE TX XX4816 06/16',
+    0.0, 359.12, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001563', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0654'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #24 OUTSIDE EAGLE LAKE TX XX4816 06/16',
+    70.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001564', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0654'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #24 OUTSIDE EAGLE LAKE TX XX8743 06/16',
+    11.22, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001565', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0654'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX8574 06/16',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001566', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0654'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX4639 06/16',
+    27.04, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001567', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0654'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 06/16',
+    3.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001568', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0654'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 06/16',
+    38.76, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001569', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0654'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TYPINGMIND.COM WWW.TYPINGMIN WY 06/16',
+    170.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001570', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0654'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX5145 06/16',
+    8.61, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0655', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-17',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX5989 06/17',
+    0.0, 6343.09, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001571', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0655'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX5989 06/17',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001572', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0655'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX5471 To Kebo Oil and Gas, INC 06/17',
+    4414.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001573', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0655'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX4087 06/17',
+    88.17, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001574', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0655'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 06/17',
+    53.07, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001575', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0655'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 400 EAGLE LAKE TX 06/17',
+    18.94, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001576', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0655'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AIRTABLE.COM/BILL AIRTABLE.COM CA 06/17',
+    51.17, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001577', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0655'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX8422 To Power Solutions International, Inc. 06/17',
+    1614.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001578', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0655'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'FULSHEAR RE LLC FULSHEAR TX XX3900 06/17',
+    72.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0656', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-18',
+    'Invoice',
+    'Invoice - 2025-06-18',
+    18453.28, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001579', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0656'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    18453.28, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0657', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-18',
+    'Invoice',
+    'Invoice - 2025-06-18',
+    11355.06, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001580', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0657'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    11355.06, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0658', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-18',
+    'Invoice',
+    'Invoice - 2025-06-18',
+    5145.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001581', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0658'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    5145.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0659', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-18',
+    'Invoice',
+    'Invoice - 2025-06-18',
+    2642.63, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001582', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0659'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2642.63, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0660', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-20',
+    'Expense',
+    'SPYPOINT PREM-ANNUAL VICTORIAVILLE QC 06/20',
+    0.0, 240.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001583', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0660'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SPYPOINT PREM-ANNUAL VICTORIAVILLE QC 06/20',
+    120.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001584', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0660'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SPYPOINT PREM-ANNUAL VICTORIAVILLE QC 06/20',
+    120.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0661', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-20',
+    'Payment',
+    'Paid via QuickBooks Payments: Payment ID 272234',
+    30000.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001585', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0661'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Paid via QuickBooks Payments: Payment ID 272234',
+    30000.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0662', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-21',
+    'Payment',
+    'Paid via QuickBooks Payments: Payment ID 117506',
+    27916.27, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001586', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0662'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Paid via QuickBooks Payments: Payment ID 117506',
+    27916.27, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0663', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-22',
+    'Expense',
+    'CURSOR, AI POWERED IDE CURSOR.COM NY 06/22',
+    0.0, 345.9, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001587', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0663'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CURSOR, AI POWERED IDE CURSOR.COM NY 06/22',
+    21.32, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001588', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0663'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TYPINGMIND.COM WWW.TYPINGMIN WY 06/22',
+    299.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001589', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0663'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'AIRTABLE.COM/BILL AIRTABLE.COM CA 06/22',
+    25.58, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0664', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-23',
+    'Deposit',
+    'System-recorded deposit for QuickBooks Payments',
+    57916.27, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001590', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0664'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'System-recorded deposit for QuickBooks Payments',
+    57916.27, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0665', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-23',
+    'Expense',
+    'System-recorded fee for QuickBooks Payments. Fee-name: DiscountRateFee, fee-type: Daily.',
+    0.0, 1810.99, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001591', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0665'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'System-recorded fee for QuickBooks Payments. Fee-name: DiscountRateFee, fee-type: Daily.',
+    1621.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001592', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0665'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'PANDA EXPRESS # 3059 WILLIS TX 06/23',
+    13.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001593', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0665'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2369 HOUSTON TX XX7691 06/23',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001594', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0665'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WM SUPERCENTER #236 CROCKETT TX XX7965 06/23',
+    30.37, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001595', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0665'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*TX BURGER - CROCKET Crockett TX 06/23',
+    28.45, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001596', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0665'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WAL WAL-MART #0236 002 CROCKETT TX XX9812 06/23',
+    76.98, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0666', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-24',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX8444 06/24',
+    0.0, 60.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001597', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0666'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX8444 06/24',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001598', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0666'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 06/24',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0667', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-25',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX0545 06/25',
+    0.0, 47.370000000000005, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001599', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0667'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX0545 06/25',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001600', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0667'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 06/25',
+    14.13, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001601', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0667'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APPLE LUMBER BRANCH 40 EAGLE LAKE TX XX0451 06/25',
+    3.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0668', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-26',
+    'Invoice',
+    'Invoice - 2025-06-26',
+    21144.63, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001602', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0668'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    21144.63, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0669', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-26',
+    'Invoice',
+    'Invoice - 2025-06-26',
+    2200.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001603', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0669'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    2200.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0670', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-26',
+    'Expense',
+    'Online ACH Payment XXXXXXX0398 To Chiron (_#####8441)',
+    0.0, 10000.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001604', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0670'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online ACH Payment XXXXXXX0398 To Chiron (_#####8441)',
+    10000.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0671', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-26',
+    'Invoice',
+    'Invoice - 2025-06-26',
+    5076.18, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001605', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0671'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    5076.18, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0672', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-27',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX3816 06/27',
+    0.0, 9013.57, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001606', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0672'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX3816 06/27',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001607', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0672'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 06/27',
+    12.75, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001608', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0672'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250627 CO ENTRY DESCR:TAX XX2126SEC:CCD TRACE#:XXXXXXXX3599831 EED:250627 IND ID:6 semk517rss IND NAME:10NetZero, Inc. 6semjnh7e0u TRN: XXXXXX9831 TC',
+    1204.77, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001609', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0672'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250627 CO ENTRY DESCR:NET XX2131SEC:CCD TRACE#:XXXXXXXX3600533 EED:250627 IND ID:6 semk517rsr IND NAME:10NetZero, Inc. 6semjnh7e13 TRN: XXXXXX0533 TC',
+    3280.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001610', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0672'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250627 CO ENTRY DESCR:NET XX2128SEC:CCD TRACE#:XXXXXXXX3601898 EED:250627 IND ID:6 semk517rno IND NAME:10NetZero, Inc. 6semjnh7e10 TRN: XXXXXX1898 TC',
+    3280.67, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001611', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0672'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ORIG CO NAME:GUSTO ORIG ID:XXXXXX4001 DESC DATE:250627 CO ENTRY DESCR:TAX XX9221SEC:CCD TRACE#:XXXXXXXX3587788 EED:250627 IND ID:6 semk517rnp IND NAME:10NetZero, Inc. 6semjnh7kul TRN: XXXXXX7788 TC',
+    1204.73, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0673', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-28',
+    'Expense',
+    'APIFY* INV#XXXXXXX9009 PRAGUE 06/29',
+    0.0, 39.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001612', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0673'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'APIFY* INV#XXXXXXX9009 PRAGUE 06/29',
+    39.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0674', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-06-30',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX4028 06/30',
+    0.0, 148.2, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001613', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0674'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX4028 06/30',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001614', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0674'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 06/30',
+    17.59, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001615', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0674'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 06/30',
+    61.61, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001616', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0674'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MAGIC PATTERNS WWW.MAGICPATT DE 06/30',
+    19.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001617', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0674'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SAMSCLUB #4712 HOUSTON TX XX1300 06/30',
+    20.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0675', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-01',
+    'Expense',
+    'WHATABURGER 1038 CORRIGAN TX 07/01',
+    0.0, 510.54999999999995, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001618', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0675'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WHATABURGER 1038 CORRIGAN TX 07/01',
+    12.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001619', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0675'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX0595 RIVERSIDE TX XX3177 07/01',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001620', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0675'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'LOVE''S #0290 OUTSIDE LUFKIN TX XX2612 07/01',
+    64.03, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001621', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0675'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'REPLIT, INC. REPLIT.COM CA 07/01',
+    42.64, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001622', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0675'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CTLP*CSC ServiceWorks MELVILLE NY 07/01',
+    3.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001623', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0675'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'MIRACLE MART #2 LINDEN TX 07/01',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001624', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0675'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RODESSA GAS N GRILL RODESSA LA 07/01',
+    76.16, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001625', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0675'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TST*FIRE AND KNIVES Linden TX 07/01',
+    222.54, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001626', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0675'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CTLP*VendAIr LONGVIEW TX 07/01',
+    2.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001627', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0675'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'QT 7906 OUTSIDE MARSHALL TX XX7689 07/01',
+    19.69, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001628', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0675'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'RODESSA GAS N GRILL RODESSA LA 07/01',
+    7.95, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0676', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-02',
+    'Expense',
+    'CEFCO #104 MT ENTERPR MOUNT ENTERP TXXX1100 07/02',
+    0.0, 51.29, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001629', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0676'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CEFCO #104 MT ENTERPR MOUNT ENTERP TXXX1100 07/02',
+    50.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001630', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0676'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #26 MADISONVILLE TX 07/02',
+    1.29, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0677', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-03',
+    'Expense',
+    'SERVICE CHARGES FOR THE MONTH OF JUNE',
+    0.0, 12.5, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001631', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0677'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'SERVICE CHARGES FOR THE MONTH OF JUNE',
+    12.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0678', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-03',
+    'Payment',
+    'Payment - 2025-07-03',
+    44495.549999999996, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001632', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0678'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    1823.4, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001633', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0678'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    11355.06, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001634', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0678'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    5145.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001635', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0678'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    2642.63, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001636', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0678'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    18453.28, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001637', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0678'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    5076.18, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0679', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-08',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/08',
+    0.0, 41.31, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001638', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0679'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/08',
+    30.66, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001639', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0679'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'ARLO TECHNOLOGIES INC XXX-XXX-3750 CA 07/09',
+    10.65, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0680', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-10',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX8491 07/10',
+    0.0, 73.02000000000001, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001640', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0680'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX8491 07/10',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001641', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0680'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TAQUERIA AZTECA D.F EAGLE LAKE TX 07/10',
+    33.02, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0681', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-11',
+    'Expense',
+    'BOUDREAUX EXPRESS MART TOMBALL TX XX8763 07/11',
+    0.0, 66.97, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001642', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0681'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BOUDREAUX EXPRESS MART TOMBALL TX XX8763 07/11',
+    59.93, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001643', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0681'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CHEVRON XXX2710 KATY TX 07/11',
+    7.04, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0682', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-13',
+    'Expense',
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    0.0, 79.95, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001644', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0682'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'INTUIT *QBooks Onlin CL.INTUIT.COM CA 11/13',
+    79.95, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0683', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-14',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX9630 07/14',
+    0.0, 97.6, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001645', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0683'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX9630 07/14',
+    29.35, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001646', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0683'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S #24 OUTSIDE EAGLE LAKE TX XX8274 07/14',
+    68.25, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0684', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-14',
+    'Invoice',
+    'Invoice - 2025-07-14',
+    69499.54, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001647', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0684'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    69499.54, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0685', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-15',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX4992 07/15',
+    0.0, 86.48, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001648', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0685'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX4992 07/15',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001649', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0685'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'STAR STOP #65 HOUSTON TX 07/15',
+    30.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001650', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0685'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/15',
+    16.48, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0686', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-15',
+    'Payment',
+    'Payment - 2025-07-15',
+    23344.63, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001651', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0686'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    21144.63, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001652', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0686'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    2200.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0687', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-16',
+    'Expense',
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/16',
+    0.0, 80.41999999999999, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001653', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0687'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/16',
+    53.53, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001654', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0687'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/16',
+    13.16, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001655', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0687'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/16',
+    5.5, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001656', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0687'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/16',
+    4.99, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001657', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0687'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/16',
+    3.24, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0688', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-17',
+    'Invoice',
+    'Invoice - 2025-07-17',
+    1065.0, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001658', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0688'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    1065.0, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0689', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-17',
+    'Invoice',
+    'Invoice - 2025-07-17',
+    33450.36, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001659', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0689'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    33450.36, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0690', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-17',
+    'Expense',
+    'Online Payment XXXXXXX8707 To Kebo Oil and Gas, INC 07/17',
+    0.0, 3523.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001660', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0690'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'Online Payment XXXXXXX8707 To Kebo Oil and Gas, INC 07/17',
+    3523.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0691', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-17',
+    'Invoice',
+    'Invoice - 2025-07-17',
+    27995.18, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001661', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0691'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    27995.18, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0692', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-18',
+    'Expense',
+    'O''REILLY 6123 EAGLE LAKE TX XX8010 07/18',
+    0.0, 59.96, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001662', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0692'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX8010 07/18',
+    43.68, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001663', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0692'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'WHATABURGER 120 Q26 HOUSTON TX 07/18',
+    16.28, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0693', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-18',
+    'Payment',
+    'Payment - 2025-07-18',
+    69499.54, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001664', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0693'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '',
+    69499.54, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0694', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-21',
+    'Expense',
+    'CIRCLE K #XXX2156 HOUSTON TX XX4796 07/21',
+    0.0, 127.74, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001665', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0694'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'CIRCLE K #XXX2156 HOUSTON TX XX4796 07/21',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001666', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0694'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/21',
+    11.12, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001667', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0694'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/21',
+    72.1, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001668', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0694'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'BUC-EE''S 24 XXX-XXX-6390 TX 07/21',
+    4.52, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0695', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-23',
+    'Expense',
+    'O''REILLY 6123 EAGLE LAKE TX XX6993 07/23',
+    0.0, 333.02, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001669', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0695'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'O''REILLY 6123 EAGLE LAKE TX XX6993 07/23',
+    260.06, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001670', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0695'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    'TRACTOR SUPPLY C 2340 SEALY TX XX2264 07/23',
+    32.96, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001671', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0695'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX7279 07/23',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0696', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-25',
+    'Expense',
+    '7-ELEVEN HOUSTON TX XX5037 07/25',
+    0.0, 40.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001672', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0696'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1000'),
+    '7-ELEVEN HOUSTON TX XX5037 07/25',
+    40.0, false
+) ON CONFLICT (line_id_display) DO NOTHING;
+
+INSERT INTO public.journal_entries (
+    entry_id_display, company_id, entry_date, entry_type, 
+    description, total_debit, total_credit, is_posted
+) VALUES (
+    'JE-0697', '4e3daa5f-9015-4ae8-a79c-620ccc45757f', '2025-07-28',
+    'Invoice',
+    'Invoice - 2025-07-28',
+    14072.5, 0.0, true
+) ON CONFLICT (entry_id_display) DO NOTHING;
+
+INSERT INTO public.journal_lines (
+    line_id_display, entry_id, account_id, 
+    description, amount, is_debit
+) VALUES (
+    'JL-001673', 
+    (SELECT id FROM journal_entries WHERE entry_id_display = 'JE-0697'),
+    (SELECT id FROM chart_of_accounts WHERE account_id_display = 'ACC-1100'),
+    '',
+    14072.5, true
+) ON CONFLICT (line_id_display) DO NOTHING;
+

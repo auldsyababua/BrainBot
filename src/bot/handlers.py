@@ -26,6 +26,7 @@ from storage.storage_service import DocumentStorage
 from core.version import VERSION, LATEST_CHANGES
 from core.auth import is_user_authorized
 from storage.redis_store import redis_store
+from core.chunking import chunk_markdown_document
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -455,16 +456,43 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 created_by="bot",
             )
 
-            # Store in vector database for semantic search
-            metadata = {
-                "title": title,
-                "type": "note",
-                "tags": ["imported", "telegram-attachment"],
-                "folder": folder or "root",
-                "doc_id": doc_id,
-                "source": "telegram-upload",
-            }
-            await vector_store.embed_and_store(doc_id, content, metadata, namespace="")
+            # Chunk the document for better semantic search
+            chunks = chunk_markdown_document(
+                content=content,
+                file_path=file_path,
+                metadata={
+                    "title": title,
+                    "type": "note",
+                    "tags": ["imported", "telegram-attachment"],
+                    "folder": folder or "root",
+                    "doc_id": doc_id,
+                    "source": "telegram-upload",
+                },
+                chunk_size=1000,
+                chunk_overlap=200,
+            )
+
+            # Store each chunk in vector database
+            logger.info(f"📄 Chunking document into {len(chunks)} chunks")
+            for i, (chunk_text, chunk_metadata) in enumerate(chunks):
+                chunk_id = f"{doc_id}_chunk_{i}"
+                await vector_store.embed_and_store(
+                    document_id=chunk_id,
+                    content=chunk_text,
+                    metadata=chunk_metadata,
+                    namespace="",
+                )
+
+                # Store chunk reference in Supabase
+                await document_storage.store_document_chunk(
+                    document_id=doc_id,
+                    chunk_index=i,
+                    chunk_text=chunk_text,
+                    vector_id=chunk_id,
+                    start_char=chunk_metadata["start_char"],
+                    end_char=chunk_metadata["end_char"],
+                    metadata=chunk_metadata,
+                )
 
             # Let the LLM know about the imported file
             llm_message = f"I just imported a document called '{document.file_name}'. The document contains:\n\n{content[:500]}..."
