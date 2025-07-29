@@ -23,6 +23,7 @@ from src.storage.redis_store import redis_store
 from src.storage.vector_store import vector_store
 from src.core.api_client import get_resilient_client, RetryConfig
 from src.core.benchmarks import get_performance_monitor, async_benchmark
+from src.core.chunking import chunk_markdown_document
 
 # Initialize resilient OpenAI client with custom retry config
 retry_config = RetryConfig(
@@ -706,10 +707,36 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
                 if not doc_id:
                     doc_id = file_path.replace("/", "_").replace(".md", "")
 
-                # Store in vector database for semantic search
-                await vector_store.embed_and_store(
-                    str(doc_id), content, metadata, namespace=""
+                # Chunk the document for better semantic search
+                chunks = chunk_markdown_document(
+                    content=content,
+                    file_path=file_path,
+                    metadata=metadata,
+                    chunk_size=1000,
+                    chunk_overlap=200,
                 )
+
+                # Store each chunk in vector database
+                logging.info(f"📄 Chunking document into {len(chunks)} chunks")
+                for i, (chunk_text, chunk_metadata) in enumerate(chunks):
+                    chunk_id = f"{doc_id}_chunk_{i}"
+                    await vector_store.embed_and_store(
+                        document_id=chunk_id,
+                        content=chunk_text,
+                        metadata=chunk_metadata,
+                        namespace="",
+                    )
+
+                    # Store chunk reference in Supabase
+                    await document_storage.store_document_chunk(
+                        document_id=str(doc_id),
+                        chunk_index=i,
+                        chunk_text=chunk_text,
+                        vector_id=chunk_id,
+                        start_char=chunk_metadata["start_char"],
+                        end_char=chunk_metadata["end_char"],
+                        metadata=chunk_metadata,
+                    )
 
                 return {
                     "success": True,
@@ -767,7 +794,17 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
                     doc_ref = file_path.replace("/", "_").replace(".md", "")
 
                 if success:
-                    # Re-index in vector store
+                    # Delete old chunks from vector store
+                    logging.info(f"🗑️ Removing old chunks for document {doc_ref}")
+                    old_chunks = await document_storage.get_document_chunks(
+                        document_id or doc_ref
+                    )
+                    for chunk in old_chunks:
+                        await vector_store.delete_document(
+                            chunk["vector_id"], namespace=""
+                        )
+
+                    # Re-chunk and store the updated document
                     metadata = {
                         "document_id": document_id or doc_ref,
                         "file_path": file_path,
@@ -778,9 +815,36 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
                         ],
                         "operation": "merge",
                     }
-                    await vector_store.embed_and_store(
-                        doc_ref, updated_content, metadata, namespace=""
+
+                    chunks = chunk_markdown_document(
+                        content=updated_content,
+                        file_path=file_path,
+                        metadata=metadata,
+                        chunk_size=1000,
+                        chunk_overlap=200,
                     )
+
+                    # Store each chunk
+                    logging.info(f"📄 Re-chunking document into {len(chunks)} chunks")
+                    for i, (chunk_text, chunk_metadata) in enumerate(chunks):
+                        chunk_id = f"{document_id or doc_ref}_chunk_{i}"
+                        await vector_store.embed_and_store(
+                            document_id=chunk_id,
+                            content=chunk_text,
+                            metadata=chunk_metadata,
+                            namespace="",
+                        )
+
+                        # Store chunk reference
+                        await document_storage.store_document_chunk(
+                            document_id=str(document_id or doc_ref),
+                            chunk_index=i,
+                            chunk_text=chunk_text,
+                            vector_id=chunk_id,
+                            start_char=chunk_metadata["start_char"],
+                            end_char=chunk_metadata["end_char"],
+                            metadata=chunk_metadata,
+                        )
 
                     return {
                         "success": True,
