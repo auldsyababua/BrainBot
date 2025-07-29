@@ -13,7 +13,6 @@ This script:
 import os
 import sys
 import asyncio
-import shutil
 from pathlib import Path
 from datetime import datetime
 
@@ -21,8 +20,11 @@ from datetime import datetime
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), "src"))
 
 from storage.vector_store import vector_store  # noqa: E402
-from storage.storage_service import document_storage  # noqa: E402
+from storage.storage_service import DocumentStorage  # noqa: E402
 from core.chunking import chunk_markdown_document  # noqa: E402
+
+# Initialize document storage
+document_storage = DocumentStorage()
 
 
 async def main():
@@ -38,54 +40,26 @@ async def main():
         print(f"❌ Failed to clear vector store: {e}")
         return
 
-    # 2. Backup 10NetZero folder
-    print("\n2️⃣ Backing up 10NetZero folder...")
-    notes_path = Path("notes")
-    ten_net_path = notes_path / "10NetZero"
-    backup_path = Path("/tmp/10netzero_backup")
-
-    if ten_net_path.exists():
-        if backup_path.exists():
-            shutil.rmtree(backup_path)
-        shutil.copytree(ten_net_path, backup_path, dirs_exist_ok=True)
-        print(f"✅ Backed up to {backup_path}")
-    else:
-        print("⚠️  10NetZero folder not found, nothing to backup")
-
-    # 3. Clear entire notes folder
-    print("\n3️⃣ Clearing notes folder...")
-    if notes_path.exists():
-        # List what we're removing (for transparency)
-        all_items = list(notes_path.rglob("*"))
-        file_count = sum(1 for item in all_items if item.is_file())
-        dir_count = sum(1 for item in all_items if item.is_dir())
-        print(f"   Removing {file_count} files and {dir_count} directories")
-
-        shutil.rmtree(notes_path)
-        print("✅ Notes folder cleared")
-
-    notes_path.mkdir(exist_ok=True)
-
-    # 4. Restore 10NetZero
-    print("\n4️⃣ Restoring 10NetZero folder...")
-    if backup_path.exists():
-        shutil.copytree(backup_path, ten_net_path)
-        print("✅ 10NetZero folder restored")
-
-        # Clean up backup
-        shutil.rmtree(backup_path)
-    else:
-        print("⚠️  No backup found to restore")
-
-    # 5. Re-index 10NetZero content
-    print("\n5️⃣ Re-indexing 10NetZero content...")
-
-    if not ten_net_path.exists():
-        print("⚠️  10NetZero folder not found, nothing to index")
-        print("\n✅ Database reset complete (empty state)!")
+    # 2. Clear Supabase documents
+    print("\n2️⃣ Clearing Supabase documents...")
+    try:
+        await document_storage.clear_all_documents()
+        print("✅ Supabase documents cleared successfully")
+    except Exception as e:
+        print(f"❌ Failed to clear Supabase: {e}")
         return
 
-    md_files = list(ten_net_path.rglob("*.md"))
+    # 3. Set up paths
+    print("\n3️⃣ Setting up paths...")
+    kb_path = Path("10nz_kb")
+    if not kb_path.exists():
+        print("❌ 10nz_kb directory not found!")
+        return
+
+    # 4. Re-index content from 10nz_kb
+    print("\n4️⃣ Re-indexing content from 10nz_kb...")
+
+    md_files = list(kb_path.rglob("*.md"))
     print(f"📄 Found {len(md_files)} markdown files to index")
 
     indexed_count = 0
@@ -93,14 +67,17 @@ async def main():
 
     for file_path in md_files:
         try:
-            print(f"\n📄 Processing: {file_path.relative_to('notes')}")
+            print(f"\n📄 Processing: {file_path.relative_to(kb_path)}")
 
             # Read file content
             content = file_path.read_text(encoding="utf-8")
 
             # Extract metadata
             title = file_path.stem.replace("-", " ").replace("_", " ")
-            folder = file_path.parent.name
+            # Get the relative path to determine the folder structure
+            rel_path = file_path.relative_to(kb_path)
+            folder_parts = list(rel_path.parts[:-1])  # All parts except filename
+            folder = "/".join(folder_parts) if folder_parts else "root"
 
             # Store in Supabase first
             try:

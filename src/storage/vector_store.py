@@ -13,7 +13,7 @@ from datetime import datetime
 from upstash_vector import Index
 from upstash_redis import Redis
 from dotenv import load_dotenv
-from src.core.benchmarks import get_performance_monitor, async_benchmark
+from core.benchmarks import get_performance_monitor, async_benchmark
 
 logger = logging.getLogger(__name__)
 
