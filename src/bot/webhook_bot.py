@@ -121,15 +121,16 @@ class WebhookTelegramBot:
             """Manage the application lifecycle."""
             async with self.application:
                 await self.application.start()
-                
+
                 # Seed initial memories if configured
                 from src.core.memory import seed_initial_memories
+
                 try:
                     await seed_initial_memories()
                     logger.info("Initial memories seeded successfully")
                 except Exception as e:
                     logger.error(f"Failed to seed initial memories: {e}")
-                
+
                 yield
                 await self.application.stop()
 

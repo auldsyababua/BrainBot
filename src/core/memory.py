@@ -42,7 +42,9 @@ class BotMemory:
                 config["embedder"] = {
                     "provider": "openai",
                     "config": {
-                        "model": os.getenv("MEM0_EMBEDDER_MODEL", "text-embedding-3-small"),
+                        "model": os.getenv(
+                            "MEM0_EMBEDDER_MODEL", "text-embedding-3-small"
+                        ),
                         "api_key": os.getenv("OPENAI_API_KEY"),
                         "embedding_dims": int(os.getenv("MEM0_EMBEDDING_DIMS", "1536")),
                     },
@@ -58,8 +60,13 @@ class BotMemory:
                     "config": {
                         "url": os.getenv("UPSTASH_VECTOR_REST_URL"),
                         "token": os.getenv("UPSTASH_VECTOR_REST_TOKEN"),
-                        "collection_name": os.getenv("MEM0_COLLECTION_NAME", "markdown_bot_memories"),
-                        "enable_embeddings": os.getenv("MEM0_ENABLE_HYBRID_SEARCH", "true").lower() == "true",
+                        "collection_name": os.getenv(
+                            "MEM0_COLLECTION_NAME", "markdown_bot_memories"
+                        ),
+                        "enable_embeddings": os.getenv(
+                            "MEM0_ENABLE_HYBRID_SEARCH", "true"
+                        ).lower()
+                        == "true",
                     },
                 }
                 logger.info("Using Upstash Vector for mem0 backend")
@@ -74,22 +81,22 @@ class BotMemory:
                         "password": os.getenv("NEO4J_PASSWORD"),
                     },
                 }
-                
+
                 # Add custom graph prompt if provided
                 graph_prompt = os.getenv("MEM0_GRAPH_CUSTOM_PROMPT")
                 if graph_prompt:
                     graph_config["custom_prompt"] = graph_prompt
-                    
+
                 config["graph_store"] = graph_config
                 logger.info("Using Neo4j for graph memory backend")
                 self.has_graph = True
             else:
                 self.has_graph = False
-                
+
             # Configure memory settings
             if os.getenv("MEM0_MEMORY_THRESHOLD"):
                 config["memory_threshold"] = float(os.getenv("MEM0_MEMORY_THRESHOLD"))
-                
+
             # Configure cache settings for performance
             cache_config = {
                 "similarity_evaluation": {
@@ -97,12 +104,14 @@ class BotMemory:
                     "max_distance": float(os.getenv("MEM0_CACHE_MAX_DISTANCE", "1.0")),
                 },
                 "config": {
-                    "similarity_threshold": float(os.getenv("MEM0_CACHE_SIMILARITY_THRESHOLD", "0.8")),
+                    "similarity_threshold": float(
+                        os.getenv("MEM0_CACHE_SIMILARITY_THRESHOLD", "0.8")
+                    ),
                     "auto_flush": int(os.getenv("MEM0_CACHE_AUTO_FLUSH", "50")),
                 },
             }
             config["cache"] = cache_config
-            
+
             # Configure chunking
             config["chunker"] = {
                 "chunk_size": int(os.getenv("MEM0_CHUNK_SIZE", "2000")),
@@ -110,27 +119,33 @@ class BotMemory:
                 "length_function": "len",
                 "min_chunk_size": int(os.getenv("MEM0_MIN_CHUNK_SIZE", "50")),
             }
-            
+
             # Configure memory search settings
             config["memory"] = {
                 "top_k": int(os.getenv("MEM0_VECTOR_TOP_K", "10")),
             }
-            
+
             # Configure custom prompts
             if os.getenv("MEM0_CUSTOM_FACT_EXTRACTION_PROMPT"):
-                config["custom_fact_extraction_prompt"] = os.getenv("MEM0_CUSTOM_FACT_EXTRACTION_PROMPT")
-                
+                config["custom_fact_extraction_prompt"] = os.getenv(
+                    "MEM0_CUSTOM_FACT_EXTRACTION_PROMPT"
+                )
+
             if os.getenv("MEM0_CUSTOM_UPDATE_MEMORY_PROMPT"):
-                config["custom_update_memory_prompt"] = os.getenv("MEM0_CUSTOM_UPDATE_MEMORY_PROMPT")
-                
+                config["custom_update_memory_prompt"] = os.getenv(
+                    "MEM0_CUSTOM_UPDATE_MEMORY_PROMPT"
+                )
+
             # Configure history database
             if os.getenv("MEM0_HISTORY_DB_PATH"):
-                config["history_db_path"] = os.path.expanduser(os.getenv("MEM0_HISTORY_DB_PATH"))
-                
+                config["history_db_path"] = os.path.expanduser(
+                    os.getenv("MEM0_HISTORY_DB_PATH")
+                )
+
             # Disable history if requested
             if os.getenv("MEM0_DISABLE_HISTORY", "false").lower() == "true":
                 config["disable_history"] = True
-                
+
             # Configure webhook if provided
             self.webhook_url = os.getenv("MEM0_WEBHOOK_URL")
             self.webhook_headers = {}
@@ -152,18 +167,30 @@ class BotMemory:
                 )
 
             # Store performance settings
-            self.batch_operations = os.getenv("MEM0_BATCH_OPERATIONS", "true").lower() == "true"
+            self.batch_operations = (
+                os.getenv("MEM0_BATCH_OPERATIONS", "true").lower() == "true"
+            )
             self.batch_size = int(os.getenv("MEM0_BATCH_SIZE", "50"))
-            self.parallel_processing = os.getenv("MEM0_PARALLEL_PROCESSING", "true").lower() == "true"
+            self.parallel_processing = (
+                os.getenv("MEM0_PARALLEL_PROCESSING", "true").lower() == "true"
+            )
             self.max_concurrent = int(os.getenv("MEM0_MAX_CONCURRENT_OPERATIONS", "4"))
-            
+
             # Store feature flags
-            self.auto_update_memories = os.getenv("MEM0_AUTO_UPDATE_MEMORIES", "true").lower() == "true"
-            self.deduplicate_memories = os.getenv("MEM0_DEDUPLICATE_MEMORIES", "true").lower() == "true"
-            self.memory_decay_enabled = os.getenv("MEM0_MEMORY_DECAY_ENABLED", "false").lower() == "true"
+            self.auto_update_memories = (
+                os.getenv("MEM0_AUTO_UPDATE_MEMORIES", "true").lower() == "true"
+            )
+            self.deduplicate_memories = (
+                os.getenv("MEM0_DEDUPLICATE_MEMORIES", "true").lower() == "true"
+            )
+            self.memory_decay_enabled = (
+                os.getenv("MEM0_MEMORY_DECAY_ENABLED", "false").lower() == "true"
+            )
             self.memory_decay_rate = float(os.getenv("MEM0_MEMORY_DECAY_RATE", "0.95"))
-            
-            logger.info("BotMemory initialized successfully with advanced configuration")
+
+            logger.info(
+                "BotMemory initialized successfully with advanced configuration"
+            )
 
         except Exception as e:
             logger.error(f"Failed to initialize BotMemory: {e}")
@@ -194,15 +221,13 @@ class BotMemory:
             )
 
             logger.info(f"Stored memories for user {user_id}: {result}")
-            
+
             # Send webhook notification if configured
             if self.webhook_url and result:
                 await self._send_webhook_notification(
-                    event="memory_added",
-                    user_id=user_id,
-                    data=result
+                    event="memory_added", user_id=user_id, data=result
                 )
-            
+
             return result
 
         except Exception as e:
@@ -493,16 +518,16 @@ class BotMemory:
             logger.error(f"Error getting memory stats: {e}")
 
         return stats
-    
+
     async def batch_add_memories(
         self, memory_items: List[Dict[str, Any]], user_id: str
     ) -> List[Dict]:
         """Add multiple memories in batch for better performance.
-        
+
         Args:
             memory_items: List of memory items with 'content' and optional 'metadata'
             user_id: Unique identifier for the user
-            
+
         Returns:
             List of results from memory storage
         """
@@ -513,34 +538,37 @@ class BotMemory:
                 result = self.memory.add(
                     messages=[{"role": "user", "content": item["content"]}],
                     user_id=user_id,
-                    metadata=item.get("metadata", {})
+                    metadata=item.get("metadata", {}),
                 )
                 results.append(result)
             return results
-            
+
         try:
             # Process in batches
             results = []
             for i in range(0, len(memory_items), self.batch_size):
-                batch = memory_items[i:i + self.batch_size]
-                
+                batch = memory_items[i : i + self.batch_size]
+
                 if self.parallel_processing:
                     # Use asyncio for parallel processing
                     import asyncio
+
                     tasks = []
                     for item in batch:
                         task = asyncio.create_task(
                             self._add_single_memory(item, user_id)
                         )
                         tasks.append(task)
-                    
+
                     # Limit concurrent operations
                     if len(tasks) > self.max_concurrent:
                         # Process in smaller concurrent batches
                         batch_results = []
                         for j in range(0, len(tasks), self.max_concurrent):
-                            concurrent_batch = tasks[j:j + self.max_concurrent]
-                            batch_results.extend(await asyncio.gather(*concurrent_batch))
+                            concurrent_batch = tasks[j : j + self.max_concurrent]
+                            batch_results.extend(
+                                await asyncio.gather(*concurrent_batch)
+                            )
                         results.extend(batch_results)
                     else:
                         results.extend(await asyncio.gather(*tasks))
@@ -549,72 +577,74 @@ class BotMemory:
                     for item in batch:
                         result = await self._add_single_memory(item, user_id)
                         results.append(result)
-                        
+
             return results
-            
+
         except Exception as e:
             logger.error(f"Error in batch memory addition: {e}")
             return []
-    
+
     async def _add_single_memory(self, item: Dict[str, Any], user_id: str) -> Dict:
         """Add a single memory item."""
         try:
             return self.memory.add(
                 messages=[{"role": "user", "content": item["content"]}],
                 user_id=user_id,
-                metadata=item.get("metadata", {})
+                metadata=item.get("metadata", {}),
             )
         except Exception as e:
             logger.error(f"Error adding single memory: {e}")
             return {}
-    
+
     async def optimize_memories(self, user_id: str):
         """Optimize stored memories by deduplication and decay.
-        
+
         Args:
             user_id: Unique identifier for the user
         """
         if not self.memory:
             return
-            
+
         try:
             memories = await self.get_all_memories(user_id)
-            
+
             if self.deduplicate_memories:
                 # Find and merge duplicate memories
                 seen_content = {}
                 duplicates = []
-                
+
                 for mem in memories:
                     content = mem.get("content", "").lower().strip()
                     mem_id = mem.get("id")
-                    
+
                     if content in seen_content:
                         # Mark for deletion
                         duplicates.append(mem_id)
                     else:
                         seen_content[content] = mem_id
-                        
+
                 # Delete duplicates
                 if duplicates:
                     await self.forget_memories(user_id, duplicates)
-                    logger.info(f"Removed {len(duplicates)} duplicate memories for user {user_id}")
-                    
+                    logger.info(
+                        f"Removed {len(duplicates)} duplicate memories for user {user_id}"
+                    )
+
             if self.memory_decay_enabled:
                 # Apply decay to old memories based on importance
                 # This is a placeholder - actual implementation would need
                 # to track access patterns and importance scores
                 logger.info("Memory decay feature not fully implemented yet")
-                
+
         except Exception as e:
             logger.error(f"Error optimizing memories: {e}")
-    
+
     async def get_memory_insights(self, user_id: str) -> Dict[str, Any]:
         """Get insights about user's memory patterns.
-        
+
         Args:
             user_id: Unique identifier for the user
-            
+
         Returns:
             Dictionary with memory insights
         """
@@ -624,23 +654,21 @@ class BotMemory:
             "interaction_patterns": {},
             "key_relationships": [],
         }
-        
+
         try:
             memories = await self.get_all_memories(user_id)
-            
+
             # Analyze memory categories
             category_counts = {}
             for mem in memories:
                 category = mem.get("metadata", {}).get("category", "general")
                 category_counts[category] = category_counts.get(category, 0) + 1
-                
+
             # Sort by frequency
             insights["most_discussed_topics"] = sorted(
-                category_counts.items(),
-                key=lambda x: x[1],
-                reverse=True
+                category_counts.items(), key=lambda x: x[1], reverse=True
             )[:5]
-            
+
             # Get graph insights if available
             if self.has_graph:
                 relationships = await self.get_graph_relationships(user_id)
@@ -649,66 +677,65 @@ class BotMemory:
                 for rel in relationships[:20]:  # Top 20 relationships
                     if isinstance(rel, dict):
                         rel_type = rel.get("type", "unknown")
-                        relationship_counts[rel_type] = relationship_counts.get(rel_type, 0) + 1
-                        
+                        relationship_counts[rel_type] = (
+                            relationship_counts.get(rel_type, 0) + 1
+                        )
+
                 insights["key_relationships"] = list(relationship_counts.items())
-                
+
         except Exception as e:
             logger.error(f"Error getting memory insights: {e}")
-            
+
         return insights
-    
-    async def _send_webhook_notification(
-        self, event: str, user_id: str, data: Any
-    ):
+
+    async def _send_webhook_notification(self, event: str, user_id: str, data: Any):
         """Send webhook notification for memory events."""
         if not self.webhook_url:
             return
-            
+
         try:
             import aiohttp
+
             async with aiohttp.ClientSession() as session:
                 payload = {
                     "event": event,
                     "user_id": user_id,
                     "data": data,
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": datetime.now().isoformat(),
                 }
-                
+
                 async with session.post(
-                    self.webhook_url,
-                    json=payload,
-                    headers=self.webhook_headers
+                    self.webhook_url, json=payload, headers=self.webhook_headers
                 ) as response:
                     if response.status == 200:
                         logger.info(f"Webhook notification sent: {event}")
                     else:
                         logger.warning(f"Webhook failed with status {response.status}")
-                        
+
         except Exception as e:
             logger.error(f"Error sending webhook: {e}")
-    
+
     def get_user_config(self, user_id: str) -> Dict[str, Any]:
         """Get user-specific memory configuration from environment."""
         user_config = {}
-        
+
         # Check for user-specific settings
         user_prefix = f"MEM0_USER_{user_id.upper()}_"
-        
+
         # Memory retention policy
         retention = os.getenv(f"{user_prefix}RETENTION_DAYS")
         if retention:
             user_config["retention_days"] = int(retention)
-            
+
         # Memory categories allowed
         categories = os.getenv(f"{user_prefix}CATEGORIES")
         if categories:
             user_config["allowed_categories"] = categories.split(",")
-            
+
         # Auto-extract preferences
         auto_extract = os.getenv(f"{user_prefix}AUTO_EXTRACT", "true")
         user_config["auto_extract"] = auto_extract.lower() == "true"
-        
+
         return user_config
 
 
@@ -719,7 +746,7 @@ bot_memory = BotMemory()
 async def seed_initial_memories():
     """Seed initial memories from environment configuration."""
     import json
-    
+
     # Check for initial memories in environment
     initial_memories = os.getenv("MEM0_INITIAL_MEMORIES")
     if initial_memories:
@@ -729,17 +756,15 @@ async def seed_initial_memories():
                 user_id = memory.get("user_id", "system")
                 content = memory.get("content")
                 category = memory.get("category", "system")
-                
+
                 if content:
                     await bot_memory.store_preference(
-                        user_id=user_id,
-                        preference=content,
-                        category=category
+                        user_id=user_id, preference=content, category=category
                     )
                     logger.info(f"Seeded memory for {user_id}: {content[:50]}...")
         except Exception as e:
             logger.error(f"Error seeding initial memories: {e}")
-    
+
     # Check for webhook configuration
     webhook_url = os.getenv("MEM0_WEBHOOK_URL")
     if webhook_url:
