@@ -6,6 +6,7 @@ personalized responses based on past interactions.
 
 import os
 import logging
+from datetime import datetime
 from typing import List, Dict, Optional, Any
 from mem0 import Memory
 from dotenv import load_dotenv
@@ -22,32 +23,32 @@ class BotMemory:
     def __init__(self):
         """Initialize mem0 memory with Vector and optional Graph backend."""
         try:
-            config = {
-                "version": "v1.1"
-            }
-            
+            config = {"version": "v1.1"}
+
             # Configure LLM (required for mem0's intelligent extraction)
             if os.getenv("OPENAI_API_KEY"):
                 config["llm"] = {
                     "provider": "openai",
                     "config": {
-                        "model": "gpt-4o-mini",
-                        "api_key": os.getenv("OPENAI_API_KEY")
-                    }
+                        "model": os.getenv("MEM0_LLM_MODEL", "gpt-4o-mini"),
+                        "api_key": os.getenv("OPENAI_API_KEY"),
+                    },
                 }
-            
+
             # Configure Vector Store
-            if os.getenv("UPSTASH_VECTOR_REST_URL") and os.getenv("UPSTASH_VECTOR_REST_TOKEN"):
+            if os.getenv("UPSTASH_VECTOR_REST_URL") and os.getenv(
+                "UPSTASH_VECTOR_REST_TOKEN"
+            ):
                 # Use Upstash Vector for production
                 config["vector_store"] = {
                     "provider": "upstash",
                     "config": {
                         "url": os.getenv("UPSTASH_VECTOR_REST_URL"),
                         "token": os.getenv("UPSTASH_VECTOR_REST_TOKEN"),
-                    }
+                    },
                 }
                 logger.info("Using Upstash Vector for mem0 backend")
-            
+
             # Configure Graph Store (optional - for relationship mapping)
             if os.getenv("NEO4J_URL") and os.getenv("NEO4J_PASSWORD"):
                 config["graph_store"] = {
@@ -55,14 +56,27 @@ class BotMemory:
                     "config": {
                         "url": os.getenv("NEO4J_URL", "bolt://localhost:7687"),
                         "username": os.getenv("NEO4J_USERNAME", "neo4j"),
-                        "password": os.getenv("NEO4J_PASSWORD")
-                    }
+                        "password": os.getenv("NEO4J_PASSWORD"),
+                    },
                 }
                 logger.info("Using Neo4j for graph memory backend")
                 self.has_graph = True
             else:
                 self.has_graph = False
                 
+            # Configure memory settings
+            if os.getenv("MEM0_MEMORY_THRESHOLD"):
+                config["memory_threshold"] = float(os.getenv("MEM0_MEMORY_THRESHOLD"))
+                
+            # Configure webhook if provided
+            self.webhook_url = os.getenv("MEM0_WEBHOOK_URL")
+            self.webhook_headers = {}
+            if self.webhook_url:
+                webhook_token = os.getenv("MEM0_WEBHOOK_TOKEN")
+                if webhook_token:
+                    self.webhook_headers = {"Authorization": f"Bearer {webhook_token}"}
+                logger.info(f"Webhook configured: {self.webhook_url}")
+
             # Initialize mem0 with config
             if "vector_store" in config or "graph_store" in config:
                 self.memory = Memory.from_config(config)
@@ -70,7 +84,9 @@ class BotMemory:
             else:
                 # Fallback to local memory for development
                 self.memory = Memory()
-                logger.info("Using local memory for mem0 (no backend credentials found)")
+                logger.info(
+                    "Using local memory for mem0 (no backend credentials found)"
+                )
 
             logger.info("BotMemory initialized successfully")
 
@@ -79,6 +95,7 @@ class BotMemory:
             # Fallback to basic memory if mem0 fails
             self.memory = None
             self.has_graph = False
+            self.webhook_url = None
 
     async def remember_from_conversation(
         self, messages: List[Dict], user_id: str
@@ -102,6 +119,15 @@ class BotMemory:
             )
 
             logger.info(f"Stored memories for user {user_id}: {result}")
+            
+            # Send webhook notification if configured
+            if self.webhook_url and result:
+                await self._send_webhook_notification(
+                    event="memory_added",
+                    user_id=user_id,
+                    data=result
+                )
+            
             return result
 
         except Exception as e:
@@ -309,48 +335,49 @@ class BotMemory:
         self, user_id: str, entity: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         """Retrieve relationship data from graph memory.
-        
+
         Args:
             user_id: Unique identifier for the user
             entity: Optional specific entity to get relationships for
-            
+
         Returns:
             List of relationships from the graph
         """
         if not self.memory or not self.has_graph:
             return []
-            
+
         try:
             # Access graph store if available
-            if hasattr(self.memory, 'graph') and self.memory.graph:
+            if hasattr(self.memory, "graph") and self.memory.graph:
                 if entity:
                     # Query specific entity relationships
                     query = f"What is related to {entity}?"
                 else:
                     # Get all user relationships
                     query = "What are all the relationships for this user?"
-                    
+
                 results = self.memory.graph.search(
-                    query=query,
-                    filters={"user_id": user_id}
+                    query=query, filters={"user_id": user_id}
                 )
-                
-                logger.info(f"Retrieved {len(results)} graph relationships for user {user_id}")
+
+                logger.info(
+                    f"Retrieved {len(results)} graph relationships for user {user_id}"
+                )
                 return results
             else:
                 logger.warning("Graph store not available despite has_graph=True")
                 return []
-                
+
         except Exception as e:
             logger.error(f"Error retrieving graph relationships: {e}")
             return []
-    
+
     async def get_memory_stats(self, user_id: str) -> Dict[str, Any]:
         """Get statistics about stored memories.
-        
+
         Args:
             user_id: Unique identifier for the user
-            
+
         Returns:
             Dictionary with memory statistics
         """
@@ -359,24 +386,26 @@ class BotMemory:
             "memory_types": {},
             "has_graph": self.has_graph,
             "graph_entities": 0,
-            "graph_relationships": 0
+            "graph_relationships": 0,
         }
-        
+
         try:
             # Get all memories
             memories = await self.get_all_memories(user_id)
             stats["total_memories"] = len(memories)
-            
+
             # Count by type
             for mem in memories:
                 mem_type = mem.get("metadata", {}).get("type", "other")
-                stats["memory_types"][mem_type] = stats["memory_types"].get(mem_type, 0) + 1
-            
+                stats["memory_types"][mem_type] = (
+                    stats["memory_types"].get(mem_type, 0) + 1
+                )
+
             # Get graph stats if available
             if self.has_graph:
                 relationships = await self.get_graph_relationships(user_id)
                 stats["graph_relationships"] = len(relationships)
-                
+
                 # Count unique entities
                 entities = set()
                 for rel in relationships:
@@ -384,12 +413,95 @@ class BotMemory:
                         entities.add(rel.get("source", ""))
                         entities.add(rel.get("target", ""))
                 stats["graph_entities"] = len(entities) - 1  # Subtract empty string
-                
+
         except Exception as e:
             logger.error(f"Error getting memory stats: {e}")
-            
+
         return stats
+    
+    async def _send_webhook_notification(
+        self, event: str, user_id: str, data: Any
+    ):
+        """Send webhook notification for memory events."""
+        if not self.webhook_url:
+            return
+            
+        try:
+            import aiohttp
+            async with aiohttp.ClientSession() as session:
+                payload = {
+                    "event": event,
+                    "user_id": user_id,
+                    "data": data,
+                    "timestamp": datetime.now().isoformat()
+                }
+                
+                async with session.post(
+                    self.webhook_url,
+                    json=payload,
+                    headers=self.webhook_headers
+                ) as response:
+                    if response.status == 200:
+                        logger.info(f"Webhook notification sent: {event}")
+                    else:
+                        logger.warning(f"Webhook failed with status {response.status}")
+                        
+        except Exception as e:
+            logger.error(f"Error sending webhook: {e}")
+    
+    def get_user_config(self, user_id: str) -> Dict[str, Any]:
+        """Get user-specific memory configuration from environment."""
+        user_config = {}
+        
+        # Check for user-specific settings
+        user_prefix = f"MEM0_USER_{user_id.upper()}_"
+        
+        # Memory retention policy
+        retention = os.getenv(f"{user_prefix}RETENTION_DAYS")
+        if retention:
+            user_config["retention_days"] = int(retention)
+            
+        # Memory categories allowed
+        categories = os.getenv(f"{user_prefix}CATEGORIES")
+        if categories:
+            user_config["allowed_categories"] = categories.split(",")
+            
+        # Auto-extract preferences
+        auto_extract = os.getenv(f"{user_prefix}AUTO_EXTRACT", "true")
+        user_config["auto_extract"] = auto_extract.lower() == "true"
+        
+        return user_config
 
 
 # Global instance
 bot_memory = BotMemory()
+
+
+async def seed_initial_memories():
+    """Seed initial memories from environment configuration."""
+    import json
+    
+    # Check for initial memories in environment
+    initial_memories = os.getenv("MEM0_INITIAL_MEMORIES")
+    if initial_memories:
+        try:
+            memories = json.loads(initial_memories)
+            for memory in memories:
+                user_id = memory.get("user_id", "system")
+                content = memory.get("content")
+                category = memory.get("category", "system")
+                
+                if content:
+                    await bot_memory.store_preference(
+                        user_id=user_id,
+                        preference=content,
+                        category=category
+                    )
+                    logger.info(f"Seeded memory for {user_id}: {content[:50]}...")
+        except Exception as e:
+            logger.error(f"Error seeding initial memories: {e}")
+    
+    # Check for webhook configuration
+    webhook_url = os.getenv("MEM0_WEBHOOK_URL")
+    if webhook_url:
+        logger.info(f"Webhook URL configured: {webhook_url}")

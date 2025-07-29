@@ -595,7 +595,7 @@ async def memories_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         # Get all user memories
         memories = await bot_memory.get_all_memories(chat_id)
-        
+
         # Get memory statistics
         stats = await bot_memory.get_memory_stats(chat_id)
 
@@ -640,10 +640,10 @@ async def memories_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             if len(memories) > 20:
                 response += f"\n_...and {len(memories) - 20} more memories_"
-                
+
             # Add graph memory stats if available
             if stats.get("has_graph") and stats.get("graph_relationships", 0) > 0:
-                response += f"\n\n🕸️ **Knowledge Graph:**\n"
+                response += "\n\n🕸️ **Knowledge Graph:**\n"
                 response += f"• {stats['graph_entities']} entities\n"
                 response += f"• {stats['graph_relationships']} relationships\n"
                 response += "_Use `/graph` to explore connections_"
@@ -688,7 +688,7 @@ async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     chat_id = str(update.effective_chat.id)
-    
+
     # Check if graph is available
     if not bot_memory.has_graph:
         await update.message.reply_text(
@@ -697,18 +697,20 @@ async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "See the documentation for setup instructions."
         )
         return
-    
+
     # Get entity from command arguments if provided
     text = update.message.text.replace("/graph", "").strip()
-    
+
     try:
         if text:
             # Query specific entity
-            relationships = await bot_memory.get_graph_relationships(chat_id, entity=text)
-            
+            relationships = await bot_memory.get_graph_relationships(
+                chat_id, entity=text
+            )
+
             if relationships:
                 response = f"🕸️ **Connections for '{text}':**\n\n"
-                
+
                 for rel in relationships[:10]:  # Limit to 10
                     if isinstance(rel, dict):
                         source = rel.get("source", "?")
@@ -717,19 +719,19 @@ async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         response += f"• {source} → _{relation}_ → {target}\n"
                     else:
                         response += f"• {rel}\n"
-                        
+
                 if len(relationships) > 10:
                     response += f"\n_...and {len(relationships) - 10} more connections_"
             else:
                 response = f"No connections found for '{text}'"
-                
+
         else:
             # Show all relationships
             relationships = await bot_memory.get_graph_relationships(chat_id)
-            
+
             if relationships:
                 response = "🕸️ **Your Knowledge Graph:**\n\n"
-                
+
                 # Group by entity
                 entity_map = {}
                 for rel in relationships:
@@ -739,7 +741,7 @@ async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                             entity_map[source] = []
                         if source:
                             entity_map[source].append(rel)
-                
+
                 # Show top entities
                 for entity, rels in list(entity_map.items())[:5]:
                     response += f"**{entity}:**\n"
@@ -750,10 +752,10 @@ async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     if len(rels) > 3:
                         response += f"  _...and {len(rels) - 3} more_\n"
                     response += "\n"
-                    
+
                 if len(entity_map) > 5:
                     response += f"_...and {len(entity_map) - 5} more entities_\n\n"
-                    
+
                 response += "💡 Use `/graph [entity]` to explore specific connections"
             else:
                 response = (
@@ -761,9 +763,11 @@ async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     "As we chat, I'll build a graph of entities and their relationships.\n"
                     "The more we interact, the richer your knowledge graph becomes!"
                 )
-        
+
         await update.message.reply_text(response, parse_mode="Markdown")
-        
+
     except Exception as e:
         logger.error(f"Error exploring graph: {e}")
-        await update.message.reply_text("❌ Sorry, I couldn't explore the knowledge graph.")
+        await update.message.reply_text(
+            "❌ Sorry, I couldn't explore the knowledge graph."
+        )
