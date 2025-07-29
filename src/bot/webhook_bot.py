@@ -48,6 +48,7 @@ from bot.handlers import (
     correct_command,
     memories_command,
     forget_command,
+    graph_command,
 )
 
 # Set up logging
@@ -100,6 +101,7 @@ class WebhookTelegramBot:
         self.application.add_handler(CommandHandler("correct", correct_command))
         self.application.add_handler(CommandHandler("memories", memories_command))
         self.application.add_handler(CommandHandler("forget", forget_command))
+        self.application.add_handler(CommandHandler("graph", graph_command))
 
         # Message handlers
         self.application.add_handler(

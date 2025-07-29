@@ -4,8 +4,9 @@ Enables the bot to remember user preferences, learn from corrections, and provid
 personalized responses based on past interactions.
 """
 
+import os
 import logging
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 from mem0 import Memory
 from dotenv import load_dotenv
 
@@ -19,22 +20,57 @@ class BotMemory:
     """Manages bot memory using mem0 for intelligent, persistent storage."""
 
     def __init__(self):
-        """Initialize mem0 memory with Upstash Vector backend."""
+        """Initialize mem0 memory with Vector and optional Graph backend."""
         try:
-            # For now, use local memory as POC
-            # TODO: Configure with Upstash Vector when mem0 supports it
-            # config = {
-            #     "vector_store": {
-            #         "provider": "qdrant",  # mem0 uses qdrant protocol
-            #         "config": {
-            #             "collection_name": "10netzero_memory",
-            #             "embedding_model": "text-embedding-3-small",
-            #             "api_key": os.getenv("OPENAI_API_KEY"),
-            #         },
-            #     },
-            #     "version": "v1.1",
-            # }
-            self.memory = Memory()
+            config = {
+                "version": "v1.1"
+            }
+            
+            # Configure LLM (required for mem0's intelligent extraction)
+            if os.getenv("OPENAI_API_KEY"):
+                config["llm"] = {
+                    "provider": "openai",
+                    "config": {
+                        "model": "gpt-4o-mini",
+                        "api_key": os.getenv("OPENAI_API_KEY")
+                    }
+                }
+            
+            # Configure Vector Store
+            if os.getenv("UPSTASH_VECTOR_REST_URL") and os.getenv("UPSTASH_VECTOR_REST_TOKEN"):
+                # Use Upstash Vector for production
+                config["vector_store"] = {
+                    "provider": "upstash",
+                    "config": {
+                        "url": os.getenv("UPSTASH_VECTOR_REST_URL"),
+                        "token": os.getenv("UPSTASH_VECTOR_REST_TOKEN"),
+                    }
+                }
+                logger.info("Using Upstash Vector for mem0 backend")
+            
+            # Configure Graph Store (optional - for relationship mapping)
+            if os.getenv("NEO4J_URL") and os.getenv("NEO4J_PASSWORD"):
+                config["graph_store"] = {
+                    "provider": "neo4j",
+                    "config": {
+                        "url": os.getenv("NEO4J_URL", "bolt://localhost:7687"),
+                        "username": os.getenv("NEO4J_USERNAME", "neo4j"),
+                        "password": os.getenv("NEO4J_PASSWORD")
+                    }
+                }
+                logger.info("Using Neo4j for graph memory backend")
+                self.has_graph = True
+            else:
+                self.has_graph = False
+                
+            # Initialize mem0 with config
+            if "vector_store" in config or "graph_store" in config:
+                self.memory = Memory.from_config(config)
+                logger.info("BotMemory initialized with custom configuration")
+            else:
+                # Fallback to local memory for development
+                self.memory = Memory()
+                logger.info("Using local memory for mem0 (no backend credentials found)")
 
             logger.info("BotMemory initialized successfully")
 
@@ -42,6 +78,7 @@ class BotMemory:
             logger.error(f"Failed to initialize BotMemory: {e}")
             # Fallback to basic memory if mem0 fails
             self.memory = None
+            self.has_graph = False
 
     async def remember_from_conversation(
         self, messages: List[Dict], user_id: str
@@ -267,6 +304,91 @@ class BotMemory:
             )
 
         return entities
+
+    async def get_graph_relationships(
+        self, user_id: str, entity: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """Retrieve relationship data from graph memory.
+        
+        Args:
+            user_id: Unique identifier for the user
+            entity: Optional specific entity to get relationships for
+            
+        Returns:
+            List of relationships from the graph
+        """
+        if not self.memory or not self.has_graph:
+            return []
+            
+        try:
+            # Access graph store if available
+            if hasattr(self.memory, 'graph') and self.memory.graph:
+                if entity:
+                    # Query specific entity relationships
+                    query = f"What is related to {entity}?"
+                else:
+                    # Get all user relationships
+                    query = "What are all the relationships for this user?"
+                    
+                results = self.memory.graph.search(
+                    query=query,
+                    filters={"user_id": user_id}
+                )
+                
+                logger.info(f"Retrieved {len(results)} graph relationships for user {user_id}")
+                return results
+            else:
+                logger.warning("Graph store not available despite has_graph=True")
+                return []
+                
+        except Exception as e:
+            logger.error(f"Error retrieving graph relationships: {e}")
+            return []
+    
+    async def get_memory_stats(self, user_id: str) -> Dict[str, Any]:
+        """Get statistics about stored memories.
+        
+        Args:
+            user_id: Unique identifier for the user
+            
+        Returns:
+            Dictionary with memory statistics
+        """
+        stats = {
+            "total_memories": 0,
+            "memory_types": {},
+            "has_graph": self.has_graph,
+            "graph_entities": 0,
+            "graph_relationships": 0
+        }
+        
+        try:
+            # Get all memories
+            memories = await self.get_all_memories(user_id)
+            stats["total_memories"] = len(memories)
+            
+            # Count by type
+            for mem in memories:
+                mem_type = mem.get("metadata", {}).get("type", "other")
+                stats["memory_types"][mem_type] = stats["memory_types"].get(mem_type, 0) + 1
+            
+            # Get graph stats if available
+            if self.has_graph:
+                relationships = await self.get_graph_relationships(user_id)
+                stats["graph_relationships"] = len(relationships)
+                
+                # Count unique entities
+                entities = set()
+                for rel in relationships:
+                    if isinstance(rel, dict):
+                        entities.add(rel.get("source", ""))
+                        entities.add(rel.get("target", ""))
+                stats["graph_entities"] = len(entities) - 1  # Subtract empty string
+                
+        except Exception as e:
+            logger.error(f"Error getting memory stats: {e}")
+            
+        return stats
 
 
 # Global instance
