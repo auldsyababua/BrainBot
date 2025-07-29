@@ -159,28 +159,31 @@ class WebhookTelegramBot:
         @app.post("/webhook")
         async def process_update(request: Request):
             """Handle incoming Telegram updates via webhook."""
+            logger.info("🔄 Webhook endpoint called")
             try:
+                logger.info("📋 Getting JSON from request")
                 req = await request.json()
                 logger.info(
                     f"📥 Received webhook update: {req.get('message', {}).get('text', 'Non-text update')}"
                 )
-                logger.debug(f"Full update data: {req}")
-
+                
+                logger.info("🔧 Creating Update object from JSON")
                 # Create Update object
                 update = Update.de_json(req, self.application.bot)
                 if not update:
-                    logger.error("Failed to deserialize update")
+                    logger.error("❌ Failed to deserialize update")
                     return Response(status_code=HTTPStatus.BAD_REQUEST)
 
-                logger.info(f"Processing update ID: {update.update_id}")
+                logger.info(f"🎯 Processing update ID: {update.update_id}")
 
                 # Process the update
+                logger.info("⚡ Calling application.process_update")
                 await self.application.process_update(update)
 
                 logger.info("✅ Update processed successfully")
                 return Response(status_code=HTTPStatus.OK)
             except Exception as e:
-                logger.error(f"Error processing webhook: {e}", exc_info=True)
+                logger.error(f"💥 Error processing webhook: {e}", exc_info=True)
                 return Response(status_code=HTTPStatus.INTERNAL_SERVER_ERROR)
 
         return app
