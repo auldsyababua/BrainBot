@@ -105,11 +105,11 @@ DEVLOG.md
 archive/
 
 # Temporary directories
-temp_migration/
 workers/
 
-# Company-specific data
-10nz_kb/
+# QuickBooks sensitive data
+.quickbooks_token.json
+quickbooks_tokens/
 
 # Cache and build directories
 .ruff_cache/
