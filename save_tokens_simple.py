@@ -51,7 +51,7 @@ except Exception as e:
     print(f"Error with companies table: {e}")
     company_id = "placeholder-company-id"
 
-print(f"\n🎉 QuickBooks connection ready!")
+print("\n🎉 QuickBooks connection ready!")
 print(f"Company ID: {company_id}")
 print(f"Realm ID: {REALM_ID}")
 print("\nYou can now test the connection with:")

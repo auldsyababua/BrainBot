@@ -27,6 +27,7 @@ from core.version import VERSION, LATEST_CHANGES
 from core.auth import is_user_authorized
 from storage.redis_store import redis_store
 from core.chunking import chunk_markdown_document
+from core.memory import bot_memory
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -124,7 +125,12 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• /start - Welcome message\n"
         "• /help - Show this help\n"
         "• /reset - Start a new conversation\n"
-        "• /continue - Restore previous conversation"
+        "• /continue - Restore previous conversation\n\n"
+        "**🧠 Memory Commands:**\n"
+        "• /remember [fact] - Tell me something to remember\n"
+        "• /correct [wrong -> right] - Teach me corrections\n"
+        "• /memories - See what I remember about you\n"
+        "• /forget - Clear all your memories"
     )
     await update.message.reply_text(help_message, parse_mode="Markdown")
 
@@ -516,3 +522,150 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Please try again or contact the administrator if the problem persists."
         )
         await update.message.reply_text(error_message)
+
+
+# Memory-related command handlers
+async def remember_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle /remember command to explicitly store facts about the user."""
+    if not await check_authorization(update):
+        return
+
+    chat_id = str(update.effective_chat.id)
+    text = update.message.text.replace("/remember", "").strip()
+
+    if text:
+        try:
+            await bot_memory.store_preference(chat_id, text, category="user_fact")
+            await update.message.reply_text(
+                f"✅ I'll remember that!\n\n" f"📝 Stored: _{text}_",
+                parse_mode="Markdown",
+            )
+        except Exception as e:
+            logger.error(f"Error storing memory: {e}")
+            await update.message.reply_text("❌ Sorry, I couldn't store that memory.")
+    else:
+        await update.message.reply_text(
+            "Please tell me what to remember!\n\n"
+            "Usage: `/remember I prefer morning reports`"
+        )
+
+
+async def correct_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle /correct command for teaching the bot corrections."""
+    if not await check_authorization(update):
+        return
+
+    chat_id = str(update.effective_chat.id)
+    text = update.message.text.replace("/correct", "").strip()
+
+    if "->" in text:
+        try:
+            original, corrected = text.split("->", 1)
+            await bot_memory.store_correction(
+                chat_id, original.strip(), corrected.strip()
+            )
+            await update.message.reply_text(
+                "📝 Thanks for the correction! I'll learn from this.\n\n"
+                f"❌ Wrong: _{original.strip()}_\n"
+                f"✅ Right: _{corrected.strip()}_",
+                parse_mode="Markdown",
+            )
+        except Exception as e:
+            logger.error(f"Error storing correction: {e}")
+            await update.message.reply_text(
+                "❌ Sorry, I couldn't store that correction."
+            )
+    else:
+        await update.message.reply_text(
+            "Please provide a correction in the format:\n\n"
+            "`/correct wrong answer -> correct answer`\n\n"
+            "Example: `/correct pump at site A -> pump at Eagle Lake`",
+            parse_mode="Markdown",
+        )
+
+
+async def memories_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Show user what the bot remembers about them."""
+    if not await check_authorization(update):
+        return
+
+    chat_id = str(update.effective_chat.id)
+
+    try:
+        # Get all user memories
+        memories = await bot_memory.get_all_memories(chat_id)
+
+        if memories:
+            response = "🧠 **Here's what I remember about you:**\n\n"
+
+            # Group memories by type
+            preferences = []
+            corrections = []
+            other = []
+
+            for mem in memories[:20]:  # Limit to 20 to avoid too long message
+                memory_text = mem.get("memory", "")
+                metadata = mem.get("metadata", {})
+                mem_type = metadata.get("type", "other")
+
+                if mem_type == "preference":
+                    preferences.append(memory_text)
+                elif mem_type == "correction":
+                    corrections.append(
+                        f"{metadata.get('original', '')} → {metadata.get('corrected', '')}"
+                    )
+                else:
+                    other.append(memory_text)
+
+            if preferences:
+                response += "📌 **Your Preferences:**\n"
+                for pref in preferences:
+                    response += f"• {pref}\n"
+                response += "\n"
+
+            if corrections:
+                response += "✏️ **Corrections I've Learned:**\n"
+                for corr in corrections:
+                    response += f"• {corr}\n"
+                response += "\n"
+
+            if other:
+                response += "💭 **Other Memories:**\n"
+                for mem in other:
+                    response += f"• {mem}\n"
+
+            if len(memories) > 20:
+                response += f"\n_...and {len(memories) - 20} more memories_"
+
+            response += "\n\nUse `/forget` to clear all memories."
+
+        else:
+            response = (
+                "🧠 I don't have any memories about you yet!\n\n"
+                "As we chat, I'll learn about your preferences and needs.\n"
+                "You can also use `/remember` to tell me specific things to remember."
+            )
+
+        await update.message.reply_text(response, parse_mode="Markdown")
+
+    except Exception as e:
+        logger.error(f"Error retrieving memories: {e}")
+        await update.message.reply_text("❌ Sorry, I couldn't retrieve your memories.")
+
+
+async def forget_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle /forget command to clear user memories."""
+    if not await check_authorization(update):
+        return
+
+    chat_id = str(update.effective_chat.id)
+
+    try:
+        await bot_memory.forget_memories(chat_id)
+        await update.message.reply_text(
+            "🧹 I've forgotten everything I knew about you.\n\n"
+            "Your memories have been cleared. We can start fresh!"
+        )
+    except Exception as e:
+        logger.error(f"Error forgetting memories: {e}")
+        await update.message.reply_text("❌ Sorry, I couldn't clear your memories.")

@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Save QuickBooks connection to Supabase directly"""
 
-import json
-from datetime import datetime, timedelta
 from supabase import create_client
 import os
 from dotenv import load_dotenv
@@ -47,6 +45,6 @@ print(f"Realm ID: {REALM_ID}")
 print("\nTo complete the connection, you'll need to provide fresh OAuth tokens.")
 print("The tokens from your previous OAuth flow have expired.")
 print("\nRun this to get new tokens:")
-print(f"python quickbooks_connect.py")
+print("python quickbooks_connect.py")
 print("\nThen once you get the code and realm ID:")
 print(f"python quickbooks_auth.py YOUR_NEW_CODE {REALM_ID}")

@@ -1,6 +1,5 @@
 import pandas as pd
 import os
-import json
 
 # Define the directories
 transactions_dir = "transactions"
@@ -14,7 +13,7 @@ def analyze_journal():
         os.path.join(transactions_dir, "Journal.xlsx"), sheet_name="Journal", skiprows=3
     )
     print(f"Shape: {df.shape}")
-    print(f"\nActual data sample (after skipping header rows):")
+    print("\nActual data sample (after skipping header rows):")
     print(df.head(5).to_string())
     return df
 
@@ -27,7 +26,7 @@ def analyze_general_ledger():
         skiprows=3,
     )
     print(f"Shape: {df.shape}")
-    print(f"\nActual data sample (after skipping header rows):")
+    print("\nActual data sample (after skipping header rows):")
     print(df.head(5).to_string())
     return df
 
@@ -40,7 +39,7 @@ def analyze_customers():
         skiprows=3,
     )
     print(f"Shape: {df.shape}")
-    print(f"\nActual data sample (after skipping header rows):")
+    print("\nActual data sample (after skipping header rows):")
     print(df.head(5).to_string())
     return df
 
@@ -53,7 +52,7 @@ def analyze_vendors():
         skiprows=3,
     )
     print(f"Shape: {df.shape}")
-    print(f"\nActual data sample (after skipping header rows):")
+    print("\nActual data sample (after skipping header rows):")
     print(df.head(5).to_string())
     return df
 
@@ -66,7 +65,7 @@ def analyze_employees():
         skiprows=3,
     )
     print(f"Shape: {df.shape}")
-    print(f"\nActual data sample (after skipping header rows):")
+    print("\nActual data sample (after skipping header rows):")
     print(df.head(5).to_string())
     return df
 
@@ -79,7 +78,7 @@ def analyze_trial_balance():
         skiprows=3,
     )
     print(f"Shape: {df.shape}")
-    print(f"\nActual data sample (after skipping header rows):")
+    print("\nActual data sample (after skipping header rows):")
     print(df.head(5).to_string())
     return df
 
@@ -92,7 +91,7 @@ def analyze_balance_sheet():
         skiprows=3,
     )
     print(f"Shape: {df.shape}")
-    print(f"\nActual data sample (after skipping header rows):")
+    print("\nActual data sample (after skipping header rows):")
     print(df.head(5).to_string())
     return df
 
@@ -105,7 +104,7 @@ def analyze_profit_loss():
         skiprows=3,
     )
     print(f"Shape: {df.shape}")
-    print(f"\nActual data sample (after skipping header rows):")
+    print("\nActual data sample (after skipping header rows):")
     print(df.head(5).to_string())
     return df
 

@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 # Read the journal file
 journal_df = pd.read_excel("transactions/Journal.xlsx", header=None)

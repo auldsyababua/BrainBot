@@ -78,9 +78,9 @@ supabase.table("quickbooks_auth").update({"is_active": False}).eq(
 
 # Insert new auth
 result = supabase.table("quickbooks_auth").insert(auth_data).execute()
-print(f"✅ Saved auth tokens to Supabase")
+print("✅ Saved auth tokens to Supabase")
 
-print(f"\n🎉 QuickBooks connection complete!")
+print("\n🎉 QuickBooks connection complete!")
 print(f"Company ID: {company_id}")
 print(f"Realm ID: {REALM_ID}")
 print("\nYou can now test the connection with:")

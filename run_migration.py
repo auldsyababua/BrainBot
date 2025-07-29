@@ -28,7 +28,6 @@ for i, statement in enumerate(statements):
             print(f"Executing statement {i+1}/{len(statements)}...")
             # Use the SQL editor endpoint directly
             from supabase._async.client import create_client as create_async_client
-            import asyncio
 
             async def run_sql():
                 async_supabase = create_async_client(

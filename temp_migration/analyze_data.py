@@ -1,6 +1,5 @@
 import pandas as pd
 import os
-import json
 
 # Define the directories
 transactions_dir = "transactions"
@@ -25,18 +24,18 @@ def analyze_excel_file(filepath, label):
             print(f"\nColumns: {list(df.columns)}")
 
             # Show data types
-            print(f"\nData Types:")
+            print("\nData Types:")
             for col in df.columns:
                 print(f"  - {col}: {df[col].dtype}")
 
             # Show first few rows
-            print(f"\nFirst 3 rows:")
+            print("\nFirst 3 rows:")
             print(df.head(3).to_string())
 
             # Check for nulls
             null_counts = df.isnull().sum()
             if null_counts.any():
-                print(f"\nNull values:")
+                print("\nNull values:")
                 for col, count in null_counts[null_counts > 0].items():
                     print(f"  - {col}: {count} nulls")
 

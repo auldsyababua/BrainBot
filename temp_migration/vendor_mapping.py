@@ -357,7 +357,7 @@ def print_categorization_report():
         print(f"  ❓ {vendor_name}")
 
     total_operational = len([v for v in df["vendor_name"] if v in operational_vendors])
-    print(f"\n📊 SUMMARY:")
+    print("\n📊 SUMMARY:")
     print(f"  Operational vendors to import: {total_operational}")
     print(
         f"  Service vendors (optional): {len([v for v in df['vendor_name'] if v in service_vendors])}"

@@ -1,7 +1,4 @@
 import pandas as pd
-import json
-import uuid
-from datetime import datetime
 import re
 
 # Company ID from the created record

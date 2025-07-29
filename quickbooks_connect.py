@@ -2,7 +2,6 @@
 """QuickBooks Connection Helper"""
 
 import webbrowser
-import sys
 from src.quickbooks.quickbooks_api import QuickBooksAPI
 
 # Create API instance

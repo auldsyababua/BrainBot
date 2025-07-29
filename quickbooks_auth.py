@@ -15,7 +15,7 @@ if len(sys.argv) != 3:
 code = sys.argv[1]
 realm_id = sys.argv[2]
 
-print(f"\nAuthenticating with:")
+print("\nAuthenticating with:")
 print(f"Code: {code[:20]}...")
 print(f"Company ID (realmId): {realm_id}")
 print()

@@ -1,5 +1,3 @@
-import subprocess
-import json
 import time
 
 # Files to execute in order
@@ -32,7 +30,7 @@ for sql_file in SQL_FILES:
         f.write(sql_content)
 
     print(f"  File contains {len(sql_content)} characters")
-    print(f"  Executing...")
+    print("  Executing...")
 
     # Simulate execution - in real scenario, this would call the Supabase MCP
     time.sleep(0.5)  # Small delay to avoid rate limiting

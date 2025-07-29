@@ -4,9 +4,6 @@ Execute all remaining journal entry batches to Supabase
 """
 
 import os
-import requests
-import json
-from datetime import datetime
 
 # Supabase credentials
 SUPABASE_PROJECT_ID = "thnwlykidzhrsagyjncc"

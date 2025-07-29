@@ -1,6 +1,4 @@
 import os
-import subprocess
-import json
 
 PROJECT_ID = "thnwlykidzhrsagyjncc"
 
@@ -62,8 +60,8 @@ for sql_file in SQL_FILES:
     else:
         print(f"\nFile not found: {sql_file}")
 
-print(f"\n" + "=" * 60)
-print(f"MIGRATION COMPLETE")
+print("\n" + "=" * 60)
+print("MIGRATION COMPLETE")
 print(f"Total statements executed: {total_success}")
 print(f"Total errors: {total_errors}")
 

@@ -595,7 +595,7 @@ async def connect_quickbooks(company_id: str):
         data = response.json()
         auth_url = data["auth_url"]
 
-    console.print(f"\n[bold]QuickBooks Authorization[/bold]")
+    console.print("\n[bold]QuickBooks Authorization[/bold]")
     console.print(f"\nOpening browser to: [blue]{auth_url}[/blue]")
     console.print(
         "\n[yellow]Please authorize the application and complete the connection.[/yellow]"
