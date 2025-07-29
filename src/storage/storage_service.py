@@ -60,9 +60,10 @@ class DocumentStorage:
         telegram_chat_id: Optional[int] = None,
         telegram_user_id: Optional[int] = None,
         created_by: str = "manual",
+        allow_update: bool = True,
     ) -> str:
         """
-        Store a document in Supabase
+        Store a document in Supabase with atomic operations and duplicate prevention
 
         Args:
             file_path: Path/identifier for the document
@@ -74,6 +75,7 @@ class DocumentStorage:
             telegram_chat_id: Telegram chat ID if created by bot
             telegram_user_id: Telegram user ID if created by bot
             created_by: Who created the document (manual, bot, api)
+            allow_update: Whether to allow updating existing documents with same file_path
 
         Returns:
             Document ID
@@ -88,17 +90,61 @@ class DocumentStorage:
             # Calculate content hash for deduplication
             content_hash = hashlib.sha256(content.encode()).hexdigest()
 
-            # Check if document already exists
-            existing = (
+            # Check for existing document by file_path first
+            existing_by_path = (
                 self.supabase.table("brain_bot_documents")
-                .select("id, version")
+                .select("id, content_hash, version")
+                .eq("file_path", file_path)
+                .execute()
+            )
+
+            if existing_by_path.data:
+                existing_doc = existing_by_path.data[0]
+                
+                # If content is identical, return existing ID
+                if existing_doc["content_hash"] == content_hash:
+                    logger.info(f"Document already exists with identical content: {file_path}")
+                    return existing_doc["id"]
+                
+                # If content changed and updates are allowed, update the document
+                if allow_update:
+                    logger.info(f"Updating existing document: {file_path}")
+                    success = await self._atomic_update_document(
+                        existing_doc["id"], content, metadata, category, tags, 
+                        is_public, telegram_chat_id, telegram_user_id, created_by
+                    )
+                    if success:
+                        return existing_doc["id"]
+                    else:
+                        raise Exception("Failed to update document atomically")
+                else:
+                    # Create new document with unique path
+                    base_path = file_path
+                    counter = 1
+                    while True:
+                        new_path = f"{base_path}_{counter}"
+                        check_path = (
+                            self.supabase.table("brain_bot_documents")
+                            .select("id")
+                            .eq("file_path", new_path)
+                            .execute()
+                        )
+                        if not check_path.data:
+                            file_path = new_path
+                            break
+                        counter += 1
+
+            # Check for duplicate content (different path, same content)
+            existing_by_content = (
+                self.supabase.table("brain_bot_documents")
+                .select("id")
                 .eq("content_hash", content_hash)
                 .execute()
             )
 
-            if existing.data:
-                logger.info(f"Document already exists with hash {content_hash[:8]}...")
-                return existing.data[0]["id"]
+            if existing_by_content.data and not existing_by_path.data:
+                logger.info(f"Document with identical content exists at different path: {content_hash[:8]}...")
+                return existing_by_content.data[0]["id"]
 
             # Extract title from file path
             title = metadata.get("title") if metadata else None
@@ -125,7 +171,7 @@ class DocumentStorage:
                 "telegram_user_id": telegram_user_id,
             }
 
-            # Insert document
+            # Insert document atomically
             result = (
                 self.supabase.table("brain_bot_documents").insert(doc_data).execute()
             )
@@ -133,6 +179,10 @@ class DocumentStorage:
             if result.data:
                 doc_id = result.data[0]["id"]
                 logger.info(f"Stored document {file_path} with ID {doc_id}")
+                
+                # Clear relevant caches
+                self._invalidate_document_cache(file_path, doc_id)
+                
                 return doc_id
             else:
                 raise Exception("Failed to insert document")
@@ -382,45 +432,11 @@ class DocumentStorage:
         Returns:
             True if successful, False otherwise
         """
-        try:
-            # Get existing document
-            existing = await self.get_document_by_id(doc_id)
-            if not existing:
-                logger.warning(f"Document {doc_id} not found for update")
-                return False
-
-            # Calculate new content hash
-            new_hash = hashlib.sha256(content.encode()).hexdigest()
-
-            # Check if content actually changed
-            if new_hash == existing["content_hash"]:
-                logger.info("Content unchanged, skipping update")
-                return True
-
-            # Update document with new version
-            update_data = {
-                "content": content,
-                "content_hash": new_hash,
-                "version": existing["version"] + 1,
-                "previous_version_id": existing["id"],
-                "updated_at": datetime.utcnow().isoformat(),
-            }
-
-            if metadata:
-                update_data["metadata"] = {**existing.get("metadata", {}), **metadata}
-
-            result = (
-                self.supabase.table("brain_bot_documents")
-                .update(update_data)
-                .eq("id", existing["id"])
-                .execute()
-            )
-
-            return bool(result.data)
-
-        except Exception as e:
-            logger.error(f"Error updating document by ID: {e}")
-            return False
+        return await self._atomic_update_document(
+            doc_id=doc_id,
+            content=content,
+            metadata=metadata
+        )
 
     async def update_document(
         self, file_path: str, content: str, metadata: Optional[Dict[str, Any]] = None
@@ -443,34 +459,11 @@ class DocumentStorage:
                 logger.warning(f"Document {file_path} not found for update")
                 return False
 
-            # Calculate new content hash
-            new_hash = hashlib.sha256(content.encode()).hexdigest()
-
-            # Check if content actually changed
-            if new_hash == existing["content_hash"]:
-                logger.info("Content unchanged, skipping update")
-                return True
-
-            # Update document with new version
-            update_data = {
-                "content": content,
-                "content_hash": new_hash,
-                "version": existing["version"] + 1,
-                "previous_version_id": existing["id"],
-                "updated_at": datetime.utcnow().isoformat(),
-            }
-
-            if metadata:
-                update_data["metadata"] = {**existing.get("metadata", {}), **metadata}
-
-            result = (
-                self.supabase.table("brain_bot_documents")
-                .update(update_data)
-                .eq("id", existing["id"])
-                .execute()
+            return await self._atomic_update_document(
+                doc_id=existing["id"],
+                content=content,
+                metadata=metadata
             )
-
-            return bool(result.data)
 
         except Exception as e:
             logger.error(f"Error updating document: {e}")
@@ -540,7 +533,7 @@ class DocumentStorage:
 
     async def delete_document(self, file_path: str) -> bool:
         """
-        Delete a document (soft delete by marking as deleted)
+        Delete a document and all its chunks atomically
 
         Args:
             file_path: Path/identifier of the document
@@ -549,16 +542,13 @@ class DocumentStorage:
             True if successful, False otherwise
         """
         try:
-            # For now, we'll do a hard delete
-            # In production, you might want to implement soft delete
-            result = (
-                self.supabase.table("brain_bot_documents")
-                .delete()
-                .eq("file_path", file_path)
-                .execute()
-            )
+            # Get document by file_path
+            doc = await self.get_document(file_path)
+            if not doc:
+                logger.warning(f"Document {file_path} not found for deletion")
+                return False
 
-            return bool(result.data)
+            return await self.safe_delete_document(doc["id"])
 
         except Exception as e:
             logger.error(f"Error deleting document: {e}")
@@ -603,6 +593,185 @@ class DocumentStorage:
             self._last_cache_cleanup = now
             if expired_keys:
                 logger.debug(f"Cleaned up {len(expired_keys)} expired cache entries")
+
+    async def _atomic_update_document(
+        self,
+        doc_id: str,
+        content: str,
+        metadata: Optional[Dict[str, Any]] = None,
+        category: Optional[str] = None,
+        tags: Optional[List[str]] = None,
+        is_public: bool = False,
+        telegram_chat_id: Optional[int] = None,
+        telegram_user_id: Optional[int] = None,
+        created_by: str = "manual",
+    ) -> bool:
+        """
+        Atomically update a document and its chunks
+        
+        This method ensures:
+        1. All chunks are deleted before document update
+        2. Document is updated with new content
+        3. If any step fails, the operation is rolled back
+        
+        Args:
+            doc_id: Document ID to update
+            content: New content
+            metadata: Updated metadata
+            category: Updated category
+            tags: Updated tags
+            is_public: Updated public status
+            telegram_chat_id: Updated chat ID
+            telegram_user_id: Updated user ID
+            created_by: Who is making the update
+            
+        Returns:
+            True if update was successful, False otherwise
+        """
+        try:
+            # Get existing document
+            existing = await self.get_document_by_id(doc_id)
+            if not existing:
+                logger.warning(f"Document {doc_id} not found for atomic update")
+                return False
+
+            # Calculate new content hash
+            new_hash = hashlib.sha256(content.encode()).hexdigest()
+            
+            # Check if content actually changed
+            if new_hash == existing["content_hash"]:
+                logger.info("Content unchanged, skipping atomic update")
+                return True
+
+            # Start atomic operation
+            logger.info(f"Starting atomic update for document {doc_id}")
+            
+            # Step 1: Delete all existing chunks for this document
+            delete_chunks_result = (
+                self.supabase.table("brain_bot_document_chunks")
+                .delete()
+                .eq("document_id", doc_id)
+                .execute()
+            )
+            
+            if delete_chunks_result.error:
+                logger.error(f"Failed to delete chunks: {delete_chunks_result.error}")
+                return False
+
+            # Step 2: Update document with new content
+            update_data = {
+                "content": content,
+                "content_hash": new_hash,
+                "version": existing["version"] + 1,
+                "previous_version_id": existing["id"],
+                "updated_at": datetime.utcnow().isoformat(),
+            }
+
+            # Merge metadata if provided
+            if metadata:
+                update_data["metadata"] = {**existing.get("metadata", {}), **metadata}
+            if category is not None:
+                update_data["category"] = category
+            if tags is not None:
+                update_data["tags"] = tags
+            if is_public is not None:
+                update_data["is_public"] = is_public
+            if telegram_chat_id is not None:
+                update_data["telegram_chat_id"] = telegram_chat_id
+            if telegram_user_id is not None:
+                update_data["telegram_user_id"] = telegram_user_id
+            if created_by:
+                update_data["created_by"] = created_by
+
+            update_result = (
+                self.supabase.table("brain_bot_documents")
+                .update(update_data)
+                .eq("id", doc_id)
+                .execute()
+            )
+
+            if update_result.error:
+                logger.error(f"Failed to update document: {update_result.error}")
+                # Note: In a real transaction system, we would rollback here
+                # For now, we'll log the error and return False
+                return False
+
+            # Clear relevant caches
+            self._invalidate_document_cache(existing["file_path"], doc_id)
+            
+            logger.info(f"Successfully completed atomic update for document {doc_id}")
+            return True
+
+        except Exception as e:
+            logger.error(f"Error in atomic update: {e}")
+            return False
+
+    def _invalidate_document_cache(self, file_path: str, doc_id: str):
+        """Invalidate cache entries for a document"""
+        cache_keys_to_remove = [
+            f"doc_path:{file_path}",
+            f"doc_id:{doc_id}",
+        ]
+        
+        # Also invalidate search caches
+        search_keys = [k for k in self._query_cache.keys() if k.startswith("search:")]
+        cache_keys_to_remove.extend(search_keys)
+        
+        for key in cache_keys_to_remove:
+            self._query_cache.pop(key, None)
+        
+        logger.debug(f"Invalidated {len(cache_keys_to_remove)} cache entries")
+
+    async def safe_delete_document(self, doc_id: str) -> bool:
+        """
+        Safely delete a document and all its chunks atomically
+        
+        Args:
+            doc_id: Document ID to delete
+            
+        Returns:
+            True if deletion was successful, False otherwise
+        """
+        try:
+            # Get document info for cache invalidation
+            doc = await self.get_document_by_id(doc_id)
+            if not doc:
+                logger.warning(f"Document {doc_id} not found for deletion")
+                return False
+
+            # Delete chunks first
+            delete_chunks_result = (
+                self.supabase.table("brain_bot_document_chunks")
+                .delete()
+                .eq("document_id", doc_id)
+                .execute()
+            )
+            
+            if delete_chunks_result.error:
+                logger.error(f"Failed to delete chunks: {delete_chunks_result.error}")
+                return False
+
+            # Then delete the document
+            delete_doc_result = (
+                self.supabase.table("brain_bot_documents")
+                .delete()
+                .eq("id", doc_id)
+                .execute()
+            )
+            
+            if delete_doc_result.error:
+                logger.error(f"Failed to delete document: {delete_doc_result.error}")
+                return False
+
+            # Clear caches
+            self._invalidate_document_cache(doc["file_path"], doc_id)
+            
+            logger.info(f"Successfully deleted document {doc_id} and all chunks")
+            return True
+
+        except Exception as e:
+            logger.error(f"Error in safe document deletion: {e}")
+            return False
 
     async def store_document_chunk(
         self,

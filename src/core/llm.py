@@ -7,7 +7,7 @@ from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime
 from openai import OpenAI
 
-from src.core.config import (
+from core.config import (
     OPENAI_API_KEY,
     GPT_MODEL,
     MAX_TOKENS,
@@ -19,12 +19,12 @@ from src.core.config import (
 
 # Legacy tools.py imports removed - production only uses Supabase + Vector
 # from src.core.tools import (...) - REMOVED
-from src.storage.redis_store import redis_store
-from src.storage.vector_store import vector_store
-from src.core.api_client import get_resilient_client, RetryConfig
-from src.core.benchmarks import get_performance_monitor, async_benchmark
-from src.core.chunking import chunk_markdown_document
-from src.core.memory import bot_memory
+from storage.redis_store import redis_store
+from storage.vector_store import vector_store
+from core.api_client import get_resilient_client, RetryConfig
+from core.benchmarks import get_performance_monitor, async_benchmark
+from core.chunking import chunk_markdown_document
+from core.memory import bot_memory
 
 # Initialize resilient OpenAI client with custom retry config
 retry_config = RetryConfig(
@@ -324,7 +324,7 @@ async def search_knowledge_base(
         logger.error(f"Vector search error for query '{query}': {e}")
         # Fallback to Supabase search if vector search fails
         try:
-            from src.storage.storage_service import document_storage
+            from storage.storage_service import document_storage
 
             if document_storage:
                 supabase_results = await document_storage.search_documents(query)
@@ -592,7 +592,7 @@ async def resolve_document_reference(
     # Check if it's a UUID (Supabase document ID)
     if is_uuid(reference):
         logger.info(f"Detected Supabase document ID: {reference}")
-        from src.storage.storage_service import document_storage
+        from storage.storage_service import document_storage
 
         if document_storage:
             try:
@@ -614,7 +614,7 @@ async def resolve_document_reference(
     else:
         # It might be a title - search for it in Supabase
         try:
-            from src.storage.storage_service import document_storage
+            from storage.storage_service import document_storage
 
             if document_storage:
                 search_results = await document_storage.search_documents(reference)
@@ -696,7 +696,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
             chat_id = args.get("chat_id", "default")
 
             # Store in Supabase (primary storage)
-            from src.storage.storage_service import document_storage
+            from storage.storage_service import document_storage
 
             if not document_storage:
                 return {
@@ -805,7 +805,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
                     "error": f"Could not find document matching '{reference}'",
                 }
 
-            from src.storage.storage_service import document_storage
+            from storage.storage_service import document_storage
 
             if not document_storage:
                 return {
@@ -921,7 +921,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
 
             # Try to get content from Supabase if we have an ID
             if document_id:
-                from src.storage.storage_service import document_storage
+                from storage.storage_service import document_storage
 
                 if document_storage:
                     try:
@@ -940,7 +940,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
         elif function_name == "search_documents":
             query = args.get("query")
 
-            from src.storage.storage_service import document_storage
+            from storage.storage_service import document_storage
 
             if not document_storage:
                 return {
@@ -988,7 +988,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
             category = args.get("category")
             limit = args.get("limit", 20)
 
-            from src.storage.storage_service import document_storage
+            from storage.storage_service import document_storage
 
             if not document_storage:
                 return {

@@ -19,7 +19,7 @@ from openai.types.chat import ChatCompletion
 import logging
 from dotenv import load_dotenv
 
-from src.core.benchmarks import get_performance_monitor
+from core.benchmarks import get_performance_monitor
 
 # Load environment variables
 load_dotenv()

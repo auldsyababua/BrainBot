@@ -23,7 +23,7 @@ class BotMemory:
     def __init__(self):
         """Initialize mem0 memory with Vector and optional Graph backend."""
         try:
-            config = {"version": "v1.1"}
+            config = {"version": os.getenv("MEM0_MEMORY_VERSION", "v1.1")}
 
             # Configure LLM (required for mem0's intelligent extraction)
             if os.getenv("OPENAI_API_KEY"):
@@ -32,6 +32,19 @@ class BotMemory:
                     "config": {
                         "model": os.getenv("MEM0_LLM_MODEL", "gpt-4o-mini"),
                         "api_key": os.getenv("OPENAI_API_KEY"),
+                        "temperature": float(os.getenv("MEM0_LLM_TEMPERATURE", "0.1")),
+                        "max_tokens": int(os.getenv("MEM0_LLM_MAX_TOKENS", "1000")),
+                    },
+                }
+
+            # Configure Embedder
+            if os.getenv("OPENAI_API_KEY"):
+                config["embedder"] = {
+                    "provider": "openai",
+                    "config": {
+                        "model": os.getenv("MEM0_EMBEDDER_MODEL", "text-embedding-3-small"),
+                        "api_key": os.getenv("OPENAI_API_KEY"),
+                        "embedding_dims": int(os.getenv("MEM0_EMBEDDING_DIMS", "1536")),
                     },
                 }
 
@@ -41,17 +54,19 @@ class BotMemory:
             ):
                 # Use Upstash Vector for production
                 config["vector_store"] = {
-                    "provider": "upstash",
+                    "provider": "upstash_vector",
                     "config": {
                         "url": os.getenv("UPSTASH_VECTOR_REST_URL"),
                         "token": os.getenv("UPSTASH_VECTOR_REST_TOKEN"),
+                        "collection_name": os.getenv("MEM0_COLLECTION_NAME", "markdown_bot_memories"),
+                        "enable_embeddings": os.getenv("MEM0_ENABLE_HYBRID_SEARCH", "true").lower() == "true",
                     },
                 }
                 logger.info("Using Upstash Vector for mem0 backend")
 
             # Configure Graph Store (optional - for relationship mapping)
             if os.getenv("NEO4J_URL") and os.getenv("NEO4J_PASSWORD"):
-                config["graph_store"] = {
+                graph_config = {
                     "provider": "neo4j",
                     "config": {
                         "url": os.getenv("NEO4J_URL", "bolt://localhost:7687"),
@@ -59,6 +74,13 @@ class BotMemory:
                         "password": os.getenv("NEO4J_PASSWORD"),
                     },
                 }
+                
+                # Add custom graph prompt if provided
+                graph_prompt = os.getenv("MEM0_GRAPH_CUSTOM_PROMPT")
+                if graph_prompt:
+                    graph_config["custom_prompt"] = graph_prompt
+                    
+                config["graph_store"] = graph_config
                 logger.info("Using Neo4j for graph memory backend")
                 self.has_graph = True
             else:
@@ -67,6 +89,47 @@ class BotMemory:
             # Configure memory settings
             if os.getenv("MEM0_MEMORY_THRESHOLD"):
                 config["memory_threshold"] = float(os.getenv("MEM0_MEMORY_THRESHOLD"))
+                
+            # Configure cache settings for performance
+            cache_config = {
+                "similarity_evaluation": {
+                    "strategy": os.getenv("MEM0_CACHE_STRATEGY", "distance"),
+                    "max_distance": float(os.getenv("MEM0_CACHE_MAX_DISTANCE", "1.0")),
+                },
+                "config": {
+                    "similarity_threshold": float(os.getenv("MEM0_CACHE_SIMILARITY_THRESHOLD", "0.8")),
+                    "auto_flush": int(os.getenv("MEM0_CACHE_AUTO_FLUSH", "50")),
+                },
+            }
+            config["cache"] = cache_config
+            
+            # Configure chunking
+            config["chunker"] = {
+                "chunk_size": int(os.getenv("MEM0_CHUNK_SIZE", "2000")),
+                "chunk_overlap": int(os.getenv("MEM0_CHUNK_OVERLAP", "100")),
+                "length_function": "len",
+                "min_chunk_size": int(os.getenv("MEM0_MIN_CHUNK_SIZE", "50")),
+            }
+            
+            # Configure memory search settings
+            config["memory"] = {
+                "top_k": int(os.getenv("MEM0_VECTOR_TOP_K", "10")),
+            }
+            
+            # Configure custom prompts
+            if os.getenv("MEM0_CUSTOM_FACT_EXTRACTION_PROMPT"):
+                config["custom_fact_extraction_prompt"] = os.getenv("MEM0_CUSTOM_FACT_EXTRACTION_PROMPT")
+                
+            if os.getenv("MEM0_CUSTOM_UPDATE_MEMORY_PROMPT"):
+                config["custom_update_memory_prompt"] = os.getenv("MEM0_CUSTOM_UPDATE_MEMORY_PROMPT")
+                
+            # Configure history database
+            if os.getenv("MEM0_HISTORY_DB_PATH"):
+                config["history_db_path"] = os.path.expanduser(os.getenv("MEM0_HISTORY_DB_PATH"))
+                
+            # Disable history if requested
+            if os.getenv("MEM0_DISABLE_HISTORY", "false").lower() == "true":
+                config["disable_history"] = True
                 
             # Configure webhook if provided
             self.webhook_url = os.getenv("MEM0_WEBHOOK_URL")
@@ -88,7 +151,19 @@ class BotMemory:
                     "Using local memory for mem0 (no backend credentials found)"
                 )
 
-            logger.info("BotMemory initialized successfully")
+            # Store performance settings
+            self.batch_operations = os.getenv("MEM0_BATCH_OPERATIONS", "true").lower() == "true"
+            self.batch_size = int(os.getenv("MEM0_BATCH_SIZE", "50"))
+            self.parallel_processing = os.getenv("MEM0_PARALLEL_PROCESSING", "true").lower() == "true"
+            self.max_concurrent = int(os.getenv("MEM0_MAX_CONCURRENT_OPERATIONS", "4"))
+            
+            # Store feature flags
+            self.auto_update_memories = os.getenv("MEM0_AUTO_UPDATE_MEMORIES", "true").lower() == "true"
+            self.deduplicate_memories = os.getenv("MEM0_DEDUPLICATE_MEMORIES", "true").lower() == "true"
+            self.memory_decay_enabled = os.getenv("MEM0_MEMORY_DECAY_ENABLED", "false").lower() == "true"
+            self.memory_decay_rate = float(os.getenv("MEM0_MEMORY_DECAY_RATE", "0.95"))
+            
+            logger.info("BotMemory initialized successfully with advanced configuration")
 
         except Exception as e:
             logger.error(f"Failed to initialize BotMemory: {e}")
@@ -418,6 +493,170 @@ class BotMemory:
             logger.error(f"Error getting memory stats: {e}")
 
         return stats
+    
+    async def batch_add_memories(
+        self, memory_items: List[Dict[str, Any]], user_id: str
+    ) -> List[Dict]:
+        """Add multiple memories in batch for better performance.
+        
+        Args:
+            memory_items: List of memory items with 'content' and optional 'metadata'
+            user_id: Unique identifier for the user
+            
+        Returns:
+            List of results from memory storage
+        """
+        if not self.memory or not self.batch_operations:
+            # Fall back to sequential processing
+            results = []
+            for item in memory_items:
+                result = self.memory.add(
+                    messages=[{"role": "user", "content": item["content"]}],
+                    user_id=user_id,
+                    metadata=item.get("metadata", {})
+                )
+                results.append(result)
+            return results
+            
+        try:
+            # Process in batches
+            results = []
+            for i in range(0, len(memory_items), self.batch_size):
+                batch = memory_items[i:i + self.batch_size]
+                
+                if self.parallel_processing:
+                    # Use asyncio for parallel processing
+                    import asyncio
+                    tasks = []
+                    for item in batch:
+                        task = asyncio.create_task(
+                            self._add_single_memory(item, user_id)
+                        )
+                        tasks.append(task)
+                    
+                    # Limit concurrent operations
+                    if len(tasks) > self.max_concurrent:
+                        # Process in smaller concurrent batches
+                        batch_results = []
+                        for j in range(0, len(tasks), self.max_concurrent):
+                            concurrent_batch = tasks[j:j + self.max_concurrent]
+                            batch_results.extend(await asyncio.gather(*concurrent_batch))
+                        results.extend(batch_results)
+                    else:
+                        results.extend(await asyncio.gather(*tasks))
+                else:
+                    # Sequential batch processing
+                    for item in batch:
+                        result = await self._add_single_memory(item, user_id)
+                        results.append(result)
+                        
+            return results
+            
+        except Exception as e:
+            logger.error(f"Error in batch memory addition: {e}")
+            return []
+    
+    async def _add_single_memory(self, item: Dict[str, Any], user_id: str) -> Dict:
+        """Add a single memory item."""
+        try:
+            return self.memory.add(
+                messages=[{"role": "user", "content": item["content"]}],
+                user_id=user_id,
+                metadata=item.get("metadata", {})
+            )
+        except Exception as e:
+            logger.error(f"Error adding single memory: {e}")
+            return {}
+    
+    async def optimize_memories(self, user_id: str):
+        """Optimize stored memories by deduplication and decay.
+        
+        Args:
+            user_id: Unique identifier for the user
+        """
+        if not self.memory:
+            return
+            
+        try:
+            memories = await self.get_all_memories(user_id)
+            
+            if self.deduplicate_memories:
+                # Find and merge duplicate memories
+                seen_content = {}
+                duplicates = []
+                
+                for mem in memories:
+                    content = mem.get("content", "").lower().strip()
+                    mem_id = mem.get("id")
+                    
+                    if content in seen_content:
+                        # Mark for deletion
+                        duplicates.append(mem_id)
+                    else:
+                        seen_content[content] = mem_id
+                        
+                # Delete duplicates
+                if duplicates:
+                    await self.forget_memories(user_id, duplicates)
+                    logger.info(f"Removed {len(duplicates)} duplicate memories for user {user_id}")
+                    
+            if self.memory_decay_enabled:
+                # Apply decay to old memories based on importance
+                # This is a placeholder - actual implementation would need
+                # to track access patterns and importance scores
+                logger.info("Memory decay feature not fully implemented yet")
+                
+        except Exception as e:
+            logger.error(f"Error optimizing memories: {e}")
+    
+    async def get_memory_insights(self, user_id: str) -> Dict[str, Any]:
+        """Get insights about user's memory patterns.
+        
+        Args:
+            user_id: Unique identifier for the user
+            
+        Returns:
+            Dictionary with memory insights
+        """
+        insights = {
+            "most_discussed_topics": [],
+            "memory_growth_rate": 0,
+            "interaction_patterns": {},
+            "key_relationships": [],
+        }
+        
+        try:
+            memories = await self.get_all_memories(user_id)
+            
+            # Analyze memory categories
+            category_counts = {}
+            for mem in memories:
+                category = mem.get("metadata", {}).get("category", "general")
+                category_counts[category] = category_counts.get(category, 0) + 1
+                
+            # Sort by frequency
+            insights["most_discussed_topics"] = sorted(
+                category_counts.items(),
+                key=lambda x: x[1],
+                reverse=True
+            )[:5]
+            
+            # Get graph insights if available
+            if self.has_graph:
+                relationships = await self.get_graph_relationships(user_id)
+                # Extract key relationships
+                relationship_counts = {}
+                for rel in relationships[:20]:  # Top 20 relationships
+                    if isinstance(rel, dict):
+                        rel_type = rel.get("type", "unknown")
+                        relationship_counts[rel_type] = relationship_counts.get(rel_type, 0) + 1
+                        
+                insights["key_relationships"] = list(relationship_counts.items())
+                
+        except Exception as e:
+            logger.error(f"Error getting memory insights: {e}")
+            
+        return insights
     
     async def _send_webhook_notification(
         self, event: str, user_id: str, data: Any
