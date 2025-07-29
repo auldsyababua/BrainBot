@@ -44,6 +44,11 @@ from bot.handlers import (
     report_command,
     handle_message,
     handle_document,
+    remember_command,
+    correct_command,
+    memories_command,
+    forget_command,
+    graph_command,
 )
 
 # Set up logging
@@ -91,6 +96,13 @@ class WebhookTelegramBot:
         self.application.add_handler(CommandHandler("version", version_command))
         self.application.add_handler(CommandHandler("report", report_command))
 
+        # Memory commands
+        self.application.add_handler(CommandHandler("remember", remember_command))
+        self.application.add_handler(CommandHandler("correct", correct_command))
+        self.application.add_handler(CommandHandler("memories", memories_command))
+        self.application.add_handler(CommandHandler("forget", forget_command))
+        self.application.add_handler(CommandHandler("graph", graph_command))
+
         # Message handlers
         self.application.add_handler(
             MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
@@ -109,6 +121,15 @@ class WebhookTelegramBot:
             """Manage the application lifecycle."""
             async with self.application:
                 await self.application.start()
+                
+                # Seed initial memories if configured
+                from src.core.memory import seed_initial_memories
+                try:
+                    await seed_initial_memories()
+                    logger.info("Initial memories seeded successfully")
+                except Exception as e:
+                    logger.error(f"Failed to seed initial memories: {e}")
+                
                 yield
                 await self.application.stop()
 

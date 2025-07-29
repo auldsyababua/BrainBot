@@ -1,0 +1,79 @@
+{
+  "initial_memories": [
+    {
+      "user_id": "system",
+      "content": "10NetZero, Inc. is the main company with ID 4e3daa5f-9015-4ae8-a79c-620ccc45757f in the FLRTS Supabase database",
+      "category": "organization"
+    },
+    {
+      "user_id": "system",
+      "content": "Active sites: North Austin Facility (S001, status: Running), West Houston Mining Center (S002, status: Commissioning), Phoenix Expansion Site (S003, status: Contracted)",
+      "category": "sites"
+    },
+    {
+      "user_id": "system",
+      "content": "Site aliases: North Austin Facility is also known as 'Austin-1' and 'NAF', West Houston Mining Center is also known as 'Houston-West'",
+      "category": "sites"
+    },
+    {
+      "user_id": "system",
+      "content": "Site-Partner relationships: North Austin Facility has GreenEnergy Capital (Primary Investor, 15% markup) and CleanPower Co-op (Secondary Partner, 5% markup)",
+      "category": "partnerships"
+    },
+    {
+      "user_id": "system",
+      "content": "Site-Partner relationships: West Houston Mining Center has TechFund Ventures (Primary Investor, 12.5% markup), Phoenix Expansion Site has CleanPower Co-op (Community Partnership, 7.5% markup)",
+      "category": "partnerships"
+    },
+    {
+      "user_id": "system",
+      "content": "Hardcoded list paths: Task lists at /10nz_kb/sites/{SiteName}/lists/{site}-task-list.md, Shopping lists at /10nz_kb/sites/{SiteName}/lists/{site}-shopping-list.md, Tools lists at /10nz_kb/sites/{SiteName}/lists/{site}-tools-needed.md",
+      "category": "file_structure"
+    },
+    {
+      "user_id": "system",
+      "content": "List types in database: 'Master Task List (Template)' for operational checklists, 'Tools Inventory' for facility equipment tracking, 'Task List' for site-specific tasks",
+      "category": "lists"
+    },
+    {
+      "user_id": "system",
+      "content": "Active lists: Daily Operational Checklist (LST001) for North Austin Facility with 3 items, Facility Tool Inventory (LST002) for North Austin Facility with 2 items, Commissioning Tasks (LST003) for West Houston Mining Center",
+      "category": "lists"
+    },
+    {
+      "user_id": "system",
+      "content": "Historical site names from old system: Eagle Lake (aliases: English, Wharton, ENG, English 1), Mathis (alias: Buetnagel), Crockett (alias: 1511 Co Road)",
+      "category": "legacy_sites"
+    },
+    {
+      "user_id": "system",
+      "content": "Legacy partner mappings: Flober LLC was associated with Eagle Lake, WasteWatt Ventures with Mathis, Operation Orange LLC with Crockett",
+      "category": "legacy_partnerships"
+    },
+    {
+      "user_id": "system",
+      "content": "Field reports are stored at /10nz_kb/sites/{SiteName}/field-reports/. Each site has a field-reports-index.md file",
+      "category": "file_structure"
+    },
+    {
+      "user_id": "system",
+      "content": "Database tables structure: sites (main site info), site_aliases (alternative names), partners (investor/partner info), site_partner_assignments (relationships and markups), lists (task/inventory lists), list_items (individual items in lists)",
+      "category": "database_schema"
+    },
+    {
+      "user_id": "system",
+      "content": "QuickBooks integration: Using production environment with company ID 4e3daa5f-9015-4ae8-a79c-620ccc45757f. Token stored in .quickbooks_token.json, migration scripts in temp_migration/",
+      "category": "integrations"
+    },
+    {
+      "user_id": "system",
+      "content": "User roles referenced: Operations staff manage daily checklists, facility managers handle tool inventories, site managers oversee commissioning tasks",
+      "category": "operations"
+    },
+    {
+      "user_id": "system",
+      "content": "Status definitions: Sites can be 'Running' (operational), 'Commissioning' (being set up), or 'Contracted' (planned). Lists are 'Active' or inactive",
+      "category": "status_codes"
+    }
+  ]
+}
