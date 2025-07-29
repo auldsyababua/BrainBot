@@ -24,6 +24,7 @@ from src.storage.vector_store import vector_store
 from src.core.api_client import get_resilient_client, RetryConfig
 from src.core.benchmarks import get_performance_monitor, async_benchmark
 from src.core.chunking import chunk_markdown_document
+from src.core.memory import bot_memory
 
 # Initialize resilient OpenAI client with custom retry config
 retry_config = RetryConfig(
@@ -358,6 +359,15 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         # Memory optimization: Limit context size and use generators
         search_results = await search_knowledge_base(user_message, chat_id)
 
+        # NEW: Recall user memories for personalized context
+        user_memories = await bot_memory.recall_context(user_message, chat_id, limit=3)
+        memory_context = ""
+        if user_memories:
+            memory_context = "\n[User Context from Memory]\n"
+            for memory in user_memories:
+                if isinstance(memory, dict) and memory.get("memory"):
+                    memory_context += f"• {memory['memory']}\n"
+
         # Build context from search results with size limits
         context_parts = []
         source_documents = []
@@ -412,6 +422,10 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         enhanced_message = user_message
         if context_parts:
             enhanced_message = f"{user_message}\n\n[System: Found relevant context from knowledge base]\n{chr(10).join(context_parts)}"
+
+        # Add memory context if available
+        if memory_context:
+            enhanced_message += f"\n{memory_context}"
 
         # Add the new user message
         messages.append({"role": "user", "content": enhanced_message})
@@ -489,6 +503,19 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
 
             await add_to_conversation_history(chat_id, "assistant", final_content)
 
+            # NEW: Extract and store memories from conversation
+            recent_messages = await get_conversation_history(chat_id)
+            if len(recent_messages) > 1:  # Skip if only system message
+                # Get last 4 messages (2 exchanges) for memory extraction
+                messages_for_memory = (
+                    recent_messages[-4:]
+                    if len(recent_messages) > 4
+                    else recent_messages[1:]
+                )
+                await bot_memory.remember_from_conversation(
+                    messages_for_memory, chat_id
+                )
+
             # Memory optimization: Explicit cleanup of large objects
             del search_results
             del context_parts
@@ -513,6 +540,16 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
             assistant_content += sources_text
 
         await add_to_conversation_history(chat_id, "assistant", assistant_content)
+
+        # NEW: Extract and store memories from conversation (non-function path)
+        recent_messages = await get_conversation_history(chat_id)
+        if len(recent_messages) > 1:
+            messages_for_memory = (
+                recent_messages[-4:]
+                if len(recent_messages) > 4
+                else recent_messages[1:]
+            )
+            await bot_memory.remember_from_conversation(messages_for_memory, chat_id)
 
         # Memory optimization: Explicit cleanup
         del search_results
