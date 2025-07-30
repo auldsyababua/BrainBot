@@ -534,7 +534,7 @@ class KeywordRouter:
         self._command_pattern = re.compile(r"/(\w+)")
         self._whitespace_pattern = re.compile(r"\s+")
         self._name_pattern = re.compile(
-            r'(?:called|named)\s+["\']?([^"\'\.]+)["\']?', re.IGNORECASE
+            r'(?:called|named)\s+["\\]?([^"]+\.)["\\]?', re.IGNORECASE
         )
         self._time_pattern = re.compile(
             r"(tomorrow|today|next week|at \d+[ap]m)", re.IGNORECASE
@@ -542,7 +542,7 @@ class KeywordRouter:
 
         # Entity extraction patterns
         self._list_name_pattern = re.compile(
-            r'(?:called|named)\s+["\']?([^"\'\.]+)["\']?', re.IGNORECASE
+            r'(?:called|named)\s+["\\]?([^"]+\.)["\\]?', re.IGNORECASE
         )
         self._items_pattern = re.compile(
             r"(?:add|remove)\s+(.+?)\s+(?:to|from)", re.IGNORECASE
@@ -562,6 +562,8 @@ class KeywordRouter:
         self, message: str
     ) -> Tuple[str, Dict[str, Any], Dict[str, float]]:
         """Extract deterministic syntax markers before routing."""
+        if not message:
+            return "", {}, {}
         # Memory optimization: Use string interning and avoid temporary strings
         prefilled = {}
         confidences = {}
@@ -655,6 +657,13 @@ class KeywordRouter:
 
     def route(self, message: str) -> RouteResult:
         """Enhanced routing with synonym library and confidence scoring."""
+        if not message or not isinstance(message, str) or not message.startswith("/"):
+            return RouteResult(None, None, None, 0.0)
+        
+        # Check for malformed commands
+        if not re.match(r"^/\w+$", message.split(" ")[0]):
+            return RouteResult(None, None, None, 0.0)
+
         # Memory optimization: Enhanced cache management
         cache_key = hash(message)
 

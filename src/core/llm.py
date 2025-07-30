@@ -16,6 +16,7 @@ from core.config import (
     CONVERSATION_MAX_MESSAGES,
     CONVERSATION_TTL_HOURS,
 )
+from src.rails.router import KeywordRouter, RouteResult
 
 # Legacy tools.py imports removed - production only uses Supabase + Vector
 # from src.core.tools import (...) - REMOVED
@@ -252,6 +253,13 @@ _MAX_CACHE_SIZE = 100
 _CACHE_TTL_SECONDS = 3600
 _cache_timestamps = {}
 
+# Initialize the Rails KeywordRouter
+try:
+    keyword_router = KeywordRouter()
+except Exception as e:
+    logging.getLogger(__name__).error(f"Failed to initialize KeywordRouter: {e}")
+    keyword_router = None
+
 
 async def get_conversation_history(
     chat_id: str, max_messages: int = None
@@ -344,6 +352,76 @@ async def search_knowledge_base(
         return []
 
 
+async def _process_rails_command(
+    route_result: RouteResult, chat_id: str
+) -> Optional[str]:
+    """
+    Process a command routed by the KeywordRouter.
+
+    Args:
+        route_result: The RouteResult from the router.
+        chat_id: The ID of the chat.
+
+    Returns:
+        The response from the processor, or None if processing fails.
+    """
+    logger = logging.getLogger(__name__)
+
+    # RouteResult has entity_type (e.g., 'lists', 'tasks', 'field_reports')
+    entity_type = route_result.entity_type
+    operation = route_result.operation
+    extracted_data = route_result.extracted_data or {}
+
+    if not entity_type:
+        logger.warning("Router returned a result without an entity type.")
+        return None
+
+    try:
+        # Import and instantiate the appropriate processor
+        processor_instance = None
+
+        if entity_type == "lists":
+            from src.rails.processors.list_processor import ListProcessor
+
+            processor_instance = ListProcessor()
+        elif entity_type == "tasks":
+            from src.rails.processors.task_processor import TaskProcessor
+
+            processor_instance = TaskProcessor()
+        elif entity_type == "field_reports":
+            from src.rails.processors.field_report_processor import FieldReportProcessor
+
+            processor_instance = FieldReportProcessor()
+        else:
+            logger.error(f"Unknown entity type: {entity_type}")
+            return f"Error: Unknown command type '{entity_type}'."
+
+        if not processor_instance:
+            return f"Error: Command processor for '{entity_type}' is not available."
+
+        # Prepare parameters for the processor
+        params = {
+            "operation": operation,
+            "chat_id": chat_id,
+            **extracted_data,  # Include any extracted data from the router
+            "target_users": (
+                route_result.target_users
+                if hasattr(route_result, "target_users")
+                else []
+            ),
+        }
+
+        # Execute the processor
+        response = await processor_instance.process(params)
+        return response
+
+    except Exception as e:
+        logger.error(
+            f"Error executing processor for '{entity_type}': {e}", exc_info=True
+        )
+        return f"An error occurred while processing your {entity_type} command. Please try again."
+
+
 @async_benchmark("process_message")
 async def process_message(user_message: str, chat_id: str = "default") -> str:
     """Process a user message using GPT-4o and execute any necessary document operations."""
@@ -351,6 +429,23 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
     logger.info(
         f"Processing message for chat_id={chat_id}: {(user_message or '')[:50]}..."
     )
+
+    # ** Rails Router Integration **
+    if keyword_router and user_message.startswith("/"):
+        try:
+            route_result = keyword_router.route(user_message)
+            if route_result and route_result.entity_type:
+                logger.info(f"Rails router found a match: {route_result}")
+                response = await _process_rails_command(route_result, chat_id)
+                if response:
+                    return response
+                else:
+                    logger.warning(
+                        "Rails command processing failed. Falling back to LLM."
+                    )
+        except Exception as e:
+            logger.error(f"Rails router failed: {e}. Falling back to LLM.")
+    # ** End Rails Router Integration **
 
     # Track conversation size
     monitor = get_performance_monitor()

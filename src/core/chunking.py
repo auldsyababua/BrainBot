@@ -41,6 +41,11 @@ class DocumentChunker:
             separators: List of separators to use for splitting (in order of preference)
             keep_separator: Whether to keep separators in the chunks
         """
+        if chunk_size <= 0:
+            raise ValueError("Chunk size must be a positive integer.")
+        if chunk_overlap >= chunk_size:
+            raise ValueError("Chunk overlap must be smaller than chunk size.")
+
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
         self.keep_separator = keep_separator
