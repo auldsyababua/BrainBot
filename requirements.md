@@ -52,6 +52,70 @@ BrainBot is an intelligent Telegram bot that acts as a personal filing assistant
 - WHEN /reports is used THEN the system SHALL route to field report processor
 - IF no explicit command is used THEN the system SHALL use pattern matching with confidence scoring
 
+#### US-2.3: Command Routing Specifications
+**As a** user  
+**I want** explicit command syntax to route deterministically  
+**So that** I get predictable, fast responses for common operations
+
+**Acceptance Criteria (EARS format):**
+
+**Hidden Commands (100% confidence):**
+- WHEN the user sends "/newlist [name]" THEN the system SHALL route to entity_type='lists' AND operation='create' with 100% confidence
+- WHEN the user sends "/addtolist [items]" THEN the system SHALL route to entity_type='lists' AND operation='add_items' with 100% confidence
+- WHEN the user sends "/removefromlist [items]" THEN the system SHALL route to entity_type='lists' AND operation='remove_items' with 100% confidence
+- WHEN the user sends "/showlist [name]" THEN the system SHALL route to entity_type='lists' AND operation='read' with 100% confidence
+- WHEN the user sends "/newtask [description]" THEN the system SHALL route to entity_type='tasks' AND operation='create' with 100% confidence
+- WHEN the user sends "/newreminder [description]" THEN the system SHALL route to entity_type='tasks' AND operation='create' with 100% confidence
+- WHEN the user sends "/completetask [description]" THEN the system SHALL route to entity_type='tasks' AND operation='complete' with 100% confidence
+- WHEN the user sends "/reassigntask [description]" THEN the system SHALL route to entity_type='tasks' AND operation='reassign' with 100% confidence
+- WHEN the user sends "/showtasks" THEN the system SHALL route to entity_type='tasks' AND operation='read' with 100% confidence
+- WHEN the user sends "/showmytasks" THEN the system SHALL route to entity_type='tasks' AND operation='read' with 100% confidence
+- WHEN the user sends "/showmyreminders" THEN the system SHALL route to entity_type='tasks' AND operation='read' with 100% confidence
+
+**Telegram Category Commands (entity routing only):**
+- WHEN the user sends "/lists [any text]" OR "/l [any text]" THEN the system SHALL set entity_type='lists' AND let LLM determine operation
+- WHEN the user sends "/tasks [any text]" OR "/t [any text]" OR "/tnr [any text]" THEN the system SHALL set entity_type='tasks' AND let LLM determine operation
+- WHEN the user sends "/fr [any text]" THEN the system SHALL set entity_type='field_reports' AND let LLM determine operation
+
+**Natural Language Patterns (Lists):**
+- WHEN the user message contains "new list|create list|make list|start list|build list" THEN the system SHALL suggest entity_type='lists' AND operation='create'
+- WHEN the user message contains "show list|print list|read list|what's on|display list|view list" THEN the system SHALL suggest entity_type='lists' AND operation='read'
+- WHEN the user message contains "add to list|append to list|include in list|put on list|list needs" THEN the system SHALL suggest entity_type='lists' AND operation='add_items'
+- WHEN the user message contains "remove from list|take off list|delete from list|take out" THEN the system SHALL suggest entity_type='lists' AND operation='remove_items'
+- WHEN the user message contains "rename list|change list name|call list" THEN the system SHALL suggest entity_type='lists' AND operation='rename'
+- WHEN the user message contains "clear list|empty list|remove all" THEN the system SHALL suggest entity_type='lists' AND operation='clear'
+- WHEN the user message contains "delete list|remove list|trash list" THEN the system SHALL suggest entity_type='lists' AND operation='delete'
+
+**Natural Language Patterns (Tasks):**
+- WHEN the user message contains "new task|create task|add task|remind me|task for" THEN the system SHALL suggest entity_type='tasks' AND operation='create'
+- WHEN the user message contains "show tasks|list tasks|what tasks|my tasks|tasks for" THEN the system SHALL suggest entity_type='tasks' AND operation='read'
+- WHEN the user message contains "mark complete|finish task|done with|task complete|completed" THEN the system SHALL suggest entity_type='tasks' AND operation='complete'
+- WHEN the user message contains "reassign to|assign to|assign|give to|transfer to|hand to" THEN the system SHALL suggest entity_type='tasks' AND operation='reassign'
+- WHEN the user message contains "reschedule to|move to|change date|push to" THEN the system SHALL suggest entity_type='tasks' AND operation='reschedule'
+- WHEN the user message contains "add note to|note on|update with|add details" THEN the system SHALL suggest entity_type='tasks' AND operation='add_notes'
+
+**Natural Language Patterns (Field Reports):**
+- WHEN the user message contains "new field report|create field report|field report for|report for" THEN the system SHALL suggest entity_type='field_reports' AND operation='create'
+- WHEN the user message contains "show field report|latest field report|read field report|reports for" THEN the system SHALL suggest entity_type='field_reports' AND operation='read'
+- WHEN the user message contains "add followup|followup for|action item|needs followup" THEN the system SHALL suggest entity_type='field_reports' AND operation='add_followups'
+- WHEN the user message contains "mark report|report status|finalize report|draft report" THEN the system SHALL suggest entity_type='field_reports' AND operation='update_status'
+
+**Confidence Scoring Rules:**
+- IF a hidden command is detected THEN confidence SHALL be 1.0 (100%)
+- IF a telegram category command is detected THEN entity confidence SHALL be 1.0 but operation confidence depends on keyword matching
+- IF only natural language patterns match THEN confidence SHALL be calculated based on:
+  - Keyword position (earlier = higher confidence)
+  - Keyword length (longer = higher confidence)  
+  - User assignment presence (@mentions increase confidence)
+  - Context clues (time references for tasks, site names for reports)
+- IF confidence >= 0.7 THEN the system SHALL use direct routing
+- IF confidence < 0.7 THEN the system SHALL fall back to LLM processing
+
+**User Assignment Extraction:**
+- WHEN the user message contains "@[username]" THEN the system SHALL extract username as assignee with 100% confidence
+- WHEN assignee is extracted THEN the system SHALL resolve to canonical username using personnel table aliases
+- IF multiple @mentions exist THEN the system SHALL extract all as a list of assignees
+
 ### 3. Storage and Retrieval
 
 #### US-3.1: Document Storage
