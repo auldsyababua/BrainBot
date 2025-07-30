@@ -17,6 +17,7 @@ This document breaks down the implementation work into atomic, actionable tasks.
 ### 1.1 Bot Foundation
 
 #### ✅ T1.1.1: Set up basic bot structure
+- **Completed**: 2025-07-30 14:40
 - **Requirement**: US-1.1
 - **Design**: Bot Layer
 - **Details**:
@@ -65,7 +66,8 @@ This document breaks down the implementation work into atomic, actionable tasks.
   - Add response generation
 - **Test**: Verify LLM processes messages correctly
 
-#### 🟨 T1.3.2: Create basic routing logic
+#### ✅ T1.3.2: Create basic routing logic
+- **Completed**: 2025-07-30 14:34
 - **Requirement**: US-2.2
 - **Design**: Smart Rails Router
 - **Details**:

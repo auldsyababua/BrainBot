@@ -48,7 +48,8 @@ cp "$TASKS_FILE" "${TASKS_FILE}.bak"
 # Find and update the task
 if grep -q "$TASK_ID:" "$TASKS_FILE"; then
     # Use perl for more reliable in-place editing
-    perl -i -pe "s/(#### )([⬜🟨✅❌🔄])( $TASK_ID:)/\${1}${EMOJI}\${3}/g" "$TASKS_FILE"
+    # Match any characters between #### and the task ID
+    perl -i -pe "s/(#### )(.+?)( $TASK_ID:)/\${1}${EMOJI}\${3}/g" "$TASKS_FILE"
     
     echo "✅ Updated task $TASK_ID to status: $NEW_STATUS $EMOJI"
     echo ""
