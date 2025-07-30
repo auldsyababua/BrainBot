@@ -657,11 +657,11 @@ class KeywordRouter:
 
     def route(self, message: str) -> RouteResult:
         """Enhanced routing with synonym library and confidence scoring."""
-        if not message or not isinstance(message, str) or not message.startswith("/"):
+        if not message or not isinstance(message, str):
             return RouteResult(None, None, None, 0.0)
-        
-        # Check for malformed commands
-        if not re.match(r"^/\w+$", message.split(" ")[0]):
+
+        # Check for malformed slash commands (but allow natural language)
+        if message.startswith("/") and not re.match(r"^/\w+", message):
             return RouteResult(None, None, None, 0.0)
 
         # Memory optimization: Enhanced cache management

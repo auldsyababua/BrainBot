@@ -255,7 +255,12 @@ _cache_timestamps = {}
 
 # Initialize the Rails KeywordRouter
 try:
-    keyword_router = KeywordRouter()
+    # Import storage service to get supabase client
+    from storage.storage_service import DocumentStorage
+
+    storage = DocumentStorage()
+    keyword_router = KeywordRouter(supabase_client=storage.supabase)
+    # Load user aliases asynchronously on first use
 except Exception as e:
     logging.getLogger(__name__).error(f"Failed to initialize KeywordRouter: {e}")
     keyword_router = None
@@ -431,10 +436,18 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
     )
 
     # ** Rails Router Integration **
-    if keyword_router and user_message.startswith("/"):
+    # Try routing all messages through the keyword router first
+    if keyword_router:
         try:
+            # Ensure aliases are loaded before routing
+            await keyword_router.ensure_aliases_loaded()
             route_result = keyword_router.route(user_message)
-            if route_result and route_result.entity_type:
+            # Only process if we have high confidence in the route
+            if (
+                route_result
+                and route_result.entity_type
+                and route_result.confidence >= 0.7
+            ):
                 logger.info(f"Rails router found a match: {route_result}")
                 response = await _process_rails_command(route_result, chat_id)
                 if response:
@@ -443,6 +456,10 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                     logger.warning(
                         "Rails command processing failed. Falling back to LLM."
                     )
+            elif route_result and route_result.entity_type:
+                logger.info(
+                    f"Rails router confidence too low ({route_result.confidence}), falling back to LLM"
+                )
         except Exception as e:
             logger.error(f"Rails router failed: {e}. Falling back to LLM.")
     # ** End Rails Router Integration **

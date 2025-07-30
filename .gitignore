@@ -35,6 +35,9 @@ env/
 *~
 .DS_Store
 
+# Claude desktop
+.claude/
+
 # Environment variables
 .env
 .env.local
@@ -50,6 +53,7 @@ logs/
 htmlcov/
 .tox/
 .nox/
+tests/test_results/
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -122,3 +126,7 @@ htmlcov/
 
 # Local config files
 *.local.toml
+
+# Backup files
+*.bak
+tasks.md.bak
