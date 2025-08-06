@@ -100,18 +100,27 @@ class DocumentStorage:
 
             if existing_by_path.data:
                 existing_doc = existing_by_path.data[0]
-                
+
                 # If content is identical, return existing ID
                 if existing_doc["content_hash"] == content_hash:
-                    logger.info(f"Document already exists with identical content: {file_path}")
+                    logger.info(
+                        f"Document already exists with identical content: {file_path}"
+                    )
                     return existing_doc["id"]
-                
+
                 # If content changed and updates are allowed, update the document
                 if allow_update:
                     logger.info(f"Updating existing document: {file_path}")
                     success = await self._atomic_update_document(
-                        existing_doc["id"], content, metadata, category, tags, 
-                        is_public, telegram_chat_id, telegram_user_id, created_by
+                        existing_doc["id"],
+                        content,
+                        metadata,
+                        category,
+                        tags,
+                        is_public,
+                        telegram_chat_id,
+                        telegram_user_id,
+                        created_by,
                     )
                     if success:
                         return existing_doc["id"]
@@ -143,7 +152,9 @@ class DocumentStorage:
             )
 
             if existing_by_content.data and not existing_by_path.data:
-                logger.info(f"Document with identical content exists at different path: {content_hash[:8]}...")
+                logger.info(
+                    f"Document with identical content exists at different path: {content_hash[:8]}..."
+                )
                 return existing_by_content.data[0]["id"]
 
             # Extract title from file path
@@ -179,10 +190,10 @@ class DocumentStorage:
             if result.data:
                 doc_id = result.data[0]["id"]
                 logger.info(f"Stored document {file_path} with ID {doc_id}")
-                
+
                 # Clear relevant caches
                 self._invalidate_document_cache(file_path, doc_id)
-                
+
                 return doc_id
             else:
                 raise Exception("Failed to insert document")
@@ -433,9 +444,7 @@ class DocumentStorage:
             True if successful, False otherwise
         """
         return await self._atomic_update_document(
-            doc_id=doc_id,
-            content=content,
-            metadata=metadata
+            doc_id=doc_id, content=content, metadata=metadata
         )
 
     async def update_document(
@@ -460,9 +469,7 @@ class DocumentStorage:
                 return False
 
             return await self._atomic_update_document(
-                doc_id=existing["id"],
-                content=content,
-                metadata=metadata
+                doc_id=existing["id"], content=content, metadata=metadata
             )
 
         except Exception as e:
@@ -608,12 +615,12 @@ class DocumentStorage:
     ) -> bool:
         """
         Atomically update a document and its chunks
-        
+
         This method ensures:
         1. All chunks are deleted before document update
         2. Document is updated with new content
         3. If any step fails, the operation is rolled back
-        
+
         Args:
             doc_id: Document ID to update
             content: New content
@@ -624,7 +631,7 @@ class DocumentStorage:
             telegram_chat_id: Updated chat ID
             telegram_user_id: Updated user ID
             created_by: Who is making the update
-            
+
         Returns:
             True if update was successful, False otherwise
         """
@@ -637,7 +644,7 @@ class DocumentStorage:
 
             # Calculate new content hash
             new_hash = hashlib.sha256(content.encode()).hexdigest()
-            
+
             # Check if content actually changed
             if new_hash == existing["content_hash"]:
                 logger.info("Content unchanged, skipping atomic update")
@@ -645,7 +652,7 @@ class DocumentStorage:
 
             # Start atomic operation
             logger.info(f"Starting atomic update for document {doc_id}")
-            
+
             # Step 1: Delete all existing chunks for this document
             delete_chunks_result = (
                 self.supabase.table("brain_bot_document_chunks")
@@ -653,7 +660,7 @@ class DocumentStorage:
                 .eq("document_id", doc_id)
                 .execute()
             )
-            
+
             if delete_chunks_result.error:
                 logger.error(f"Failed to delete chunks: {delete_chunks_result.error}")
                 return False
@@ -698,7 +705,7 @@ class DocumentStorage:
 
             # Clear relevant caches
             self._invalidate_document_cache(existing["file_path"], doc_id)
-            
+
             logger.info(f"Successfully completed atomic update for document {doc_id}")
             return True
 
@@ -712,23 +719,23 @@ class DocumentStorage:
             f"doc_path:{file_path}",
             f"doc_id:{doc_id}",
         ]
-        
+
         # Also invalidate search caches
         search_keys = [k for k in self._query_cache.keys() if k.startswith("search:")]
         cache_keys_to_remove.extend(search_keys)
-        
+
         for key in cache_keys_to_remove:
             self._query_cache.pop(key, None)
-        
+
         logger.debug(f"Invalidated {len(cache_keys_to_remove)} cache entries")
 
     async def safe_delete_document(self, doc_id: str) -> bool:
         """
         Safely delete a document and all its chunks atomically
-        
+
         Args:
             doc_id: Document ID to delete
-            
+
         Returns:
             True if deletion was successful, False otherwise
         """
@@ -746,7 +753,7 @@ class DocumentStorage:
                 .eq("document_id", doc_id)
                 .execute()
             )
-            
+
             if delete_chunks_result.error:
                 logger.error(f"Failed to delete chunks: {delete_chunks_result.error}")
                 return False
@@ -758,14 +765,14 @@ class DocumentStorage:
                 .eq("id", doc_id)
                 .execute()
             )
-            
+
             if delete_doc_result.error:
                 logger.error(f"Failed to delete document: {delete_doc_result.error}")
                 return False
 
             # Clear caches
             self._invalidate_document_cache(doc["file_path"], doc_id)
-            
+
             logger.info(f"Successfully deleted document {doc_id} and all chunks")
             return True
 
