@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 # Authorized Telegram usernames (without @ prefix)
 AUTHORIZED_USERNAMES = [
     "Colin_10NetZero",
-    "colinaulds",  # Colin's actual username
     "Bryan_10NetZero",
     "Joel_10NetZero",
     # Add more team members as needed
