@@ -11,3 +11,4 @@ boto3>=1.35.0
 fastapi>=0.111.0
 uvicorn>=0.30.0
 mem0ai>=0.0.15
+aiohttp>=3.8.0
