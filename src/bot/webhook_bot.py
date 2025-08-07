@@ -122,14 +122,9 @@ class WebhookTelegramBot:
             async with self.application:
                 await self.application.start()
 
-                # Seed initial memories if configured
-                from src.core.memory import seed_initial_memories
-
-                try:
-                    await seed_initial_memories()
-                    logger.info("Initial memories seeded successfully")
-                except Exception as e:
-                    logger.error(f"Failed to seed initial memories: {e}")
+                # Skip memory seeding for now - it's causing timeouts
+                # TODO: Fix async initialization of memory system
+                logger.info("Skipping initial memory seeding to prevent timeouts")
 
                 yield
                 await self.application.stop()
