@@ -12,14 +12,57 @@ services:
     startCommand: "python main.py"  # Runs FastAPI webhook server
     healthCheckPath: /  # Health check endpoint for web service
     envVars:
+      # Required: Bot Authentication
       - key: TELEGRAM_BOT_TOKEN
         sync: false
       - key: OPENAI_API_KEY
         sync: false
+      
+      # Required: Database Services
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_KEY
         sync: false
+      - key: UPSTASH_REDIS_REST_URL
+        sync: false
+      - key: UPSTASH_REDIS_REST_TOKEN
+        sync: false
+      - key: UPSTASH_VECTOR_REST_URL
+        sync: false
+      - key: UPSTASH_VECTOR_REST_TOKEN
+        sync: false
+      
+      # Optional: Graph Memory (Neo4j)
+      - key: NEO4J_URL
+        sync: false
+      - key: NEO4J_USERNAME
+        sync: false
+      - key: NEO4J_PASSWORD
+        sync: false
+      
+      # Optional: Memory Webhooks
+      - key: MEM0_WEBHOOK_URL
+        sync: false
+      - key: MEM0_WEBHOOK_TOKEN
+        sync: false
+      
+      # Configuration
+      - key: VECTOR_NAMESPACE
+        value: "10netzero"
+      - key: VECTOR_TOP_K
+        value: "5"
+      - key: VECTOR_CACHE_ENABLED
+        value: "true"
+      - key: VECTOR_CACHE_TTL
+        value: "300"
+      
+      # Authorization
+      - key: AUTHORIZED_USERNAMES
+        sync: false
+      - key: AUTHORIZED_USER_IDS
+        sync: false
+      
+      # Legacy S3 Support (if needed)
       - key: S3_ACCESS_KEY_ID
         sync: false
       - key: S3_SECRET_ACCESS_KEY
