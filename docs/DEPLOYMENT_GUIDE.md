@@ -67,7 +67,7 @@ cat render.yaml
 #### Required Variables
 ```env
 # Bot Authentication
-TELEGRAM_BOT_TOKEN=7742923819:AAFjSv7DEOCC8oFRwhhvAjH_EEo8uhe7JK8
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token_here
 OPENAI_API_KEY=your_openai_api_key
 
 # Database Services
