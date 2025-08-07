@@ -2,7 +2,7 @@
 
 **Date:** 2025-08-07 02:08:32  
 **Bot:** @TenNetZeroAssistantBot  
-**Token:** 7742923819:AAFjSv7DEOCC8oFRwhhvAjH_EEo8uhe7JK8  
+**Token:** [REDACTED FOR SECURITY]  
 **Deployment:** https://brainbot-v76n.onrender.com
 
 ## Test Summary
@@ -19,7 +19,7 @@
 ### ✅ Telegram API Tests (3/3 Passed)
 
 1. **Bot Information** ✅
-   - Bot ID: 7742923819
+   - Bot ID: [REDACTED]
    - Username: @TenNetZeroAssistantBot
    - Name: 10NZ-Assistant
    - Can join groups: True
