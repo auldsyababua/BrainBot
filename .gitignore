@@ -130,3 +130,31 @@ htmlcov/
 # Backup files
 *.bak
 tasks.md.bak
+
+# MCP (Model Context Protocol) Configuration
+.mcp/.env
+.mcp/*.env
+.mcp/logs/
+
+# Development Tools
+.black.local.toml
+.ruff.local.toml
+pyproject.local.toml
+
+# OS and Editor files
+Thumbs.db
+desktop.ini
+*~
+.project
+.classpath
+.settings/
+
+# Graph Memory and Database files
+*.sqlite
+*.sqlite3
+*.db
+!migrations/*.sql
+
+# Neo4j specific
+neo4j/
+.neo4j/

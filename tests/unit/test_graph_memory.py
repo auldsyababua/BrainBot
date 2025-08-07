@@ -444,7 +444,6 @@ class TestGraphMemorySeeder:
             patch("src.core.graph_memory_seeder.bot_memory") as mock_memory,
             patch("src.core.graph_memory_seeder.graph_seeder") as mock_seeder,
         ):
-
             mock_memory.has_graph = True
             mock_seeder.seed_organizational_relationships = AsyncMock(return_value=True)
 
