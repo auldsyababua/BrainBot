@@ -31,8 +31,10 @@ Think of it as "Git for thoughts" - all versions preserved, intelligently organi
 - Python 3.9+
 - Telegram Bot Token (from [@BotFather](https://t.me/botfather))
 - OpenAI API Key
+- Supabase database (for document storage and audit logs)
 - Upstash Redis database (for conversation persistence)
 - Upstash Vector database (for semantic search)
+- Neo4j database (optional, for graph memory features)
 
 ### 2. Installation
 
@@ -59,16 +61,26 @@ python run_bot.py
 python src/bot/main_polling.py
 ```
 
-### 4. Production Deployment (Webhook Mode)
+### 4. Production Deployment (Render Web Service)
+
+The bot is deployed on Render as a **Web Service** (not a background worker) using webhooks:
 
 ```bash
-# Production uses webhooks - DO NOT use polling in production!
-# Render automatically runs: python webhook_server.py
-# This starts a FastAPI server that receives webhook events
+# Production deployment on Render runs automatically:
+python main.py  # Starts FastAPI webhook server
 
-# To set up webhook after deployment:
-python setup_webhook.py  # or python src/bot/set_webhook.py
+# To verify or update webhook configuration:
+python setup_webhook.py  # Sets webhook to your Render URL
+
+# Current production URL:
+https://brainbot-v76n.onrender.com
 ```
+
+**Important**: The bot uses webhooks in production, not polling. This provides:
+- Real-time message processing
+- Better scalability
+- Lower resource usage
+- Automatic SSL/TLS security
 
 ## 📝 Usage Examples
 
@@ -178,23 +190,38 @@ markdown-brain-bot/
 Environment variables in `.env`:
 
 ```env
-# Required
+# Required: Bot Authentication
 TELEGRAM_BOT_TOKEN=your_bot_token_here
 OPENAI_API_KEY=your_openai_api_key_here
+
+# Required: Database Services
+SUPABASE_URL=your_supabase_url_here
+SUPABASE_KEY=your_supabase_key_here
 UPSTASH_REDIS_REST_URL=your_upstash_redis_url_here
 UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token_here
 UPSTASH_VECTOR_REST_URL=your_upstash_vector_url_here
 UPSTASH_VECTOR_REST_TOKEN=your_upstash_vector_token_here
 
-# Optional
+# Optional: Graph Memory (Neo4j)
+NEO4J_URL=bolt://localhost:7687
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=your_neo4j_password_here
+
+# Optional: Memory Webhooks
+MEM0_WEBHOOK_URL=https://your-webhook-endpoint.com/mem0
+MEM0_WEBHOOK_TOKEN=your-webhook-secret
+
+# Optional: Configuration
 VECTOR_NAMESPACE=10netzero
 VECTOR_TOP_K=5
-
-# Performance Configuration (NEW)
 VECTOR_CACHE_ENABLED=true          # Enable vector search caching
 VECTOR_CACHE_TTL=300              # Cache TTL in seconds (5 minutes)
 CONVERSATION_MAX_MESSAGES=20       # Max messages in conversation window
 CONVERSATION_TTL_HOURS=24         # Hours before conversation expires
+
+# Authorization (JSON arrays)
+AUTHORIZED_USERNAMES='["Colin_10NetZero"]'
+AUTHORIZED_USER_IDS='[your_telegram_user_id]'
 ```
 
 ## 🚢 Deployment
@@ -209,12 +236,14 @@ CONVERSATION_TTL_HOURS=24         # Hours before conversation expires
 2. **Deploy to Render**:
    - Fork this repository to your GitHub account
    - Connect your forked repository to Render
-   - Use the included `render.yaml` configuration
+   - Use the included `render.yaml` configuration (configured as **Web Service**)
    - Set environment variables in Render dashboard:
      - `TELEGRAM_BOT_TOKEN` (from @BotFather)
      - `OPENAI_API_KEY` (from OpenAI)
+     - `SUPABASE_URL` & `SUPABASE_KEY` (from Supabase dashboard)
      - `UPSTASH_REDIS_REST_URL` & `UPSTASH_REDIS_REST_TOKEN`
      - `UPSTASH_VECTOR_REST_URL` & `UPSTASH_VECTOR_REST_TOKEN`
+     - `AUTHORIZED_USERNAMES` & `AUTHORIZED_USER_IDS` (for access control)
 
 3. **Initialize knowledge base** (optional):
    - Run the migration script to populate vector database
@@ -346,18 +375,24 @@ For detailed documentation, see:
 
 ## 🔮 Roadmap
 
-**Current (MVP)**:
-- ✅ Basic auto-organization
-- 🔄 Source tracking for audit trails
-- 🔄 Supabase + Vector sync
+**✅ Current (Production Ready)**:
+- ✅ Smart Rails Enhancement with 70% token reduction
+- ✅ Basic auto-organization with intelligent routing
+- ✅ Source tracking for audit trails via Supabase
+- ✅ Graph memory system with Neo4j integration
+- ✅ Memory webhooks for real-time notifications
+- ✅ Authorization system with user ID-based access control
+- ✅ Production deployment on Render with webhook architecture
+- ✅ FLRTS structure (Field reports, Lists, Reminders, Tasks, Sub-tasks)
+- ✅ Document upload and PDF processing
 
 **Next Phase**:
-- [ ] Auth via Telegram + Supabase (audit trail for all interactions)
-- [ ] FLRTS structure (Field reports, Lists, Reminders, Tasks, Sub-tasks)
-- [ ] Chunking pipeline for all uploaded documents
+- [ ] Monitoring endpoints (/health, /status) for better DevOps
+- [ ] Performance testing at scale
 - [ ] Web UI for viewing vectors/documents
 - [ ] Private namespace support for multi-user isolation
 - [ ] Time awareness (date injection, reminders, timers)
+- [ ] Enhanced error reporting and recovery
 
 **Advanced Features**:
 - [ ] Agent selection in Telegram bot

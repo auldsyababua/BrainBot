@@ -66,8 +66,9 @@ tests/test_results/
 notes/
 !notes/index.md
 
-# Temporary test files (only in scratch directory)
-tests/scratch/
+# Temporary test files and scratch directories
+scratch/
+**/scratch/
 interactive_*.py
 /tmp_test_*.py
 /quick_test_*.py
