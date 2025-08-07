@@ -42,7 +42,6 @@ class TestCommandProcessingIntegration:
                     "src.rails.processors.field_report_processor.FieldReportProcessor"
                 ) as mock_fr_proc,
             ):
-
                 # Setup processor mocks
                 processors = {
                     "lists": mock_list_proc,
@@ -175,7 +174,6 @@ class TestCommandProcessingIntegration:
                         "src.rails.processors.field_report_processor.FieldReportProcessor"
                     ) as mock_fr,
                 ):
-
                     # Setup all processors
                     for mock_class in [mock_list, mock_task, mock_fr]:
                         mock_instance = AsyncMock()
@@ -215,7 +213,6 @@ class TestCommandProcessingIntegration:
                 ) as mock_fr,
                 patch("src.core.llm.resilient_client.chat_completion") as mock_llm,
             ):
-
                 # Setup Rails processors
                 for mock_class, response in [
                     (mock_list, "Lists"),
@@ -250,7 +247,6 @@ class TestCommandProcessingIntegration:
             patch("src.core.llm.search_knowledge_base") as mock_search,
             patch("src.core.llm.resilient_client.chat_completion") as mock_llm,
         ):
-
             # Setup knowledge base search
             mock_search.return_value = [
                 {

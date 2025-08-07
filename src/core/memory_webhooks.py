@@ -162,7 +162,6 @@ class MemoryWebhookHandler:
                     json=payload,
                     headers=self.config.headers,
                 ) as response:
-
                     # Consider 2xx status codes as success
                     if 200 <= response.status < 300:
                         return True

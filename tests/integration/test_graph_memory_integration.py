@@ -305,7 +305,6 @@ class TestGraphMemoryIntegration:
             patch.object(memory_instance, "get_all_memories") as mock_get_all,
             patch.object(memory_instance, "build_knowledge_graph") as mock_build_graph,
         ):
-
             mock_get_all.return_value = mock_memories
             mock_build_graph.return_value = mock_graph
 
