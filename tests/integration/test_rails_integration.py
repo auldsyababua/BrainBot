@@ -97,13 +97,14 @@ class TestRailsIntegration:
 
         # EDGE CASE TESTING ADDITIONS
 
-        # Test 1: Null/None inputs
-        with pytest.raises((ValueError, AttributeError, TypeError)):
-            router.route(None)
+        # Test 1: Null/None inputs - should handle gracefully
+        result = router.route(None)
+        assert result.confidence == 0.0
+        assert result.entity_type is None
 
         # Test 2: Empty string routing
         result = router.route("")
-        assert result.confidence < 0.1 or result.operation is None
+        assert result.confidence == 0.0 and result.operation is None
 
         # Test 3: Maximum length input
         very_long_message = "create list " + "x" * 10000
@@ -700,9 +701,9 @@ class TestRailsIntegration:
 
         # EDGE CASE TESTING ADDITIONS
 
-        # Test 1: Null/None command inputs
-        with pytest.raises((ValueError, AttributeError, TypeError)):
-            router.route(None)
+        # Test 1: Null/None command inputs - should handle gracefully
+        result = router.route(None)
+        assert result is not None and result.confidence == 0.0
 
         # Test 2: Empty command
         result = router.route("/")
@@ -966,9 +967,9 @@ class TestPerformance:
 
         # EDGE CASE TESTING ADDITIONS
 
-        # Test 1: Null/None inputs performance
-        with pytest.raises((ValueError, AttributeError, TypeError)):
-            router.route(None)
+        # Test 1: Null/None inputs performance - should handle gracefully
+        result = router.route(None)
+        assert result is not None and result.confidence == 0.0
 
         # Test 2: Empty string performance
         start = time.perf_counter()

@@ -534,7 +534,7 @@ class KeywordRouter:
         self._command_pattern = re.compile(r"/(\w+)")
         self._whitespace_pattern = re.compile(r"\s+")
         self._name_pattern = re.compile(
-            r'(?:called|named)\s+["\\]?([^"]+\.)["\\]?', re.IGNORECASE
+            r'(?:called|named)\s+["\']?([^"\'\.]+)["\']?', re.IGNORECASE
         )
         self._time_pattern = re.compile(
             r"(tomorrow|today|next week|at \d+[ap]m)", re.IGNORECASE
@@ -542,7 +542,7 @@ class KeywordRouter:
 
         # Entity extraction patterns
         self._list_name_pattern = re.compile(
-            r'(?:called|named)\s+["\\]?([^"]+\.)["\\]?', re.IGNORECASE
+            r'(?:called|named)\s+["\']?([^"\'\.]+)["\']?', re.IGNORECASE
         )
         self._items_pattern = re.compile(
             r"(?:add|remove)\s+(.+?)\s+(?:to|from)", re.IGNORECASE
@@ -561,97 +561,166 @@ class KeywordRouter:
     def preprocess_message(
         self, message: str
     ) -> Tuple[str, Dict[str, Any], Dict[str, float]]:
-        """Extract deterministic syntax markers before routing."""
+        """Extract deterministic syntax markers before routing.
+
+        Phase 2.1 Enhancement: 100% confidence extraction of @mentions and /commands
+        before any LLM processing. This ensures deterministic behavior for explicit syntax.
+
+        Returns:
+            Tuple of (cleaned_message, prefilled_data, confidence_scores)
+            - cleaned_message: Message with extracted syntax removed
+            - prefilled_data: Extracted entities with 100% confidence
+            - confidence_scores: Individual confidence scores for each extraction
+        """
         if not message:
             return "", {}, {}
+
+        # Track what we've extracted for logging
+        extracted_elements = []
+
         # Memory optimization: Use string interning and avoid temporary strings
         prefilled = {}
         confidences = {}
         cleaned_message = message
 
         # Extract @mentions with validation using pre-compiled pattern
+        # T2.1.1: 100% confidence extraction for @mentions
         at_mentions = self._at_mention_pattern.findall(message)
         if at_mentions:
             valid_users = []
+            invalid_mentions = []  # Track invalid mentions for potential LLM processing
+
             for mention in at_mentions:
                 mention_lower = mention.lower()
                 canonical = self.synonym_lib.user_aliases.get(mention_lower)
                 if canonical and canonical not in valid_users:
                     valid_users.append(canonical)
-                # Use efficient string replacement
+                    extracted_elements.append(f"@{mention} -> {canonical}")
+                elif not canonical:
+                    # Store invalid mentions for context
+                    invalid_mentions.append(mention)
+
+                # Always remove @mentions from message for clean LLM input
                 cleaned_message = cleaned_message.replace(f"@{mention}", "")
 
             if valid_users:
                 prefilled["assignee"] = (
                     valid_users[0] if len(valid_users) == 1 else valid_users
                 )
-                confidences["assignee_confidence"] = 1.0
+                confidences["assignee_confidence"] = (
+                    1.0  # 100% confidence for explicit @mentions
+                )
+                prefilled["extraction_type"] = "explicit_mention"
+
+            if invalid_mentions:
+                prefilled["unresolved_mentions"] = invalid_mentions
 
         # Extract /commands using pre-compiled pattern
+        # T2.1.1: 100% confidence extraction for /commands
         command_match = self._command_pattern.search(message)
         if command_match:
             command = command_match.group(1).lower()
+            extracted_elements.append(f"/{command}")
 
-            # Entity type commands
+            # Entity type commands with 100% confidence
             if command in ["lists", "list", "l"]:
                 prefilled["entity_type"] = "lists"
                 confidences["entity_confidence"] = 1.0
+                prefilled["command_source"] = f"/{command}"
             elif command in ["tasks", "task", "remind", "t", "tnr"]:
                 prefilled["entity_type"] = "tasks"
                 confidences["entity_confidence"] = 1.0
+                prefilled["command_source"] = f"/{command}"
             elif command in ["reports", "report", "fr"]:
                 prefilled["entity_type"] = "field_reports"
                 confidences["entity_confidence"] = 1.0
+                prefilled["command_source"] = f"/{command}"
 
-            # Operation commands
+            # Operation commands with 100% confidence for both entity and operation
             elif command in ["newlist", "addlist"]:
                 prefilled["entity_type"] = "lists"
                 prefilled["operation"] = "create"
                 confidences["entity_confidence"] = 1.0
                 confidences["operation_confidence"] = 1.0
+                prefilled["command_source"] = f"/{command}"
+                prefilled["direct_execution"] = True  # Mark for direct execution
             elif command in ["newtask", "newreminder"]:
                 prefilled["entity_type"] = "tasks"
                 prefilled["operation"] = "create"
                 confidences["entity_confidence"] = 1.0
                 confidences["operation_confidence"] = 1.0
+                prefilled["command_source"] = f"/{command}"
+                prefilled["direct_execution"] = True
             elif command == "addtolist":
                 prefilled["entity_type"] = "lists"
                 prefilled["operation"] = "add_items"
                 confidences["entity_confidence"] = 1.0
                 confidences["operation_confidence"] = 1.0
+                prefilled["command_source"] = f"/{command}"
+                prefilled["direct_execution"] = True
             elif command == "removefromlist":
                 prefilled["entity_type"] = "lists"
                 prefilled["operation"] = "remove_items"
                 confidences["entity_confidence"] = 1.0
                 confidences["operation_confidence"] = 1.0
+                prefilled["command_source"] = f"/{command}"
+                prefilled["direct_execution"] = True
             elif command == "showlist":
                 prefilled["entity_type"] = "lists"
                 prefilled["operation"] = "read"
                 confidences["entity_confidence"] = 1.0
                 confidences["operation_confidence"] = 1.0
+                prefilled["command_source"] = f"/{command}"
+                prefilled["direct_execution"] = True
             elif command in ["showtasks", "showmytasks", "showmyreminders"]:
                 prefilled["entity_type"] = "tasks"
                 prefilled["operation"] = "read"
                 confidences["entity_confidence"] = 1.0
                 confidences["operation_confidence"] = 1.0
+                prefilled["command_source"] = f"/{command}"
+                prefilled["direct_execution"] = True
             elif command == "completetask":
                 prefilled["entity_type"] = "tasks"
                 prefilled["operation"] = "complete"
                 confidences["entity_confidence"] = 1.0
                 confidences["operation_confidence"] = 1.0
+                prefilled["command_source"] = f"/{command}"
+                prefilled["direct_execution"] = True
             elif command == "reassigntask":
                 prefilled["entity_type"] = "tasks"
                 prefilled["operation"] = "reassign"
                 confidences["entity_confidence"] = 1.0
                 confidences["operation_confidence"] = 1.0
+                prefilled["command_source"] = f"/{command}"
+                prefilled["direct_execution"] = True
 
-            # Remove the command from the message
+            # Remove the command from the message for clean LLM input
             cleaned_message = cleaned_message.replace(
                 command_match.group(0), ""
             ).strip()
 
+        # Extract additional deterministic patterns before LLM processing
+        # T2.1.1: Extract time references with high confidence
+        time_matches = self._time_pattern.findall(cleaned_message)
+        if time_matches:
+            prefilled["time_references"] = time_matches
+            prefilled["has_temporal_context"] = True
+
+        # T2.1.1: Extract site references for field reports
+        site_matches = self._site_pattern.findall(cleaned_message)
+        if site_matches:
+            # Normalize site names to title case
+            prefilled["site_references"] = [site.title() for site in site_matches]
+            if len(site_matches) == 1:
+                prefilled["site"] = site_matches[0].title()
+
         # Clean up multiple spaces and trim - use simple string ops instead of regex
         cleaned_message = " ".join(cleaned_message.split())
+
+        # Log extracted elements for debugging
+        if extracted_elements:
+            logger.debug(f"Preprocessing extracted: {', '.join(extracted_elements)}")
+            prefilled["preprocessing_extractions"] = extracted_elements
 
         return cleaned_message, prefilled, confidences
 
@@ -686,27 +755,38 @@ class KeywordRouter:
         cleaned_message, prefilled_data, confidences = self.preprocess_message(message)
         message_lower = cleaned_message.lower()
 
-        # If we have high confidence prefilled data, use it
+        # T2.1.1: Direct execution path for 100% confidence routes
+        # If we have high confidence prefilled data from preprocessing, use it
         if prefilled_data.get("entity_type") and prefilled_data.get("operation"):
             entity_type = prefilled_data["entity_type"]
             operation = prefilled_data["operation"]
             config = self.operations.get(entity_type, {}).get(operation, {})
 
+            # Calculate combined confidence
+            combined_confidence = min(
+                confidences.get("entity_confidence", 1.0),
+                confidences.get("operation_confidence", 1.0),
+            )
+
+            # T2.1.1: Use direct execution for 100% confidence (bypass LLM)
+            use_direct = (
+                prefilled_data.get("direct_execution", False)
+                or combined_confidence == 1.0
+            )
+
             return RouteResult(
                 entity_type=entity_type,
                 operation=operation,
                 function_name=config.get("function"),
-                confidence=min(
-                    confidences.get("entity_confidence", 1.0),
-                    confidences.get("operation_confidence", 1.0),
-                ),
+                confidence=combined_confidence,
                 extracted_data={
                     **self._extract_data(
                         cleaned_message, entity_type, operation, message_lower
                     ),
                     **prefilled_data,
+                    "cleaned_message": cleaned_message,  # Include cleaned message for LLM
                 },
-                use_direct_execution=True,
+                use_direct_execution=use_direct,
                 target_users=(
                     [prefilled_data["assignee"]]
                     if isinstance(prefilled_data.get("assignee"), str)
@@ -876,6 +956,21 @@ class KeywordRouter:
                 name_match = self._list_name_pattern.search(message)
                 if name_match:
                     data["suggested_name"] = name_match.group(1).strip()
+                else:
+                    # Try to extract a reasonable list name from context
+                    # Look for words after "list" that aren't site names
+                    list_match = re.search(r"\blist\s+(\w+)", message_lower)
+                    if list_match:
+                        potential_name = list_match.group(1)
+                        # Don't use site names as list names
+                        if potential_name not in [
+                            "for",
+                            "at",
+                            "in",
+                            "to",
+                            "from",
+                        ] and not self._site_pattern.search(potential_name):
+                            data["suggested_name"] = potential_name
 
             elif operation in ["add_items", "remove_items"]:
                 # Extract items after "add" or "remove"
