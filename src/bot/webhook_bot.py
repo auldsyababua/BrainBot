@@ -21,8 +21,14 @@ Usage:
 """
 
 import logging
+import time
+import os
+import json
+import psutil
 from contextlib import asynccontextmanager
 from http import HTTPStatus
+from datetime import timedelta
+from typing import Dict, Any
 
 from fastapi import FastAPI, Request, Response
 from telegram import Update
@@ -70,6 +76,9 @@ class WebhookTelegramBot:
         """
         logger.info("Initializing Webhook Telegram Bot")
 
+        # Track startup time for uptime calculation
+        self.startup_time = time.time()
+
         # Initialize the application with webhook configuration
         self.application = (
             Application.builder()
@@ -113,6 +122,119 @@ class WebhookTelegramBot:
 
         logger.info("Bot handlers registered successfully")
 
+    async def _check_database_connectivity(self) -> Dict[str, Any]:
+        """Check database connectivity (Redis and Vector Store)."""
+        redis_status = {"status": "unknown", "error": None, "response_time_ms": None}
+        vector_status = {"status": "unknown", "error": None, "response_time_ms": None}
+
+        # Test Redis connectivity
+        try:
+            from storage.redis_store import RedisStore
+
+            redis_store = RedisStore()
+
+            start_time = time.time()
+            # Simple ping test
+            test_key = "health_check_test"
+            redis_store.redis.set(test_key, "test", ex=10)  # 10 second expiry
+            result = redis_store.redis.get(test_key)
+            redis_store.redis.delete(test_key)
+            response_time = (time.time() - start_time) * 1000
+
+            redis_status = {
+                "status": "healthy" if result == "test" else "degraded",
+                "error": None,
+                "response_time_ms": round(response_time, 2),
+            }
+        except Exception as e:
+            redis_status = {
+                "status": "unhealthy",
+                "error": str(e),
+                "response_time_ms": None,
+            }
+
+        # Test Vector Store connectivity
+        try:
+            from storage.vector_store import VectorStore
+
+            vector_store = VectorStore()
+
+            start_time = time.time()
+            # Try to get info from the vector index
+            info = vector_store.index.info()
+            response_time = (time.time() - start_time) * 1000
+
+            vector_status = {
+                "status": "healthy",
+                "error": None,
+                "response_time_ms": round(response_time, 2),
+                "dimension": info.get("dimension"),
+                "total_data_count": info.get("totalDataCount"),
+            }
+        except Exception as e:
+            vector_status = {
+                "status": "unhealthy",
+                "error": str(e),
+                "response_time_ms": None,
+            }
+
+        return {"redis": redis_status, "vector_store": vector_status}
+
+    async def _check_memory_system(self) -> Dict[str, Any]:
+        """Check memory system (mem0) connectivity."""
+        try:
+            from core.memory import BotMemory
+
+            start_time = time.time()
+            # Try to initialize memory system
+            BotMemory()
+            response_time = (time.time() - start_time) * 1000
+
+            return {
+                "status": "healthy",
+                "error": None,
+                "response_time_ms": round(response_time, 2),
+            }
+        except Exception as e:
+            return {"status": "unhealthy", "error": str(e), "response_time_ms": None}
+
+    def _get_system_metrics(self) -> Dict[str, Any]:
+        """Get system resource metrics."""
+        try:
+            # Memory usage
+            memory = psutil.virtual_memory()
+
+            # CPU usage (1 second average)
+            cpu_percent = psutil.cpu_percent(interval=1)
+
+            # Disk usage for current directory
+            disk = psutil.disk_usage("/")
+
+            # Uptime
+            uptime_seconds = time.time() - self.startup_time
+
+            return {
+                "memory": {
+                    "total_mb": round(memory.total / (1024 * 1024), 2),
+                    "used_mb": round(memory.used / (1024 * 1024), 2),
+                    "available_mb": round(memory.available / (1024 * 1024), 2),
+                    "percent_used": memory.percent,
+                },
+                "cpu": {"percent_used": cpu_percent},
+                "disk": {
+                    "total_gb": round(disk.total / (1024 * 1024 * 1024), 2),
+                    "used_gb": round(disk.used / (1024 * 1024 * 1024), 2),
+                    "free_gb": round(disk.free / (1024 * 1024 * 1024), 2),
+                    "percent_used": round((disk.used / disk.total) * 100, 2),
+                },
+                "uptime": {
+                    "seconds": round(uptime_seconds, 2),
+                    "human_readable": str(timedelta(seconds=int(uptime_seconds))),
+                },
+            }
+        except Exception as e:
+            return {"error": f"Failed to get system metrics: {str(e)}"}
+
     def _create_fastapi_app(self) -> FastAPI:
         """Create FastAPI app for webhook mode."""
 
@@ -138,8 +260,184 @@ class WebhookTelegramBot:
 
         @app.get("/")
         async def root():
-            """Health check endpoint."""
+            """Basic health check endpoint."""
             return {"status": "ok", "bot": "Markdown Brain Bot", "mode": "webhook"}
+
+        @app.get("/health")
+        async def health_check():
+            """
+            Comprehensive health check endpoint for Render and monitoring.
+            Returns detailed service health including database connectivity and system metrics.
+            """
+            logger.info("Health check endpoint called")
+
+            try:
+                # Check database connectivity
+                db_health = await self._check_database_connectivity()
+
+                # Check memory system
+                memory_health = await self._check_memory_system()
+
+                # Get system metrics
+                system_metrics = self._get_system_metrics()
+
+                # Determine overall health status
+                redis_healthy = db_health["redis"]["status"] == "healthy"
+                vector_healthy = db_health["vector_store"]["status"] == "healthy"
+                memory_healthy = memory_health["status"] == "healthy"
+
+                overall_status = (
+                    "healthy"
+                    if (redis_healthy and vector_healthy and memory_healthy)
+                    else "degraded"
+                )
+
+                if not redis_healthy or not vector_healthy:
+                    overall_status = "unhealthy"
+
+                health_response = {
+                    "status": overall_status,
+                    "timestamp": time.time(),
+                    "uptime_seconds": round(time.time() - self.startup_time, 2),
+                    "services": {"database": db_health, "memory": memory_health},
+                    "system": system_metrics,
+                    "bot_info": {
+                        "name": "Markdown Brain Bot",
+                        "mode": "webhook",
+                        "version": os.getenv("APP_VERSION", "1.0.0"),
+                    },
+                }
+
+                # Return appropriate HTTP status code
+                status_code = (
+                    200
+                    if overall_status == "healthy"
+                    else (503 if overall_status == "unhealthy" else 200)
+                )
+
+                return Response(
+                    content=json.dumps(health_response),
+                    status_code=status_code,
+                    media_type="application/json",
+                )
+
+            except Exception as e:
+                logger.error(f"Health check failed: {e}", exc_info=True)
+                error_response = {
+                    "status": "unhealthy",
+                    "timestamp": time.time(),
+                    "error": str(e),
+                    "bot_info": {"name": "Markdown Brain Bot", "mode": "webhook"},
+                }
+                return Response(
+                    content=json.dumps(error_response),
+                    status_code=503,
+                    media_type="application/json",
+                )
+
+        @app.get("/status")
+        async def status_check():
+            """
+            Detailed status endpoint with bot status, webhook info, and system metrics.
+            Includes performance metrics and operational information.
+            """
+            logger.info("Status endpoint called")
+
+            try:
+                # Get performance metrics
+                from src.core.benchmarks import get_performance_monitor
+
+                monitor = get_performance_monitor()
+
+                # Get webhook and bot information
+                bot_info = self.application.bot
+
+                # Get system metrics
+                system_metrics = self._get_system_metrics()
+
+                # Get database health
+                db_health = await self._check_database_connectivity()
+
+                # Get memory system health
+                memory_health = await self._check_memory_system()
+
+                # Get performance summary
+                perf_summary = monitor.get_performance_summary(
+                    metric_names=[
+                        "vector_search_duration",
+                        "llm_call_duration",
+                        "conversation_size",
+                        "http_request_duration",
+                        "benchmark_process_message",
+                    ],
+                    time_range_minutes=60,
+                )
+
+                status_response = {
+                    "status": "operational",
+                    "timestamp": time.time(),
+                    "uptime": {
+                        "seconds": round(time.time() - self.startup_time, 2),
+                        "human_readable": str(
+                            timedelta(seconds=int(time.time() - self.startup_time))
+                        ),
+                    },
+                    "bot": {
+                        "id": bot_info.id if hasattr(bot_info, "id") else None,
+                        "username": (
+                            bot_info.username if hasattr(bot_info, "username") else None
+                        ),
+                        "first_name": (
+                            bot_info.first_name
+                            if hasattr(bot_info, "first_name")
+                            else None
+                        ),
+                        "can_join_groups": (
+                            bot_info.can_join_groups
+                            if hasattr(bot_info, "can_join_groups")
+                            else None
+                        ),
+                        "can_read_all_group_messages": (
+                            bot_info.can_read_all_group_messages
+                            if hasattr(bot_info, "can_read_all_group_messages")
+                            else None
+                        ),
+                    },
+                    "webhook": {
+                        "mode": "webhook",
+                        "webhook_url": os.getenv("WEBHOOK_URL", "not_configured"),
+                        "webhook_path": "/webhook",
+                    },
+                    "services": {"database": db_health, "memory": memory_health},
+                    "performance": {
+                        "summary": perf_summary,
+                        "description": {
+                            "cache_hit_rate": "Percentage of vector searches served from cache",
+                            "total_tokens_used": "Total OpenAI API tokens consumed",
+                            "vector_search_duration": "Time taken for vector searches (seconds)",
+                            "llm_call_duration": "Time taken for LLM API calls (seconds)",
+                            "conversation_size": "Number of messages in conversations",
+                            "http_request_duration": "Time taken for HTTP requests (seconds)",
+                        },
+                    },
+                    "system": system_metrics,
+                    "environment": {
+                        "python_version": os.getenv("PYTHON_VERSION", "unknown"),
+                        "app_version": os.getenv("APP_VERSION", "1.0.0"),
+                        "environment": os.getenv("ENVIRONMENT", "production"),
+                    },
+                }
+
+                return status_response
+
+            except Exception as e:
+                logger.error(f"Status check failed: {e}", exc_info=True)
+                return {
+                    "status": "error",
+                    "timestamp": time.time(),
+                    "error": str(e),
+                    "bot_info": {"name": "Markdown Brain Bot", "mode": "webhook"},
+                }
 
         @app.get("/metrics")
         async def get_metrics():
