@@ -17,6 +17,7 @@ from core.config import (
     CONVERSATION_TTL_HOURS,
 )
 from src.rails.router import KeywordRouter, RouteResult
+from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
 
 # Legacy tools.py imports removed - production only uses Supabase + Vector
 # from src.core.tools import (...) - REMOVED
@@ -253,7 +254,7 @@ _MAX_CACHE_SIZE = 100
 _CACHE_TTL_SECONDS = 3600
 _cache_timestamps = {}
 
-# Initialize the Rails KeywordRouter
+# Initialize the Rails KeywordRouter and DynamicPromptGenerator
 try:
     # Import storage service to get supabase client
     from storage.storage_service import DocumentStorage
@@ -261,9 +262,13 @@ try:
     storage = DocumentStorage()
     keyword_router = KeywordRouter(supabase_client=storage.supabase)
     # Load user aliases asynchronously on first use
+
+    # Initialize dynamic prompt generator for T2.1.2
+    prompt_generator = DynamicPromptGenerator()
 except Exception as e:
-    logging.getLogger(__name__).error(f"Failed to initialize KeywordRouter: {e}")
+    logging.getLogger(__name__).error(f"Failed to initialize Rails components: {e}")
     keyword_router = None
+    prompt_generator = None
 
 
 async def get_conversation_history(
@@ -358,14 +363,18 @@ async def search_knowledge_base(
 
 
 async def _process_rails_command(
-    route_result: RouteResult, chat_id: str
+    route_result: RouteResult, chat_id: str, original_message: str = None
 ) -> Optional[str]:
     """
     Process a command routed by the KeywordRouter.
 
+    Phase 2.1 Enhancement: Handles both direct execution (100% confidence)
+    and LLM-assisted execution with cleaned messages.
+
     Args:
         route_result: The RouteResult from the router.
         chat_id: The ID of the chat.
+        original_message: The original user message before preprocessing.
 
     Returns:
         The response from the processor, or None if processing fails.
@@ -376,6 +385,9 @@ async def _process_rails_command(
     entity_type = route_result.entity_type
     operation = route_result.operation
     extracted_data = route_result.extracted_data or {}
+
+    # T2.1.1: Use cleaned message if available
+    cleaned_message = extracted_data.get("cleaned_message", original_message)
 
     if not entity_type:
         logger.warning("Router returned a result without an entity type.")
@@ -404,7 +416,7 @@ async def _process_rails_command(
         if not processor_instance:
             return f"Error: Command processor for '{entity_type}' is not available."
 
-        # Prepare parameters for the processor
+        # T2.1.1: Prepare parameters with cleaned data for processor
         params = {
             "operation": operation,
             "chat_id": chat_id,
@@ -414,6 +426,9 @@ async def _process_rails_command(
                 if hasattr(route_result, "target_users")
                 else []
             ),
+            "confidence": route_result.confidence,
+            "use_direct_execution": route_result.use_direct_execution,
+            "cleaned_message": cleaned_message,  # Pass cleaned message to processor
         }
 
         # Execute the processor
@@ -435,34 +450,117 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         f"Processing message for chat_id={chat_id}: {(user_message or '')[:50]}..."
     )
 
-    # ** Rails Router Integration **
+    # ** Enhanced Rails Router Integration (Phase 2.1) **
     # Try routing all messages through the keyword router first
     if keyword_router:
         try:
             # Ensure aliases are loaded before routing
             await keyword_router.ensure_aliases_loaded()
             route_result = keyword_router.route(user_message)
-            # Only process if we have high confidence in the route
-            if (
-                route_result
-                and route_result.entity_type
-                and route_result.confidence >= 0.7
-            ):
-                logger.info(f"Rails router found a match: {route_result}")
-                response = await _process_rails_command(route_result, chat_id)
-                if response:
-                    return response
-                else:
-                    logger.warning(
-                        "Rails command processing failed. Falling back to LLM."
-                    )
-            elif route_result and route_result.entity_type:
-                logger.info(
-                    f"Rails router confidence too low ({route_result.confidence}), falling back to LLM"
+
+            # T2.1.2: Enhanced execution strategy based on dynamic prompting
+            if route_result and route_result.entity_type and prompt_generator:
+                # Build prompt context from route result
+                prompt_context = PromptContext(
+                    entity_type=route_result.entity_type,
+                    operation=route_result.operation,
+                    extracted_data=route_result.extracted_data or {},
+                    confidence_scores={
+                        "entity_confidence": route_result.entity_confidence
+                        or route_result.confidence,
+                        "operation_confidence": route_result.operation_confidence
+                        or route_result.confidence,
+                        "assignee_confidence": route_result.assignee_confidence or 0.0,
+                    },
+                    cleaned_message=(
+                        route_result.extracted_data.get("cleaned_message", user_message)
+                        if route_result.extracted_data
+                        else user_message
+                    ),
+                    original_message=user_message,
+                    has_mentions="@" in user_message,
+                    has_commands="/" in user_message,
+                    missing_fields=_determine_missing_fields(route_result),
                 )
+
+                # Determine execution strategy using T2.1.2 logic
+                execution_strategy = prompt_generator.determine_execution_strategy(
+                    prompt_context
+                )
+
+                # Log performance metrics
+                metrics = prompt_generator.generate_performance_metrics(prompt_context)
+                logger.info(
+                    f"T2.1.2 Execution Strategy: {execution_strategy} | Metrics: {metrics}"
+                )
+
+                if execution_strategy == "direct":
+                    # Direct execution without LLM
+                    logger.info(
+                        f"Direct execution (confidence={route_result.confidence}): {route_result.entity_type}.{route_result.operation}"
+                    )
+                    response = await _process_rails_command(
+                        route_result, chat_id, user_message
+                    )
+                    if response:
+                        logger.info(
+                            f"Direct execution successful, saved ~{metrics['estimated_tokens']} tokens"
+                        )
+                        return response
+                    else:
+                        logger.warning(
+                            "Direct execution failed. Falling back to focused LLM."
+                        )
+                        execution_strategy = "focused_llm"
+
+                if (
+                    execution_strategy == "focused_llm"
+                    and route_result.confidence >= 0.7
+                ):
+                    # Use focused LLM with optimized prompts
+                    logger.info(
+                        f"Focused LLM execution for {route_result.entity_type}.{route_result.operation}"
+                    )
+                    # Store context for use in LLM processing
+                    route_result.prompt_context = prompt_context
+                    route_result.dynamic_prompt = (
+                        prompt_generator.generate_optimized_system_prompt(
+                            prompt_context
+                        )
+                    )
+                    # Process with Rails command using focused approach
+                    response = await _process_rails_command(
+                        route_result, chat_id, user_message
+                    )
+                    if response:
+                        return response
+                    else:
+                        logger.warning(
+                            "Focused execution failed. Falling back to full LLM."
+                        )
+                elif execution_strategy == "full_llm":
+                    logger.info(
+                        f"Full LLM analysis required (confidence={route_result.confidence})"
+                    )
+                    # Continue to standard LLM processing
+                    if route_result.extracted_data and route_result.extracted_data.get(
+                        "cleaned_message"
+                    ):
+                        user_message = route_result.extracted_data["cleaned_message"]
+                        logger.debug(f"Using cleaned message for LLM: {user_message}")
+            elif route_result and route_result.entity_type:
+                # Low confidence but has entity
+                logger.info(
+                    f"Rails router confidence too low ({route_result.confidence}), using LLM with context"
+                )
+                if route_result.extracted_data and route_result.extracted_data.get(
+                    "cleaned_message"
+                ):
+                    user_message = route_result.extracted_data["cleaned_message"]
+                    logger.debug(f"Using cleaned message for LLM: {user_message}")
         except Exception as e:
             logger.error(f"Rails router failed: {e}. Falling back to LLM.")
-    # ** End Rails Router Integration **
+    # ** End Enhanced Rails Router Integration **
 
     # Track conversation size
     monitor = get_performance_monitor()
@@ -530,10 +628,40 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         # Track conversation size
         monitor.track_conversation_size(chat_id, len(messages))
 
-        # If we have relevant context, add it to the user message
+        # T2.1.2: Build enhanced message with dynamic prompting
         enhanced_message = user_message
+
+        # Check if we have a route result with dynamic prompt context
+        if keyword_router and hasattr(locals(), "route_result") and route_result:
+            if hasattr(route_result, "prompt_context") and route_result.prompt_context:
+                # Use the pre-generated dynamic prompt
+                if hasattr(route_result, "dynamic_prompt"):
+                    enhanced_message = f"[System Instruction: {route_result.dynamic_prompt}]\n\n{user_message}"
+
+                # Add extracted context
+                if route_result.extracted_data:
+                    context_info = []
+                    if route_result.extracted_data.get("assignee"):
+                        context_info.append(
+                            f"Assignee: {route_result.extracted_data['assignee']}"
+                        )
+                    if route_result.extracted_data.get("site"):
+                        context_info.append(
+                            f"Site: {route_result.extracted_data['site']}"
+                        )
+                    if route_result.extracted_data.get("time_references"):
+                        context_info.append(
+                            f"Time: {', '.join(route_result.extracted_data['time_references'])}"
+                        )
+
+                    if context_info:
+                        enhanced_message += "\n\n[Extracted Context]\n" + "\n".join(
+                            context_info
+                        )
+
+        # Add knowledge base context if available
         if context_parts:
-            enhanced_message = f"{user_message}\n\n[System: Found relevant context from knowledge base]\n{chr(10).join(context_parts)}"
+            enhanced_message += f"\n\n[System: Found relevant context from knowledge base]\n{chr(10).join(context_parts)}"
 
         # Add memory context if available
         if memory_context:
@@ -791,6 +919,48 @@ def _create_weakref_safe_copy(obj):
     elif isinstance(obj, list):
         return [item for item in obj if not callable(item)]
     return obj
+
+
+def _determine_missing_fields(route_result: RouteResult) -> List[str]:
+    """Determine which required fields are missing from the route result.
+
+    T2.1.2: Helper function to identify missing fields for dynamic prompting.
+    """
+    missing = []
+
+    if not route_result.entity_type or not route_result.operation:
+        return ["entity_type", "operation"]
+
+    extracted = route_result.extracted_data or {}
+
+    # Check based on entity type and operation
+    if route_result.entity_type == "lists":
+        if (
+            route_result.operation == "create"
+            and "list_name" not in extracted
+            and "suggested_name" not in extracted
+        ):
+            missing.append("list_name")
+        elif route_result.operation in ["add_items", "remove_items"]:
+            if "list_name" not in extracted:
+                missing.append("list_name")
+            if "items" not in extracted:
+                missing.append("items")
+    elif route_result.entity_type == "tasks":
+        if route_result.operation == "create" and "task_title" not in extracted:
+            missing.append("task_title")
+        elif route_result.operation == "reassign":
+            if "new_assignee" not in extracted and "assignee" not in extracted:
+                missing.append("new_assignee")
+    elif route_result.entity_type == "field_reports":
+        if (
+            route_result.operation == "create"
+            and "site" not in extracted
+            and "site_references" not in extracted
+        ):
+            missing.append("site")
+
+    return missing
 
 
 async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str, Any]:

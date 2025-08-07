@@ -55,9 +55,9 @@ class TestSmartRailsPerformance:
 
         # EDGE CASE TESTING ADDITIONS
 
-        # Test 1: Null/None inputs
-        with pytest.raises((ValueError, AttributeError, TypeError)):
-            router.route(None)
+        # Test 1: Null/None inputs - should handle gracefully
+        result = router.route(None)
+        assert result is not None and result.confidence == 0.0
 
         # Test 2: Empty string performance
         empty_times = []
@@ -452,9 +452,9 @@ class TestSmartRailsPerformance:
 
         # EDGE CASE TESTING ADDITIONS
 
-        # Test 1: Null/None confidence inputs
-        with pytest.raises((ValueError, AttributeError, TypeError)):
-            router.route(None)
+        # Test 1: Null/None confidence inputs - should handle gracefully
+        result = router.route(None)
+        assert result is not None and result.confidence == 0.0
 
         # Test 2: Empty string confidence
         empty_times = []
