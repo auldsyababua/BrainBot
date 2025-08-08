@@ -48,7 +48,7 @@ export async function getMetrics(): Promise<PerformanceStats> {
   }
 }
 // Smart Rails Direct Commands
-export async function executeDirectCommand(command: string, params: any = {}): Promise<any> {
+export async function executeDirectCommand(command: string, params: Record<string, unknown> = {}): Promise<unknown> {
   try {
     const response = await fetch(`${BASE_URL}/webhook`, {
       method: 'POST',
@@ -242,7 +242,7 @@ export async function getList(listId: string): Promise<List> {
   }
 }
 // Webhook Communication
-export async function sendWebhookMessage(message: string): Promise<any> {
+export async function sendWebhookMessage(message: string): Promise<unknown> {
   try {
     const response = await fetch(`${BASE_URL}/webhook`, {
       method: 'POST',

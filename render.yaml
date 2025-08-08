@@ -74,3 +74,47 @@ services:
       - key: S3_ENDPOINT_URL
         sync: false
     autoDeploy: true
+  
+  # Telegram Mini App - Static Site
+  - type: static
+    name: telegram-mini-app
+    runtime: static
+    buildCommand: "cd telegram-mini-app && npm install && npm run build"
+    staticPublishPath: telegram-mini-app/dist
+    pullRequestPreviewsEnabled: true
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-XSS-Protection
+        value: 1; mode=block
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: VITE_TELEGRAM_BOT_USERNAME
+        sync: false
+      - key: VITE_TELEGRAM_WEB_APP_URL
+        sync: false
+      - key: VITE_API_URL
+        sync: false
+    autoDeploy: true
