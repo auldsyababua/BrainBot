@@ -1,5 +1,5 @@
 import React, { useEffect, useState, createContext, useContext } from 'react';
-import { checkHealth, getStatus, getMetrics, getTasks, getList } from '../services/brainbotApi';
+import { checkHealth, getMetrics, getTasks, getList } from '../services/brainbotApi';
 export interface TelegramUser {
   id: number;
   first_name: string;

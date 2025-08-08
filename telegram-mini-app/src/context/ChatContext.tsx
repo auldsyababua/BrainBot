@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext, useContext, memo } from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 export type AgentType = 'brainbot-rag' | 'smart-rails' | 'memory-assistant' | 'field-reports';
 export interface AgentOption {
   id: AgentType;

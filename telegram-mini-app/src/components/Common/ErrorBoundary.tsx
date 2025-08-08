@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component, ReactNode, ErrorInfo } from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 interface ErrorBoundaryProps {
   children: ReactNode;

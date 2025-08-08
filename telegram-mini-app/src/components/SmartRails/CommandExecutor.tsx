@@ -4,7 +4,7 @@ import { ConfidenceIndicator } from './ConfidenceIndicator';
 import { TokenSavingsDisplay } from './TokenSavingsDisplay';
 import { useSmartRailsContext } from '../../context/SmartRailsContext';
 interface CommandExecutorProps {
-  onCommand: (command: string) => Promise<any>;
+  onCommand: (command: string) => Promise<unknown>;
   showConfidence: boolean;
   enableDirectMode: boolean;
 }
