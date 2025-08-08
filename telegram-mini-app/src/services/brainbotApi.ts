@@ -1,6 +1,8 @@
 import { Task, List, BotStatus, PerformanceStats } from '../context/AppContext';
-// Base URL for the BrainBot API
-const BASE_URL = 'https://brainbot-v76n.onrender.com';
+import { buildUrl } from '../config/api';
+
+// Base URL for the BrainBot API - uses environment variable or fallback
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://brainbot-v76n.onrender.com';
 // Health & Status
 export async function checkHealth(): Promise<{
   status: 'healthy' | 'degraded' | 'unhealthy';
