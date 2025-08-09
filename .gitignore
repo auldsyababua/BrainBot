@@ -178,3 +178,4 @@ desktop.ini
 # Neo4j specific
 neo4j/
 .neo4j/
+.mcp/config.json*
