@@ -18,7 +18,7 @@ binding = "VZ"
 index_name = "brainbot-docs"
 
 [vars]
-PROCESS_URL = "https://<render-app>/process"
+PROCESS_URL = "https://brainbot-v76n.onrender.com/process"
 CF_PROXY_SECRET = ""
 AIGW_URL = "https://gateway.ai.cloudflare.com/v1/<account>/<brainbot-gw>"
 AIGW_PROVIDER = "openai"
