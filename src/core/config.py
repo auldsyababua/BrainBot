@@ -24,6 +24,10 @@ METRICS_IP_ALLOWLIST = (
     else []
 )
 
+# Cloudflare proxy configuration (HMAC verification for /process endpoint)
+# Shared secret between Cloudflare Consumer Worker and this service
+CF_PROXY_SECRET = os.getenv("CF_PROXY_SECRET")
+
 # OpenAI configuration
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:

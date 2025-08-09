@@ -30,7 +30,7 @@ from http import HTTPStatus
 from datetime import timedelta
 from typing import Dict, Any
 
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request, Response, HTTPException, Header
 from telegram import Update
 from telegram.ext import (
     Application,
@@ -41,6 +41,7 @@ from telegram.ext import (
 
 from core.config import TELEGRAM_BOT_TOKEN
 from core.config import TELEGRAM_WEBHOOK_SECRET
+from core.config import CF_PROXY_SECRET
 from core.benchmarks import PerformanceMiddleware
 from core.config import METRICS_AUTH_TOKEN, METRICS_IP_ALLOWLIST
 from bot.handlers import (
@@ -528,6 +529,82 @@ class WebhookTelegramBot:
                 return Response(status_code=HTTPStatus.OK)
             except Exception as e:
                 logger.error(f"💥 Error processing webhook: {e}", exc_info=True)
+                return Response(status_code=HTTPStatus.INTERNAL_SERVER_ERROR)
+
+        @app.post("/process")
+        async def process_via_proxy(
+            request: Request,
+            x_request_timestamp: str = Header(None),
+            x_brainbot_signature: str = Header(None),
+        ):
+            """Process updates proxied by Cloudflare Consumer Worker.
+
+            Expects JSON body with shape:
+            { "body": "<raw telegram update JSON string>", "context": { ... optional ... } }
+
+            HMAC: signature = "v1=" + hex( sha256( f"{ts}.{payload}" , CF_PROXY_SECRET ) )
+            where payload is the exact request body string.
+            """
+            logger.info("🔒 /process endpoint called via proxy")
+            try:
+                if not CF_PROXY_SECRET:
+                    raise HTTPException(status_code=HTTPStatus.SERVICE_UNAVAILABLE, detail="Proxy disabled")
+
+                if not x_request_timestamp or not x_brainbot_signature:
+                    raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Missing auth headers")
+
+                # Basic replay protection window: 5 minutes
+                now_sec = int(time.time())
+                try:
+                    ts_sec = int(x_request_timestamp)
+                except Exception:
+                    raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Bad timestamp")
+                if abs(now_sec - ts_sec) > 300:
+                    raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Stale request")
+
+                # Read raw body as text to ensure exact HMAC
+                raw_body = await request.body()
+                payload = raw_body.decode("utf-8") if isinstance(raw_body, (bytes, bytearray)) else str(raw_body)
+
+                import hmac
+                import hashlib
+
+                expected = hmac.new(
+                    CF_PROXY_SECRET.encode("utf-8"),
+                    f"{x_request_timestamp}.{payload}".encode("utf-8"),
+                    hashlib.sha256,
+                ).hexdigest()
+
+                provided = x_brainbot_signature or ""
+                if provided.startswith("v1="):
+                    provided = provided[3:]
+
+                if not hmac.compare_digest(provided, expected):
+                    raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Invalid signature")
+
+                body_json = json.loads(payload)
+                raw_tg_json = body_json.get("body")
+                if not raw_tg_json:
+                    raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Missing body")
+
+                # Optional context from Worker (history, vector results, media URLs, flags)
+                context_payload = body_json.get("context") or {}
+
+                # Deserialize Telegram Update and process
+                update = Update.de_json(json.loads(raw_tg_json), self.application.bot)
+                if not update:
+                    raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Bad update")
+
+                # If handlers/processors need context, attach to request state
+                # or pass via a temporary mechanism; for now, proceed with normal flow
+                await self.application.process_update(update)
+
+                return Response(status_code=HTTPStatus.OK)
+            except HTTPException as http_err:
+                logger.warning(f"Proxy processing rejected: {http_err.detail}")
+                return Response(status_code=http_err.status_code)
+            except Exception as e:
+                logger.error(f"Error in /process: {e}", exc_info=True)
                 return Response(status_code=HTTPStatus.INTERNAL_SERVER_ERROR)
 
         return app
