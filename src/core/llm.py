@@ -27,6 +27,7 @@ from core.api_client import get_resilient_client, RetryConfig
 from core.benchmarks import get_performance_monitor, async_benchmark
 from core.chunking import chunk_markdown_document
 from core.memory import bot_memory
+from core.agents import detect_agent_in_message, load_agent_prompt
 
 # Initialize resilient OpenAI client with custom retry config
 retry_config = RetryConfig(
@@ -450,6 +451,16 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         f"Processing message for chat_id={chat_id}: {(user_message or '')[:50]}..."
     )
 
+    # Sub-agent selection via `.claude/agents`
+    selected_agent, cleaned_for_agent = detect_agent_in_message(user_message)
+    agent_system_prompt = None
+    if selected_agent:
+        agent_prompt = load_agent_prompt(selected_agent)
+        if agent_prompt:
+            agent_system_prompt = agent_prompt
+            user_message = cleaned_for_agent or user_message
+            logger.info(f"Using sub-agent: {selected_agent}")
+
     # ** Enhanced Rails Router Integration (Phase 2.1) **
     # Try routing all messages through the keyword router first
     if keyword_router:
@@ -624,6 +635,14 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
 
         # Get conversation history
         messages = await get_conversation_history(chat_id)
+
+        # If a sub-agent was selected, override or prepend a specialized system prompt
+        if agent_system_prompt:
+            # Replace existing system message if present, else insert at start
+            if messages and messages[0].get("role") == "system":
+                messages[0]["content"] = agent_system_prompt
+            else:
+                messages.insert(0, {"role": "system", "content": agent_system_prompt})
 
         # Track conversation size
         monitor.track_conversation_size(chat_id, len(messages))

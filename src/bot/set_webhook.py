@@ -4,8 +4,10 @@ Set Telegram webhook for local testing with ngrok.
 """
 
 import sys
+import os
 import requests
 from src.core.config import TELEGRAM_BOT_TOKEN
+from src.core.config import TELEGRAM_WEBHOOK_SECRET
 
 if len(sys.argv) != 2:
     print("Usage: python set_webhook.py <ngrok_url>")
@@ -18,6 +20,8 @@ webhook_url = f"{ngrok_url}/webhook"
 # Set webhook
 url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/setWebhook"
 data = {"url": webhook_url}
+if TELEGRAM_WEBHOOK_SECRET:
+    data["secret_token"] = TELEGRAM_WEBHOOK_SECRET
 
 response = requests.post(url, json=data)
 result = response.json()

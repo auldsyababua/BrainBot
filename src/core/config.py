@@ -9,6 +9,21 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 if not TELEGRAM_BOT_TOKEN:
     raise ValueError("TELEGRAM_BOT_TOKEN not found in environment variables")
 
+# Optional: Telegram webhook secret token for validating inbound webhook requests
+# Configure this value in your deployment and when calling setWebhook.
+TELEGRAM_WEBHOOK_SECRET = os.getenv("TELEGRAM_WEBHOOK_SECRET")
+
+# Optional: Metrics access controls
+# - METRICS_AUTH_TOKEN: if set, require Authorization: Bearer <token>
+# - METRICS_IP_ALLOWLIST: comma-separated list of IPs or CIDRs allowed to access metrics
+METRICS_AUTH_TOKEN = os.getenv("METRICS_AUTH_TOKEN")
+_metrics_ip_allowlist_raw = os.getenv("METRICS_IP_ALLOWLIST", "").strip()
+METRICS_IP_ALLOWLIST = (
+    [entry.strip() for entry in _metrics_ip_allowlist_raw.split(",") if entry.strip()]
+    if _metrics_ip_allowlist_raw
+    else []
+)
+
 # OpenAI configuration
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:

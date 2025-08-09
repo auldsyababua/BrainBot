@@ -29,6 +29,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 import uvicorn  # noqa: E402
 from bot.webhook_bot import create_webhook_bot  # noqa: E402
 from core.config import TELEGRAM_BOT_TOKEN  # noqa: E402
+from core.config import TELEGRAM_WEBHOOK_SECRET  # noqa: E402
 from core.supabase_logger import setup_supabase_logging  # noqa: E402
 
 # Set up logging
@@ -59,10 +60,13 @@ def set_webhook():
 
     # Set webhook
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/setWebhook"
+    # Include secret token if configured for request validation
     data = {"url": webhook_url}
+    if TELEGRAM_WEBHOOK_SECRET:
+        data["secret_token"] = TELEGRAM_WEBHOOK_SECRET
 
     try:
-        response = requests.post(url, json=data)
+        response = requests.post(url, json=data, timeout=10)
         result = response.json()
 
         if result.get("ok"):

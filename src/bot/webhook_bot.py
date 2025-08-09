@@ -40,7 +40,9 @@ from telegram.ext import (
 )
 
 from core.config import TELEGRAM_BOT_TOKEN
+from core.config import TELEGRAM_WEBHOOK_SECRET
 from core.benchmarks import PerformanceMiddleware
+from core.config import METRICS_AUTH_TOKEN, METRICS_IP_ALLOWLIST
 from bot.handlers import (
     start_command,
     help_command,
@@ -440,8 +442,26 @@ class WebhookTelegramBot:
                 }
 
         @app.get("/metrics")
-        async def get_metrics():
-            """Get performance metrics summary."""
+        async def get_metrics(request: Request):
+            """Get performance metrics summary (protected)."""
+            # Resolve client IP (prefer X-Forwarded-For > X-Real-IP > socket)
+            client_ip = request.headers.get("x-forwarded-for", "").split(",")[0].strip()
+            if not client_ip:
+                client_ip = request.headers.get("x-real-ip", "").strip()
+            if not client_ip and request.client:
+                client_ip = request.client.host
+
+            # Enforce optional IP allowlist (supports exact IP matches)
+            if METRICS_IP_ALLOWLIST:
+                if client_ip not in METRICS_IP_ALLOWLIST:
+                    return Response(status_code=HTTPStatus.FORBIDDEN)
+
+            # Enforce optional bearer token
+            if METRICS_AUTH_TOKEN:
+                auth = request.headers.get("Authorization", "")
+                if not auth.startswith("Bearer ") or auth[7:] != METRICS_AUTH_TOKEN:
+                    return Response(status_code=HTTPStatus.UNAUTHORIZED)
+
             from src.core.benchmarks import get_performance_monitor
 
             monitor = get_performance_monitor()
@@ -476,6 +496,15 @@ class WebhookTelegramBot:
             """Handle incoming Telegram updates via webhook."""
             logger.info("🔄 Webhook endpoint called")
             try:
+                # Validate Telegram secret token if configured
+                if TELEGRAM_WEBHOOK_SECRET:
+                    received_secret = request.headers.get(
+                        "X-Telegram-Bot-Api-Secret-Token"
+                    )
+                    if received_secret != TELEGRAM_WEBHOOK_SECRET:
+                        logger.warning("Unauthorized webhook call: invalid secret token")
+                        return Response(status_code=HTTPStatus.UNAUTHORIZED)
+
                 logger.info("📋 Getting JSON from request")
                 req = await request.json()
                 logger.info(
