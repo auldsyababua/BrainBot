@@ -1,55 +1,26 @@
 name = "brainbot-consumer"
-name = "brainbot-consumer"
-main = "src/consumer.ts"
 main = "src/consumer.ts"
 compatibility_date = "2024-08-01"
-compatibility_date = "2024-08-01"
-
 
 [[queues.consumers]]
-[[queues.consumers]]
-queue = "brainbot-updates"
 queue = "brainbot-updates"
 
-
-[[kv_namespaces]]
 [[kv_namespaces]]
 binding = "BRAINBOT_KV"
-binding = "BRAINBOT_KV"
-id = "406b3a3a56cb448fa62e9fa032c6a4a6"
 id = "406b3a3a56cb448fa62e9fa032c6a4a6"
 
-
-[[r2_buckets]]
 [[r2_buckets]]
 binding = "BRAINBOT_MEDIA"
-binding = "BRAINBOT_MEDIA"
-bucket_name = "brainbot-media"
 bucket_name = "brainbot-media"
 
-
-[vectorize]
 [[vectorize]]
-binding = "VECTORIZE"
 binding = "VECTORIZE"
 index_name = "brainbot-docs"
 
-
-[vars]
 [vars]
 PROCESS_URL = "https://brainbot-v76n.onrender.com/process"
-PROCESS_URL = "https://brainbot-v76n.onrender.com/process"
-CF_PROXY_SECRET = ""
-CF_PROXY_SECRET = ""
-AIGW_URL = "https://gateway.ai.cloudflare.com/v1/<account>/<brainbot-gw>"
 AIGW_URL = "https://gateway.ai.cloudflare.com/v1/<account>/<brainbot-gw>"
 AIGW_PROVIDER = "openai"
-AIGW_PROVIDER = "openai"
-
 
 [observability]
-[observability]
 enabled = true
-enabled = true
-
-
