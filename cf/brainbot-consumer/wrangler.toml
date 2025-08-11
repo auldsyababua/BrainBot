@@ -30,8 +30,8 @@ bucket_name = "brainbot-media"
 
 [vectorize]
 [[vectorize]]
-binding = "VZ"
-binding = "VZ"
+binding = "VECTORIZE"
+binding = "VECTORIZE"
 index_name = "brainbot-docs"
 
 
