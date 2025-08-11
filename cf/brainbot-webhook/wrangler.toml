@@ -14,7 +14,7 @@ queue = "brainbot-updates"
 binding = "UPDATES"
 
 [[kv_namespaces]]
-binding = "brainbot_kv"
+binding = "BRAINBOT_KV"
 id = "406b3a3a56cb448fa62e9fa032c6a4a6"
 
 [[r2_buckets]]
