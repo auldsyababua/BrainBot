@@ -14,14 +14,14 @@ queue = "brainbot-updates"
 binding = "UPDATES"
 
 [[kv_namespaces]]
-binding = "BRAINBOT_KV"
-id = "brainbot-kv"
+binding = "brainbot_kv"
+id = "406b3a3a56cb448fa62e9fa032c6a4a6"
 
 [[r2_buckets]]
 binding = "BRAINBOT_MEDIA"
 bucket_name = "brainbot-media"
 
-[vectorize]
+[[vectorize]]
 binding = "VZ"
 index_name = "brainbot-docs"
 
