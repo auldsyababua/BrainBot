@@ -15,7 +15,8 @@ async function hmacHex(secret: string, data: string): Promise<string> {
 
 export interface Env {
   PROCESS_URL: string;
-  CF_PROXY_SECRET: string;
+  CF_PROXY_SECRET?: string;
+  CLOUDFLARE_PROXY_SECRET?: string;
   BRAINBOT_KV: KVNamespace;
 }
 
@@ -24,7 +25,8 @@ export default {
     for (const msg of batch.messages) {
       const payload = JSON.stringify(msg.body);
       const ts = Math.floor(Date.now() / 1000).toString();
-      const sig = await hmacHex(env.CF_PROXY_SECRET, `${ts}.${payload}`);
+      const proxySecret = env.CF_PROXY_SECRET || env.CLOUDFLARE_PROXY_SECRET || "";
+      const sig = await hmacHex(proxySecret, `${ts}.${payload}`);
       try {
         const res = await fetch(env.PROCESS_URL, {
           method: "POST",

@@ -1,6 +1,8 @@
 export interface Env {
-  TELEGRAM_WEBHOOK_SECRET: string;
-  CF_PROXY_SECRET: string;
+  TELEGRAM_WEBHOOK_SECRET?: string;
+  TELEGRAM_FLRTS_WEBHOOK_SECRET?: string;
+  CF_PROXY_SECRET?: string;
+  CLOUDFLARE_PROXY_SECRET?: string;
   UPDATES: Queue<unknown>;
   BRAINBOT_KV: KVNamespace;
   BRAINBOT_MEDIA: R2Bucket;
@@ -11,7 +13,8 @@ export default {
     if (request.method !== "POST") return new Response("ok");
 
     const secret = request.headers.get("X-Telegram-Bot-Api-Secret-Token");
-    if (env.TELEGRAM_WEBHOOK_SECRET && secret !== env.TELEGRAM_WEBHOOK_SECRET) {
+    const webhookSecret = env.TELEGRAM_WEBHOOK_SECRET || env.TELEGRAM_FLRTS_WEBHOOK_SECRET;
+    if (webhookSecret && secret !== webhookSecret) {
       return new Response("unauthorized", { status: 401 });
     }
 
