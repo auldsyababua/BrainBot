@@ -28,6 +28,7 @@ export default {
       const proxySecret = env.CF_PROXY_SECRET || env.CLOUDFLARE_PROXY_SECRET || "";
       const sig = await hmacHex(proxySecret, `${ts}.${payload}`);
       try {
+        console.log("Dequeued message", { size: payload.length });
         const res = await fetch(env.PROCESS_URL, {
           method: "POST",
           headers: {
@@ -37,12 +38,15 @@ export default {
           },
           body: payload,
         });
+        console.log("/process response", res.status);
         if (res.ok) {
           msg.ack();
         } else {
+          console.error("/process failed", res.status);
           msg.retry();
         }
       } catch (err) {
+        console.error("consumer error", (err as Error)?.message || err);
         msg.retry();
       }
     }

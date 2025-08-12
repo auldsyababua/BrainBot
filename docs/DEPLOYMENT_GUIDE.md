@@ -6,10 +6,17 @@ BrainBot is deployed as a **Web Service** on Render.com using webhooks for real-
 
 ## Current Deployment Status
 
-**Production URL**: https://brainbot-v76n.onrender.com  
+Production now runs with Cloudflare frontdoor + Queue + Python proxy (Option A), with Telegram pointing to the Worker.
+
+**Worker URLs**:  
+- Webhook: https://brainbot-webhook.colin-c4d.workers.dev  
+- Consumer: https://brainbot-consumer.colin-c4d.workers.dev  
+
+**Render URL**: https://brainbot-v76n.onrender.com  
+**/process endpoint**: https://brainbot-v76n.onrender.com/process  
 **Bot Username**: @TenNetZeroAssistantBot  
-**Architecture**: Webhook-based FastAPI server  
-**Service Type**: Render Web Service (not background worker)  
+**Architecture**: Cloudflare Workers ingress → Queues → Worker consumer → Render /process  
+**Service Type**: Render Web Service (Python) for Smart Rails; Cloudflare Workers for ingress/queue  
 
 ## Prerequisites
 
@@ -101,7 +108,7 @@ VECTOR_CACHE_ENABLED=true
 VECTOR_CACHE_TTL=300
 ```
 
-### 3. Webhook Configuration
+### 3. Webhook Configuration (Cloudflare)
 
 After deployment, configure the Telegram webhook:
 
@@ -112,13 +119,29 @@ python setup_webhook.py
 # Option 2: Manual configuration
 python src/bot/set_webhook.py
 
-# Option 3: Direct API call
-curl -X POST https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook \
-  -H "Content-Type: application/json" \
-  -d '{"url": "https://your-render-app.onrender.com/webhook"}'
+# Direct API call to point Telegram to the Worker and include secret
+curl "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook?url=https://brainbot-webhook.colin-c4d.workers.dev/webhook&secret_token=<TELEGRAM_WEBHOOK_SECRET>"
+
+### 4. Cloudflare Bindings
+
+Per Worker → Bindings:
+- brainbot-webhook
+  - Queue producer: `UPDATES → brainbot-updates`
+  - Secret: `TELEGRAM_WEBHOOK_SECRET`
+  - Secret: `CF_PROXY_SECRET`
+  - KV: `BRAINBOT_KV`
+  - R2: `BRAINBOT_MEDIA`
+  - Vectorize: `VECTORIZE`
+- brainbot-consumer
+  - Queue consumer: `brainbot-updates`
+  - Secret: `CF_PROXY_SECRET`
+  - Variable/Secret: `PROCESS_URL=https://brainbot-v76n.onrender.com/process`
+
+Render env:
+- `CF_PROXY_SECRET` must equal the Worker value
 ```
 
-### 4. Verification Steps
+### 5. Verification Steps
 
 #### Test Webhook Configuration
 ```bash
@@ -126,8 +149,8 @@ curl -X POST https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook \
 curl https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getWebhookInfo
 
 # Test application endpoints
-curl https://your-render-app.onrender.com/
-curl https://your-render-app.onrender.com/webhook
+curl https://brainbot-webhook.colin-c4d.workers.dev/
+curl https://brainbot-v76n.onrender.com/process -I
 ```
 
 #### Test Bot Functionality

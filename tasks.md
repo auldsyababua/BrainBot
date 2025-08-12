@@ -357,29 +357,119 @@ Caching layer and metrics endpoint implemented. Health endpoints pending.
   - Add usage examples
   - Include error responses
 
+## Phase 7: Cloudflare Migration
+
+### 7.1 Migration Preparation (Cloudflare Phase 0–1)
+
+#### ✅ T7.1.1: Set up Cloudflare infrastructure
+- **Requirement**: Cost optimization, performance improvement
+- **Design**: Migration Target (Cloudflare Workers)
+- **Details**:
+  - Create Cloudflare account and configure workers
+  - Set up KV namespaces for metadata storage
+  - Configure R2 bucket for document storage
+  - Initialize Vectorize index for embeddings
+- **Test**: Verify all resources are accessible
+
+#### ⬜ T7.1.2: Implement n8n integration
+- **Requirement**: Workflow orchestration
+- **Design**: Cloudflare Worker Configuration
+- **Details**:
+  - Set up n8n webhook endpoints
+  - Configure routing for complex workflows
+  - Implement fallback to Python processor
+- **Test**: Complex workflows route correctly
+
+### 7.2 Core Migration (Option A – Proxy)
+
+#### ✅ T7.2.1: Frontdoor Worker + Queue
+- **Requirement**: Edge performance
+- **Design**: brainbot-webhook Worker
+- **Details**:
+  - Convert Python webhook to TypeScript Worker
+  - Implement queue-based message passing
+  - Add HMAC signature validation
+- **Test**: Webhook receives and queues messages
+
+#### ✅ T7.2.2: Consumer proxy to Python /process
+- **Requirement**: US-2.1, US-2.2
+- **Design**: brainbot-consumer Worker
+- **Details**:
+  - Port Smart Rails logic to TypeScript
+  - Simple switch/case for entity types
+  - Direct KV storage for high-confidence routes
+- **Test**: Messages route without Python dependency
+
+#### ⬜ T7.2.3: Replace storage layer (Phase 2)
+- **Requirement**: US-3.1, US-3.2
+- **Design**: Storage Layer (KV/R2/Vectorize)
+- **Details**:
+  - Migrate from Supabase to KV for metadata
+  - Move documents to R2 bucket
+  - Replace Upstash Vector with Vectorize
+- **Test**: All storage operations work on Cloudflare
+
+### 7.3 Advanced Migration (Optional Phase 5)
+
+#### ⬜ T7.3.1: Implement Durable Objects
+- **Requirement**: Stateful processing
+- **Design**: Smart Rails & Entity Processor DOs
+- **Details**:
+  - Create SmartRailsDO for stateful routing
+  - Create EntityProcessorDO for processing
+  - Implement per-user state isolation
+- **Test**: Stateful operations maintain consistency
+
+#### ⬜ T7.3.2: Add comprehensive type safety
+- **Requirement**: Code reliability
+- **Design**: TypeScript type system
+- **Details**:
+  - Define all interfaces and types
+  - Add Zod for runtime validation
+  - Implement type guards
+- **Test**: Type checking passes, runtime validation works
+
+### 7.4 Migration Completion
+
+#### ⬜ T7.4.1: Parallel running and testing
+- **Requirement**: Zero-downtime migration
+- **Details**:
+  - Run both systems in parallel
+  - Implement percentage-based routing
+  - Monitor performance metrics
+- **Test**: Both systems handle traffic correctly
+
+#### ⬜ T7.4.2: Deprecate Python backend
+- **Requirement**: Complete migration
+- **Details**:
+  - Gradually reduce Python traffic
+  - Archive Python codebase
+  - Update all documentation
+- **Test**: Cloudflare handles 100% of traffic
+
 ## Upcoming Features (Backlog)
 
-### 7.1 Advanced Features
+### 8.1 Advanced Features
 
-#### ⬜ T7.1.1: Multi-namespace support
+#### ⬜ T8.1.1: Multi-namespace support
 - **Requirement**: US-5.2
 - **Details**: Implement isolated vector namespaces per user
 
-#### ⬜ T7.1.2: Rich media responses
+#### ⬜ T8.1.2: Rich media responses
 - **Requirement**: Future enhancement
 - **Details**: Generate charts, graphs, images in responses
 
-#### ⬜ T7.1.3: Web UI dashboard
+#### ⬜ T8.1.3: Web UI dashboard
 - **Requirement**: Future enhancement
 - **Details**: Create web interface for document management
 
-### 7.2 Integrations
+### 8.2 Integrations
 
-#### ⬜ T7.2.1: Web search integration
+#### ⬜ T8.2.1: Web search integration
 - **Requirement**: Future enhancement
 - **Details**: Add ability to search web for current information
 
-#### ⬜ T7.2.2: Calendar integration
+#### ⬜ T8.2.2: Calendar integration
 - **Requirement**: Future enhancement
 - **Details**: Sync tasks with calendar systems
 

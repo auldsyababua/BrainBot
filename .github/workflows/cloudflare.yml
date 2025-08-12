@@ -1,0 +1,67 @@
+name: Deploy Cloudflare Workers
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'cf/**'
+      - '.github/workflows/cloudflare.yml'
+  pull_request:
+    paths:
+      - 'cf/**'
+
+jobs:
+  deploy-consumer:
+    name: Deploy Consumer Worker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install dependencies
+      working-directory: cf/brainbot-consumer
+      run: |
+        npm install -g wrangler
+        npm install
+        
+    - name: Deploy Consumer Worker
+      working-directory: cf/brainbot-consumer
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      run: |
+        wrangler deploy --env production
+        
+  deploy-webhook:
+    name: Deploy Webhook Worker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install dependencies
+      working-directory: cf/brainbot-webhook
+      run: |
+        npm install -g wrangler
+        npm install
+        
+    - name: Deploy Webhook Worker
+      working-directory: cf/brainbot-webhook
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      run: |
+        wrangler deploy --env production

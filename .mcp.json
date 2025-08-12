@@ -2,10 +2,7 @@
   "mcpServers": {
     "playwright": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@mcp-servers/playwright"
-      ],
+      "args": ["-y", "@mcp-servers/playwright"],
       "env": {
         "PLAYWRIGHT_HEADLESS": "false",
         "PLAYWRIGHT_BROWSER": "chromium",
@@ -13,13 +10,183 @@
         "PLAYWRIGHT_USER_DATA_DIR": "./playwright-data"
       }
     },
+    "render": {
+      "url": "https://mcp.render.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${RENDER_MCP_TOKEN}"
+      }
+    },
     "ElevenLabs": {
       "command": "uvx",
-      "args": [
-        "elevenlabs-mcp"
-      ],
+      "args": ["elevenlabs-mcp"],
       "env": {
         "ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}"
+      }
+    },
+    "mac-control": {
+      "command": "npx",
+      "args": ["-y", "@mcp/server-mac-control"]
+    },
+    "pdf-filler": {
+      "command": "npx",
+      "args": ["-y", "@mcp/server-pdf-filler"]
+    },
+    "tavily": {
+      "command": "npx",
+      "args": ["-y", "tavily-mcp"],
+      "env": {
+        "TAVILY_API_KEY": "${TAVILY_API_KEY}"
+      }
+    },
+    "perplexity": {
+      "command": "npx",
+      "args": ["-y", "@jschuller/perplexity-mcp"],
+      "env": {
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}",
+        "PERPLEXITY_MODEL": "sonar-large-online"
+      }
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"]
+    },
+    "n8n": {
+      "command": "npx",
+      "args": ["-y", "@n8n/mcp-server"],
+      "env": {
+        "N8N_API_KEY": "${N8N_API_KEY}",
+        "N8N_BASE_URL": "${N8N_BASE_URL}"
+      }
+    },
+    "n8n-local": {
+      "command": "npx",
+      "args": ["-y", "@n8n/mcp-server"],
+      "env": {
+        "N8N_API_KEY": "${N8N_LOCAL_API_KEY}",
+        "N8N_BASE_URL": "${N8N_LOCAL_BASE_URL}"
+      }
+    },
+    "upstash-redis": {
+      "command": "npx",
+      "args": ["-y", "@upstash/mcp-server"],
+      "env": {
+        "UPSTASH_REDIS_REST_URL": "${UPSTASH_REDIS_REST_URL}",
+        "UPSTASH_REDIS_REST_TOKEN": "${UPSTASH_REDIS_REST_TOKEN}"
+      }
+    },
+    "cloudflare-documentation": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://docs.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-workers-bindings": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://bindings.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-workers-builds": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://builds.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-observability": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://observability.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-radar": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://radar.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-container": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://containers.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-browser": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://browser.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-logpush": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://logs.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-ai-gateway": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://ai-gateway.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-autorag": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://autorag.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-auditlogs": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://auditlogs.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-dns-analytics": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://dns-analytics.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-dex": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://dex.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-casb": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://casb.mcp.cloudflare.com/sse"]
+    },
+    "cloudflare-graphql": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://graphql.mcp.cloudflare.com/sse"]
+    },
+    "apify-actors": {
+      "command": "npx",
+      "args": ["-y", "@apify/actors-mcp-server"],
+      "env": {
+        "APIFY_API_TOKEN": "${APIFY_API_TOKEN}"
+      }
+    },
+    "pieces": {
+      "command": "npx",
+      "args": ["-y", "@pieces.app/pieces-mcp-server"]
+    },
+    "airtable": {
+      "command": "npx",
+      "args": ["-y", "airtable-mcp-server"],
+      "env": {
+        "AIRTABLE_API_KEY": "${AIRTABLE_API_KEY}"
+      }
+    },
+    "n8n-czlonkowski": {
+      "command": "npx",
+      "args": ["-y", "n8n-mcp-server"],
+      "env": {
+        "N8N_API_KEY": "${N8N_API_KEY}",
+        "N8N_BASE_URL": "${N8N_BASE_URL}"
+      }
+    },
+    "unstructured": {
+      "command": "npx",
+      "args": ["-y", "@unstructured/mcp-server"],
+      "env": {
+        "UNSTRUCTURED_API_KEY": "${UNSTRUCTURED_API_KEY}"
+      }
+    },
+    "testsprite": {
+      "command": "npx",
+      "args": ["-y", "@testsprite/mcp-server"],
+      "env": {
+        "TESTSPRITE_API_KEY": "${TESTSPRITE_API_KEY}"
+      }
+    },
+    "sliplane": {
+      "url": "https://mcp.sliplane.io/sse",
+      "type": "sse",
+      "headers": {
+        "Authorization": "Bearer ${SLIPLANE_API_KEY}",
+        "X-Organization-Id": "${SLIPLANE_ORG_ID}"
       }
     }
   }

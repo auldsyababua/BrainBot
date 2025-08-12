@@ -503,7 +503,9 @@ class WebhookTelegramBot:
                         "X-Telegram-Bot-Api-Secret-Token"
                     )
                     if received_secret != TELEGRAM_WEBHOOK_SECRET:
-                        logger.warning("Unauthorized webhook call: invalid secret token")
+                        logger.warning(
+                            "Unauthorized webhook call: invalid secret token"
+                        )
                         return Response(status_code=HTTPStatus.UNAUTHORIZED)
 
                 logger.info("📋 Getting JSON from request")
@@ -548,23 +550,37 @@ class WebhookTelegramBot:
             logger.info("🔒 /process endpoint called via proxy")
             try:
                 if not CF_PROXY_SECRET:
-                    raise HTTPException(status_code=HTTPStatus.SERVICE_UNAVAILABLE, detail="Proxy disabled")
+                    raise HTTPException(
+                        status_code=HTTPStatus.SERVICE_UNAVAILABLE,
+                        detail="Proxy disabled",
+                    )
 
                 if not x_request_timestamp or not x_brainbot_signature:
-                    raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Missing auth headers")
+                    raise HTTPException(
+                        status_code=HTTPStatus.UNAUTHORIZED,
+                        detail="Missing auth headers",
+                    )
 
                 # Basic replay protection window: 5 minutes
                 now_sec = int(time.time())
                 try:
                     ts_sec = int(x_request_timestamp)
                 except Exception:
-                    raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Bad timestamp")
+                    raise HTTPException(
+                        status_code=HTTPStatus.UNAUTHORIZED, detail="Bad timestamp"
+                    )
                 if abs(now_sec - ts_sec) > 300:
-                    raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Stale request")
+                    raise HTTPException(
+                        status_code=HTTPStatus.UNAUTHORIZED, detail="Stale request"
+                    )
 
                 # Read raw body as text to ensure exact HMAC
                 raw_body = await request.body()
-                payload = raw_body.decode("utf-8") if isinstance(raw_body, (bytes, bytearray)) else str(raw_body)
+                payload = (
+                    raw_body.decode("utf-8")
+                    if isinstance(raw_body, (bytes, bytearray))
+                    else str(raw_body)
+                )
 
                 import hmac
                 import hashlib
@@ -580,20 +596,28 @@ class WebhookTelegramBot:
                     provided = provided[3:]
 
                 if not hmac.compare_digest(provided, expected):
-                    raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Invalid signature")
+                    raise HTTPException(
+                        status_code=HTTPStatus.UNAUTHORIZED, detail="Invalid signature"
+                    )
 
                 body_json = json.loads(payload)
                 raw_tg_json = body_json.get("body")
                 if not raw_tg_json:
-                    raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Missing body")
+                    raise HTTPException(
+                        status_code=HTTPStatus.BAD_REQUEST, detail="Missing body"
+                    )
 
                 # Optional context from Worker (history, vector results, media URLs, flags)
-                context_payload = body_json.get("context") or {}
+                _context_payload = (
+                    body_json.get("context") or {}
+                )  # Reserved for future use
 
                 # Deserialize Telegram Update and process
                 update = Update.de_json(json.loads(raw_tg_json), self.application.bot)
                 if not update:
-                    raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Bad update")
+                    raise HTTPException(
+                        status_code=HTTPStatus.BAD_REQUEST, detail="Bad update"
+                    )
 
                 # If handlers/processors need context, attach to request state
                 # or pass via a temporary mechanism; for now, proceed with normal flow

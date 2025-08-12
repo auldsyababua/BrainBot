@@ -60,7 +60,9 @@ def load_agent_prompt(agent_name: str) -> Optional[str]:
 
 
 _AT_AGENT_PATTERN = re.compile(r"^@([a-zA-Z0-9_\-]+)\s*[:\-]?\s*(.*)$", re.DOTALL)
-_SLASH_AGENT_PATTERN = re.compile(r"^/agent\s+([a-zA-Z0-9_\-]+)\s*[:\-]?\s*(.*)$", re.DOTALL)
+_SLASH_AGENT_PATTERN = re.compile(
+    r"^/agent\s+([a-zA-Z0-9_\-]+)\s*[:\-]?\s*(.*)$", re.DOTALL
+)
 
 
 def detect_agent_in_message(message: str) -> Tuple[Optional[str], str]:
@@ -85,5 +87,3 @@ def detect_agent_in_message(message: str) -> Tuple[Optional[str], str]:
         return m.group(1), m.group(2).strip()
 
     return None, message
-
-
