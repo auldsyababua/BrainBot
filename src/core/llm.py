@@ -401,15 +401,15 @@ async def _process_rails_command(
         if entity_type == "lists":
             from src.rails.processors.list_processor import ListProcessor
 
-            processor_instance = ListProcessor()
+            processor_instance = ListProcessor(supabase_client=storage.supabase)
         elif entity_type == "tasks":
             from src.rails.processors.task_processor import TaskProcessor
 
-            processor_instance = TaskProcessor()
+            processor_instance = TaskProcessor(supabase_client=storage.supabase)
         elif entity_type == "field_reports":
             from src.rails.processors.field_report_processor import FieldReportProcessor
 
-            processor_instance = FieldReportProcessor()
+            processor_instance = FieldReportProcessor(supabase_client=storage.supabase)
         else:
             logger.error(f"Unknown entity type: {entity_type}")
             return f"Error: Unknown command type '{entity_type}'."
