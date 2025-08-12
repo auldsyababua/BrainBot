@@ -34,7 +34,7 @@ from datetime import datetime
 from typing import Dict, Any
 
 # Add src to Python path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 # These imports must come after the path setup
 from telegram import Update  # noqa: E402

@@ -17,7 +17,7 @@ from pathlib import Path
 from datetime import datetime
 
 # Add src to Python path
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), "src"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../..", "src"))
 
 from storage.vector_store import vector_store  # noqa: E402
 from storage.storage_service import DocumentStorage  # noqa: E402
