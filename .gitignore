@@ -135,9 +135,15 @@ htmlcov/
 tasks.md.bak
 
 # MCP (Model Context Protocol) Configuration
+.mcp.json
 .mcp/.env
 .mcp/*.env
 .mcp/logs/
+
+# Sensitive secrets files
+secrets.env
+secrets.env.*
+*.env.cleaned
 
 # Node.js and Frontend (Telegram Mini App)
 node_modules/

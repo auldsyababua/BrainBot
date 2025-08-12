@@ -401,7 +401,9 @@ sequenceDiagram
 
 ## Deployment Architecture
 
-### Production (Render)
+### Production Evolution: Python to Cloudflare Migration
+
+#### Current State (Python on Render)
 
 ```yaml
 services:
@@ -418,16 +420,122 @@ services:
     healthCheckPath: /health
 ```
 
+#### Migration Target (Cloudflare Workers)
+
+```mermaid
+graph TB
+    subgraph "Cloudflare Edge Infrastructure"
+        TG[Telegram Webhook] --> WH[brainbot-webhook<br/>Worker]
+        WH --> Q[Queues:<br/>brainbot-updates]
+        Q --> C[brainbot-consumer<br/>Worker]
+        
+        subgraph "Storage Layer"
+            KV[KV Namespace<br/>Metadata]
+            R2[R2 Bucket<br/>Documents]
+            VEC[Vectorize<br/>Embeddings]
+        end
+        
+        subgraph "Processing"
+            C --> SR[Smart Rails<br/>Durable Object]
+            C --> EP[Entity Processors<br/>Durable Objects]
+            SR --> KV
+            EP --> KV
+            EP --> R2
+            EP --> VEC
+        end
+        
+        C --> N8N[n8n Workflows<br/>Complex Orchestration]
+        C --> PY[Python /process (Render)<br/>HMAC-auth proxy]
+    end
+```
+
+##### Cloudflare Worker Configuration
+
+```toml
+# wrangler.toml for consumer
+name = "brainbot-consumer"
+main = "src/consumer.ts"
+compatibility_date = "2024-08-01"
+
+[[queues.consumers]]
+queue = "brainbot-updates"
+
+[[kv_namespaces]]
+binding = "BRAINBOT_KV"
+id = "406b3a3a56cb448fa62e9fa032c6a4a6"
+
+[[r2_buckets]]
+binding = "BRAINBOT_MEDIA"
+bucket_name = "brainbot-media"
+
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "brainbot-docs"
+
+## (Optional) Durable Objects (Phase 5+)
+## [[durable_objects.bindings]]
+## name = "SMART_RAILS"
+## class_name = "SmartRailsDO"
+## [[durable_objects.bindings]]
+## name = "ENTITY_PROCESSOR"
+## class_name = "EntityProcessorDO"
+
+[vars]
+N8N_WEBHOOK_URL = "https://n8n.example.com/webhook/brainbot"
+PROCESS_URL = "https://brainbot-v76n.onrender.com/process"
+### Cloudflare sequence (Phase 1)
+
+```mermaid
+sequenceDiagram
+  participant TG as Telegram
+  participant W as brainbot-webhook (Worker)
+  participant Q as CF Queue (brainbot-updates)
+  participant C as brainbot-consumer (Worker)
+  participant P as Python /process (Render)
+  TG->>W: POST /webhook + X-Telegram-Bot-Api-Secret-Token
+  W-->>TG: 200 OK (enqueue)
+  W->>Q: env.UPDATES.send({body, meta})
+  C->>Q: consume message
+  C->>P: POST /process with HMAC headers
+  P-->>C: 200 JSON
+```
+
+### Secrets & Bindings
+
+- Shared HMAC: `CF_PROXY_SECRET` bound to both Workers and set in Render env
+- Webhook secret: `TELEGRAM_WEBHOOK_SECRET` bound to `brainbot-webhook`; used as `secret_token` in Telegram setWebhook
+- Queue producer binding on webhook: `UPDATES → brainbot-updates`
+- Queue consumer binding on consumer: `brainbot-updates`
+- Other bindings: `BRAINBOT_KV`, `BRAINBOT_MEDIA`, `VECTORIZE`
+
+### Tooling & Automation
+
+- Cloudflare Wrangler
+  - Deploy/tail Workers: `npx wrangler@latest deploy`, `npx wrangler@latest tail`
+  - Provision resources (done): `wrangler vectorize create`, `wrangler r2 bucket create`, `wrangler queues create`, `wrangler kv:namespace create`
+- Render CLI
+  - Used to verify service and manage restarts; env set via dashboard; `/process` lives at `https://brainbot-v76n.onrender.com/process`
+- MCP (Context7/Cloudflare/Sliplane)
+  - Cloudflare docs MCP used to reference up‑to‑date API semantics
+  - Sliplane MCP available for future workflow automation (n8n integration and remote actions)
+  - Render MCP used for status checks and scripted deploys if desired
+
+Notes
+- Render’s `main.py` auto-sets Telegram webhook; disable this to avoid overwriting the Worker URL once cutover is complete.
+```
+
 ### Development (Local)
 
 ```bash
-# Environment setup
+# Python development (current)
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-
-# Run with polling
 python run_bot.py
+
+# TypeScript development (migration)
+npm install
+wrangler dev --local
 ```
 
 ---

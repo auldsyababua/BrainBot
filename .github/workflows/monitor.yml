@@ -1,0 +1,119 @@
+name: Health Monitoring
+
+on:
+  schedule:
+    # Run every 5 minutes
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    name: Check Service Health
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check Bot Service Health
+      id: bot-health
+      run: |
+        response=$(curl -s -o /dev/null -w "%{http_code}" https://brainbot-v76n.onrender.com/health)
+        echo "Bot health status: $response"
+        echo "status=$response" >> $GITHUB_OUTPUT
+        if [ "$response" != "200" ]; then
+          echo "Bot service is unhealthy!"
+          exit 1
+        fi
+        
+    - name: Check /process Endpoint
+      id: process-health
+      run: |
+        # Test with invalid signature (should get 401)
+        response=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+          https://brainbot-v76n.onrender.com/process \
+          -H "Content-Type: application/json" \
+          -H "X-Request-Timestamp: $(date +%s)" \
+          -H "X-BrainBot-Signature: v1=invalid" \
+          -d '{"body": "{}", "context": {}}')
+        echo "/process endpoint status: $response"
+        echo "status=$response" >> $GITHUB_OUTPUT
+        # We expect 401 (unauthorized) which means endpoint exists
+        if [ "$response" != "401" ] && [ "$response" != "503" ]; then
+          echo "/process endpoint is not responding correctly!"
+          exit 1
+        fi
+        
+    - name: Check Consumer Worker
+      id: consumer-health
+      run: |
+        # Check if consumer worker is deployed (this would need the actual URL)
+        echo "Consumer worker check skipped (URL not configured)"
+        
+    - name: Create Issue on Failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const title = `🚨 Service Health Check Failed - ${new Date().toISOString()}`;
+          const body = `
+          ## Health Check Failed
+          
+          **Time:** ${new Date().toISOString()}
+          **Bot Health:** ${{ steps.bot-health.outputs.status }}
+          **Process Endpoint:** ${{ steps.process-health.outputs.status }}
+          
+          ### Actions Required:
+          1. Check Render logs for errors
+          2. Verify environment variables are set correctly
+          3. Check if CF_PROXY_SECRET is configured
+          4. Ensure database connections are working
+          
+          [View Render Dashboard](https://dashboard.render.com)
+          [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          `;
+          
+          // Check if similar issue already exists
+          const issues = await github.rest.issues.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'open',
+            labels: 'monitoring,automated'
+          });
+          
+          const existingIssue = issues.data.find(issue => 
+            issue.title.includes('Service Health Check Failed') &&
+            (new Date() - new Date(issue.created_at)) < 3600000 // Within last hour
+          );
+          
+          if (!existingIssue) {
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['monitoring', 'automated', 'urgent']
+            });
+          }
+        
+  performance-check:
+    name: Check Performance Metrics
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Get Performance Metrics
+      run: |
+        response=$(curl -s https://brainbot-v76n.onrender.com/status)
+        echo "Performance metrics:"
+        echo "$response" | jq '.performance.summary' || echo "$response"
+        
+        # Check response times
+        vector_search_p95=$(echo "$response" | jq -r '.performance.summary.vector_search_duration.p95' || echo "0")
+        llm_call_p95=$(echo "$response" | jq -r '.performance.summary.llm_call_duration.p95' || echo "0")
+        
+        # Alert if response times are too high
+        if (( $(echo "$vector_search_p95 > 2" | bc -l) )); then
+          echo "Warning: Vector search P95 is high: ${vector_search_p95}s"
+        fi
+        
+        if (( $(echo "$llm_call_p95 > 10" | bc -l) )); then
+          echo "Warning: LLM call P95 is high: ${llm_call_p95}s"
+        fi

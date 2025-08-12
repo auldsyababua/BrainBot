@@ -204,20 +204,29 @@ BrainBot is an intelligent Telegram bot that acts as a personal filing assistant
 - WHEN processing a message THEN the system SHALL respond within 5 seconds
 - WHEN performing vector search THEN the system SHALL return results within 2 seconds
 - IF cache is enabled THEN the system SHALL serve cached results within 500ms
+- POST-MIGRATION: WHEN on Cloudflare THEN the system SHALL achieve <50ms latency for edge operations
 
 #### NF-7.2: Scalability
 - The system SHALL support concurrent users without performance degradation
 - The system SHALL handle documents up to 10MB in size
 - The system SHALL maintain conversation history for configurable TTL
+- POST-MIGRATION: The system SHALL leverage Cloudflare's global edge network for unlimited scalability
 
 #### NF-7.3: Reliability
 - The system SHALL retry failed operations with exponential backoff
 - The system SHALL log all errors to Supabase for monitoring
 - The system SHALL gracefully handle API failures with user-friendly messages
+- POST-MIGRATION: The system SHALL use Durable Objects for guaranteed state consistency
+
+#### NF-7.4: Cost Optimization (Migration Target)
+- The system SHALL reduce infrastructure costs by 70% through Cloudflare free tier usage
+- The system SHALL eliminate monthly Supabase/Upstash fees
+- The system SHALL use R2 storage with zero egress fees
+- The system SHALL operate within Cloudflare Workers free tier limits (100k requests/day)
 
 ### 8. Deployment Requirements
 
-#### US-8.1: Production Deployment
+#### US-8.1: Production Deployment (Current - Python)
 **As an** operations team  
 **I want** the bot deployed on Render  
 **So that** it's accessible 24/7
@@ -227,6 +236,29 @@ BrainBot is an intelligent Telegram bot that acts as a personal filing assistant
 - WHEN webhook is configured THEN the system SHALL verify SSL certificate
 - The system SHALL provide health check endpoint at /health
 - The system SHALL expose metrics endpoint at /metrics
+
+#### US-8.2: Cloudflare Migration
+**As an** operations team  
+**I want** the bot migrated to Cloudflare Workers  
+**So that** we reduce costs and improve global performance
+
+**Acceptance Criteria:**
+- WHEN migrated THEN the system SHALL run on Cloudflare Workers edge infrastructure
+- WHEN processing messages THEN the system SHALL use Queues for reliable delivery
+- WHEN storing data THEN the system SHALL use KV for metadata, R2 for documents, and Vectorize for embeddings
+- IF complex orchestration is needed THEN the system SHALL integrate with n8n workflows
+- WHEN migration is complete THEN the system SHALL achieve <50ms latency globally
+
+#### US-8.3: Zero-Downtime Migration
+**As a** user  
+**I want** uninterrupted service during migration  
+**So that** my workflow is not disrupted
+
+**Acceptance Criteria:**
+- WHEN migrating THEN the system SHALL run both Python and Cloudflare systems in parallel
+- WHEN routing traffic THEN the system SHALL support percentage-based distribution
+- IF Cloudflare processing fails THEN the system SHALL fallback to Python processor
+- WHEN migration is complete THEN the system SHALL gracefully deprecate Python backend
 
 ## Non-Functional Requirements
 
