@@ -1,0 +1,13 @@
+# Security headers for Telegram Mini App
+/*
+  # Content Security Policy - allow Telegram WebApp functionality
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://telegram.org https://web.telegram.org; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://telegram.org https://t.me https://web.telegram.org; connect-src 'self' https://brainbot-v76n.onrender.com https://api.telegram.org https://web.telegram.org; frame-ancestors https://web.telegram.org https://telegram.org https://t.me;
+  
+  # Prevent MIME type sniffing
+  X-Content-Type-Options: nosniff
+  
+  # Prevent information leakage
+  Referrer-Policy: strict-origin-when-cross-origin
+  
+  # Force HTTPS
+  Strict-Transport-Security: max-age=31536000; includeSubDomains

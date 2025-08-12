@@ -1,0 +1,27 @@
+# Cloudflare Pages Configuration for Telegram Mini App
+name = "brainbot-mini-app"
+compatibility_date = "2024-01-01"
+
+# Pages configuration
+[build]
+command = "npm run build"
+cwd = "."
+watch_dir = "src"
+
+[build.upload]
+format = "directory"
+dir = "dist"
+
+# Environment variables for the mini app
+[env.production.vars]
+VITE_API_URL = "https://brainbot-v76n.onrender.com"
+VITE_TELEGRAM_BOT_USERNAME = "your_bot_username_here"
+
+[env.preview.vars]
+VITE_API_URL = "https://brainbot-v76n.onrender.com"
+VITE_TELEGRAM_BOT_USERNAME = "your_bot_username_here"
+
+# Custom domain (optional - you can set this later)
+# [[pages_build_output_dir]]
+# name = "brainbot-mini-app"
+# build_dir = "dist"

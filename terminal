@@ -1,0 +1,123 @@
+# Go back to your project directory
+cd projects/flrts
+
+# Check if you're in the right place (should see cf/ directory)
+ls -la
+
+# Create the scripts directory if it doesn't exist
+mkdir -p scripts
+
+# Now create the fix script
+cat > scripts/fix_pipeline.sh << 'EOF'
+#!/bin/bash
+set -e
+
+echo "🔧 BrainBot Pipeline Comprehensive Fix"
+echo "====================================="
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+log_info() { echo -e "${BLUE}ℹ️  $1${NC}"; }
+log_success() { echo -e "${GREEN}✅ $1${NC}"; }
+log_warning() { echo -e "${YELLOW}⚠️  $1${NC}"; }
+log_error() { echo -e "${RED}❌ $1${NC}"; }
+
+# Check if we're in the right directory
+if [ ! -d "cf" ]; then
+    log_error "Please run this script from the project root directory"
+    exit 1
+fi
+
+echo ""
+log_info "Step 1: Update Wrangler to latest version"
+echo "----------------------------------------"
+
+# Update webhook worker
+log_info "Updating webhook worker..."
+cd cf/brainbot-webhook
+npm install wrangler@latest
+log_success "Webhook worker wrangler updated"
+
+# Update consumer worker
+log_info "Updating consumer worker..."
+cd ../brainbot-consumer
+npm install wrangler@latest
+log_success "Consumer worker wrangler updated"
+
+echo ""
+log_info "Step 2: Check current deployment status"
+echo "--------------------------------------"
+
+# Check webhook deployment
+cd ../brainbot-webhook
+log_info "Checking webhook worker deployment..."
+WEBHOOK_DEPLOYMENTS=$(npx wrangler deployments list --json 2>/dev/null || echo "[]")
+if [ "$WEBHOOK_DEPLOYMENTS" = "[]" ]; then
+    log_warning "Webhook worker not deployed"
+    WEBHOOK_DEPLOYED=false
+else
+    log_success "Webhook worker is deployed"
+    WEBHOOK_DEPLOYED=true
+fi
+
+# Check consumer deployment
+cd ../brainbot-consumer
+log_info "Checking consumer worker deployment..."
+CONSUMER_DEPLOYMENTS=$(npx wrangler deployments list --json 2>/dev/null || echo "[]")
+if [ "$CONSUMER_DEPLOYMENTS" = "[]" ]; then
+    log_warning "Consumer worker not deployed"
+    CONSUMER_DEPLOYED=false
+else
+    log_success "Consumer worker is deployed"
+    CONSUMER_DEPLOYED=true
+fi
+
+echo ""
+log_info "Step 3: Deploy/redeploy workers"
+echo "-------------------------------"
+
+# Deploy webhook worker
+cd ../brainbot-webhook
+log_info "Deploying webhook worker..."
+npx wrangler deploy
+log_success "Webhook worker deployed"
+
+# Deploy consumer worker
+cd ../brainbot-consumer
+log_info "Deploying consumer worker..."
+npx wrangler deploy
+log_success "Consumer worker deployed"
+
+echo ""
+log_info "Step 4: Check Python backend health"
+echo "-----------------------------------"
+
+log_info "Checking backend health endpoint..."
+HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://brainbot-v76n.onrender.com/health || echo "000")
+case $HEALTH_STATUS in
+    200)
+        log_success "Backend health check passed ($HEALTH_STATUS)"
+        ;;
+    000)
+        log_error "Backend unreachable (connection failed)"
+        ;;
+    *)
+        log_warning "Backend health check returned $HEALTH_STATUS"
+        ;;
+esac
+
+echo ""
+log_success "Pipeline fix completed!"
+log_info "Test your bot by sending a message in Telegram"
+EOF
+
+# Make it executable
+chmod +x scripts/fix_pipeline.sh
+
+# Run it
+./scripts/fix_pipeline.sh

@@ -167,12 +167,13 @@ class WebhookTelegramBot:
             info = vector_store.index.info()
             response_time = (time.time() - start_time) * 1000
 
+            # InfoResult is an object, not a dict
             vector_status = {
                 "status": "healthy",
                 "error": None,
                 "response_time_ms": round(response_time, 2),
-                "dimension": info.get("dimension"),
-                "total_data_count": info.get("totalDataCount"),
+                "dimension": getattr(info, "dimension", None),
+                "total_data_count": getattr(info, "total_data_count", None),
             }
         except Exception as e:
             vector_status = {
