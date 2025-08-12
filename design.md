@@ -483,7 +483,7 @@ index_name = "brainbot-docs"
 [vars]
 N8N_WEBHOOK_URL = "https://n8n.example.com/webhook/brainbot"
 PROCESS_URL = "https://brainbot-v76n.onrender.com/process"
-### Cloudflare sequence (Phase 1)
+### Cloudflare sequence (Phase 1) - DEPLOYED
 
 ```mermaid
 sequenceDiagram
@@ -499,6 +499,12 @@ sequenceDiagram
   C->>P: POST /process with HMAC headers
   P-->>C: 200 JSON
 ```
+
+**Current Status (Aug 2025):**
+- ✅ Workers deployed to production
+- ✅ Queue and storage resources provisioned
+- ⚠️ Awaiting Python backend deployment (PR ready)
+- 📝 See CF_MIGRATION_GUIDE.md for deployment instructions
 
 ### Secrets & Bindings
 
