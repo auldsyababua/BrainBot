@@ -1,0 +1,226 @@
+name: Auto-Transition Linear Issues
+
+on:
+  pull_request:
+    types: [opened, reopened, closed]
+
+jobs:
+  transition-issue:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.title, '10N-')
+    
+    steps:
+      - name: Extract Linear Issue ID
+        id: extract-issue
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          ISSUE_ID=$(echo "$PR_TITLE" | grep -oE '10N-[0-9]+' | head -1)
+          echo "issue_id=$ISSUE_ID" >> $GITHUB_OUTPUT
+          echo "Found Linear issue: $ISSUE_ID"
+      
+      - name: Transition to In Progress
+        if: github.event.action == 'opened' || github.event.action == 'reopened'
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          ISSUE_ID="${{ steps.extract-issue.outputs.issue_id }}"
+          
+          # Query to find the issue and get available states
+          QUERY='query($issueId: String!) {
+            issue(id: $issueId) {
+              id
+              identifier
+              title
+              state {
+                id
+                name
+              }
+              team {
+                states {
+                  nodes {
+                    id
+                    name
+                    type
+                  }
+                }
+              }
+            }
+          }'
+          
+          # First, get the issue and available states
+          RESPONSE=$(curl -s -X POST https://api.linear.app/graphql \
+            -H "Authorization: $LINEAR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"query\":\"$QUERY\",\"variables\":{\"issueId\":\"$ISSUE_ID\"}}")
+          
+          # Find the "In Progress" state ID
+          IN_PROGRESS_ID=$(echo "$RESPONSE" | jq -r '.data.issue.team.states.nodes[] | select(.name == "In Progress" or .type == "started") | .id' | head -1)
+          
+          if [ -z "$IN_PROGRESS_ID" ]; then
+            echo "Could not find 'In Progress' state, skipping transition"
+            exit 0
+          fi
+          
+          # Update the issue state
+          MUTATION='mutation($issueId: String!, $stateId: String!) {
+            issueUpdate(id: $issueId, input: { stateId: $stateId }) {
+              success
+              issue {
+                identifier
+                state {
+                  name
+                }
+              }
+            }
+          }'
+          
+          curl -s -X POST https://api.linear.app/graphql \
+            -H "Authorization: $LINEAR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"query\":\"$MUTATION\",\"variables\":{\"issueId\":\"$ISSUE_ID\",\"stateId\":\"$IN_PROGRESS_ID\"}}"
+          
+          echo "Transitioned $ISSUE_ID to In Progress"
+      
+      - name: Transition to Done (on merge)
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          ISSUE_ID="${{ steps.extract-issue.outputs.issue_id }}"
+          
+          # Query to find the issue and get available states
+          QUERY='query($issueId: String!) {
+            issue(id: $issueId) {
+              id
+              identifier
+              title
+              state {
+                id
+                name
+              }
+              team {
+                states {
+                  nodes {
+                    id
+                    name
+                    type
+                  }
+                }
+              }
+            }
+          }'
+          
+          # First, get the issue and available states
+          RESPONSE=$(curl -s -X POST https://api.linear.app/graphql \
+            -H "Authorization: $LINEAR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"query\":\"$QUERY\",\"variables\":{\"issueId\":\"$ISSUE_ID\"}}")
+          
+          # Find the "Done" state ID
+          DONE_ID=$(echo "$RESPONSE" | jq -r '.data.issue.team.states.nodes[] | select(.name == "Done" or .type == "completed") | .id' | head -1)
+          
+          if [ -z "$DONE_ID" ]; then
+            echo "Could not find 'Done' state, skipping transition"
+            exit 0
+          fi
+          
+          # Update the issue state
+          MUTATION='mutation($issueId: String!, $stateId: String!) {
+            issueUpdate(id: $issueId, input: { stateId: $stateId }) {
+              success
+              issue {
+                identifier
+                state {
+                  name
+                }
+              }
+            }
+          }'
+          
+          curl -s -X POST https://api.linear.app/graphql \
+            -H "Authorization: $LINEAR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"query\":\"$MUTATION\",\"variables\":{\"issueId\":\"$ISSUE_ID\",\"stateId\":\"$DONE_ID\"}}"
+          
+          echo "Transitioned $ISSUE_ID to Done"
+          
+          # Add PR link as comment
+          COMMENT_MUTATION='mutation($issueId: String!, $body: String!) {
+            commentCreate(input: { issueId: $issueId, body: $body }) {
+              success
+              comment {
+                id
+              }
+            }
+          }'
+          
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          COMMENT_BODY="PR merged: $PR_URL"
+          
+          curl -s -X POST https://api.linear.app/graphql \
+            -H "Authorization: $LINEAR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"query\":\"$COMMENT_MUTATION\",\"variables\":{\"issueId\":\"$ISSUE_ID\",\"body\":\"$COMMENT_BODY\"}}"
+      
+      - name: Transition to Backlog (on close without merge)
+        if: github.event.action == 'closed' && github.event.pull_request.merged == false
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          ISSUE_ID="${{ steps.extract-issue.outputs.issue_id }}"
+          
+          # Query to find the issue and get available states
+          QUERY='query($issueId: String!) {
+            issue(id: $issueId) {
+              id
+              identifier
+              title
+              state {
+                id
+                name
+              }
+              team {
+                states {
+                  nodes {
+                    id
+                    name
+                    type
+                  }
+                }
+              }
+            }
+          }'
+          
+          # First, get the issue and available states
+          RESPONSE=$(curl -s -X POST https://api.linear.app/graphql \
+            -H "Authorization: $LINEAR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"query\":\"$QUERY\",\"variables\":{\"issueId\":\"$ISSUE_ID\"}}")
+          
+          # Find the "Backlog" or "Todo" state ID
+          BACKLOG_ID=$(echo "$RESPONSE" | jq -r '.data.issue.team.states.nodes[] | select(.name == "Backlog" or .name == "Todo" or .type == "backlog") | .id' | head -1)
+          
+          if [ -z "$BACKLOG_ID" ]; then
+            echo "Could not find 'Backlog' state, skipping transition"
+            exit 0
+          fi
+          
+          # Update the issue state
+          MUTATION='mutation($issueId: String!, $stateId: String!) {
+            issueUpdate(id: $issueId, input: { stateId: $stateId }) {
+              success
+              issue {
+                identifier
+                state {
+                  name
+                }
+              }
+            }
+          }'
+          
+          curl -s -X POST https://api.linear.app/graphql \
+            -H "Authorization: $LINEAR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"query\":\"$MUTATION\",\"variables\":{\"issueId\":\"$ISSUE_ID\",\"stateId\":\"$BACKLOG_ID\"}}"
+          
+          echo "Transitioned $ISSUE_ID back to Backlog (PR closed without merge)"
