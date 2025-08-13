@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSmartRailsContext } from '../../context/SmartRailsContext';
 import { Zap, Plus } from 'lucide-react';
 interface ItemManagerProps {
   onAddItems: (items: string[]) => Promise<void>;
@@ -9,11 +8,8 @@ export const ItemManager: React.FC<ItemManagerProps> = ({
 }) => {
   const [itemInput, setItemInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const {
-    confidence
-  } = useSmartRailsContext();
   // Detect if this is a Smart Rails direct command
-  const isSmartRailsCommand = confidence === 100;
+  const isSmartRailsCommand = false; // Simplified - analytics removed
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!itemInput.trim() || isSubmitting) return;

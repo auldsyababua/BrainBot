@@ -1,0 +1,25 @@
+id: react-missing-key-prop
+language: typescript
+message: "React list item missing 'key' prop. Each child in a list should have a unique 'key' prop."
+rule:
+  any:
+    - pattern: |
+        $ARRAY.map(($ITEM) => (
+          <$COMPONENT $$$PROPS />
+        ))
+      not:
+        has:
+          pattern: key=$KEY
+    
+    - pattern: |
+        $ARRAY.map(($ITEM) => {
+          return <$COMPONENT $$$PROPS />
+        })
+      not:
+        has:
+          pattern: key=$KEY
+
+fix: |
+  $ARRAY.map(($ITEM, index) => (
+    <$COMPONENT key={index} $$$PROPS />
+  ))

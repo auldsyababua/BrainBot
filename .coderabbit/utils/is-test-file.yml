@@ -1,0 +1,11 @@
+id: is-test-file
+language: python
+rule:
+  any:
+    - inside:
+        stopBy: end
+        any:
+          - pattern: "import pytest"
+          - pattern: "from pytest import $$$"
+          - pattern: "import unittest"
+          - pattern: "from unittest import $$$"

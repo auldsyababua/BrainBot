@@ -1,0 +1,120 @@
+name: Check Commit Messages for Linear Issues
+
+on:
+  pull_request:
+    types: [synchronize, opened]
+
+jobs:
+  check-commits:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check commit messages
+        id: check-commits
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            
+            // Get all commits in this PR
+            const prNumber = context.payload.pull_request.number;
+            const baseRef = context.payload.pull_request.base.ref;
+            const headRef = context.payload.pull_request.head.ref;
+            
+            // Fetch the base branch to ensure we have it
+            try {
+              execSync(`git fetch origin ${baseRef}`, { encoding: 'utf-8' });
+            } catch (error) {
+              console.log('Could not fetch base branch, continuing...');
+            }
+            
+            // Get commit messages
+            let commits;
+            try {
+              const commitList = execSync(`git log origin/${baseRef}..HEAD --pretty=format:"%H %s"`, { encoding: 'utf-8' });
+              commits = commitList.split('\n').filter(line => line.trim());
+            } catch (error) {
+              console.log('Using alternative method to get commits...');
+              const commitList = execSync(`git log HEAD~${context.payload.pull_request.commits}..HEAD --pretty=format:"%H %s"`, { encoding: 'utf-8' });
+              commits = commitList.split('\n').filter(line => line.trim());
+            }
+            
+            const pattern = /10N-\d+/;
+            const missingIssueCommits = [];
+            const validCommits = [];
+            
+            for (const commit of commits) {
+              const [hash, ...messageParts] = commit.split(' ');
+              const message = messageParts.join(' ');
+              
+              if (!pattern.test(message)) {
+                missingIssueCommits.push({ hash: hash.substring(0, 7), message });
+              } else {
+                const issueId = message.match(pattern)[0];
+                validCommits.push({ hash: hash.substring(0, 7), message, issueId });
+              }
+            }
+            
+            // Create a comment with the results
+            let commentBody = '## 📋 Commit Message Linear Issue Check\n\n';
+            
+            if (validCommits.length > 0) {
+              commentBody += '### ✅ Commits with Linear issues:\n';
+              for (const commit of validCommits) {
+                commentBody += `- \`${commit.hash}\`: ${commit.message}\n`;
+              }
+              commentBody += '\n';
+            }
+            
+            if (missingIssueCommits.length > 0) {
+              commentBody += '### ⚠️ Commits missing Linear issue references:\n';
+              for (const commit of missingIssueCommits) {
+                commentBody += `- \`${commit.hash}\`: ${commit.message}\n`;
+              }
+              commentBody += '\n**Recommendation:** Consider adding Linear issue IDs (e.g., `10N-123`) to commit messages for better traceability.\n';
+              commentBody += '\nYou can amend commits with: `git commit --amend -m "10N-123: your message"`\n';
+            } else {
+              commentBody += '🎉 All commits reference Linear issues!\n';
+            }
+            
+            // Find and update or create comment
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber
+            });
+            
+            const botComment = comments.data.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('Commit Message Linear Issue Check')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: commentBody
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: commentBody
+              });
+            }
+            
+            // Log results but don't fail the check
+            if (missingIssueCommits.length > 0) {
+              console.log(`⚠️ ${missingIssueCommits.length} commit(s) missing Linear issue references (soft warning)`);
+            } else {
+              console.log('✅ All commits contain Linear issue references');
+            }

@@ -1,0 +1,110 @@
+{
+  "project": {
+    "name": "FLRTS",
+    "root": "./",
+    "type": "fullstack",
+    "description": "Field Reports, Lists, and Task System with Telegram Bot Integration"
+  },
+  "frontend": {
+    "path": "./telegram-mini-app",
+    "framework": "react",
+    "bundler": "vite",
+    "devServer": {
+      "port": 5173,
+      "host": "localhost"
+    },
+    "testFramework": "vitest",
+    "components": [
+      "AppContainer",
+      "Dashboard",
+      "Tasks",
+      "Lists",
+      "Chat",
+      "Settings",
+      "SmartRails"
+    ],
+    "authentication": {
+      "required": false,
+      "type": "telegram-webapp"
+    }
+  },
+  "backend": {
+    "path": "./",
+    "framework": "fastapi",
+    "language": "python",
+    "testFramework": "pytest",
+    "api": {
+      "type": "webhook",
+      "endpoints": [
+        "/webhook",
+        "/health",
+        "/api/tasks",
+        "/api/lists",
+        "/api/field-reports"
+      ]
+    },
+    "services": {
+      "llm": "openai",
+      "database": "supabase",
+      "cache": "redis",
+      "vectorStore": "custom",
+      "workers": "cloudflare"
+    }
+  },
+  "testing": {
+    "coverage": {
+      "target": 80,
+      "criticalPaths": 95,
+      "excludePaths": [
+        "tests/**",
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/migrations/**",
+        "**/fixtures/**"
+      ]
+    },
+    "antiMesaPatterns": {
+      "enabled": true,
+      "priority": "high",
+      "focusAreas": [
+        "prompt_injection",
+        "state_manipulation",
+        "command_injection",
+        "authorization_bypass",
+        "resource_exhaustion"
+      ]
+    },
+    "performance": {
+      "enabled": true,
+      "benchmarks": {
+        "api_response_time_p95": 3000,
+        "frontend_load_time": 3000,
+        "websocket_latency": 100,
+        "database_query_p95": 100
+      }
+    }
+  },
+  "ci": {
+    "provider": "github-actions",
+    "triggers": [
+      "push:main",
+      "push:develop",
+      "pull_request:main"
+    ],
+    "stages": [
+      "lint",
+      "typecheck",
+      "unit",
+      "integration",
+      "e2e",
+      "security",
+      "performance"
+    ]
+  },
+  "monitoring": {
+    "errors": "sentry",
+    "analytics": "custom",
+    "performance": "custom",
+    "uptime": "render"
+  }
+}
