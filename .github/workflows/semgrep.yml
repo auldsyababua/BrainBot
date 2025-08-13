@@ -28,9 +28,11 @@ jobs:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
         run: |
           pip install semgrep
-          semgrep ci --sarif --output=semgrep.sarif || true
+          # Use semgrep scan with default recommended rules to produce SARIF locally
+          semgrep scan --config=p/ci --sarif --output=semgrep.sarif || true
 
       - name: Upload SARIF to GitHub Security
+        if: hashFiles('semgrep.sarif') != ''
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: semgrep.sarif
