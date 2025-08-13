@@ -1,0 +1,42 @@
+name: Semgrep Scan
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Semgrep (SARIF output)
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+        run: |
+          pip install semgrep
+          semgrep ci --sarif --output=semgrep.sarif || true
+
+      - name: Upload SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+
+      - name: Link to Semgrep Cloud (if token provided)
+        if: env.SEMGREP_APP_TOKEN != ''
+        run: |
+          echo "Results uploaded to Semgrep Cloud if organization is configured."
+

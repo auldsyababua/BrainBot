@@ -130,7 +130,7 @@ echo "🔑 Environment Variables to Configure:"
 echo "--------------------------------------"
 echo "Add these to Render dashboard (Environment → Environment Variables):"
 echo ""
-echo "CF_PROXY_SECRET = 8f84125f867d95cd22c5906640f2f6a8badc37ad5136669d04d134ea7df58ab4"
+echo "CF_PROXY_SECRET = <redacted-example>"
 echo ""
 
 # Final status

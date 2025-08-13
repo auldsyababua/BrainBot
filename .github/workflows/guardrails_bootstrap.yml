@@ -1,0 +1,94 @@
+name: Guardrails Bootstrap
+
+on:
+  workflow_dispatch:
+    inputs:
+      repos:
+        description: "Comma-separated list of target repos (owner/name). Defaults to vars.TARGET_REPOS or current repo"
+        required: false
+      branch:
+        description: "Branch to protect (defaults to each repo's default branch)"
+        required: false
+
+jobs:
+  bootstrap:
+    name: Apply repo guardrails
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      administration: write
+      pull-requests: write
+
+    steps:
+      - name: Get GitHub App token
+        id: app
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          installation-retrieval-mode: organization
+          owner: ${{ github.repository_owner }}
+
+      - name: Authenticate gh
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          echo "$GH_TOKEN" | gh auth login --with-token
+          gh auth status
+
+      - name: Apply branch protection and required checks
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          INPUT_REPOS: ${{ inputs.repos }}
+          VAR_REPOS: ${{ vars.TARGET_REPOS }}
+          REQUIRED_CHECKS_JSON: ${{ vars.REQUIRED_CHECKS_JSON }}
+          INPUT_BRANCH: ${{ inputs.branch }}
+        run: |
+          set -euo pipefail
+
+          # Determine list of repos
+          REPOS=${INPUT_REPOS:-${VAR_REPOS:-"${{ github.repository }}"}}
+          IFS=',' read -ra REPO_LIST <<< "$REPOS"
+
+          # Determine checks list (JSON array of strings)
+          if [ -z "${REQUIRED_CHECKS_JSON:-}" ]; then
+            CHECKS='["Python Tests & Checks","Frontend Tests & Checks","All CI Checks"]'
+          else
+            CHECKS="$REQUIRED_CHECKS_JSON"
+          fi
+
+          echo "Repos: ${REPO_LIST[*]}"
+          echo "Required checks: $CHECKS"
+
+          for REPO in "${REPO_LIST[@]}"; do
+            REPO=$(echo "$REPO" | xargs) # trim
+            if [ -z "$REPO" ]; then continue; fi
+
+            # Find branch to protect
+            BRANCH=${INPUT_BRANCH:-}
+            if [ -z "$BRANCH" ]; then
+              BRANCH=$(gh api repos/$REPO --jq .default_branch)
+            fi
+
+            echo "\n==> Protecting $REPO@$BRANCH"
+
+            BODY=$(jq -n --arg branch "$BRANCH" --argjson contexts "$CHECKS" '{
+              required_status_checks: { strict: true, contexts: $contexts },
+              enforce_admins: true,
+              required_pull_request_reviews: { required_approving_review_count: 1, dismiss_stale_reviews: true },
+              restrictions: null
+            }')
+
+            gh api \
+              -X PUT \
+              -H "Accept: application/vnd.github+json" \
+              repos/$REPO/branches/$BRANCH/protection \
+              -d "$BODY"
+
+            echo "Applied protection and required checks for $REPO@$BRANCH"
+          done
+
+      - name: Summary
+        run: |
+          echo "Guardrails applied. Verify branch protection rules in target repos' Settings > Branches."
+

@@ -1,0 +1,16 @@
+# Ignore generated artifacts and external dependencies
+node_modules/
+dist/
+build/
+coverage/
+htmlcov/
+reports/
+telemetry/
+
+# Ignore large data and archives
+docs/ARCHIVE/
+
+# Ignore test docker-compose secrets in examples (we replaced real values with placeholders)
+# Keep scanning the file but skip huge vendor dirs
+**/*.min.js
+

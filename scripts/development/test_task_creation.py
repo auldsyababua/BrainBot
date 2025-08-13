@@ -40,7 +40,8 @@ async def test_task_creation():
     # Generate HMAC signature
     timestamp = str(int(time.time()))
     payload = json.dumps(proxy_payload, separators=(",", ":"))
-    secret = "49253df4d0fdcf448b820cc7d8da15101fa245938d0b438955b53ffd575cf960"
+    # Read secret from environment for local testing; default to placeholder
+    secret = os.getenv("CF_PROXY_SECRET", "test_secret")
 
     signature_payload = f"{timestamp}.{payload}"
     signature = (
@@ -100,7 +101,8 @@ async def test_simple_message():
     proxy_payload = {"body": json.dumps(update)}
     timestamp = str(int(time.time()))
     payload = json.dumps(proxy_payload, separators=(",", ":"))
-    secret = "49253df4d0fdcf448b820cc7d8da15101fa245938d0b438955b53ffd575cf960"
+    # Read secret from environment for local testing; default to placeholder
+    secret = os.getenv("CF_PROXY_SECRET", "test_secret")
 
     signature_payload = f"{timestamp}.{payload}"
     signature = (

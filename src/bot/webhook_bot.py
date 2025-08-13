@@ -511,9 +511,8 @@ class WebhookTelegramBot:
 
                 logger.info("📋 Getting JSON from request")
                 req = await request.json()
-                logger.info(
-                    f"📥 Received webhook update: {req.get('message', {}).get('text', 'Non-text update')}"
-                )
+                # Avoid logging raw user-provided text to prevent log injection
+                logger.info("📥 Received webhook update")
 
                 logger.info("🔧 Creating Update object from JSON")
                 # Create Update object
