@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw'
-import { createMockTask, createMockList, createMockPerformanceMetrics, createMockBotStatus } from '../factories'
+import { createMockTask, createMockList, createMockBotStatus } from '../factories'
 
 const BASE_URL = 'https://brainbot-v76n.onrender.com'
 
@@ -15,11 +15,6 @@ export const handlers = [
   // Status endpoint
   http.get(`${BASE_URL}/status`, () => {
     return HttpResponse.json(createMockBotStatus())
-  }),
-
-  // Metrics endpoint
-  http.get(`${BASE_URL}/metrics`, () => {
-    return HttpResponse.json(createMockPerformanceMetrics())
   }),
 
   // Webhook endpoint for commands

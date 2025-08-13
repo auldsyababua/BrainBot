@@ -1,0 +1,17 @@
+id: async-await-proper
+language: python
+message: "Async function call without await. This will return a coroutine object instead of the result."
+rule:
+  all:
+    - inside:
+        kind: function_definition
+        has:
+          kind: async
+    - pattern: $FUNC($$$ARGS)
+    - not:
+        pattern: await $FUNC($$$ARGS)
+  constraints:
+    FUNC:
+      regex: "^(send_message|edit_message|delete_message|get_chat|get_updates|answer_callback_query|send_document|send_photo)"
+
+fix: await $FUNC($$$ARGS)

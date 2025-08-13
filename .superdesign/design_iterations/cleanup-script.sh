@@ -9,11 +9,14 @@ echo "🧹 Starting Telegram Mini App Cleanup..."
 echo "======================================="
 
 # Navigate to mini app directory
-cd /Users/colinaulds/Desktop/projects/flrts/telegram-mini-app
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+cd "$PROJECT_ROOT/telegram-mini-app"
 
 # Create backup
 echo "📦 Creating backup..."
-cp -r . ../telegram-mini-app.backup.$(date +%Y%m%d_%H%M%S)
+BACKUP_PATH="$PROJECT_ROOT/telegram-mini-app.backup.$(date +%Y%m%d_%H%M%S)"
+cp -r . "$BACKUP_PATH"
 
 # Step 1: Remove marketing and analytics components
 echo ""
@@ -106,8 +109,9 @@ if [ -f "src/components/Dashboard/Dashboard.tsx" ]; then
     # Check if file exists and update it
     if grep -q "PerformanceMetrics" src/components/Dashboard/Dashboard.tsx; then
         # Remove PerformanceMetrics import and usage
-        sed -i '' '/import.*PerformanceMetrics/d' src/components/Dashboard/Dashboard.tsx
-        sed -i '' '/<PerformanceMetrics/d' src/components/Dashboard/Dashboard.tsx
+        sed -i.bak '/import.*PerformanceMetrics/d' src/components/Dashboard/Dashboard.tsx
+        sed -i.bak '/<PerformanceMetrics/d' src/components/Dashboard/Dashboard.tsx
+        rm -f src/components/Dashboard/Dashboard.tsx.bak
         echo "  ✓ Removed PerformanceMetrics from Dashboard"
     fi
 fi
@@ -179,7 +183,7 @@ echo "  2. Test the application: npm run dev"
 echo "  3. Build for production: npm run build"
 echo "  4. Deploy to Cloudflare: npm run deploy"
 echo ""
-echo "Backup saved to: ../telegram-mini-app.backup.$(date +%Y%m%d_%H%M%S)"
+echo "📦 Backup created at: $BACKUP_PATH"
 echo ""
 echo "To rollback if needed:"
 echo "  rm -rf telegram-mini-app"

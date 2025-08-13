@@ -4,7 +4,6 @@ import { http, HttpResponse } from 'msw'
 import {
   checkHealth,
   getStatus,
-  getMetrics,
   executeDirectCommand,
   createTask,
   completeTask,

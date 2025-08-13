@@ -5,6 +5,8 @@
 ### 1. Code Review
 - [ ] Review all changes in `feat/cf-migration-phase1` branch
 - [ ] Verify no sensitive data is hardcoded
+- [ ] Check that CF_PROXY_SECRET is retrieved from secure store (not hardcoded)
+- [ ] Rotate any secrets that were accidentally exposed in commits
 - [ ] Check that all tests pass locally
 - [ ] Ensure CI/CD workflows are configured correctly
 
@@ -32,7 +34,7 @@
 
 ### Step 1: Merge to Main Branch
 ```bash
-./scripts/deploy_phase1.sh
+scripts/deployment/deploy_phase1.sh
 ```
 
 **Actions performed:**
@@ -51,14 +53,14 @@
 2. Go to: Environment → Environment Variables
 3. Add new variable:
    - **Key:** `CF_PROXY_SECRET`
-   - **Value:** `8f84125f867d95cd22c5906640f2f6a8badc37ad5136669d04d134ea7df58ab4`
+   - **Value:** (retrieve from secure credentials store or secrets manager)
 4. Click "Save Changes"
 
 **Expected duration:** 2-3 minutes for redeploy
 
 ### Step 3: Verify Deployment
 ```bash
-./scripts/verify_migration.sh
+scripts/deployment/verify_migration.sh
 ```
 
 **Checks performed:**
@@ -111,7 +113,7 @@ If issues occur after deployment:
 
 ### Immediate Rollback
 ```bash
-./scripts/rollback_phase1.sh
+scripts/deployment/rollback_phase1.sh
 ```
 
 **Actions:**

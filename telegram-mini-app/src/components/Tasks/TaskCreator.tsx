@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSmartRailsContext } from '../../context/SmartRailsContext';
 import { Zap, Calendar, User, Clock, ChevronLeft, ChevronRight, X } from 'lucide-react';
 interface User {
   id: number;
@@ -30,11 +29,8 @@ export const TaskCreator: React.FC<TaskCreatorProps> = ({
   const [selectedHours, setSelectedHours] = useState(12);
   const [selectedMinutes, setSelectedMinutes] = useState(0);
   const [selectedAmPm, setSelectedAmPm] = useState<'AM' | 'PM'>('PM');
-  const {
-    confidence
-  } = useSmartRailsContext();
   // Detect if this is a Smart Rails direct command
-  const isSmartRailsCommand = confidence === 100;
+  const isSmartRailsCommand = false; // Simplified - analytics removed
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!description.trim() || isSubmitting) return;

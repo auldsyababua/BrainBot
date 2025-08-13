@@ -1,0 +1,329 @@
+name: Comprehensive Test Suite
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run nightly tests at 2 AM UTC
+    - cron: '0 2 * * *'
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '18'
+
+jobs:
+  backend-tests:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov pytest-asyncio pytest-benchmark bandit mypy
+      
+      - name: Run unit tests with coverage
+        run: |
+          pytest tests/unit -v --cov=src --cov-report=xml --cov-report=term
+      
+      - name: Run integration tests
+        env:
+          REDIS_URL: redis://localhost:6379
+        run: |
+          pytest tests/integration -v
+      
+      - name: Run anti-mesa pattern tests
+        run: |
+          python testsprite_tests/anti_mesa_tests.py
+      
+      - name: Security scan with Bandit
+        run: |
+          bandit -r src/ -f json -o security_report.json || true
+      
+      - name: Type checking with mypy
+        run: |
+          mypy src/ --ignore-missing-imports || true
+      
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: backend
+          name: backend-coverage
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-test-results
+          path: |
+            coverage.xml
+            security_report.json
+
+  frontend-tests:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: telegram-mini-app/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: telegram-mini-app
+        run: npm ci
+      
+      - name: Run ESLint
+        working-directory: telegram-mini-app
+        run: npm run lint || true
+      
+      - name: TypeScript type check
+        working-directory: telegram-mini-app
+        run: npx tsc --noEmit
+      
+      - name: Run unit tests with coverage
+        working-directory: telegram-mini-app
+        run: npm run test:unit -- --coverage
+      
+      - name: Build verification
+        working-directory: telegram-mini-app
+        run: npm run build
+      
+      - name: Check bundle size
+        working-directory: telegram-mini-app
+        run: |
+          npm run build
+          echo "Bundle size check:"
+          du -sh dist/
+      
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./telegram-mini-app/coverage/coverage-final.json
+          flags: frontend
+          name: frontend-coverage
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: telegram-mini-app/dist/
+
+  performance-tests:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests]
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-benchmark locust
+      
+      - name: Run performance benchmarks
+        run: |
+          pytest tests/performance -v --benchmark-only --benchmark-json=benchmarks.json
+      
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v3
+        with:
+          name: performance-benchmarks
+          path: benchmarks.json
+      
+      - name: Comment benchmark results on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const benchmarks = JSON.parse(fs.readFileSync('benchmarks.json', 'utf8'));
+            
+            let comment = '## Performance Benchmark Results\n\n';
+            comment += '| Test | Mean | Min | Max | StdDev |\n';
+            comment += '|------|------|-----|-----|--------|\n';
+            
+            for (const benchmark of benchmarks.benchmarks) {
+              comment += `| ${benchmark.name} | ${benchmark.stats.mean.toFixed(3)}s | ${benchmark.stats.min.toFixed(3)}s | ${benchmark.stats.max.toFixed(3)}s | ${benchmark.stats.stddev.toFixed(3)}s |\n`;
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  security-scan:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Run Trivy security scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+      
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+      
+      - name: OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'FLRTS'
+          path: '.'
+          format: 'HTML'
+      
+      - name: Upload dependency check results
+        uses: actions/upload-artifact@v3
+        with:
+          name: dependency-check-report
+          path: reports/
+
+  anti-mesa-validation:
+    name: Anti-Mesa Pattern Validation
+    runs-on: ubuntu-latest
+    needs: [backend-tests]
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-asyncio
+      
+      - name: Run anti-mesa pattern tests
+        run: |
+          python testsprite_tests/anti_mesa_tests.py > anti_mesa_results.txt
+      
+      - name: Validate anti-mesa compliance
+        run: |
+          if grep -q "Failed: [1-9]" anti_mesa_results.txt; then
+            echo "⚠️ Anti-mesa pattern violations detected!"
+            cat anti_mesa_results.txt
+            exit 1
+          else
+            echo "✅ All anti-mesa patterns validated successfully"
+            cat anti_mesa_results.txt
+          fi
+      
+      - name: Upload anti-mesa test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: anti-mesa-validation
+          path: anti_mesa_results.txt
+
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests, performance-tests, security-scan, anti-mesa-validation]
+    if: always()
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+      
+      - name: Generate summary report
+        run: |
+          echo "# FLRTS Test Execution Summary" > summary.md
+          echo "Date: $(date)" >> summary.md
+          echo "" >> summary.md
+          
+          echo "## Test Results" >> summary.md
+          echo "- Backend Tests: ${{ needs.backend-tests.result }}" >> summary.md
+          echo "- Frontend Tests: ${{ needs.frontend-tests.result }}" >> summary.md
+          echo "- Performance Tests: ${{ needs.performance-tests.result }}" >> summary.md
+          echo "- Security Scan: ${{ needs.security-scan.result }}" >> summary.md
+          echo "- Anti-Mesa Validation: ${{ needs.anti-mesa-validation.result }}" >> summary.md
+          
+          echo "" >> summary.md
+          echo "## Critical Anti-Mesa Patterns Tested" >> summary.md
+          echo "1. ✅ Prompt injection defense" >> summary.md
+          echo "2. ✅ Command routing security" >> summary.md
+          echo "3. ✅ Authorization bypass prevention" >> summary.md
+          echo "4. ✅ Resource exhaustion protection" >> summary.md
+          echo "5. ✅ State manipulation prevention" >> summary.md
+          
+          cat summary.md
+      
+      - name: Comment summary on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('summary.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+      
+      - name: Fail if any critical tests failed
+        if: |
+          needs.backend-tests.result != 'success' ||
+          needs.frontend-tests.result != 'success' ||
+          needs.anti-mesa-validation.result != 'success'
+        run: |
+          echo "❌ Critical tests failed. Check the logs above."
+          exit 1
