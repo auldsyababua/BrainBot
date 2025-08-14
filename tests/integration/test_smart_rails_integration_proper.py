@@ -4,11 +4,12 @@ These tests verify end-to-end behavior with minimal mocking,
 real database interactions, and exact expected outputs.
 """
 
-import pytest
 import time
 
-from src.rails.router import KeywordRouter
+import pytest
+
 from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from src.rails.router import KeywordRouter
 
 
 class TestEndToEndMessageFlow:

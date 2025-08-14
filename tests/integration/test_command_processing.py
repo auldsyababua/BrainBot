@@ -1,8 +1,9 @@
 """End-to-end command processing integration tests."""
 
-import pytest
 import asyncio
-from unittest.mock import patch, AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
 
 from src.core.llm import process_message
 

@@ -209,7 +209,7 @@ echo "   Feature branch: feat/cf-migration-phase1"
 echo "   Render service: brainbot-v76n"
 echo "   Webhook Worker: brainbot-webhook.colin-c4d.workers.dev"
 echo "   Consumer Worker: brainbot-consumer.colin-c4d.workers.dev"
-echo "   CF_PROXY_SECRET: 8f84125f867d95cd22c5906640f2f6a8badc37ad5136669d04d134ea7df58ab4"
+echo "   CF_PROXY_SECRET: <redacted-example>"
 echo ""
 
 # Final verdict

@@ -1,12 +1,13 @@
 """Comprehensive edge case tests for Rails router integration."""
 
-import pytest
 import asyncio
-from unittest.mock import Mock, patch, AsyncMock, MagicMock
 import time
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
-from src.rails.router import KeywordRouter, RouteResult
+import pytest
+
 from src.core.llm import _process_rails_command, process_message
+from src.rails.router import KeywordRouter, RouteResult
 
 
 class TestRouterEdgeCases:
@@ -70,6 +71,7 @@ class TestRouterEdgeCases:
 
             # The module should handle initialization failure gracefully
             from importlib import reload
+
             import src.core.llm
 
             with patch("logging.Logger.error") as mock_logger:
@@ -154,8 +156,8 @@ class TestRouterEdgeCases:
 
     def test_concurrent_routing_conflicts(self):
         """Test router behavior under concurrent access."""
-        import threading
         import queue
+        import threading
 
         results_queue = queue.Queue()
         errors_queue = queue.Queue()

@@ -19,11 +19,11 @@ sys.path.insert(
     0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from src.storage.vector_store import vector_store  # noqa: E402
-from src.core.api_client import get_resilient_client, RetryConfig  # noqa: E402
-from src.core.llm import conversation_manager, process_message  # noqa: E402
+from src.core.api_client import RetryConfig, get_resilient_client  # noqa: E402
 from src.core.benchmarks import get_performance_monitor  # noqa: E402
+from src.core.llm import conversation_manager, process_message  # noqa: E402
 from src.storage.redis_store import redis_store  # noqa: E402
+from src.storage.vector_store import vector_store  # noqa: E402
 
 
 async def test_vector_cache():

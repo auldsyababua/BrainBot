@@ -1,7 +1,8 @@
 """Task operations processor working with existing tasks table."""
 
 import logging
-from typing import Dict, Any
+from typing import Any, Dict
+
 from .base_processor import BaseProcessor
 
 logger = logging.getLogger(__name__)

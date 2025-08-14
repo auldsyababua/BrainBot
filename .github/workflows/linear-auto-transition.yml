@@ -12,9 +12,10 @@ jobs:
     steps:
       - name: Extract Linear Issue ID
         id: extract-issue
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
-          PR_TITLE="${{ github.event.pull_request.title }}"
-          ISSUE_ID=$(echo "$PR_TITLE" | grep -oE '10N-[0-9]+' | head -1)
+          ISSUE_ID=$(printf "%s" "$PR_TITLE" | grep -oE '10N-[0-9]+' | head -1)
           echo "issue_id=$ISSUE_ID" >> $GITHUB_OUTPUT
           echo "Found Linear issue: $ISSUE_ID"
       

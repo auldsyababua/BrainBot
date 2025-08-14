@@ -3,16 +3,17 @@
 Tests deterministic preprocessing, confidence scoring, and direct execution paths.
 """
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from src.rails.router import KeywordRouter
+from src.rails.confidence_scoring import ConfidenceFactors, EnhancedConfidenceScorer
 from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
-from src.rails.confidence_scoring import EnhancedConfidenceScorer, ConfidenceFactors
+from src.rails.router import KeywordRouter
 
 
 class TestDeterministicPreprocessing:

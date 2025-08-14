@@ -1,11 +1,11 @@
 """Enhanced keyword-based router with synonym library and confidence scoring."""
 
-import re
 import logging
+import re
 import time
-from datetime import timedelta
-from typing import Dict, Any, Tuple, Optional, List
 from dataclasses import dataclass, field
+from datetime import timedelta
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 

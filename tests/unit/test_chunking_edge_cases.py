@@ -1,7 +1,8 @@
 """Edge case tests for document chunking functionality."""
 
-import pytest
 from unittest.mock import patch
+
+import pytest
 
 from src.core.chunking import chunk_markdown_document
 
@@ -169,8 +170,8 @@ class TestChunkingEdgeCases:
 
     def test_concurrent_chunking(self):
         """Test thread safety of chunking."""
-        import threading
         import queue
+        import threading
 
         results_queue = queue.Queue()
         errors_queue = queue.Queue()

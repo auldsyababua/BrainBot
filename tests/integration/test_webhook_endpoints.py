@@ -2,10 +2,11 @@
 Integration tests for webhook endpoints.
 """
 
-import pytest
 import os
-from fastapi.testclient import TestClient
 from unittest.mock import patch
+
+import pytest
+from fastapi.testclient import TestClient
 
 from src.bot.webhook_bot import WebhookTelegramBot
 from src.core.memory_webhooks import MemoryWebhookEvent

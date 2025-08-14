@@ -1,7 +1,8 @@
 """Utility functions for the bot."""
 
+from typing import Any, Dict
+
 import yaml
-from typing import Dict, Any
 
 
 def parse_frontmatter(content: str) -> tuple[Dict[str, Any], str]:

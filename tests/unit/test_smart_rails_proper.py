@@ -5,6 +5,7 @@ no conditional logic, and meaningful validation of actual values.
 """
 
 import pytest
+
 from src.rails.router import KeywordRouter
 
 

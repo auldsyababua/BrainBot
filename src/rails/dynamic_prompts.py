@@ -6,8 +6,8 @@ for each message type.
 """
 
 import logging
-from typing import Dict, Any, Optional, List, Tuple
 from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 

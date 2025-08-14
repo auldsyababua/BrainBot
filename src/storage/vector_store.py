@@ -3,17 +3,19 @@ Vector store for semantic search using Upstash Vector.
 Handles document embedding, storage, and retrieval for the knowledge base.
 """
 
-import os
-import json
 import hashlib
-import time
+import json
 import logging
-from typing import List, Dict, Optional, Tuple
+import os
+import time
 from datetime import datetime
-from upstash_vector import Index
-from upstash_redis import Redis
+from typing import Dict, List, Optional, Tuple
+
 from dotenv import load_dotenv
-from core.benchmarks import get_performance_monitor, async_benchmark
+from upstash_redis import Redis
+from upstash_vector import Index
+
+from core.benchmarks import async_benchmark, get_performance_monitor
 
 logger = logging.getLogger(__name__)
 

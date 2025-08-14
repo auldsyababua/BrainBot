@@ -12,20 +12,21 @@ Usage:
     python test_storage_integrations.py --test s3
 """
 
+import argparse
+import asyncio
 import os
 import sys
-import asyncio
 from datetime import datetime
-import argparse
 
 # Add src to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
+from storage.media_storage import media_storage
+
 # Import storage modules
 from storage.redis_store import redis_store
-from storage.vector_store import vector_store
 from storage.storage_service import document_storage
-from storage.media_storage import media_storage
+from storage.vector_store import vector_store
 
 
 # Color codes for terminal output

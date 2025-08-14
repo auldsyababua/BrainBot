@@ -1,7 +1,8 @@
 """List operations processor working with existing lists/list_items tables."""
 
 import logging
-from typing import Dict, Any, Tuple
+from typing import Any, Dict, Tuple
+
 from .base_processor import BaseProcessor
 
 logger = logging.getLogger(__name__)

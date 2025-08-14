@@ -27,6 +27,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
 # These imports must come after the path setup
 import uvicorn  # noqa: E402
+
 from bot.webhook_bot import create_webhook_bot  # noqa: E402
 from core.config import TELEGRAM_BOT_TOKEN  # noqa: E402
 from core.config import TELEGRAM_WEBHOOK_SECRET  # noqa: E402

@@ -1,6 +1,6 @@
 """Smart Rails keyword-based CRUD system."""
 
+from .processors import FieldReportProcessor, ListProcessor, TaskProcessor
 from .router import KeywordRouter
-from .processors import ListProcessor, FieldReportProcessor, TaskProcessor
 
 __all__ = ["KeywordRouter", "ListProcessor", "FieldReportProcessor", "TaskProcessor"]

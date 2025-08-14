@@ -1,9 +1,9 @@
 """Automatic index generation for Supabase documents."""
 
-from datetime import datetime
-from typing import Dict, Optional
-from pathlib import Path
 import logging
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, Optional
 
 from .storage_service import document_storage
 

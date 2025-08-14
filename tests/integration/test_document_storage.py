@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Test Document Storage Service with comprehensive edge case coverage"""
 import asyncio
-import sys
-import os
-import pytest
 import concurrent.futures
+import os
+import sys
 from unittest.mock import patch
+
+import pytest
 from dotenv import load_dotenv
 
 # Add parent directory to path before importing our modules

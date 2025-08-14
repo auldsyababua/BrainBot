@@ -4,12 +4,14 @@ Enables the bot to remember user preferences, learn from corrections, and provid
 personalized responses based on past interactions.
 """
 
-import os
 import logging
-from typing import List, Dict, Optional, Any
-from mem0 import Memory
+import os
+from typing import Any, Dict, List, Optional
+
 from dotenv import load_dotenv
-from .memory_webhooks import memory_webhook_handler, MemoryWebhookEvent
+from mem0 import Memory
+
+from .memory_webhooks import MemoryWebhookEvent, memory_webhook_handler
 
 # Load environment variables
 load_dotenv()

@@ -2,13 +2,14 @@
 Unit tests for memory webhook functionality.
 """
 
-import pytest
 import os
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import pytest
+
 from src.core.memory_webhooks import (
-    MemoryWebhookHandler,
     MemoryWebhookEvent,
+    MemoryWebhookHandler,
     WebhookPayload,
 )
 

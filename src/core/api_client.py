@@ -9,15 +9,16 @@ This module provides a robust wrapper around the OpenAI API client that handles:
 """
 
 import asyncio
+import logging
 import random
 import time
-from typing import Optional, Dict, Any, Callable, List
 from functools import wraps
+from typing import Any, Callable, Dict, List, Optional
+
 import openai
-from openai import OpenAI, AsyncOpenAI
-from openai.types.chat import ChatCompletion
-import logging
 from dotenv import load_dotenv
+from openai import AsyncOpenAI, OpenAI
+from openai.types.chat import ChatCompletion
 
 from core.benchmarks import get_performance_monitor
 

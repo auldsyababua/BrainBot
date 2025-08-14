@@ -8,8 +8,9 @@ Tests the enhanced dynamic prompting capabilities including:
 """
 
 import os
-import pytest
 from unittest.mock import MagicMock
+
+import pytest
 
 # Set required environment variables before imports
 os.environ.setdefault("TELEGRAM_BOT_TOKEN", "test_token")
@@ -17,9 +18,9 @@ os.environ.setdefault("OPENAI_API_KEY", "test_key")
 os.environ.setdefault("SUPABASE_URL", "http://test.supabase.co")
 os.environ.setdefault("SUPABASE_KEY", "test_key")
 
-from src.rails.router import KeywordRouter, RouteResult
-from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
 from src.core.llm import _determine_missing_fields
+from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from src.rails.router import KeywordRouter, RouteResult
 
 
 class TestDynamicPromptGeneration:

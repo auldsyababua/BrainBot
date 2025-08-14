@@ -7,9 +7,9 @@ Comprehensive test script for all storage integrations:
 - AWS S3 (media storage)
 """
 
+import asyncio
 import os
 import sys
-import asyncio
 from datetime import datetime
 
 # Add parent directory to path
@@ -268,9 +268,9 @@ async def test_integration():
     print_header("Testing Integrated Workflow")
 
     try:
-        from src.storage.storage_service import StorageService
         from src.storage.media_storage import MediaStorage
         from src.storage.redis_store import RedisStore
+        from src.storage.storage_service import StorageService
 
         # Simulate a complete workflow
         user_id = "integration_test_user"
