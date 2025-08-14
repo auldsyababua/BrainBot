@@ -1,12 +1,14 @@
 """Integration tests for processors."""
 
+from unittest.mock import AsyncMock, MagicMock, patch
+
 import pytest
-from unittest.mock import MagicMock, AsyncMock, patch
+
+from src.rails.processors.field_report_processor import FieldReportProcessor
 
 # Import processors
 from src.rails.processors.list_processor import ListProcessor
 from src.rails.processors.task_processor import TaskProcessor
-from src.rails.processors.field_report_processor import FieldReportProcessor
 from src.rails.router import KeywordRouter
 
 

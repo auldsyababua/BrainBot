@@ -4,9 +4,10 @@ Set Telegram webhook for local testing with ngrok.
 """
 
 import sys
+
 import requests
-from src.core.config import TELEGRAM_BOT_TOKEN
-from src.core.config import TELEGRAM_WEBHOOK_SECRET
+
+from src.core.config import TELEGRAM_BOT_TOKEN, TELEGRAM_WEBHOOK_SECRET
 
 if len(sys.argv) != 2:
     print("Usage: python set_webhook.py <ngrok_url>")

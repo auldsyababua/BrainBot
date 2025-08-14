@@ -3,16 +3,18 @@ Media Storage Service for AWS S3
 Handles storing and retrieving media files from S3
 """
 
-import boto3
 import hashlib
-from typing import Optional, Dict, BinaryIO, Union
+import io
+import logging
 import mimetypes
 import os
-import logging
 from datetime import datetime
+from typing import BinaryIO, Dict, Optional, Union
+
+import boto3
 from dotenv import load_dotenv
+
 from src.storage.storage_service import document_storage
-import io
 
 # Load environment variables
 load_dotenv()

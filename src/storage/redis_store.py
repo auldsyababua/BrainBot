@@ -4,9 +4,10 @@ Replaces in-memory conversation storage with Redis-backed persistence.
 """
 
 import json
-from typing import List, Dict, Optional
-from upstash_redis import Redis
+from typing import Dict, List, Optional
+
 from dotenv import load_dotenv
+from upstash_redis import Redis
 
 # Load environment variables
 load_dotenv()

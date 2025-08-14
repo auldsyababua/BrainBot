@@ -1,33 +1,34 @@
+import gc
 import json
 import logging
 import re
-import gc
 import time
-from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime
+from typing import Any, Dict, List, Optional, Tuple
+
 from openai import OpenAI
 
+from core.agents import detect_agent_in_message, load_agent_prompt
+from core.api_client import RetryConfig, get_resilient_client
+from core.benchmarks import async_benchmark, get_performance_monitor
+from core.chunking import chunk_markdown_document
 from core.config import (
-    OPENAI_API_KEY,
-    GPT_MODEL,
-    MAX_TOKENS,
-    TEMPERATURE,
-    SYSTEM_PROMPT,
     CONVERSATION_MAX_MESSAGES,
     CONVERSATION_TTL_HOURS,
+    GPT_MODEL,
+    MAX_TOKENS,
+    OPENAI_API_KEY,
+    SYSTEM_PROMPT,
+    TEMPERATURE,
 )
-from src.rails.router import KeywordRouter, RouteResult
+from core.memory import bot_memory
 from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from src.rails.router import KeywordRouter, RouteResult
 
 # Legacy tools.py imports removed - production only uses Supabase + Vector
 # from src.core.tools import (...) - REMOVED
 from storage.redis_store import redis_store
 from storage.vector_store import vector_store
-from core.api_client import get_resilient_client, RetryConfig
-from core.benchmarks import get_performance_monitor, async_benchmark
-from core.chunking import chunk_markdown_document
-from core.memory import bot_memory
-from core.agents import detect_agent_in_message, load_agent_prompt
 
 # Initialize resilient OpenAI client with custom retry config
 retry_config = RetryConfig(

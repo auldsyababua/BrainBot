@@ -31,9 +31,9 @@ services:
       POSTGRES_PASSWORD: supabase_password
       POSTGRES_HOST: localhost
       POSTGRES_PORT: 5432
-      JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
-      ANON_KEY: ${TEST_SUPABASE_ANON_KEY:-test_anon_key}
-      SERVICE_ROLE_KEY: ${TEST_SUPABASE_SERVICE_KEY:-test_service_key}
+      JWT_SECRET: test-jwt-secret-placeholder-for-development-only
+      ANON_KEY: ${TEST_SUPABASE_ANON_KEY:-test-anon-placeholder}
+      SERVICE_ROLE_KEY: ${TEST_SUPABASE_SERVICE_KEY:-test-service-placeholder}
     ports:
       - "5434:5432"
     volumes:
@@ -77,8 +77,8 @@ services:
     environment:
       # Test database configuration
       TEST_SUPABASE_URL: http://supabase-test:5432
-      TEST_SUPABASE_ANON_KEY: ${TEST_SUPABASE_ANON_KEY:-test_anon_key}
-      TEST_SUPABASE_SERVICE_KEY: ${TEST_SUPABASE_SERVICE_KEY:-test_service_key}
+      TEST_SUPABASE_ANON_KEY: ${TEST_SUPABASE_ANON_KEY:-test-anon-placeholder}
+      TEST_SUPABASE_SERVICE_KEY: ${TEST_SUPABASE_SERVICE_KEY:-test-service-placeholder}
 
       # Fallback to standard postgres for direct connection tests
       TEST_POSTGRES_URL: postgresql://postgres:testpassword@test-postgres:5432/flrts_test

@@ -5,15 +5,15 @@ This module provides utilities for tracking and analyzing performance metrics
 across all major operations including vector search, LLM calls, and Redis operations.
 """
 
-import time
 import json
 import logging
+import time
 from contextlib import contextmanager
-from typing import Dict, Any, Optional, List
 from functools import wraps
+from typing import Any, Dict, List, Optional
 
-from upstash_redis import Redis
 from dotenv import load_dotenv
+from upstash_redis import Redis
 
 # Load environment variables
 load_dotenv()

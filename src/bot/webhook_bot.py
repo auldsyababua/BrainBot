@@ -20,44 +20,42 @@ Usage:
     # Run with uvicorn
 """
 
-import logging
-import time
-import os
 import json
-import psutil
+import logging
+import os
+import time
 from contextlib import asynccontextmanager
-from http import HTTPStatus
 from datetime import timedelta
-from typing import Dict, Any
+from http import HTTPStatus
+from typing import Any, Dict
 
-from fastapi import FastAPI, Request, Response, HTTPException, Header
+import psutil
+from fastapi import FastAPI, Header, HTTPException, Request, Response
 from telegram import Update
-from telegram.ext import (
-    Application,
-    CommandHandler,
-    MessageHandler,
-    filters,
-)
+from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
-from core.config import TELEGRAM_BOT_TOKEN
-from core.config import TELEGRAM_WEBHOOK_SECRET
-from core.config import CF_PROXY_SECRET
-from core.benchmarks import PerformanceMiddleware
-from core.config import METRICS_AUTH_TOKEN, METRICS_IP_ALLOWLIST
 from bot.handlers import (
-    start_command,
-    help_command,
-    reset_command,
     continue_command,
-    version_command,
-    report_command,
-    handle_message,
-    handle_document,
-    remember_command,
     correct_command,
-    memories_command,
     forget_command,
     graph_command,
+    handle_document,
+    handle_message,
+    help_command,
+    memories_command,
+    remember_command,
+    report_command,
+    reset_command,
+    start_command,
+    version_command,
+)
+from core.benchmarks import PerformanceMiddleware
+from core.config import (
+    CF_PROXY_SECRET,
+    METRICS_AUTH_TOKEN,
+    METRICS_IP_ALLOWLIST,
+    TELEGRAM_BOT_TOKEN,
+    TELEGRAM_WEBHOOK_SECRET,
 )
 
 # Set up logging
@@ -582,8 +580,8 @@ class WebhookTelegramBot:
                     else str(raw_body)
                 )
 
-                import hmac
                 import hashlib
+                import hmac
 
                 expected = hmac.new(
                     CF_PROXY_SECRET.encode("utf-8"),

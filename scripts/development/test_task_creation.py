@@ -8,24 +8,29 @@ import hmac
 import hashlib
 import time
 import sys
+import os
 
 
 async def test_task_creation():
     """Test task creation with proper Telegram update format."""
 
     # Create a proper Telegram update for task creation
+    # Use environment variables for test IDs to avoid hardcoding
+    test_chat_id = int(os.getenv("TEST_CHAT_ID", "-1001000000000"))
+    test_user_id = int(os.getenv("TEST_USER_ID", "100000000"))
+    
     update = {
         "update_id": int(time.time()),
         "message": {
             "message_id": int(time.time()),
             "date": int(time.time()),
             "chat": {
-                "id": -1001234567890,  # Test group ID
+                "id": test_chat_id,
                 "type": "supergroup",
                 "title": "Test Group",
             },
             "from": {
-                "id": 123456789,
+                "id": test_user_id,
                 "is_bot": False,
                 "first_name": "Test",
                 "username": "testuser",
@@ -40,8 +45,11 @@ async def test_task_creation():
     # Generate HMAC signature
     timestamp = str(int(time.time()))
     payload = json.dumps(proxy_payload, separators=(",", ":"))
-    # Read secret from environment for local testing; default to placeholder
-    secret = os.getenv("CF_PROXY_SECRET", "test_secret")
+    # Read secret from environment; fail if not set in production
+    secret = os.getenv("CF_PROXY_SECRET")
+    if not secret:
+        print("⚠️ Warning: CF_PROXY_SECRET not set. Using test mode.")
+        secret = "test_mode_only_do_not_use_in_production"
 
     signature_payload = f"{timestamp}.{payload}"
     signature = (
@@ -82,14 +90,18 @@ async def test_task_creation():
 async def test_simple_message():
     """Test a simple non-task message."""
 
+    # Use environment variables for test IDs to avoid hardcoding
+    test_chat_id = int(os.getenv("TEST_CHAT_ID", "-1001000000000"))
+    test_user_id = int(os.getenv("TEST_USER_ID", "100000000"))
+
     update = {
         "update_id": int(time.time()) + 1,
         "message": {
             "message_id": int(time.time()) + 1,
             "date": int(time.time()),
-            "chat": {"id": -1001234567890, "type": "supergroup", "title": "Test Group"},
+            "chat": {"id": test_chat_id, "type": "supergroup", "title": "Test Group"},
             "from": {
-                "id": 123456789,
+                "id": test_user_id,
                 "is_bot": False,
                 "first_name": "Test",
                 "username": "testuser",
@@ -101,8 +113,11 @@ async def test_simple_message():
     proxy_payload = {"body": json.dumps(update)}
     timestamp = str(int(time.time()))
     payload = json.dumps(proxy_payload, separators=(",", ":"))
-    # Read secret from environment for local testing; default to placeholder
-    secret = os.getenv("CF_PROXY_SECRET", "test_secret")
+    # Read secret from environment; fail if not set in production
+    secret = os.getenv("CF_PROXY_SECRET")
+    if not secret:
+        print("⚠️ Warning: CF_PROXY_SECRET not set. Using test mode.")
+        secret = "test_mode_only_do_not_use_in_production"
 
     signature_payload = f"{timestamp}.{payload}"
     signature = (

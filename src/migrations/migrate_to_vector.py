@@ -3,15 +3,16 @@
 Migration script to move existing 10NetZero markdown files to Upstash Vector database.
 This will enable semantic search on all existing knowledge base content.
 """
-import os
 import asyncio
-from pathlib import Path
-from typing import List, Tuple, Dict
-import yaml
+import os
 from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Tuple
 
-from src.storage.vector_store import vector_store
+import yaml
+
 from src.core.chunking import chunk_markdown_document
+from src.storage.vector_store import vector_store
 
 # Define notes folder locally for migration
 NOTES_FOLDER = os.getenv("NOTES_FOLDER", "10nz_kb")

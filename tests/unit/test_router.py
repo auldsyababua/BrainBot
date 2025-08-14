@@ -1,11 +1,8 @@
 """Test enhanced router functionality."""
 
 from unittest.mock import Mock
-from src.rails.router import (
-    KeywordRouter,
-    SynonymLibrary,
-    ConfidenceScorer,
-)
+
+from src.rails.router import ConfidenceScorer, KeywordRouter, SynonymLibrary
 
 # Service Level Objective constants for router performance
 MIN_CONFIDENCE_THRESHOLD = 0.7

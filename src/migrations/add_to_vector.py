@@ -4,9 +4,10 @@ Add files to the vector store with chunking.
 """
 
 import asyncio
-import sys
 import os
-from src.migrations.migrate_to_vector import migrate_file_chunked, migrate_file
+import sys
+
+from src.migrations.migrate_to_vector import migrate_file, migrate_file_chunked
 from src.storage.vector_store import vector_store
 
 

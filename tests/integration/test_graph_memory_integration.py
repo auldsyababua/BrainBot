@@ -3,16 +3,17 @@ Integration tests for graph memory functionality.
 Tests the complete graph memory pipeline with real mem0 integration.
 """
 
-import pytest
 import asyncio
+import json
 import os
 import tempfile
-import json
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
-from src.core.memory import BotMemory
+import pytest
+
 from src.core.graph_memory_seeder import seed_graph_memory
+from src.core.memory import BotMemory
 
 
 class TestGraphMemoryIntegration:

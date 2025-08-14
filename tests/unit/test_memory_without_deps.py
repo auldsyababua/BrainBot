@@ -6,6 +6,7 @@ Test BotMemory initialization by mocking Neo4j dependencies.
 import os
 import sys
 from unittest.mock import Mock, patch
+
 from dotenv import load_dotenv
 
 # Load environment variables

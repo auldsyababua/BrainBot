@@ -4,12 +4,13 @@ Handles storing and retrieving documents from Supabase database
 """
 
 import hashlib
-from typing import Optional, List, Dict, Any
-from supabase import create_client, Client
+import logging
 import os
 from datetime import datetime, timedelta
-import logging
+from typing import Any, Dict, List, Optional
+
 from dotenv import load_dotenv
+from supabase import Client, create_client
 
 # Load environment variables
 load_dotenv()

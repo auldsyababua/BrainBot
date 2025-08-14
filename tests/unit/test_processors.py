@@ -1,17 +1,18 @@
 """Test processor functionality."""
 
-import pytest
-import json
 import asyncio
-import sys
+import json
 import os
+import sys
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
 
 # Add parent directory to path before importing our modules
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+from src.rails.processors.field_report_processor import FieldReportProcessor
 from src.rails.processors.list_processor import ListProcessor
 from src.rails.processors.task_processor import TaskProcessor
-from src.rails.processors.field_report_processor import FieldReportProcessor
 
 
 class TestListProcessor:

@@ -5,8 +5,8 @@ overlapping chunks suitable for vector embeddings.
 Based on LangChain's RecursiveCharacterTextSplitter pattern.
 """
 
-from typing import List, Dict, Tuple, Optional
 from dataclasses import dataclass
+from typing import Dict, List, Optional, Tuple
 
 
 @dataclass

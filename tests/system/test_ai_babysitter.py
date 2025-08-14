@@ -16,9 +16,9 @@ Test Categories:
 import os
 import sys
 import time
-import psutil
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
+import psutil
 import pytest
 
 # Add project root to path
@@ -26,11 +26,10 @@ sys.path.insert(
     0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from src.storage.vector_store import vector_store  # noqa: E402
 from src.core.api_client import get_resilient_client  # noqa: E402
 from src.core.llm import conversation_manager, process_message  # noqa: E402
 from src.storage.redis_store import redis_store  # noqa: E402
-
+from src.storage.vector_store import vector_store  # noqa: E402
 
 # =====================================
 # Resource Management Tests

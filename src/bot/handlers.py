@@ -11,23 +11,24 @@ Handlers:
 - Error handling
 """
 
+import json
 import logging
 import os
 import tempfile
-import json
 import time
 from datetime import datetime
+
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from core.llm import process_message
-from storage.vector_store import vector_store
-from storage.storage_service import DocumentStorage
-from core.version import VERSION, LATEST_CHANGES
 from core.auth import is_user_authorized
-from storage.redis_store import redis_store
 from core.chunking import chunk_markdown_document
+from core.llm import process_message
 from core.memory import bot_memory
+from core.version import LATEST_CHANGES, VERSION
+from storage.redis_store import redis_store
+from storage.storage_service import DocumentStorage
+from storage.vector_store import vector_store
 
 # Set up logging
 logger = logging.getLogger(__name__)

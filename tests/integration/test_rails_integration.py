@@ -1,21 +1,22 @@
 """Integration tests for the Smart Rails system with comprehensive edge case coverage."""
 
-import pytest
-import json
-import time
 import asyncio
+import json
+import os
 import statistics
 import sys
-import os
 import threading
+import time
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
 
 # Add parent directory to path before importing our modules
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-from src.rails.router import KeywordRouter
+from src.rails.processors.field_report_processor import FieldReportProcessor
 from src.rails.processors.list_processor import ListProcessor
 from src.rails.processors.task_processor import TaskProcessor
-from src.rails.processors.field_report_processor import FieldReportProcessor
+from src.rails.router import KeywordRouter
 
 
 class TestRailsIntegration:

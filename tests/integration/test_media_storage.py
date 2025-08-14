@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """Test Media Storage Service with comprehensive edge case coverage"""
 import asyncio
-import sys
-import os
-import pytest
 import concurrent.futures
-from unittest.mock import patch, MagicMock
+import os
+import sys
+from unittest.mock import MagicMock, patch
+
+import pytest
 from dotenv import load_dotenv
 
 # Add parent directory to path before importing our modules
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-from src.storage.media_storage import MediaStorage
 from botocore.exceptions import ClientError, NoCredentialsError
+
+from src.storage.media_storage import MediaStorage
 
 # Load environment variables
 load_dotenv()

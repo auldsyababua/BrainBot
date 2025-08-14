@@ -1,12 +1,12 @@
 """Supabase-backed logging for real-time log access."""
 
 import logging
+import os
 import time
 from datetime import datetime
-from typing import Optional, Dict, Any, List
+from typing import Any, Dict, List, Optional
 
-import os
-from supabase import create_client, Client
+from supabase import Client, create_client
 
 # Get Supabase credentials from environment
 SUPABASE_URL = os.getenv("SUPABASE_URL")

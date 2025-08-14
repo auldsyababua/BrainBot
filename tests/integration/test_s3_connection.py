@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Test S3 connection and credentials with comprehensive edge case coverage"""
-import boto3
-import os
 import concurrent.futures
+import os
 from unittest.mock import patch
+
+import boto3
 from botocore.exceptions import (
     ClientError,
-    NoCredentialsError,
     EndpointConnectionError,
+    NoCredentialsError,
     ParamValidationError,
 )
 from dotenv import load_dotenv

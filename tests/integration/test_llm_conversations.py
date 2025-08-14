@@ -11,16 +11,17 @@ The chat_id is only used for conversation history in Redis, not for vector isola
 """
 
 import asyncio
+import json
+import os
+import re
+import sys
+import time
+from pathlib import Path
+from typing import Dict, List, Set
+from unittest.mock import AsyncMock, patch
+
 import pytest
 import pytest_asyncio
-import json
-import re
-import time
-from typing import List, Dict, Set
-from unittest.mock import AsyncMock, patch
-from pathlib import Path
-import os
-import sys
 
 # Add project root to path
 sys.path.insert(
@@ -28,8 +29,8 @@ sys.path.insert(
 )
 
 from src.core.llm import process_message
-from src.storage.vector_store import vector_store
 from src.storage.redis_store import redis_store
+from src.storage.vector_store import vector_store
 
 # Load test fixtures
 FIXTURES_PATH = Path(__file__).parent.parent / "fixtures" / "pdf_content.json"

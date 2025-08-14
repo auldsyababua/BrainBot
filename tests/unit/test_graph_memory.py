@@ -3,8 +3,9 @@
 Simple test for graph memory functionality.
 """
 
-import os
 import asyncio
+import os
+
 from dotenv import load_dotenv
 
 # Load environment variables

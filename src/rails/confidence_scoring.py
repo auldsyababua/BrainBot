@@ -4,10 +4,10 @@ This module provides sophisticated multi-factor confidence scoring
 that considers pattern strength, context, user intent, and extraction quality.
 """
 
-import re
 import logging
-from typing import Dict, Any, List, Optional, Tuple
+import re
 from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
