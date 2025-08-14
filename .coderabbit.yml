@@ -1,0 +1,12 @@
+# CodeRabbit repository configuration
+# Quiet, high-signal reviews: summary-only, path filters, min diff size
+summary_only: true
+min_lines_changed: 20
+include_paths:
+  - src/**
+exclude_paths:
+  - docs/**
+  - "**/*.md"
+  - migrations/**
+  - "**/*.lock"
+
