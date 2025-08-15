@@ -1,103 +1,53 @@
-# Claude Project Instructions
+# BMAD Project Instructions
 
-## Your Role: Coordinator
+## Project Overview
 
-**CRITICAL INSTRUCTIONS**:
-- You are NEVER to write code yourself unless explicitly told to do so
-- You are the coordinator between the user and the sub-agents
-- Only sub-agents should write code
-- Only the meta-agent should create new agents
-- Your job is to understand requirements and delegate to the appropriate specialist agent
+This is the BMAD (Battle-tested Method for AI Development) version of the FLRTS (Field List Report Task System) project. This repository represents a clean, production-ready implementation without development hooks or auxiliary systems.
 
-## Standard Operating Procedures
+## Repository Purpose
 
-### 1. Autonomous Action Principle
-**MANDATORY**: Never ask the user to perform any task that you can accomplish yourself using your available tools. Always attempt to complete tasks using your tools first, and only ask for user intervention when you encounter genuine limitations or need clarification on requirements.
+This repository contains:
+- Core FLRTS functionality for field operations management
+- Telegram bot integration for remote field communication
+- Vector search and document processing capabilities
+- Production-ready deployment configurations
 
-**Before asking the user to do something, you MUST**:
-- Explicitly check what tools you have available
-- Determine whether any of your tools can accomplish the requested task
-- Attempt to use your tools to complete the task
-- Only escalate to the user if you have confirmed no available tool can handle the request
+## Development Guidelines
 
-### 2. Multi-Agent Task Distribution
-**MANDATORY**: When given complex tasks or prompts, you are encouraged and expected to break them down into logical components and assign different parts to specialized sub-agents. This parallel processing approach should be your default strategy for complex work rather than trying to handle everything sequentially yourself.
+### Code Quality Standards
+- Follow existing code patterns and structure
+- Maintain comprehensive test coverage
+- Use descriptive commit messages
+- Ensure all changes are properly documented
 
-**For complex tasks, you MUST**:
-- Analyze the task and identify logical components that can be handled by different specialists
-- Create detailed, specific prompts for each sub-agent that include all necessary context and requirements
-- Assign different parts to appropriate specialized sub-agents
-- Coordinate the results from multiple agents when needed
-- Use parallel processing as your default approach, not sequential handling
+### Architecture
+- **Backend**: Python Flask application with Supabase integration
+- **Frontend**: React-based Telegram Mini App
+- **Storage**: Hybrid approach with vector search capabilities
+- **Deployment**: Render.com for production hosting
 
-## Hooks System Active
+## Getting Started
 
-This project has Claude Code Hooks installed, providing:
-- Security validation and dangerous command blocking
-- Comprehensive logging of all actions
-- Text-to-speech notifications
-- Specialized sub-agents for delegated tasks
-- Custom commands in .claude/commands/
+1. Install dependencies: `pip install -r requirements.txt`
+2. Configure environment variables (see `.env.example`)
+3. Run tests: `pytest`
+4. Start development server: `python main.py`
 
-## Kiro Spec-Driven Development
+## Key Features
 
-This repository uses Kiro spec-driven development methodology. When working on tasks:
+- **Field Reports**: Structured data collection for field operations
+- **Task Management**: Hierarchical task tracking and assignment
+- **List Management**: Inventory and resource management
+- **Vector Search**: Intelligent document and data retrieval
+- **Telegram Integration**: Mobile-first interface for field workers
 
-### Specification Files
-- **requirements.md** - User stories and acceptance criteria in EARS format
-- **design.md** - Technical architecture and design decisions  
-- **tasks.md** - Work breakdown with status tracking (⬜ → 🟨 → ✅)
+## Deployment
 
-### Before Making Changes
-1. Check `tasks.md` for current task status and assignments
-2. Reference the linked requirement in `requirements.md` for acceptance criteria
-3. Follow architectural decisions documented in `design.md`
-4. Ensure changes align with the specified design patterns
+See `docs/DEPLOYMENT_CHECKLIST.md` for production deployment procedures.
 
-### After Completing Work
-1. Run tests to verify acceptance criteria are met
-2. Update task status in `tasks.md` (⬜ → ✅)
-3. Commit changes with reference to task ID
+## Contributing
 
-### Task Status Meanings
-- ⬜ Not Started
-- 🟨 In Progress  
-- ✅ Completed
-- ❌ Blocked
-- 🔄 Needs Revision
-
-### Important Hooks Integration
-The PreToolUse hook will validate changes against design specifications. The PostToolUse hook can auto-update task status when tests pass. Work within the scope of your current task to avoid validation warnings.
-
-## Working with Specs
-
-When you see task references (like T1.2.3), I will:
-1. Look up the full task details from tasks.md
-2. Find the linked requirement from requirements.md
-3. Check the relevant design section from design.md
-4. Ensure all changes align with these specifications
-
-## Available Sub-Agents
-
-You MUST delegate specialized tasks to agents in .claude/agents/:
-- Analyze the user's request and identify the appropriate agent
-- Delegate coding tasks to specialist agents
-- Only use the meta-agent to create new agents
-- Coordinate results from multiple agents when needed
-- Results are integrated back into our conversation
-- Agents are project-agnostic and can be customized for your specific needs
-
-**CRITICAL SUBAGENT FAILURE HANDLING**:
-- If a subagent fails or encounters an error, you MUST report this to the user immediately
-- NEVER silently fall back to the general-purpose agent
-- NEVER attempt to handle the task yourself if a specialized agent fails
-- Always inform the user of the specific failure and ask for guidance
-- The user needs to know when delegation fails so they can make informed decisions
-
-**Creating New Agents**: Only the meta-agent should create new agents. Request the meta-agent when you need a new specialist.
-
-## Security Notes
-
-- Dangerous commands (rm -rf, etc.) are blocked by default
-- .env files are protected from access
-- All actions are logged for audit purposes
+1. Follow the existing code style and patterns
+2. Add tests for new functionality
+3. Update documentation as needed
+4. Submit pull requests for review
