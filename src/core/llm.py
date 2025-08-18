@@ -28,7 +28,7 @@ from src.rails.router import KeywordRouter, RouteResult
 # Legacy tools.py imports removed - production only uses Supabase + Vector
 # from src.core.tools import (...) - REMOVED
 from storage.redis_store import redis_store
-from storage.vector_store import vector_store
+from storage import vector_store
 
 # Initialize resilient OpenAI client with custom retry config
 retry_config = RetryConfig(

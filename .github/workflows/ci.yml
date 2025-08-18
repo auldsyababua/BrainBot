@@ -52,10 +52,12 @@ jobs:
           OPENAI_API_KEY: test_key
           SUPABASE_URL: https://test.supabase.co
           SUPABASE_KEY: test_key
-          UPSTASH_REDIS_REST_URL: https://test.upstash.io
-          UPSTASH_REDIS_REST_TOKEN: test_token
-          UPSTASH_VECTOR_REST_URL: https://test.upstash.io
-          UPSTASH_VECTOR_REST_TOKEN: test_token
+          CLOUDFLARE_ACCOUNT_ID: test_account_id
+          CLOUDFLARE_API_TOKEN: test_token
+          CLOUDFLARE_VECTORIZE_INDEX: test-index
+          CLOUDFLARE_KV_NAMESPACE_ID: test_namespace
+          USE_CLOUDFLARE_VECTORIZE: true
+          USE_CLOUDFLARE_CACHE: true
         run: |
           pytest tests/ \
             --cov=src \

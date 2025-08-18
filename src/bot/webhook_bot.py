@@ -156,22 +156,19 @@ class WebhookTelegramBot:
 
         # Test Vector Store connectivity
         try:
-            from storage.vector_store import VectorStore
+            from storage.cloudflare_vector_store import CloudflareVectorStore
 
-            vector_store = VectorStore()
+            vector_store = CloudflareVectorStore()
 
             start_time = time.time()
-            # Try to get info from the vector index
-            info = vector_store.index.info()
+            # Try to ping the vector store
+            await vector_store.ping()
             response_time = (time.time() - start_time) * 1000
 
-            # InfoResult is an object, not a dict
             vector_status = {
                 "status": "healthy",
                 "error": None,
                 "response_time_ms": round(response_time, 2),
-                "dimension": getattr(info, "dimension", None),
-                "total_data_count": getattr(info, "total_data_count", None),
             }
         except Exception as e:
             vector_status = {
