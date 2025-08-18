@@ -12,8 +12,8 @@ from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 
 from dotenv import load_dotenv
-from upstash_redis import Redis
 from upstash_vector import Index
+from .cache import Redis
 
 from core.benchmarks import async_benchmark, get_performance_monitor
 
