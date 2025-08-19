@@ -48,6 +48,18 @@ class CloudflareVectorStore:
         self.cache_enabled = os.getenv("VECTOR_CACHE_ENABLED", "true").lower() == "true"
         self.cache_ttl = int(os.getenv("VECTOR_CACHE_TTL", "300"))  # 5 minutes default
 
+    def ping(self) -> bool:
+        """Test connection to Cloudflare Vectorize."""
+        try:
+            # Make a simple API call to check connectivity
+            response = httpx.get(self.index_url, headers=self.headers, timeout=5.0)
+            return response.status_code in [
+                200,
+                404,
+            ]  # 404 is ok, means API is reachable
+        except Exception:
+            return False
+
         # Initialize performance monitor
         self.monitor = None
 
