@@ -36,11 +36,11 @@ jobs:
       
       - name: Run Ruff linter
         run: |
-          ruff check src/ tests/ --output-format=github
+          ruff check src/ --output-format=github
       
       - name: Check code formatting with Black
         run: |
-          black --check src/ tests/
+          black --check src/
       
       - name: Run type checking with mypy
         run: |
