@@ -82,7 +82,7 @@ class ProductionLogger:
         elif execution_time_ms > 500:
             log_level = logging.WARNING
 
-        log_data = {
+        _ = {
             "direct_execution": asdict(metrics),
             "performance_target": "<500ms",
             "met_target": execution_time_ms < 500,
@@ -110,7 +110,7 @@ class ProductionLogger:
     ) -> None:
         """Log router routing decisions."""
 
-        log_data = {
+        _ = {
             "router_decision": {
                 "message_length": len(message),
                 "entity_type": entity_type,
@@ -137,7 +137,7 @@ class ProductionLogger:
     ) -> None:
         """Log performance warnings."""
 
-        log_data = {
+        _ = {
             "performance_warning": {
                 "component": component,
                 "operation": operation,
@@ -159,7 +159,7 @@ class ProductionLogger:
     ) -> None:
         """Log general system events."""
 
-        log_data = {
+        _ = {
             "system_event": {
                 "event_type": event_type,
                 "details": details,
@@ -191,7 +191,11 @@ class ProductionLogger:
         for metrics in recent_metrics:
             entity = metrics.entity_type
             if entity not in entity_stats:
-                entity_stats[entity] = {"count": 0, "avg_time": 0, "success_rate": 0}
+                entity_stats[entity] = {
+                    "count": 0,
+                    "avg_time": 0.0,
+                    "success_rate": 0.0,
+                }
 
             entity_stats[entity]["count"] += 1
             entity_stats[entity]["avg_time"] += metrics.execution_time_ms

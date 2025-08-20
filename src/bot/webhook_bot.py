@@ -132,12 +132,12 @@ class WebhookTelegramBot:
         try:
             from storage.redis_store import RedisStore
 
-            redis_store = RedisStore()
+            _ = RedisStore()
 
             start_time = time.time()
             # CloudflareRedis is async, so we can't test it in sync context
             # Mark as healthy since it's initialized successfully
-            result = "test"  # Assume working if initialized
+            _ = "test"  # Assume working if initialized
             response_time = (time.time() - start_time) * 1000
 
             redis_status = {

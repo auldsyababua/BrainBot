@@ -3,7 +3,25 @@ Integration tests for Cloudflare Vectorize implementation.
 """
 
 import pytest
-from unittest.mock import Mock, patch, AsyncMock
+from unittest.mock import Mock, patch, AsyncMock, MagicMock
+
+# Mock the performance monitor at module level to prevent Redis initialization
+pytest.register_assert_rewrite("src.core.benchmarks")
+
+
+def mock_get_performance_monitor():
+    """Return a mocked performance monitor that doesn't use Redis."""
+    mock_monitor = MagicMock()
+    mock_monitor.track_metric = MagicMock()
+    mock_monitor.track_vector_search = AsyncMock(return_value=None)
+    return mock_monitor
+
+
+# Patch at module level
+patch(
+    "src.core.benchmarks.get_performance_monitor",
+    side_effect=mock_get_performance_monitor,
+).start()
 
 from src.storage.cloudflare_vector_store import CloudflareVectorStore
 
@@ -21,20 +39,24 @@ def mock_env(monkeypatch):
 @pytest.fixture
 def mock_openai():
     """Mock OpenAI client for embeddings."""
-    with patch("src.storage.cloudflare_vector_store.openai") as mock:
+    with patch("openai.OpenAI") as mock_openai_class:
         mock_client = Mock()
         mock_response = Mock()
         mock_response.data = [Mock(embedding=[0.1] * 1536)]
         mock_client.embeddings.create.return_value = mock_response
-        mock.OpenAI.return_value = mock_client
-        yield mock
+        mock_openai_class.return_value = mock_client
+        yield mock_openai_class
 
 
 @pytest.fixture
 async def vector_store(mock_env, mock_openai):
     """Create a CloudflareVectorStore instance for testing."""
-    store = CloudflareVectorStore()
-    return store
+    with patch(
+        "src.storage.cloudflare_vector_store.get_performance_monitor"
+    ) as mock_monitor:
+        mock_monitor.return_value = None  # Disable performance monitoring in tests
+        store = CloudflareVectorStore()
+        return store
 
 
 class TestCloudflareVectorStore:
@@ -65,6 +87,9 @@ class TestCloudflareVectorStore:
     @pytest.mark.asyncio
     async def test_search(self, vector_store):
         """Test searching for documents."""
+        # Set the mock monitor directly on the vector_store instance
+        vector_store.monitor = mock_get_performance_monitor()
+
         with patch("httpx.AsyncClient") as mock_client:
             mock_response = Mock()
             mock_response.raise_for_status = Mock()
@@ -192,6 +217,9 @@ class TestCloudflareVectorStore:
     @pytest.mark.asyncio
     async def test_namespace_filtering(self, vector_store):
         """Test namespace isolation in search."""
+        # Set the mock monitor directly on the vector_store instance
+        vector_store.monitor = mock_get_performance_monitor()
+
         with patch("httpx.AsyncClient") as mock_client:
             mock_response = Mock()
             mock_response.raise_for_status = Mock()
@@ -208,9 +236,20 @@ class TestCloudflareVectorStore:
 
 
 @pytest.mark.asyncio
-async def test_singleton_pattern():
+async def test_singleton_pattern(mock_env):
     """Test that the module provides a singleton instance."""
-    from src.storage.cloudflare_vector_store import cloudflare_vector_store
+    with patch("openai.OpenAI") as mock_openai_class:
+        mock_client = Mock()
+        mock_response = Mock()
+        mock_response.data = [Mock(embedding=[0.1] * 1536)]
+        mock_client.embeddings.create.return_value = mock_response
+        mock_openai_class.return_value = mock_client
 
-    # This should not raise an error if properly initialized
-    assert cloudflare_vector_store is not None
+        with patch(
+            "src.storage.cloudflare_vector_store.get_performance_monitor"
+        ) as mock_monitor:
+            mock_monitor.return_value = None  # Disable performance monitoring
+            from src.storage.cloudflare_vector_store import cloudflare_vector_store
+
+            # This should not raise an error if properly initialized
+            assert cloudflare_vector_store is not None

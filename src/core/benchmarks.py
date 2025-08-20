@@ -149,7 +149,7 @@ class PerformanceMonitor:
                 "conversation_size",
             ]
 
-        summary = {}
+        summary: Dict[str, Any] = {}
         cutoff_time = time.time() - (time_range_minutes * 60)
 
         for metric_name in metric_names:

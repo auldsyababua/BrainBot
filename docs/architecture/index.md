@@ -1,77 +1,27 @@
-# BrainBot FLRTS - System Architecture Document
+# System Architecture
+
+This section contains the comprehensive system architecture for the BrainBot FLRTS project.
 
 ## Table of Contents
 
-- [BrainBot FLRTS - System Architecture Document](#table-of-contents)
-  - [Document Information](./document-information.md)
-  - [Executive Summary](./executive-summary.md)
-  - [Architecture Overview](./architecture-overview.md)
-    - [High-Level Architecture](./architecture-overview.md#high-level-architecture)
-    - [System Principles](./architecture-overview.md#system-principles)
-  - [Core Components](./core-components.md)
-    - [1. Bot Layer](./core-components.md#1-bot-layer)
-      - [1.1 Webhook Server (Production)](./core-components.md#11-webhook-server-production)
-      - [1.2 Polling Bot (Development)](./core-components.md#12-polling-bot-development)
-      - [1.3 Message Handlers](./core-components.md#13-message-handlers)
-    - [2. Smart Rails Processing Layer](./core-components.md#2-smart-rails-processing-layer)
-      - [2.1 Router Component](./core-components.md#21-router-component)
-      - [2.2 Deterministic Preprocessor](./core-components.md#22-deterministic-preprocessor)
-      - [2.3 Entity Processors](./core-components.md#23-entity-processors)
-        - [Field Report Processor](./core-components.md#field-report-processor)
-        - [Task Processor](./core-components.md#task-processor)
-        - [List Processor](./core-components.md#list-processor)
-    - [3. Storage Layer](./core-components.md#3-storage-layer)
-      - [3.1 Document Storage Service](./core-components.md#31-document-storage-service)
-      - [3.2 Vector Store Service](./core-components.md#32-vector-store-service)
-      - [3.3 Redis Store Service](./core-components.md#33-redis-store-service)
-      - [3.4 Media Storage Service](./core-components.md#34-media-storage-service)
-    - [4. Intelligence Layer](./core-components.md#4-intelligence-layer)
-      - [4.1 LLM Service](./core-components.md#41-llm-service)
-      - [4.2 Memory Service (mem0)](./core-components.md#42-memory-service-mem0)
-    - [5. Frontend Layer](./core-components.md#5-frontend-layer)
-      - [5.1 Telegram Mini App](./core-components.md#51-telegram-mini-app)
-        - [Component Architecture](./core-components.md#component-architecture)
-        - [Key Features](./core-components.md#key-features)
-  - [Data Flow Architecture](./data-flow-architecture.md)
-    - [1. Message Processing Flow](./data-flow-architecture.md#1-message-processing-flow)
-    - [2. Search and Retrieval Flow](./data-flow-architecture.md#2-search-and-retrieval-flow)
-  - [Technology Stack](./technology-stack.md)
-    - [Backend Technologies](./technology-stack.md#backend-technologies)
-    - [Frontend Technologies](./technology-stack.md#frontend-technologies)
-    - [External Services](./technology-stack.md#external-services)
-    - [Development Tools](./technology-stack.md#development-tools)
-  - [Security Architecture](./security-architecture.md)
-    - [Authentication & Authorization](./security-architecture.md#authentication-authorization)
-    - [Data Protection](./security-architecture.md#data-protection)
-    - [Access Control](./security-architecture.md#access-control)
-  - [Performance Architecture](./performance-architecture.md)
-    - [Smart Rails Performance Optimization](./performance-architecture.md#smart-rails-performance-optimization)
-    - [Caching Strategy](./performance-architecture.md#caching-strategy)
-    - [Database Optimization](./performance-architecture.md#database-optimization)
-  - [Deployment Architecture](./deployment-architecture.md)
-    - [Production Environment](./deployment-architecture.md#production-environment)
-    - [Development Environment](./deployment-architecture.md#development-environment)
-    - [Container Architecture (Future)](./deployment-architecture.md#container-architecture-future)
-  - [Monitoring and Observability](./monitoring-and-observability.md)
-    - [Metrics Collection](./monitoring-and-observability.md#metrics-collection)
-    - [Logging Strategy](./monitoring-and-observability.md#logging-strategy)
-    - [Health Checks](./monitoring-and-observability.md#health-checks)
-  - [Error Handling and Resilience](./error-handling-and-resilience.md)
-    - [Circuit Breaker Pattern](./error-handling-and-resilience.md#circuit-breaker-pattern)
-    - [Retry Logic](./error-handling-and-resilience.md#retry-logic)
-    - [Data Consistency](./error-handling-and-resilience.md#data-consistency)
-  - [Scalability Considerations](./scalability-considerations.md)
-    - [Horizontal Scaling](./scalability-considerations.md#horizontal-scaling)
-    - [Vertical Scaling](./scalability-considerations.md#vertical-scaling)
-    - [Future Scaling Plans](./scalability-considerations.md#future-scaling-plans)
-  - [Integration Points](./integration-points.md)
-    - [External APIs](./integration-points.md#external-apis)
-    - [Webhook Endpoints](./integration-points.md#webhook-endpoints)
-    - [Mini App Integration](./integration-points.md#mini-app-integration)
-  - [Development Guidelines](./development-guidelines.md)
-    - [Code Organization](./development-guidelines.md#code-organization)
-    - [Coding Standards](./development-guidelines.md#coding-standards)
-    - [Development Workflow](./development-guidelines.md#development-workflow)
-  - [Future Architecture Evolution](./future-architecture-evolution.md)
-    - [Phase 2 Enhancements](./future-architecture-evolution.md#phase-2-enhancements)
-    - [Phase 3 Transformations](./future-architecture-evolution.md#phase-3-transformations)
+- **[Architecture Overview](./architecture-overview.md)**: A high-level introduction to the system, its principles, and a component diagram.
+- **[Core Components](./core-components.md)**: A detailed breakdown of each major component in the system.
+- **[Data Flow Architecture](./data-flow-architecture.md)**: Diagrams and explanations of how data moves through the system.
+
+### Key Architectural Documents
+
+- **[Technology Stack](./tech-stack.md)**: A list of all key technologies, frameworks, and services used.
+- **[Source Tree Overview](./source-tree.md)**: A guide to the project's directory structure.
+- **[Coding Standards](./coding-standards.md)**: Guidelines for writing clean and consistent code.
+- **[Deployment Architecture](./deployment-architecture.md)**: Details on the production and development environments.
+- **[Security Architecture](./security-architecture.md)**: Information on authentication, authorization, and data protection.
+
+### Supporting Documents
+
+- **[Performance Architecture](./performance-architecture.md)**: Caching, database optimization, and Smart Rails performance.
+- **[Monitoring and Observability](./monitoring-and-observability.md)**: Metrics, logging, and health checks.
+- **[Error Handling and Resilience](./error-handling-and-resilience.md)**: Strategies for handling failures and ensuring system stability.
+- **[Scalability Considerations](./scalability-considerations.md)**: Plans for scaling the application.
+- **[Integration Points](./integration-points.md)**: Details on external APIs and webhook integrations.
+- **[Development Guidelines](./development-guidelines.md)**: Information on the development workflow and code organization.
+- **[Future Architecture Evolution](./future-architecture-evolution.md)**: The roadmap for future architectural changes.

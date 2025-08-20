@@ -143,7 +143,7 @@ class PerformanceMonitor:
                 if isinstance(self.alert_chat_id, str)
                 else [self.alert_chat_id]
             )
-        except:
+        except Exception:
             chat_ids = [self.alert_chat_id]
 
         for chat_id in chat_ids:

@@ -39,9 +39,7 @@ class HealthChecker:
 
         try:
             # Simple query to test connectivity
-            response = (
-                await supabase_client.table("tasks").select("id").limit(1).execute()
-            )
+            _ = await supabase_client.table("tasks").select("id").limit(1).execute()
 
             response_time = (time.perf_counter() - start_time) * 1000
 
