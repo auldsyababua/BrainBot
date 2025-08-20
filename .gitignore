@@ -1,3 +1,7 @@
+# Hidden directories (all of them)
+.*/
+.*/*
+
 # Python
 __pycache__/
 *.py[cod]
