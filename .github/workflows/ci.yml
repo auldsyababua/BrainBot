@@ -48,17 +48,15 @@ jobs:
       
       - name: Run tests with coverage
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_VECTORIZE_INDEX: ${{ secrets.CLOUDFLARE_VECTORIZE_INDEX }}
-          CLOUDFLARE_KV_NAMESPACE_ID: ${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}
-          USE_CLOUDFLARE_VECTORIZE: true
-          USE_CLOUDFLARE_CACHE: true
+          # Keep unit tests hermetic - no external dependencies
+          USE_CLOUDFLARE_VECTORIZE: "false"
+          USE_CLOUDFLARE_CACHE: "false"
           ENVIRONMENT: test
+          # Dummy values for tests that check env var existence
+          TELEGRAM_BOT_TOKEN: "test_token"
+          OPENAI_API_KEY: "test_key"
+          SUPABASE_URL: "https://test.supabase.co"
+          SUPABASE_KEY: "test_key"
         run: |
           pytest tests/unit/ \
             --cov=src \
