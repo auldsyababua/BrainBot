@@ -393,7 +393,7 @@ class DynamicPromptGenerator:
 
     def generate_smart_function_prompt(
         self, context: PromptContext
-    ) -> Tuple[str, Optional[str]]:
+    ) -> Tuple[str, Optional[Dict[str, Any]]]:
         """Generate smart function calling prompt with schema.
 
         T2.1.2: Returns both prompt and function schema for direct injection.
@@ -527,10 +527,10 @@ class DynamicPromptGenerator:
             estimated_tokens = 0  # No LLM usage
         elif strategy == "focused_llm":
             prompt = self._generate_focused_prompt(context)
-            estimated_tokens = len(prompt.split()) * 1.3  # Rough estimate
+            estimated_tokens = int(len(prompt.split()) * 1.3)  # Rough estimate
         else:
             prompt = self.generate_system_prompt(context)
-            estimated_tokens = len(prompt.split()) * 1.3
+            estimated_tokens = int(len(prompt.split()) * 1.3)
 
         return {
             "execution_strategy": strategy,

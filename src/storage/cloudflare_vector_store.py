@@ -9,7 +9,7 @@ import logging
 import os
 import time
 from datetime import datetime
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 import httpx
 from dotenv import load_dotenv
 
@@ -135,7 +135,7 @@ class CloudflareVectorStore:
 
             # Prepare metadata
             if metadata is None:
-                metadata = {}
+                metadata: Dict[str, Any] = {}
 
             # Add timestamp and content preview
             metadata.update(
@@ -339,7 +339,7 @@ class CloudflareVectorStore:
                 embedding = await self._generate_embedding(content)
 
                 if metadata is None:
-                    metadata = {}
+                    metadata: Dict[str, Any] = {}
 
                 # Add standard metadata
                 metadata.update(
@@ -530,7 +530,7 @@ class CloudflareVectorStore:
             results = await self.search(query, top_k=top_k, include_metadata=True)
 
             # Group results by document ID
-            docs_to_fetch = {}
+            docs_to_fetch: Dict[str, Any] = {}
             for result in results:
                 if result.get("metadata"):
                     document_id = result["metadata"].get("document_id")

@@ -17,6 +17,7 @@ import os
 import tempfile
 import time
 from datetime import datetime
+from typing import Any, Dict
 
 from telegram import Update
 from telegram.ext import ContextTypes
@@ -734,7 +735,7 @@ async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 response = "🕸️ **Your Knowledge Graph:**\n\n"
 
                 # Group by entity
-                entity_map = {}
+                entity_map: Dict[str, Any] = {}
                 for rel in relationships:
                     if isinstance(rel, dict):
                         source = rel.get("source", "")

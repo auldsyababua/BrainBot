@@ -388,16 +388,15 @@ async def _process_rails_command(
     operation = route_result.operation
     extracted_data = route_result.extracted_data or {}
 
-    # T2.1.1: Use cleaned message if available
-    cleaned_message = extracted_data.get("cleaned_message", original_message)
-
     if not entity_type:
         logger.warning("Router returned a result without an entity type.")
         return None
 
     try:
         # Import and instantiate the appropriate processor
-        processor_instance = None
+        from src.rails.processors.base_processor import BaseProcessor
+
+        processor_instance: Optional[BaseProcessor] = None
 
         if entity_type == "lists":
             from src.rails.processors.list_processor import ListProcessor
@@ -418,24 +417,13 @@ async def _process_rails_command(
         if not processor_instance:
             return f"Error: Command processor for '{entity_type}' is not available."
 
-        # T2.1.1: Prepare parameters with cleaned data for processor
-        params = {
-            "operation": operation,
-            "chat_id": chat_id,
-            **extracted_data,  # Include any extracted data from the router
-            "target_users": (
-                route_result.target_users
-                if hasattr(route_result, "target_users")
-                else []
-            ),
-            "confidence": route_result.confidence,
-            "use_direct_execution": route_result.use_direct_execution,
-            "cleaned_message": cleaned_message,  # Pass cleaned message to processor
-        }
-
-        # Execute the processor
-        response = await processor_instance.process(params)
-        return response
+        # Execute the processor using execute_direct method
+        response = await processor_instance.execute_direct(
+            operation=operation,
+            extracted_data=extracted_data,
+            user_id=chat_id,  # Using chat_id as user_id
+        )
+        return response.get("message", "Operation completed successfully")
 
     except Exception as e:
         logger.error(

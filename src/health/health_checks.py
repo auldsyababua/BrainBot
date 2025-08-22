@@ -45,10 +45,12 @@ class HealthChecker:
 
             if response_time > 1000:  # >1s is concerning for small team
                 status = "degraded"
-                details = {"warning": "Database response time is high"}
+                details = {
+                    "warning": "Database response time is high"
+                }  # type: Dict[str, Any]
             else:
                 status = "healthy"
-                details = {"query_success": True}
+                details: Dict[str, Any] = {"query_success": True}
 
             return HealthStatus(
                 service="database",
@@ -87,13 +89,17 @@ class HealthChecker:
 
             if response_time > 100:  # Router should be very fast
                 status = "degraded"
-                details = {"warning": "Router response time is high"}
+                details = {
+                    "warning": "Router response time is high"
+                }  # type: Dict[str, Any]
             elif not direct_execution_working:
                 status = "degraded"
-                details = {"warning": "Direct execution not triggered for test command"}
+                details = {
+                    "warning": "Direct execution not triggered for test command"
+                }  # type: Dict[str, Any]
             else:
                 status = "healthy"
-                details = {"direct_execution": direct_execution_working}
+                details: Dict[str, Any] = {"direct_execution": direct_execution_working}
 
             details.update(
                 {
@@ -140,13 +146,17 @@ class HealthChecker:
             # Target is <500ms for actual operations, validation should be much faster
             if response_time > 50:
                 status = "degraded"
-                details = {"warning": "Processor validation is slow"}
+                details = {
+                    "warning": "Processor validation is slow"
+                }  # type: Dict[str, Any]
             elif not is_valid:
                 status = "degraded"
-                details = {"warning": f"Validation failed: {message}"}
+                details = {
+                    "warning": f"Validation failed: {message}"
+                }  # type: Dict[str, Any]
             else:
                 status = "healthy"
-                details = {"validation_passed": True}
+                details: Dict[str, Any] = {"validation_passed": True}
 
             return HealthStatus(
                 service="processors",
@@ -220,7 +230,7 @@ class HealthChecker:
                 if isinstance(result, Exception):
                     overall_status = "unhealthy"
                     status_map["error"] = str(result)
-                else:
+                elif isinstance(result, HealthStatus):
                     status_map[result.service] = asdict(result)
                     if result.status == "unhealthy":
                         overall_status = "unhealthy"
