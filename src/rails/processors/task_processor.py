@@ -2,7 +2,7 @@
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 import time
 
 from .base_processor import BaseProcessor
@@ -87,7 +87,7 @@ class TaskProcessor(BaseProcessor):
         """Validate if operation is allowed and data is complete."""
 
         # Validate required fields
-        required_fields = {
+        required_fields: Dict[str, List[str]] = {
             "create": ["task_title"],
             "complete": ["task_title"],
             "reassign": ["task_title", "new_assignee"],

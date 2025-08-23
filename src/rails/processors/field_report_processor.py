@@ -1,7 +1,7 @@
 """Field report operations processor working with existing field_reports table."""
 
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from .base_processor import BaseProcessor
 
@@ -68,7 +68,7 @@ class FieldReportProcessor(BaseProcessor):
         """Validate if operation is allowed and data is complete."""
 
         # Validate required fields
-        required_fields = {
+        required_fields: Dict[str, List[str]] = {
             "create": ["site_name", "report_content_full"],
             "add_followups": ["report_identifier", "followup_items"],
             "update_status": ["report_identifier", "new_status"],

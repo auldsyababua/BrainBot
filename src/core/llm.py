@@ -406,10 +406,10 @@ async def _process_rails_command(
             from src.rails.processors.task_processor import TaskProcessor
 
             processor_instance = TaskProcessor(supabase_client=storage.supabase)
-        elif entity_type == "field_reports":
-            from src.rails.processors.field_report_processor import FieldReportProcessor
-
-            processor_instance = FieldReportProcessor(supabase_client=storage.supabase)
+        # Field reports - pushed to post-MVP
+        # elif entity_type == "field_reports":
+        #     from src.rails.processors.field_report_processor import FieldReportProcessor
+        #     processor_instance = FieldReportProcessor(supabase_client=storage.supabase)
         else:
             logger.error(f"Unknown entity type: {entity_type}")
             return f"Error: Unknown command type '{entity_type}'."
@@ -521,13 +521,13 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                     logger.info(
                         f"Focused LLM execution for {route_result.entity_type}.{route_result.operation}"
                     )
-                    # Store context for use in LLM processing
-                    route_result.prompt_context = prompt_context
-                    route_result.dynamic_prompt = (
-                        prompt_generator.generate_optimized_system_prompt(
-                            prompt_context
-                        )
-                    )
+                    # Context for LLM processing - not used in current implementation
+                    # route_result.prompt_context = prompt_context
+                    # route_result.dynamic_prompt = (
+                    #     prompt_generator.generate_optimized_system_prompt(
+                    #         prompt_context
+                    #     )
+                    # )
                     # Process with Rails command using focused approach
                     response = await _process_rails_command(
                         route_result, chat_id, user_message
@@ -960,7 +960,8 @@ def _determine_missing_fields(route_result: RouteResult) -> List[str]:
         elif route_result.operation == "reassign":
             if "new_assignee" not in extracted and "assignee" not in extracted:
                 missing.append("new_assignee")
-    elif route_result.entity_type == "field_reports":
+        # Field reports - pushed to post-MVP
+        # elif route_result.entity_type == "field_reports":
         if (
             route_result.operation == "create"
             and "site" not in extracted

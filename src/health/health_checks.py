@@ -43,14 +43,13 @@ class HealthChecker:
 
             response_time = (time.perf_counter() - start_time) * 1000
 
+            details: Dict[str, Any]
             if response_time > 1000:  # >1s is concerning for small team
                 status = "degraded"
-                details = {
-                    "warning": "Database response time is high"
-                }  # type: Dict[str, Any]
+                details = {"warning": "Database response time is high"}
             else:
                 status = "healthy"
-                details: Dict[str, Any] = {"query_success": True}
+                details = {"query_success": True}
 
             return HealthStatus(
                 service="database",
@@ -87,19 +86,16 @@ class HealthChecker:
                 result.use_direct_execution and result.confidence >= 0.95
             )
 
+            details: Dict[str, Any]
             if response_time > 100:  # Router should be very fast
                 status = "degraded"
-                details = {
-                    "warning": "Router response time is high"
-                }  # type: Dict[str, Any]
+                details = {"warning": "Router response time is high"}
             elif not direct_execution_working:
                 status = "degraded"
-                details = {
-                    "warning": "Direct execution not triggered for test command"
-                }  # type: Dict[str, Any]
+                details = {"warning": "Direct execution not triggered for test command"}
             else:
                 status = "healthy"
-                details: Dict[str, Any] = {"direct_execution": direct_execution_working}
+                details = {"direct_execution": direct_execution_working}
 
             details.update(
                 {
@@ -144,19 +140,16 @@ class HealthChecker:
             response_time = (time.perf_counter() - start_time) * 1000
 
             # Target is <500ms for actual operations, validation should be much faster
+            details: Dict[str, Any]
             if response_time > 50:
                 status = "degraded"
-                details = {
-                    "warning": "Processor validation is slow"
-                }  # type: Dict[str, Any]
+                details = {"warning": "Processor validation is slow"}
             elif not is_valid:
                 status = "degraded"
-                details = {
-                    "warning": f"Validation failed: {message}"
-                }  # type: Dict[str, Any]
+                details = {"warning": f"Validation failed: {message}"}
             else:
                 status = "healthy"
-                details: Dict[str, Any] = {"validation_passed": True}
+                details = {"validation_passed": True}
 
             return HealthStatus(
                 service="processors",
@@ -223,7 +216,7 @@ class HealthChecker:
             health_results = await asyncio.gather(*tasks, return_exceptions=True)
 
             # Process results
-            status_map = {}
+            status_map: Dict[str, Any] = {}
             overall_status = "healthy"
 
             for result in health_results:
