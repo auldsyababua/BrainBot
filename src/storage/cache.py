@@ -3,8 +3,9 @@ Unified cache interface using Cloudflare KV.
 """
 
 from dotenv import load_dotenv
-from .cloudflare_cache import cloudflare_cache as cache_client
+
 from .cloudflare_cache import CloudflareRedis
+from .cloudflare_cache import cloudflare_cache as cache_client
 
 # Load environment variables
 load_dotenv()

@@ -4,14 +4,15 @@ Performance Alerting System for FLRTS-BMAD
 Monitors Story 1.6 Direct Execution and system performance
 """
 
-import os
-import time
 import json
 import logging
-import requests
+import os
+import time
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
-from dataclasses import dataclass
+
+import requests
 
 # Configure logging
 logging.basicConfig(

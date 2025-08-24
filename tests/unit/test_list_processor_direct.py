@@ -2,8 +2,9 @@
 Unit tests for ListProcessor direct execution functionality.
 """
 
+from unittest.mock import AsyncMock, Mock
+
 import pytest
-from unittest.mock import Mock, AsyncMock
 
 from src.rails.processors.list_processor import ListProcessor
 

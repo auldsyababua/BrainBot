@@ -5,8 +5,8 @@ Provides health checking capabilities for the FLRTS system,
 including Story 1.6 direct execution monitoring.
 """
 
-from .health_checks import HealthChecker, health_checker, quick_health_check
 from .endpoints import register_health_endpoints
+from .health_checks import HealthChecker, health_checker, quick_health_check
 
 __all__ = [
     "HealthChecker",

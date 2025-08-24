@@ -21,12 +21,12 @@ from datetime import datetime
 # Add src to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
+from src.storage import vector_store
 from src.storage.media_storage import media_storage
 
 # Import storage modules
 from src.storage.redis_store import redis_store
 from src.storage.storage_service import document_storage
-from src.storage import vector_store
 
 
 # Color codes for terminal output

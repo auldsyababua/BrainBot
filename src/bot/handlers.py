@@ -27,9 +27,9 @@ from core.chunking import chunk_markdown_document
 from core.llm import process_message
 from core.memory import bot_memory
 from core.version import LATEST_CHANGES, VERSION
+from storage import vector_store
 from storage.redis_store import redis_store
 from storage.storage_service import DocumentStorage
-from storage import vector_store
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -56,13 +56,16 @@ async def check_authorization(update: Update) -> bool:
     Returns:
         bool: True if authorized, False otherwise
     """
+    if not update.effective_user or not update.message:
+        logger.warning("Update or message is missing, cannot check authorization.")
+        return False
     user = update.effective_user
     if not is_user_authorized(username=user.username, user_id=user.id):
         await update.message.reply_text(
-            f"Hello {user.first_name}! 👋\n\n"
-            "This bot is currently available only to authorized 10NetZero team members.\n"
-            "Please contact your administrator for access.\n\n"
-            f"Your username: @{user.username or 'not set'}\n"
+            f"Hello {user.first_name}! 👋\n\n"  # Corrected newline escaping
+            "This bot is currently available only to authorized 10NetZero team members.\n"  # Corrected newline escaping
+            "Please contact your administrator for access.\n\n"  # Corrected newline escaping
+            f"Your username: @{user.username or 'not set'}\n"  # Corrected newline escaping
             f"Your ID: {user.id}"
         )
         logger.warning(
@@ -75,7 +78,7 @@ async def check_authorization(update: Update) -> bool:
 # Command handlers
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /start command."""
-    if not await check_authorization(update):
+    if not await check_authorization(update) or not update.message:
         return
 
     welcome_message = (
@@ -104,7 +107,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /help command."""
-    if not await check_authorization(update):
+    if not await check_authorization(update) or not update.message:
         return
 
     help_message = (
@@ -140,7 +143,11 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def reset_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /reset command to start a new conversation."""
-    if not await check_authorization(update):
+    if (
+        not await check_authorization(update)
+        or not update.effective_chat
+        or not update.message
+    ):
         return
 
     chat_id = str(update.effective_chat.id)
@@ -159,7 +166,11 @@ async def reset_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def continue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /continue command to restore previous conversation."""
-    if not await check_authorization(update):
+    if (
+        not await check_authorization(update)
+        or not update.effective_chat
+        or not update.message
+    ):
         return
 
     chat_id = str(update.effective_chat.id)
@@ -182,7 +193,12 @@ async def continue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def report_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /report command - generates a conversation report for debugging."""
-    if not await check_authorization(update):
+    if (
+        not await check_authorization(update)
+        or not update.effective_chat
+        or not update.message
+        or not update.effective_user
+    ):
         return
 
     try:
@@ -284,7 +300,7 @@ async def report_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def version_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /version command to show bot version and capabilities."""
-    if not await check_authorization(update):
+    if not await check_authorization(update) or not update.message:
         return
 
     version_message = (
@@ -311,6 +327,9 @@ async def version_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle incoming text messages."""
     start_time = time.time()
+    if not update.effective_user or not update.message or not update.effective_chat:
+        logger.warning("Update, message, or chat is missing, cannot handle message.")
+        return
     try:
         user = update.effective_user
         user_message = update.message.text
@@ -398,6 +417,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle incoming document files."""
+    if not update.effective_user or not update.message or not update.effective_chat:
+        logger.warning("Update, message, or chat is missing, cannot handle document.")
+        return
     try:
         user = update.effective_user
         document = update.message.document
@@ -530,7 +552,11 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Memory-related command handlers
 async def remember_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /remember command to explicitly store facts about the user."""
-    if not await check_authorization(update):
+    if (
+        not await check_authorization(update)
+        or not update.effective_chat
+        or not update.message
+    ):
         return
 
     chat_id = str(update.effective_chat.id)
@@ -555,7 +581,11 @@ async def remember_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def correct_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /correct command for teaching the bot corrections."""
-    if not await check_authorization(update):
+    if (
+        not await check_authorization(update)
+        or not update.effective_chat
+        or not update.message
+    ):
         return
 
     chat_id = str(update.effective_chat.id)
@@ -589,7 +619,11 @@ async def correct_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def memories_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Show user what the bot remembers about them."""
-    if not await check_authorization(update):
+    if (
+        not await check_authorization(update)
+        or not update.effective_chat
+        or not update.message
+    ):
         return
 
     chat_id = str(update.effective_chat.id)
@@ -668,7 +702,11 @@ async def memories_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def forget_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /forget command to clear user memories."""
-    if not await check_authorization(update):
+    if (
+        not await check_authorization(update)
+        or not update.effective_chat
+        or not update.message
+    ):
         return
 
     chat_id = str(update.effective_chat.id)
@@ -686,7 +724,11 @@ async def forget_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /graph command to explore knowledge graph relationships."""
-    if not await check_authorization(update):
+    if (
+        not await check_authorization(update)
+        or not update.effective_chat
+        or not update.message
+    ):
         return
 
     chat_id = str(update.effective_chat.id)

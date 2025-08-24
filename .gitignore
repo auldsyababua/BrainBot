@@ -99,9 +99,19 @@ FUTURE_FEATURES.md
 pyproject.local.toml
 .venv
 .hypothesis/
+# Environments
+.env
+.env.*
+*.env
+*.env.*
+!.env.example
+!.env.example.*
+
+# mypy
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
 .pytype/
 .pyre/
 .vscode/settings.json
@@ -215,3 +225,8 @@ TELEGRAM_BOT_*.md
 GRAPH_MEMORY_*.md
 KIRO_WORKFLOW.md
 INFRASTRUCTURE_*.md
+
+# Environment files
+.env.example
+.env.workhorse
+.env.test

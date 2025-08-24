@@ -7,10 +7,10 @@ Story 1.6 direct execution performance and user patterns.
 
 import logging
 import time
+from dataclasses import asdict, dataclass
 from datetime import datetime
-from typing import Any, Dict, Optional
 from functools import wraps
-from dataclasses import dataclass, asdict
+from typing import Any, Dict, Optional
 
 
 @dataclass

@@ -1,13 +1,14 @@
 """List operations processor working with existing lists/list_items tables."""
 
 import logging
-from datetime import datetime
-from typing import Any, Dict, Tuple, Optional
 import time
+from datetime import datetime
+from typing import Any, Dict, Optional, Tuple
+
+from src.core.benchmarks import async_benchmark
+from src.monitoring import log_direct_execution_performance, production_logger
 
 from .base_processor import BaseProcessor
-from src.core.benchmarks import async_benchmark
-from src.monitoring import production_logger, log_direct_execution_performance
 
 logger = logging.getLogger(__name__)
 

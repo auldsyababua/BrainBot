@@ -7,10 +7,10 @@ Since Supabase handles most migrations automatically, this primarily
 validates the database schema and ensures Story 1.6 requirements are met.
 """
 
+import asyncio
 import os
 import sys
-import asyncio
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 class DatabaseMigrator:

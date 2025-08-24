@@ -5,10 +5,10 @@ Production Configuration Validator for FLRTS-BMAD
 Validates that all required environment variables are set and production-ready.
 """
 
-import os
-import sys
 import json
+import os
 import re
+import sys
 from typing import List, Tuple
 
 

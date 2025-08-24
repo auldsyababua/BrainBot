@@ -6,11 +6,11 @@ including Story 1.6 direct execution performance.
 """
 
 import asyncio
-import time
 import logging
+import time
+from dataclasses import asdict, dataclass
 from datetime import datetime
-from typing import Dict, Any, List
-from dataclasses import dataclass, asdict
+from typing import Any, Dict, List
 
 logger = logging.getLogger(__name__)
 

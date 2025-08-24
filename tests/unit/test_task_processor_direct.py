@@ -2,9 +2,10 @@
 Unit tests for TaskProcessor direct execution functionality.
 """
 
-import pytest
-from unittest.mock import Mock, AsyncMock, patch
 from datetime import datetime, timedelta
+from unittest.mock import AsyncMock, Mock, patch
+
+import pytest
 
 from src.rails.processors.task_processor import TaskProcessor
 

@@ -1,6 +1,7 @@
 """Test enhanced router with new phrasing variations for Story 1.5."""
 
 import pytest
+
 from src.rails.router import KeywordRouter
 
 

@@ -2,8 +2,9 @@
 Integration tests for Cloudflare Vectorize implementation.
 """
 
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
+
 import pytest
-from unittest.mock import Mock, patch, AsyncMock, MagicMock
 
 # Mock the performance monitor at module level to prevent Redis initialization
 pytest.register_assert_rewrite("src.core.benchmarks")

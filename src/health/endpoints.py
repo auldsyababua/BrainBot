@@ -5,8 +5,9 @@ Provides HTTP endpoints for monitoring system health in production.
 """
 
 import logging
-from flask import Blueprint, jsonify
 from datetime import datetime
+
+from flask import Blueprint, jsonify
 
 from .health_checks import health_checker, quick_health_check
 

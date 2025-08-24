@@ -7,11 +7,12 @@ with special focus on Story 1.6 direct execution performance.
 """
 
 import asyncio
-import aiohttp
-import time
 import statistics
+import time
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import Any, Dict, List
+
+import aiohttp
 
 
 class SmallTeamLoadTester:
