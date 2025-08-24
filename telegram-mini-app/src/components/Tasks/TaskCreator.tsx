@@ -30,7 +30,7 @@ export const TaskCreator: React.FC<TaskCreatorProps> = ({
   const [selectedMinutes, setSelectedMinutes] = useState(0);
   const [selectedAmPm, setSelectedAmPm] = useState<'AM' | 'PM'>('PM');
   // Detect if this is a Smart Rails direct command
-  const isSmartRailsCommand = false; // Simplified - analytics removed
+  const isSmartRailsCommand = isDirectExecution; // Show indicator when in direct execution mode
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!description.trim() || isSubmitting) return;

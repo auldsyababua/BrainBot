@@ -34,6 +34,34 @@ export async function getStatus(): Promise<BotStatus> {
     };
   }
 }
+
+export async function getMetrics(): Promise<{
+  totalCommands: number;
+  tokensSaved: number;
+  averageResponseTime: number;
+  directExecutionRate: number;
+}> {
+  try {
+    const response = await fetch(`${BASE_URL}/metrics`);
+    if (!response.ok) throw new Error('Metrics fetch failed');
+    
+    const data = await response.json();
+    return {
+      totalCommands: data.taskCount || 0,
+      tokensSaved: data.tokensSaved || 0,
+      averageResponseTime: data.averageTaskTime || 0,
+      directExecutionRate: data.completionRate || 0
+    };
+  } catch (error) {
+    console.error('Metrics fetch error:', error);
+    return {
+      totalCommands: 0,
+      tokensSaved: 0,
+      averageResponseTime: 0,
+      directExecutionRate: 0
+    };
+  }
+}
 // Smart Rails Direct Commands
 export async function executeDirectCommand(command: string, params: Record<string, unknown> = {}): Promise<unknown> {
   try {

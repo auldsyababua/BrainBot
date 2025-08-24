@@ -8,9 +8,7 @@ interface CommandExecutorProps {
 }
 
 export const CommandExecutor: React.FC<CommandExecutorProps> = ({
-  onCommand,
-  showConfidence,
-  enableDirectMode
+  onCommand
 }) => {
   const [command, setCommand] = useState('');
   const [isExecuting, setIsExecuting] = useState(false);
@@ -48,6 +46,7 @@ export const CommandExecutor: React.FC<CommandExecutorProps> = ({
         />
         <button 
           type="submit" 
+          aria-label="Send command"
           className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-blue-600 dark:text-blue-400 disabled:text-gray-400 dark:disabled:text-gray-600" 
           disabled={!command.trim() || isExecuting}
         >
