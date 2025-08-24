@@ -47,5 +47,21 @@
     "vite": "^6.0.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
+  },
+  "overrides": {
+    "esbuild": "^0.25.0",
+    "vite": {
+      "esbuild": "^0.25.0"
+    },
+    "vitest": {
+      "vite": {
+        "esbuild": "^0.25.0"
+      }
+    },
+    "vite-node": {
+      "vite": {
+        "esbuild": "^0.25.0"
+      }
+    }
   }
 }
