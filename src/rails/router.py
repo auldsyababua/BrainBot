@@ -633,55 +633,55 @@ class KeywordRouter:
                     "example": "add note to generator task: found leak",
                 },
             },
-            "field_reports": {
-                "create": {
-                    "keywords": [
-                        "new field report",
-                        "create field report",
-                        "field report for",
-                        "report for",
-                    ],
-                    "function": "create_field_report",
-                    "example": "new field report for Eagle Lake: generator maintenance completed",
-                },
-                "read": {
-                    "keywords": [
-                        "show field report",
-                        "latest field report",
-                        "read field report",
-                        "reports for",
-                    ],
-                    "function": "read_field_report",
-                    "example": "show latest field report for Eagle Lake",
-                },
-                "add_followups": {
-                    "keywords": [
-                        "add followup",
-                        "followup for",
-                        "action item",
-                        "needs followup",
-                    ],
-                    "function": "update_field_report",
-                    "example": "add followup to Eagle Lake report: schedule inspection",
-                },
-                "update_status": {
-                    "keywords": [
-                        "mark report",
-                        "report status",
-                        "finalize report",
-                        "draft report",
-                    ],
-                    "function": "update_field_report",
-                    "example": "mark Eagle Lake report as final",
-                },
-            },
+            # "field_reports": {
+            #     "create": {
+            #         "keywords": [
+            #             "new field report",
+            #             "create field report",
+            #             "field report for",
+            #             "report for",
+            #         ],
+            #         "function": "create_field_report",
+            #         "example": "new field report for Eagle Lake: generator maintenance completed",
+            #     },
+            #     "read": {
+            #         "keywords": [
+            #             "show field report",
+            #             "latest field report",
+            #             "read field report",
+            #             "reports for",
+            #         ],
+            #         "function": "read_field_report",
+            #         "example": "show latest field report for Eagle Lake",
+            #     },
+            #     "add_followups": {
+            #         "keywords": [
+            #             "add followup",
+            #             "followup for",
+            #             "action item",
+            #             "needs followup",
+            #         ],
+            #         "function": "update_field_report",
+            #         "example": "add followup to Eagle Lake report: schedule inspection",
+            #     },
+            #     "update_status": {
+            #         "keywords": [
+            #             "mark report",
+            #             "report status",
+            #             "finalize report",
+            #             "draft report",
+            #         ],
+            #         "function": "update_field_report",
+            #         "example": "mark Eagle Lake report as final",
+            #     },
+            # },
         }
 
         # Telegram command mappings for performance optimization
         self.telegram_commands = {
             "/tnr": "tasks",  # Tasks and reminders
             "/lists": "lists",  # List operations
-            "/fr": "field_reports",  # Field reports
+            # "/fr": "field_reports",  # Field reports
             "/l": "lists",  # Shorthand
             "/t": "tasks",  # Shorthand
         }

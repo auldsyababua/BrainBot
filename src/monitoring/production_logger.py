@@ -257,8 +257,8 @@ def log_direct_execution_performance(logger: ProductionLogger):
                         entity_type = "tasks"
                     elif "List" in self.__class__.__name__:
                         entity_type = "lists"
-                    elif "FieldReport" in self.__class__.__name__:
-                        entity_type = "field_reports"
+                    # elif "FieldReport" in self.__class__.__name__:
+                    #     entity_type = "field_reports"
 
                 logger.log_direct_execution(
                     operation=operation,

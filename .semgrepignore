@@ -1,4 +1,29 @@
-# Ignore generated artifacts and external dependencies
+# Semgrep ignore file
+# Exclude test files and fixtures
+tests/
+testsprite_tests/
+**/*_test.py
+**/*_test.ts
+**/*_test.tsx
+**/test_*.py
+**/fixtures/
+**/mocks/
+
+# Exclude documentation
+docs/
+*.md
+README*
+LICENSE*
+
+# Exclude configuration files that don't contain code
+*.json
+*.yaml
+*.yml
+*.toml
+.env*
+.gitignore
+
+# Exclude generated artifacts and external dependencies
 node_modules/
 dist/
 build/
@@ -6,11 +31,43 @@ coverage/
 htmlcov/
 reports/
 telemetry/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+*.egg-info/
 
-# Ignore large data and archives
+# Exclude vendor and third-party code
+vendor/
+third_party/
+telegram-mini-app/node_modules/
+telegram-mini-app/dist/
+telegram-mini-app/build/
+cf/**/dist/
+cf/**/node_modules/
+
+# Exclude archive and backup directories
+archive/
+backups/
+deprecated/
+temp/
+tmp/
 docs/ARCHIVE/
 
-# Ignore test docker-compose secrets in examples (we replaced real values with placeholders)
-# Keep scanning the file but skip huge vendor dirs
+# Exclude web bundles (non-executable)
+web-bundles/
+
+# Exclude database migrations and SQL
+migrations/
+**/migrations/
+**/*.sql
+
+# Exclude example and demo files
+**/examples/
+**/demo/
+**/samples/
+
+# Exclude minified JavaScript
 **/*.min.js
 

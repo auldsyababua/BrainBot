@@ -51,11 +51,11 @@ class DynamicPromptGenerator:
                 "examples": ["maintenance tasks", "reminders", "assignments"],
                 "key_fields": ["task_title", "assignee", "due_date", "priority"],
             },
-            "field_reports": {
-                "focus": "field report documentation",
-                "examples": ["site reports", "inspection logs", "incident reports"],
-                "key_fields": ["site", "report_content", "report_type", "followups"],
-            },
+            # "field_reports": {
+            #     "focus": "field report documentation",
+            #     "examples": ["site reports", "inspection logs", "incident reports"],
+            #     "key_fields": ["site", "report_content", "report_type", "followups"],
+            # },
         }
 
         self.operation_prompts = {
@@ -187,10 +187,10 @@ class DynamicPromptGenerator:
             ("tasks", "complete"): "update_task",
             ("tasks", "reassign"): "update_task",
             ("tasks", "reschedule"): "update_task",
-            ("field_reports", "create"): "create_field_report",
-            ("field_reports", "read"): "read_field_report",
-            ("field_reports", "update_status"): "update_field_report",
-            ("field_reports", "add_followups"): "update_field_report",
+            #             ("field_reports", "create"): "create_field_report",
+            #             ("field_reports", "read"): "read_field_report",
+            #             ("field_reports", "update_status"): "update_field_report",
+            #             ("field_reports", "add_followups"): "update_field_report",
         }
 
         function_name = function_map.get((context.entity_type, context.operation))
@@ -429,10 +429,10 @@ class DynamicPromptGenerator:
             ("tasks", "complete"): "update_task",
             ("tasks", "reassign"): "update_task",
             ("tasks", "reschedule"): "update_task",
-            ("field_reports", "create"): "create_field_report",
-            ("field_reports", "read"): "read_field_report",
-            ("field_reports", "update_status"): "update_field_report",
-            ("field_reports", "add_followups"): "update_field_report",
+            #             ("field_reports", "create"): "create_field_report",
+            #             ("field_reports", "read"): "read_field_report",
+            #             ("field_reports", "update_status"): "update_field_report",
+            #             ("field_reports", "add_followups"): "update_field_report",
         }
 
         function_name = function_map.get(

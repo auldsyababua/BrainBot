@@ -34,15 +34,29 @@ from fastapi import FastAPI, Header, HTTPException, Request, Response
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
-from bot.handlers import (continue_command, correct_command, forget_command,
-                          graph_command, handle_document, handle_message,
-                          help_command, memories_command, remember_command,
-                          report_command, reset_command, start_command,
-                          version_command)
+from bot.handlers import (
+    continue_command,
+    correct_command,
+    forget_command,
+    graph_command,
+    handle_document,
+    handle_message,
+    help_command,
+    memories_command,
+    remember_command,
+    report_command,
+    reset_command,
+    start_command,
+    version_command,
+)
 from core.benchmarks import PerformanceMiddleware
-from core.config import (CF_PROXY_SECRET, METRICS_AUTH_TOKEN,
-                         METRICS_IP_ALLOWLIST, TELEGRAM_BOT_TOKEN,
-                         TELEGRAM_WEBHOOK_SECRET)
+from core.config import (
+    CF_PROXY_SECRET,
+    METRICS_AUTH_TOKEN,
+    METRICS_IP_ALLOWLIST,
+    TELEGRAM_BOT_TOKEN,
+    TELEGRAM_WEBHOOK_SECRET,
+)
 
 # Set up logging
 logger = logging.getLogger(__name__)

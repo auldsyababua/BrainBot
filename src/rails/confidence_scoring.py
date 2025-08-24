@@ -198,9 +198,9 @@ class EnhancedConfidenceScorer:
         if entity_type == "tasks" and self._task_context_pattern.search(message):
             context_score += 0.3
             context_matches += 1
-        if entity_type == "field_reports" and self._report_context_pattern.search(
-            message
-        ):
+            #         if entity_type == "field_reports" and self._report_context_pattern.search(
+            #             message
+            #         ):
             context_score += 0.3
             context_matches += 1
 
@@ -291,8 +291,8 @@ class EnhancedConfidenceScorer:
             ("tasks", "complete"): ["task_title"],
             ("tasks", "reassign"): ["task_title", "new_assignee"],
             ("tasks", "reschedule"): ["task_title", "new_date"],
-            ("field_reports", "create"): ["site", "report_content"],
-            ("field_reports", "add_followups"): ["report_id", "followups"],
+            #             ("field_reports", "create"): ["site", "report_content"],
+            #             ("field_reports", "add_followups"): ["report_id", "followups"],
         }
 
         return requirements.get((entity_type, operation), [])
@@ -307,7 +307,7 @@ class EnhancedConfidenceScorer:
         entity_keywords = {
             "lists": ["list", "lists", "checklist", "inventory"],
             "tasks": ["task", "tasks", "todo", "reminder", "assignment"],
-            "field_reports": ["report", "field report", "site report", "inspection"],
+            #             "field_reports": ["report", "field report", "site report", "inspection"],
         }
 
         keywords = entity_keywords.get(entity_type, [])
@@ -323,8 +323,8 @@ class EnhancedConfidenceScorer:
         if entity_type == "tasks" and self._time_pattern.search(message):
             clarity += 0.1  # Tasks often have time references
 
-        if entity_type == "field_reports" and extracted_data.get("site"):
-            clarity += 0.2  # Site mention strongly indicates field report
+        #         if entity_type == "field_reports" and extracted_data.get("site"):
+        #             clarity += 0.2  # Site mention strongly indicates field report
 
         return min(clarity, 1.0)
 

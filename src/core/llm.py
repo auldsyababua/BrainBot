@@ -12,13 +12,20 @@ from core.agents import detect_agent_in_message, load_agent_prompt
 from core.api_client import RetryConfig, get_resilient_client
 from core.benchmarks import async_benchmark, get_performance_monitor
 from core.chunking import chunk_markdown_document
-from core.config import (CONVERSATION_MAX_MESSAGES, CONVERSATION_TTL_HOURS,
-                         GPT_MODEL, MAX_TOKENS, OPENAI_API_KEY, SYSTEM_PROMPT,
-                         TEMPERATURE)
+from core.config import (
+    CONVERSATION_MAX_MESSAGES,
+    CONVERSATION_TTL_HOURS,
+    GPT_MODEL,
+    MAX_TOKENS,
+    OPENAI_API_KEY,
+    SYSTEM_PROMPT,
+    TEMPERATURE,
+)
 from core.memory import bot_memory
 from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
 from src.rails.router import KeywordRouter, RouteResult
 from storage import vector_store
+
 # Legacy tools.py imports removed - production only uses Supabase + Vector
 # from src.core.tools import (...) - REMOVED
 from storage.redis_store import redis_store
