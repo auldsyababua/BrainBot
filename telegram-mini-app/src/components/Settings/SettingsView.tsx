@@ -4,8 +4,7 @@ import { Moon, Sun, Zap, BarChart, HelpCircle, LogOut } from 'lucide-react';
 export const SettingsView: React.FC = () => {
   const {
     user,
-    botStatus,
-    performance
+    botStatus
   } = useAppContext();
   const [darkMode, setDarkMode] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches);
   const toggleDarkMode = () => {
@@ -78,7 +77,7 @@ export const SettingsView: React.FC = () => {
               <span>Performance Stats</span>
             </div>
             <span className="text-sm font-medium text-green-600 dark:text-green-400">
-              {performance.tokensSaved.toLocaleString()} tokens saved
+              Enabled
             </span>
           </div>
         </div>

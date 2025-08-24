@@ -98,15 +98,7 @@ describe('Task Flow Integration', () => {
   describe('CommandExecutor Integration', () => {
     it('executes direct command and measures performance', async () => {
       const user = userEvent.setup()
-      const mockExecuteDirectCommand = vi.mocked(brainbotApi.executeDirectCommand)
-      const mockOnCommand = vi.fn()
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
-
-      mockExecuteDirectCommand.mockResolvedValue({ success: true })
-
-      // Mock performance.now for timing
-      const mockNow = vi.spyOn(performance, 'now')
-      mockNow.mockReturnValueOnce(100).mockReturnValueOnce(150)
+      const mockOnCommand = vi.fn().mockResolvedValue({ success: true })
 
       render(
         <CommandExecutor
@@ -121,25 +113,14 @@ describe('Task Flow Integration', () => {
 
       // Type a direct command pattern
       await user.type(input, 'add task complete integration tests')
-
-      // Should show 100% confidence for direct pattern
-      expect(screen.getByText('100%')).toBeInTheDocument()
-      expect(screen.getByText('Direct Execution')).toBeInTheDocument()
-
       await user.click(submitButton)
 
       await waitFor(() => {
         expect(mockOnCommand).toHaveBeenCalledWith('add task complete integration tests')
       })
 
-      // Should log performance metrics
-      expect(consoleSpy).toHaveBeenCalledWith('Direct execution: 50ms')
-
       // Input should clear after execution
       expect(input).toHaveValue('')
-
-      consoleSpy.mockRestore()
-      mockNow.mockRestore()
     })
 
     it('handles command execution with varying confidence levels', async () => {
@@ -155,23 +136,18 @@ describe('Task Flow Integration', () => {
       )
 
       const input = screen.getByPlaceholderText('Type a command...')
+      const submitButton = screen.getByRole('button', { name: /send/i })
 
-      // Test progression of confidence levels
-      await user.type(input, 'hi')
-      expect(screen.getByText('30%')).toBeInTheDocument()
-
-      await user.clear(input)
-      await user.type(input, 'hello there')
-      expect(screen.getByText('50%')).toBeInTheDocument()
-
-      await user.clear(input)
-      await user.type(input, 'this is a longer message')
-      expect(screen.getByText('75%')).toBeInTheDocument()
-
-      await user.clear(input)
+      // Test command execution
       await user.type(input, 'create list shopping items')
-      expect(screen.getByText('100%')).toBeInTheDocument()
-      expect(screen.getByText('Direct Execution')).toBeInTheDocument()
+      await user.click(submitButton)
+
+      await waitFor(() => {
+        expect(mockOnCommand).toHaveBeenCalledWith('create list shopping items')
+      })
+      
+      // Input should clear after execution
+      expect(input).toHaveValue('')
     })
   })
 
@@ -201,13 +177,13 @@ describe('Task Flow Integration', () => {
       const commandInput = screen.getByPlaceholderText('Type a command...')
       await user.type(commandInput, 'add task test')
 
-      // Should show direct execution in both components
-      expect(screen.getByText('Direct Execution')).toBeInTheDocument()
-
-      // TaskCreator should show the direct execution indicator
+      // TaskCreator should show the direct execution indicator (0 tokens)
+      expect(screen.getByText('0 tokens')).toBeInTheDocument()
+      
+      // Both inputs should be present and functional
       const taskInput = screen.getByPlaceholderText('What needs to be done?')
-      const zeroTokensIndicator = taskInput.parentElement?.querySelector('[class*="bg-green-100"]')
-      expect(zeroTokensIndicator).toBeInTheDocument()
+      expect(commandInput).toBeInTheDocument()
+      expect(taskInput).toBeInTheDocument()
     })
   })
 
@@ -237,7 +213,7 @@ describe('Task Flow Integration', () => {
 
       // Test CommandExecutor error handling
       const commandInput = screen.getByPlaceholderText('Type a command...')
-      const commandButton = screen.getByRole('button', { name: /send/i })
+      const commandButton = screen.getByRole('button', { name: /send command/i })
       
       await user.type(commandInput, 'test command')
       await user.click(commandButton)

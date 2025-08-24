@@ -120,10 +120,8 @@ describe('TaskCreator', () => {
   it('shows direct execution indicator when in Smart Rails mode', () => {
     render(<TaskCreator {...defaultProps} isDirectExecution={true} />)
 
-    const input = screen.getByPlaceholderText('What needs to be done?')
-    const zeroTokensIndicator = input.parentElement?.querySelector('[class*="bg-green-100"]')
-    
-    expect(zeroTokensIndicator).toBeInTheDocument()
+    // Check for "0 tokens" text which indicates direct execution
+    expect(screen.getByText('0 tokens')).toBeInTheDocument()
   })
 
   it('disables create button when description is empty', () => {
@@ -206,7 +204,14 @@ describe('TaskCreator', () => {
     const dueDateButton = screen.getByText('Set due date')
     await user.click(dueDateButton)
 
-    expect(screen.getByText('January')).toBeInTheDocument() // Calendar should be visible
+    // Calendar should show current month and year (e.g., "December 2024")
+    const currentDate = new Date()
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                       'July', 'August', 'September', 'October', 'November', 'December']
+    const currentMonth = monthNames[currentDate.getMonth()]
+    const currentYear = currentDate.getFullYear()
+    
+    expect(screen.getByText(`${currentMonth} ${currentYear}`)).toBeInTheDocument()
   })
 
   it('trims whitespace from task description', async () => {

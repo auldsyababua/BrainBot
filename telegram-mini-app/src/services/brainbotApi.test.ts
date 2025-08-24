@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { server } from '../tests/mocks/server'
+import { errorHandlers } from '../tests/mocks/handlers'
 import { http, HttpResponse } from 'msw'
 import {
   checkHealth,
@@ -17,7 +18,7 @@ import {
   sendWebhookMessage
 } from './brainbotApi'
 
-const BASE_URL = 'https://brainbot-v76n.onrender.com'
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 describe('brainbotApi', () => {
   describe('checkHealth', () => {
@@ -32,9 +33,7 @@ describe('brainbotApi', () => {
 
     it('returns unhealthy status when API fails', async () => {
       server.use(
-        http.get(`${BASE_URL}/health`, () => {
-          return new HttpResponse(null, { status: 500 })
-        })
+        errorHandlers.healthError(BASE_URL)
       )
 
       const result = await checkHealth()
@@ -47,9 +46,7 @@ describe('brainbotApi', () => {
 
     it('handles network errors gracefully', async () => {
       server.use(
-        http.get(`${BASE_URL}/health`, () => {
-          throw new Error('Network error')
-        })
+        errorHandlers.networkError(BASE_URL)
       )
 
       const result = await checkHealth()
@@ -160,7 +157,7 @@ describe('brainbotApi', () => {
 
     it('handles task creation failures', async () => {
       server.use(
-        http.post(`${BASE_URL}/webhook`, ({ request }) => {
+        http.post(`${BASE_URL}/webhook`, () => {
           return new HttpResponse(null, { status: 500 })
         })
       )

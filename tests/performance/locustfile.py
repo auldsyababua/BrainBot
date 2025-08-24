@@ -17,8 +17,9 @@ Usage:
 """
 
 import random
-from locust import HttpUser, task, between
 from datetime import datetime
+
+from locust import HttpUser, between, task
 
 
 class MarkdownBrainBotUser(HttpUser):

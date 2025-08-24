@@ -1,0 +1,48 @@
+{
+  "analyticsFluffFound": [
+    {
+      "term": "Tokens Saved",
+      "count": 1
+    },
+    {
+      "term": "Token Reduction",
+      "count": 1
+    },
+    {
+      "term": "tokens saved",
+      "count": 1
+    },
+    {
+      "term": "70% Token Reduction",
+      "count": 1
+    },
+    {
+      "term": "0 tokens",
+      "count": 1
+    },
+    {
+      "term": "0 tokens badge in Tasks",
+      "count": 1
+    },
+    {
+      "term": "tokens saved in Settings",
+      "count": 1
+    }
+  ],
+  "testsRun": [
+    "Dashboard loaded",
+    "Tasks view",
+    "Lists view",
+    "Chat view",
+    "Settings view",
+    "Mobile viewport"
+  ],
+  "screenshots": [
+    "dashboard.png",
+    "tasks.png",
+    "lists.png",
+    "chat.png",
+    "settings.png",
+    "mobile.png"
+  ]
+}

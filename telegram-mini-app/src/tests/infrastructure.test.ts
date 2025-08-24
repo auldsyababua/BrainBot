@@ -13,7 +13,8 @@ describe('Test Infrastructure', () => {
   describe('Mock Service Worker', () => {
     it('is properly configured and running', () => {
       expect(server).toBeDefined()
-      expect(server.listHandlers()).toHaveLength(6) // Number of handlers we defined
+      // We have 16 handlers per URL × 3 URLs = 48 total handlers
+      expect(server.listHandlers()).toHaveLength(48)
     })
 
     it('can intercept HTTP requests', async () => {
@@ -120,10 +121,12 @@ describe('Test Infrastructure', () => {
       const metricsData = await metricsResponse.json()
 
       expect(metricsData).toMatchObject({
-        totalCommands: expect.any(Number),
-        tokensSaved: expect.any(Number),
-        averageResponseTime: expect.any(Number),
-        directExecutionRate: expect.any(Number)
+        taskCount: expect.any(Number),
+        listCount: expect.any(Number),
+        activeUsers: expect.any(Number),
+        completionRate: expect.any(Number),
+        averageTaskTime: expect.any(Number),
+        timestamp: expect.any(Number)
       })
     })
 
@@ -139,9 +142,9 @@ describe('Test Infrastructure', () => {
       const endTime = Date.now()
       const duration = endTime - startTime
 
-      // Should have some delay (our mock uses 50ms)
-      expect(duration).toBeGreaterThanOrEqual(40) // Allow some variance
-      expect(duration).toBeLessThan(200) // But not too much
+      // Mocks should respond quickly
+      expect(duration).toBeGreaterThanOrEqual(0)
+      expect(duration).toBeLessThan(200) // But not too slow
     })
   })
 

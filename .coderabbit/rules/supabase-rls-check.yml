@@ -1,0 +1,19 @@
+id: supabase-rls-reminder
+language: python
+message: "Supabase query without explicit RLS handling. Ensure Row Level Security policies are configured."
+severity: warning
+rule:
+  pattern: |
+    supabase.table($TABLE).$METHOD($$$ARGS)
+  not:
+    inside:
+      any:
+        - has:
+            pattern: "# RLS enabled"
+        - has:
+            pattern: "# No RLS needed"
+  constraints:
+    METHOD:
+      regex: "^(select|insert|update|delete|upsert)"
+
+note: "Add a comment '# RLS enabled' or '# No RLS needed' to acknowledge RLS consideration"

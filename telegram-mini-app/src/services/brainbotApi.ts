@@ -1,4 +1,4 @@
-import { Task, List, BotStatus, PerformanceStats } from '../context/AppContext';
+import { Task, List, BotStatus } from '../context/AppContext';
 import { buildUrl } from '../config/api';
 
 // Base URL for the BrainBot API - uses environment variable or fallback
@@ -34,11 +34,24 @@ export async function getStatus(): Promise<BotStatus> {
     };
   }
 }
-export async function getMetrics(): Promise<PerformanceStats> {
+
+export async function getMetrics(): Promise<{
+  totalCommands: number;
+  tokensSaved: number;
+  averageResponseTime: number;
+  directExecutionRate: number;
+}> {
   try {
     const response = await fetch(`${BASE_URL}/metrics`);
     if (!response.ok) throw new Error('Metrics fetch failed');
-    return await response.json();
+    
+    const data = await response.json();
+    return {
+      totalCommands: data.taskCount || 0,
+      tokensSaved: data.tokensSaved || 0,
+      averageResponseTime: data.averageTaskTime || 0,
+      directExecutionRate: data.completionRate || 0
+    };
   } catch (error) {
     console.error('Metrics fetch error:', error);
     return {

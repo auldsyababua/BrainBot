@@ -5,18 +5,19 @@ This script performs thorough testing of the Smart Rails system
 without requiring external dependencies or environment setup.
 """
 
-import sys
 import os
-import time
 import statistics
+import sys
+import time
 from datetime import datetime
 
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+
 # Import Smart Rails components
-from src.rails.router import KeywordRouter
-from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from flrts_bmad.rails.router import KeywordRouter
 
 
 class SmartRailsQATester:

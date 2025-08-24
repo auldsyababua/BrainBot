@@ -1,7 +1,11 @@
 import '@testing-library/jest-dom'
 import { expect, afterEach, beforeAll, afterAll, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
+import * as matchers from '@testing-library/jest-dom/matchers'
 import { server } from './mocks/server'
+
+// Extend Vitest's expect with jest-dom matchers
+expect.extend(matchers)
 
 // Establish API mocking before all tests
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
@@ -92,7 +96,40 @@ const mockTelegramWebApp = {
   requestWriteAccess: vi.fn(),
   requestContact: vi.fn(),
   onEvent: vi.fn(),
-  offEvent: vi.fn()
+  offEvent: vi.fn(),
+  setHeaderColor: vi.fn(),
+  setBackgroundColor: vi.fn(),
+  setBottomBarColor: vi.fn(),
+  enableClosingConfirmation: vi.fn(),
+  disableClosingConfirmation: vi.fn(),
+  isVersionAtLeast: vi.fn(() => true),
+  shareToStory: vi.fn(),
+  CloudStorage: {
+    setItem: vi.fn((key, value, callback) => {
+      if (callback) callback(null, true)
+      return Promise.resolve(true)
+    }),
+    getItem: vi.fn((key, callback) => {
+      if (callback) callback(null, '')
+      return Promise.resolve('')
+    }),
+    getItems: vi.fn((keys, callback) => {
+      if (callback) callback(null, {})
+      return Promise.resolve({})
+    }),
+    removeItem: vi.fn((key, callback) => {
+      if (callback) callback(null, true)
+      return Promise.resolve(true)
+    }),
+    removeItems: vi.fn((keys, callback) => {
+      if (callback) callback(null, true)
+      return Promise.resolve(true)
+    }),
+    getKeys: vi.fn((callback) => {
+      if (callback) callback(null, [])
+      return Promise.resolve([])
+    }),
+  }
 }
 
 // Mock window.Telegram
@@ -131,12 +168,29 @@ Object.defineProperty(window, 'performance', {
   writable: true
 })
 
+// Mock matchMedia for responsive components
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+})
+
 // Helper to reset all mocks
 export const resetAllMocks = () => {
   vi.clearAllMocks()
   
-  // Reset fetch mock
-  vi.mocked(fetch).mockClear()
+  // Reset fetch mock if it's mocked
+  if (vi.isMockFunction(fetch)) {
+    vi.mocked(fetch).mockClear()
+  }
   
   // Reset Telegram WebApp mocks
   Object.values(mockTelegramWebApp.MainButton).forEach(fn => {

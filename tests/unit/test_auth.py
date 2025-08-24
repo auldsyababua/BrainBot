@@ -1,13 +1,13 @@
 """Unit tests for authorization module."""
 
 import os
-from unittest.mock import patch
 
 # Import the auth module
 import sys
+from unittest.mock import patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-from src.core.auth import is_user_authorized, get_authorized_users_info
+from flrts_bmad.core.auth import get_authorized_users_info, is_user_authorized
 
 
 class TestIsUserAuthorized:
@@ -39,20 +39,20 @@ class TestIsUserAuthorized:
     def test_authorized_by_user_id(self):
         """Test authorization by user ID when added to list."""
         # Temporarily add a test user ID
-        from src.core import auth
+        from flrts_bmad.core import auth
 
         original_ids = auth.AUTHORIZED_USER_IDS.copy()
         auth.AUTHORIZED_USER_IDS.append(12345)
 
         try:
             assert is_user_authorized(user_id=12345) is True
-            assert is_user_authorized(user_id=99999) is False
+            assert is_user_authorized(user_id=88888) is False
         finally:
             auth.AUTHORIZED_USER_IDS = original_ids
 
     def test_user_id_takes_precedence(self):
         """Test that user ID authorization takes precedence over username."""
-        from src.core import auth
+        from flrts_bmad.core import auth
 
         original_ids = auth.AUTHORIZED_USER_IDS.copy()
         auth.AUTHORIZED_USER_IDS.append(12345)
@@ -91,7 +91,8 @@ class TestEnvironmentLoading:
         """Test loading authorized users from environment."""
         # Need to reload the module to pick up env vars
         import importlib
-        from src.core import auth
+
+        from flrts_bmad.core import auth
 
         importlib.reload(auth)
 
@@ -113,7 +114,8 @@ class TestEnvironmentLoading:
         """Test handling of invalid JSON in environment variables."""
         # Should not crash, just use defaults
         import importlib
-        from src.core import auth
+
+        from flrts_bmad.core import auth
 
         # Capture the default values before reload
         default_usernames = ["Colin_10NetZero", "Bryan_10NetZero", "Joel_10NetZero"]

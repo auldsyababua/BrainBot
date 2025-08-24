@@ -4,8 +4,8 @@ Test script to verify Neo4j setup and install missing dependencies.
 """
 
 import os
-import sys
 import subprocess
+import sys
 
 
 def install_package(package):

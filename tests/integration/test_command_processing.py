@@ -1,10 +1,11 @@
 """End-to-end command processing integration tests."""
 
-import pytest
 import asyncio
-from unittest.mock import patch, AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
-from src.core.llm import process_message
+import pytest
+
+from flrts_bmad.core.llm import process_message
 
 
 class TestCommandProcessingIntegration:

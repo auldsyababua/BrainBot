@@ -4,7 +4,8 @@ Tests the dynamic prompting module without requiring full system initialization.
 """
 
 import pytest
-from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+
+from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
 
 
 class TestDynamicPromptGeneration:

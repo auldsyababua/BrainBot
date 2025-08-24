@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSmartRailsContext } from '../../context/SmartRailsContext';
 import { Zap } from 'lucide-react';
 interface ListCreatorProps {
   onListCreate: (name: string) => Promise<void>;
@@ -11,11 +10,8 @@ export const ListCreator: React.FC<ListCreatorProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const {
-    confidence
-  } = useSmartRailsContext();
   // Detect if this is a Smart Rails direct command
-  const isSmartRailsCommand = confidence === 100;
+  const isSmartRailsCommand = false; // Simplified - analytics removed
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || isSubmitting) return;

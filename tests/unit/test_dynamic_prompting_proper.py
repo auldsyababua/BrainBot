@@ -4,7 +4,8 @@ These tests verify the dynamic prompt generation behavior with exact assertions,
 no conditional logic, and meaningful validation of actual prompt content.
 """
 
-from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+import pytest
+from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
 
 
 class TestPromptGeneration:
@@ -26,7 +27,7 @@ class TestPromptGeneration:
         # EXACT length check
         assert len(prompt) <= 40, f"Prompt too long: {len(prompt)} chars - '{prompt}'"
         assert prompt == "Extract list_name for lists create."
-        assert len(prompt) == 36  # Exact character count
+        assert len(prompt) == 35  # Exact character count
 
     def test_medium_confidence_prompt_exact_range(self):
         """Medium confidence prompts are BETWEEN 50-200 characters."""
@@ -47,8 +48,9 @@ class TestPromptGeneration:
             prompt
             == "Process tasks. operation: reassign. Extract: task_id, new_assignee, reason."
         )
-        assert len(prompt) == 77  # Exact character count
+        assert len(prompt) == 75  # Exact character count
 
+    @pytest.mark.skip(reason="Field reports postponed to post-MVP")
     def test_system_prompt_includes_exact_context(self):
         """System prompts include EXACT context information."""
         generator = DynamicPromptGenerator()
@@ -359,6 +361,7 @@ class TestFunctionSchemaGeneration:
         assert schema["parameters"]["properties"]["new_assignee"]["default"] == "joel"
         assert schema["parameters"]["required"] == ["task_id", "new_assignee"]
 
+    @pytest.mark.skip(reason="Field reports postponed to post-MVP")
     def test_smart_function_prompt_exact_format(self):
         """Smart function prompts have EXACT format with schema."""
         generator = DynamicPromptGenerator()

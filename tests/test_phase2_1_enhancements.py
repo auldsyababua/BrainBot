@@ -3,16 +3,17 @@
 Tests deterministic preprocessing, confidence scoring, and direct execution paths.
 """
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from src.rails.router import KeywordRouter
-from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
-from src.rails.confidence_scoring import EnhancedConfidenceScorer, ConfidenceFactors
+from flrts_bmad.rails.confidence_scoring import ConfidenceFactors, EnhancedConfidenceScorer
+from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from flrts_bmad.rails.router import KeywordRouter
 
 
 class TestDeterministicPreprocessing:
@@ -205,8 +206,7 @@ class TestDirectExecutionPath:
         result = router.route("@sarah needs to complete the task")
 
         # Check if assignee was extracted during preprocessing
-        if result.extracted_data.get("assignee") == "sarah":
-            # If extracted, confidence should be set
+        if result:  # If extracted, confidence should be set
             assert result.assignee_confidence == 1.0  # Explicit @mention
         else:
             # If not extracted (no match), confidence not set

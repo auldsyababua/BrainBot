@@ -1,9 +1,11 @@
 """Performance tests for Smart Rails to ensure routing meets speed requirements."""
 
-import pytest
-import time
 import statistics
-from src.rails.router import KeywordRouter
+import time
+
+import pytest
+
+from flrts_bmad.rails.router import KeywordRouter
 
 
 class TestSmartRailsPerformance:
