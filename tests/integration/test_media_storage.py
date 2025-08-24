@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from botocore.exceptions import ClientError, NoCredentialsError
 
-from src.storage.media_storage import MediaStorage
+from flrts_bmad.storage.media_storage import MediaStorage
 
 # Load environment variables
 load_dotenv()

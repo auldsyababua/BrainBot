@@ -24,8 +24,8 @@ from hypothesis.stateful import RuleBasedStateMachine, initialize, invariant, ru
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from src.rails.processors.base_processor import BaseProcessor
-from src.rails.processors.task_processor import TaskProcessor
+from flrts_bmad.rails.processors.base_processor import BaseProcessor
+from flrts_bmad.rails.processors.task_processor import TaskProcessor
 
 # ============= Test Fixtures =============
 

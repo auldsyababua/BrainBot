@@ -2,7 +2,7 @@
 
 from unittest.mock import Mock
 
-from src.rails.router import ConfidenceScorer, KeywordRouter, SynonymLibrary
+from flrts_bmad.rails.router import ConfidenceScorer, KeywordRouter, SynonymLibrary
 
 # Service Level Objective constants for router performance
 MIN_CONFIDENCE_THRESHOLD = 0.7
@@ -77,7 +77,8 @@ class TestEnhancedRouter:
             ("remove eggs from grocery list", "remove_items", "lists"),
             ("mark generator task complete", "complete", "tasks"),
             ("create new task for tomorrow", "create", "tasks"),
-            ("new field report for Eagle Lake", "create", "field_reports"),
+            # Field reports removed for MVP
+            # ("new field report for Eagle Lake", "create", "field_reports"),
         ]
 
         for message, expected_op, expected_entity in operation_tests:
@@ -172,14 +173,14 @@ class TestEnhancedRouter:
         assert result.entity_type == "tasks", "Time context should suggest task entity"
         assert result.confidence >= MIN_CONFIDENCE_THRESHOLD
 
-        # Site context should enhance field report operations
-        result = router.route("new field report for Eagle Lake")
-        assert (
-            result.entity_type == "field_reports"
-        ), "Site context should suggest field report entity"
-        assert (
-            result.extracted_data.get("site") == "Eagle Lake"
-        ), "Should extract site information"
+        # Field reports removed for MVP - skip site context test
+        # result = router.route("new field report for Eagle Lake")
+        # assert (
+        #     result.entity_type == "field_reports"
+        # ), "Site context should suggest field report entity"
+        # assert (
+        #     result.extracted_data.get("site") == "Eagle Lake"
+        # ), "Should extract site information"
 
         # List structure should enhance list operations
         result = router.route("add milk, eggs, bread to shopping list")

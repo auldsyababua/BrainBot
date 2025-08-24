@@ -8,8 +8,8 @@ from unittest.mock import patch
 import pytest
 from fastapi.testclient import TestClient
 
-from src.bot.webhook_bot import WebhookTelegramBot
-from src.core.memory_webhooks import MemoryWebhookEvent
+from flrts_bmad.bot.webhook_bot import WebhookTelegramBot
+from flrts_bmad.core.memory_webhooks import MemoryWebhookEvent
 
 
 class TestWebhookEndpoints:

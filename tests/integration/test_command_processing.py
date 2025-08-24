@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from src.core.llm import process_message
+from flrts_bmad.core.llm import process_message
 
 
 class TestCommandProcessingIntegration:

@@ -7,8 +7,8 @@ import asyncio
 import os
 import sys
 
-from src.migrations.migrate_to_vector import migrate_file, migrate_file_chunked
-from src.storage.vector_store import vector_store
+from flrts_bmad.migrations.migrate_to_vector import migrate_file, migrate_file_chunked
+from flrts_bmad.storage.vector_store import vector_store
 
 
 async def add_single_file(file_path: str, use_chunking: bool = True):

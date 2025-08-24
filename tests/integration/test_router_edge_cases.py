@@ -6,8 +6,8 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from src.core.llm import _process_rails_command, process_message
-from src.rails.router import KeywordRouter, RouteResult
+from flrts_bmad.core.llm import _process_rails_command, process_message
+from flrts_bmad.rails.router import KeywordRouter, RouteResult
 
 
 class TestRouterEdgeCases:

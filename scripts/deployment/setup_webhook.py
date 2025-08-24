@@ -13,7 +13,7 @@ import requests
 # Add src to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../..", "src"))
 
-from core.config import TELEGRAM_BOT_TOKEN  # noqa: E402
+from flrts_bmad.core.config import TELEGRAM_BOT_TOKEN  # noqa: E402
 
 
 def setup_webhook(webhook_url):

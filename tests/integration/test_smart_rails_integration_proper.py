@@ -8,8 +8,8 @@ import time
 
 import pytest
 
-from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
-from src.rails.router import KeywordRouter
+from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from flrts_bmad.rails.router import KeywordRouter
 
 
 class TestEndToEndMessageFlow:

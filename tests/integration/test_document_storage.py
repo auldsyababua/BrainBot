@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 # Add parent directory to path before importing our modules
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-from src.storage.storage_service import DocumentStorage
+from flrts_bmad.storage.storage_service import DocumentStorage
 
 # Load environment variables
 load_dotenv()

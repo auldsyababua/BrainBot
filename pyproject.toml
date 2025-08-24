@@ -1,61 +1,93 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=64.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "markdown-brain-bot"
-version = "2.0.0"
-description = "A Telegram bot that manages markdown notes with vector search and hybrid storage"
+name = "flrts-bmad"
+version = "0.1.0"
+description = "Flask/Telegram Bot Application - FLRTS (Field List Report Task System)"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
     {name = "Colin Aulds", email = "colin@10netzero.com"},
 ]
 dependencies = [
-    "python-telegram-bot[webhooks]>=20.3",
-    "openai>=1.51.2",
-    "python-dotenv>=1.0.0",
+    "python-telegram-bot==21.0.1",
+    "openai>=1.35.0",
+    "python-dotenv==1.0.0",
+    "pyyaml==6.0.1",
+    "requests>=2.31.0",
     "redis>=4.5.5",
-    "aiohttp>=3.9.1",
+    "sentence-transformers>=2.2.2",
+    "supabase>=2.11.0",
+    "boto3>=1.35.0",
+    "fastapi>=0.111.0",
+    "uvicorn>=0.30.0",
+    "mem0ai>=0.0.15",
+    "aiohttp>=3.8.0",
+    "psutil>=5.9.0",
     "flask>=3.0.0",
-    "supabase>=2.3.1",
-    "boto3>=1.34.13",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=7.3.1",
     "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
     "black>=24.3.0",
     "ruff>=0.3.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "flake8-import-order>=0.18.2",
+    "mypy>=1.0.0",
+    "types-PyYAML>=6.0.0",
+    "types-requests>=2.31.0",
 ]
 
 [project.scripts]
-brain-bot = "src.bot.main_polling:main"
-brain-bot-webhook = "src.bot.main_webhook:app"
-
-[tool.setuptools]
-package-dir = {"" = "src"}
+flrts-bmad = "flrts_bmad.main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["*"]
-exclude = ["tests*"]
+include = ["flrts_bmad*"]
+namespaces = false
 
-[tool.black]
-line-length = 88
-target-version = ['py39']
-include = '\.pyi?$'
-
-[tool.ruff]
-line-length = 88
-target-version = "py39"
+[tool.setuptools.package-dir]
+"" = "src"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = ["src"]  # Adds src to Python path during tests
+addopts = [
+    "--import-mode=importlib",  # Modern import mode
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
-# Generate JSON report with timestamps for historical tracking (if plugin is installed)
-# addopts = "--json-report --json-report-file=tests/test_results/latest.json"
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.isort]
+profile = "black"
+line_length = 100
+known_first_party = ["flrts_bmad"]
+default_section = "THIRDPARTY"
+skip_gitignore = true
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+namespace_packages = true
+explicit_package_bases = true

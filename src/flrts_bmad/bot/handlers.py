@@ -22,14 +22,14 @@ from typing import Any, Dict
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from core.auth import is_user_authorized
-from core.chunking import chunk_markdown_document
-from core.llm import process_message
-from core.memory import bot_memory
-from core.version import LATEST_CHANGES, VERSION
-from storage import vector_store
-from storage.redis_store import redis_store
-from storage.storage_service import DocumentStorage
+from flrts_bmad.core.auth import is_user_authorized
+from flrts_bmad.core.chunking import chunk_markdown_document
+from flrts_bmad.core.llm import process_message
+from flrts_bmad.core.memory import bot_memory
+from flrts_bmad.core.version import LATEST_CHANGES, VERSION
+from flrts_bmad.storage import vector_store
+from flrts_bmad.storage.redis_store import redis_store
+from flrts_bmad.storage.storage_service import DocumentStorage
 
 # Set up logging
 logger = logging.getLogger(__name__)

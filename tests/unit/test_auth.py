@@ -7,7 +7,7 @@ import sys
 from unittest.mock import patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-from src.core.auth import get_authorized_users_info, is_user_authorized
+from flrts_bmad.core.auth import get_authorized_users_info, is_user_authorized
 
 
 class TestIsUserAuthorized:

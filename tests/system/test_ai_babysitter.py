@@ -26,10 +26,10 @@ sys.path.insert(
     0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from src.core.api_client import get_resilient_client  # noqa: E402
-from src.core.llm import conversation_manager, process_message  # noqa: E402
-from src.storage.redis_store import redis_store  # noqa: E402
-from src.storage.vector_store import vector_store  # noqa: E402
+from flrts_bmad.core.api_client import get_resilient_client  # noqa: E402
+from flrts_bmad.core.llm import conversation_manager, process_message  # noqa: E402
+from flrts_bmad.storage.redis_store import redis_store  # noqa: E402
+from flrts_bmad.storage.vector_store import vector_store  # noqa: E402
 
 # =====================================
 # Resource Management Tests

@@ -18,9 +18,9 @@ os.environ.setdefault("OPENAI_API_KEY", "test_key")
 os.environ.setdefault("SUPABASE_URL", "http://test.supabase.co")
 os.environ.setdefault("SUPABASE_KEY", "test_key")
 
-from src.core.llm import _determine_missing_fields
-from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
-from src.rails.router import KeywordRouter, RouteResult
+from flrts_bmad.core.llm import _determine_missing_fields
+from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from flrts_bmad.rails.router import KeywordRouter, RouteResult
 
 
 class TestDynamicPromptGeneration:

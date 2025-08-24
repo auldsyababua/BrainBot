@@ -13,10 +13,10 @@ Critical: This test MUST pass for the system to work correctly
 import inspect
 import unittest
 
-from src.rails.processors.list_processor import ListProcessor
+from flrts_bmad.rails.processors.list_processor import ListProcessor
 
 # Import the processors we need to test
-from src.rails.processors.task_processor import TaskProcessor
+from flrts_bmad.rails.processors.task_processor import TaskProcessor
 
 
 class TestProcessorConstructorRegression(unittest.TestCase):

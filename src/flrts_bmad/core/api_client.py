@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 from openai import AsyncOpenAI, OpenAI
 from openai.types.chat import ChatCompletion
 
-from core.benchmarks import get_performance_monitor
+from flrts_bmad.core.benchmarks import get_performance_monitor
 
 # Load environment variables
 load_dotenv()

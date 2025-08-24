@@ -14,7 +14,7 @@ from typing import BinaryIO, Dict, Optional, Union
 import boto3
 from dotenv import load_dotenv
 
-from src.storage.storage_service import document_storage
+from flrts_bmad.storage.storage_service import document_storage
 
 # Load environment variables
 load_dotenv()

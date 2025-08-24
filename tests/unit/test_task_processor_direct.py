@@ -7,7 +7,7 @@ from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from src.rails.processors.task_processor import TaskProcessor
+from flrts_bmad.rails.processors.task_processor import TaskProcessor
 
 
 @pytest.fixture

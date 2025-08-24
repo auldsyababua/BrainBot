@@ -5,8 +5,8 @@ import time
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from src.core.benchmarks import async_benchmark
-from src.monitoring import log_direct_execution_performance, production_logger
+from flrts_bmad.core.benchmarks import async_benchmark
+from flrts_bmad.monitoring import log_direct_execution_performance, production_logger
 
 from .base_processor import BaseProcessor
 

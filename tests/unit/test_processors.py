@@ -10,8 +10,8 @@ import pytest
 
 # Add parent directory to path before importing our modules
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-from src.rails.processors.list_processor import ListProcessor
-from src.rails.processors.task_processor import TaskProcessor
+from flrts_bmad.rails.processors.list_processor import ListProcessor
+from flrts_bmad.rails.processors.task_processor import TaskProcessor
 
 
 class TestListProcessor:
@@ -824,6 +824,7 @@ class TestProcessorErrorHandling:
         # Should handle large arrays without performance issues
         assert isinstance(valid, bool)
 
+    @pytest.mark.skip(reason="FieldReportProcessor removed for MVP")
     async def test_database_timeout(self):
         """Test handling of database timeouts."""
         mock_supabase = AsyncMock()

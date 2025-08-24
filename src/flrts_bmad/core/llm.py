@@ -8,11 +8,11 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from openai import OpenAI
 
-from core.agents import detect_agent_in_message, load_agent_prompt
-from core.api_client import RetryConfig, get_resilient_client
-from core.benchmarks import async_benchmark, get_performance_monitor
-from core.chunking import chunk_markdown_document
-from core.config import (
+from flrts_bmad.core.agents import detect_agent_in_message, load_agent_prompt
+from flrts_bmad.core.api_client import RetryConfig, get_resilient_client
+from flrts_bmad.core.benchmarks import async_benchmark, get_performance_monitor
+from flrts_bmad.core.chunking import chunk_markdown_document
+from flrts_bmad.core.config import (
     CONVERSATION_MAX_MESSAGES,
     CONVERSATION_TTL_HOURS,
     GPT_MODEL,
@@ -21,14 +21,14 @@ from core.config import (
     SYSTEM_PROMPT,
     TEMPERATURE,
 )
-from core.memory import bot_memory
-from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
-from src.rails.router import KeywordRouter, RouteResult
-from storage import vector_store
+from flrts_bmad.core.memory import bot_memory
+from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from flrts_bmad.rails.router import KeywordRouter, RouteResult
+from flrts_bmad.storage import vector_store
 
 # Legacy tools.py imports removed - production only uses Supabase + Vector
 # from src.core.tools import (...) - REMOVED
-from storage.redis_store import redis_store
+from flrts_bmad.storage.redis_store import redis_store
 
 # Initialize resilient OpenAI client with custom retry config
 retry_config = RetryConfig(

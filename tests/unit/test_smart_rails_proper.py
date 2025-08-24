@@ -6,7 +6,7 @@ no conditional logic, and meaningful validation of actual values.
 
 import pytest
 
-from src.rails.router import KeywordRouter
+from flrts_bmad.rails.router import KeywordRouter
 
 
 class TestDeterministicPreprocessing:
@@ -351,6 +351,7 @@ class TestDataExtraction:
         items = result.extracted_data.get("items")
         assert items == ["milk", "eggs", "bread"]
 
+    @pytest.mark.skip(reason="Field reports postponed to post-MVP")
     def test_site_extraction_in_routing(self):
         """Sites are extracted with exact title case during routing."""
         router = KeywordRouter()
@@ -549,6 +550,7 @@ class TestIntegrationScenarios:
         assert result.function_name == "update_list"
         assert result.extracted_data["items"] == ["milk", "eggs", "bread", "butter"]
 
+    @pytest.mark.skip(reason="Field reports postponed to post-MVP")
     def test_field_report_exact_flow(self):
         """Field report creation with exact site extraction."""
         router = KeywordRouter()

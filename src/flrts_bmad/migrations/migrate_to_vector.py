@@ -11,8 +11,8 @@ from typing import Dict, List, Tuple
 
 import yaml
 
-from src.core.chunking import chunk_markdown_document
-from src.storage.vector_store import vector_store
+from flrts_bmad.core.chunking import chunk_markdown_document
+from flrts_bmad.storage.vector_store import vector_store
 
 # Define notes folder locally for migration
 NOTES_FOLDER = os.getenv("NOTES_FOLDER", "10nz_kb")

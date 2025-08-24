@@ -5,7 +5,7 @@ import time
 
 import pytest
 
-from src.rails.router import KeywordRouter
+from flrts_bmad.rails.router import KeywordRouter
 
 
 class TestSmartRailsPerformance:

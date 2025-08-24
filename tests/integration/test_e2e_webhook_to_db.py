@@ -8,9 +8,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from src.bot.webhook_bot import process_message
-from src.core.llm import LLMClient
-from src.rails.router import KeywordRouter
+from flrts_bmad.core.llm import LLMClient, process_message
+from flrts_bmad.rails.router import KeywordRouter
 
 
 @pytest.mark.integration

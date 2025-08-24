@@ -24,7 +24,7 @@ patch(
     side_effect=mock_get_performance_monitor,
 ).start()
 
-from src.storage.cloudflare_vector_store import CloudflareVectorStore
+from flrts_bmad.storage.cloudflare_vector_store import CloudflareVectorStore
 
 
 @pytest.fixture

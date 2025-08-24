@@ -28,9 +28,9 @@ sys.path.insert(
     0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from src.core.llm import process_message
-from src.storage import vector_store
-from src.storage.redis_store import redis_store
+from flrts_bmad.core.llm import process_message
+from flrts_bmad.storage import vector_store
+from flrts_bmad.storage.redis_store import redis_store
 
 # Load test fixtures
 FIXTURES_PATH = Path(__file__).parent.parent / "fixtures" / "pdf_content.json"

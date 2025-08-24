@@ -14,7 +14,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import httpx
 from dotenv import load_dotenv
 
-from core.benchmarks import async_benchmark, get_performance_monitor
+from flrts_bmad.core.benchmarks import async_benchmark, get_performance_monitor
 
 logger = logging.getLogger(__name__)
 

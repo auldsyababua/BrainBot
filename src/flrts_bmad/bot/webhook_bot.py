@@ -34,7 +34,7 @@ from fastapi import FastAPI, Header, HTTPException, Request, Response
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
-from bot.handlers import (
+from flrts_bmad.bot.handlers import (
     continue_command,
     correct_command,
     forget_command,
@@ -49,8 +49,8 @@ from bot.handlers import (
     start_command,
     version_command,
 )
-from core.benchmarks import PerformanceMiddleware
-from core.config import (
+from flrts_bmad.core.benchmarks import PerformanceMiddleware
+from flrts_bmad.core.config import (
     CF_PROXY_SECRET,
     METRICS_AUTH_TOKEN,
     METRICS_IP_ALLOWLIST,

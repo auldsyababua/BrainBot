@@ -5,8 +5,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 # Import processors
-from src.rails.processors.list_processor import ListProcessor
-from src.rails.processors.task_processor import TaskProcessor
+from flrts_bmad.rails.processors.list_processor import ListProcessor
+from flrts_bmad.rails.processors.task_processor import TaskProcessor
 
 
 class MockSupabaseResponse:

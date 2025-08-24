@@ -11,9 +11,9 @@ import pytest
 # Add parent directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from src.rails.confidence_scoring import ConfidenceFactors, EnhancedConfidenceScorer
-from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
-from src.rails.router import KeywordRouter
+from flrts_bmad.rails.confidence_scoring import ConfidenceFactors, EnhancedConfidenceScorer
+from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from flrts_bmad.rails.router import KeywordRouter
 
 
 class TestDeterministicPreprocessing:
