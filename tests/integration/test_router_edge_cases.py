@@ -72,14 +72,14 @@ class TestRouterEdgeCases:
             # The module should handle initialization failure gracefully
             from importlib import reload
 
-            import src.core.llm
+            import src.flrts_bmad.core.llm as llm_module
 
             with patch("logging.Logger.error") as mock_logger:
-                reload(src.core.llm)
+                reload(llm_module)
                 # Should log the error
                 mock_logger.assert_called()
                 # keyword_router should be None
-                assert src.core.llm.keyword_router is None
+                assert llm_module.keyword_router is None
 
     @pytest.mark.asyncio
     async def test_database_connection_failure(self):
@@ -111,9 +111,7 @@ class TestRouterEdgeCases:
         )
 
         # Mock a processor that times out
-        with patch(
-            "src.rails.processors.list_processor.ListProcessor"
-        ) as mock_processor_class:
+        with patch("src.rails.processors.list_processor.ListProcessor") as mock_processor_class:
             mock_instance = AsyncMock()
             mock_processor_class.return_value = mock_instance
 
@@ -142,9 +140,7 @@ class TestRouterEdgeCases:
             target_users=[],
         )
 
-        with patch(
-            "src.rails.processors.list_processor.ListProcessor"
-        ) as mock_processor_class:
+        with patch("src.rails.processors.list_processor.ListProcessor") as mock_processor_class:
             mock_instance = AsyncMock()
             mock_processor_class.return_value = mock_instance
 
@@ -174,9 +170,7 @@ class TestRouterEdgeCases:
         commands = ["/lists add item", "/tasks create task", "/fr new report"] * 10
 
         for cmd in commands:
-            t = threading.Thread(
-                target=route_command, args=(cmd, results_queue, errors_queue)
-            )
+            t = threading.Thread(target=route_command, args=(cmd, results_queue, errors_queue))
             threads.append(t)
             t.start()
 
@@ -349,6 +343,4 @@ class TestRouterEdgeCases:
         for message, expected_prefilled in edge_cases:
             cleaned, prefilled, _ = self.router.preprocess_message(message)
             for key, value in expected_prefilled.items():
-                assert (
-                    prefilled.get(key) == value
-                ), f"Failed for {message}: expected {key}={value}"
+                assert prefilled.get(key) == value, f"Failed for {message}: expected {key}={value}"

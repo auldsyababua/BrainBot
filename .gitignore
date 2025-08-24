@@ -56,6 +56,10 @@ env/
 # Logs
 *.log
 logs/
+startup.log
+app.log
+debug.log
+error.log
 
 # Test-specific
 testsprite_tests/tmp/config.json
@@ -64,10 +68,23 @@ testsprite_tests/tmp/*.local.json
 # Testing
 .pytest_cache/
 .coverage
+.coverage.*
 htmlcov/
 .tox/
 .nox/
 tests/test_results/
+tests/reports/
+test_results/
+test_review_report*.md
+latest*.json
+*.json.bak
+test_results.json
+report.json
+coverage.xml
+testsprite_tests/tmp/
+testsprite_tests/screenshots/
+tests/temp/
+tests/manual/
 
 # AI development helper tests (not for production)
 tests/system/test_ai_babysitter.py
@@ -135,6 +152,13 @@ DEVLOG.md
 
 # Archive directory (for old/documentation files)
 archive/
+
+# AI Digest output files
+codebase.md
+ai_digest_output.md
+*.digest.md
+flattened_*.md
+watch-codebase.sh
 
 # Temporary directories
 workers/

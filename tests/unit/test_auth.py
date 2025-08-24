@@ -39,7 +39,7 @@ class TestIsUserAuthorized:
     def test_authorized_by_user_id(self):
         """Test authorization by user ID when added to list."""
         # Temporarily add a test user ID
-        from src.core import auth
+        from flrts_bmad.core import auth
 
         original_ids = auth.AUTHORIZED_USER_IDS.copy()
         auth.AUTHORIZED_USER_IDS.append(12345)
@@ -52,7 +52,7 @@ class TestIsUserAuthorized:
 
     def test_user_id_takes_precedence(self):
         """Test that user ID authorization takes precedence over username."""
-        from src.core import auth
+        from flrts_bmad.core import auth
 
         original_ids = auth.AUTHORIZED_USER_IDS.copy()
         auth.AUTHORIZED_USER_IDS.append(12345)
@@ -92,7 +92,7 @@ class TestEnvironmentLoading:
         # Need to reload the module to pick up env vars
         import importlib
 
-        from src.core import auth
+        from flrts_bmad.core import auth
 
         importlib.reload(auth)
 
@@ -115,7 +115,7 @@ class TestEnvironmentLoading:
         # Should not crash, just use defaults
         import importlib
 
-        from src.core import auth
+        from flrts_bmad.core import auth
 
         # Capture the default values before reload
         default_usernames = ["Colin_10NetZero", "Bryan_10NetZero", "Joel_10NetZero"]
