@@ -93,22 +93,22 @@ class DynamicPromptGenerator:
                 )
                 base_prompt += op_template.format(entity=context.entity_type) + ". "
         else:
-            base_prompt += "various operational tasks. Determine the intent and extract relevant information. "
+            base_prompt += (
+                "various operational tasks. Determine the intent and extract relevant information. "
+            )
 
         # Add extraction guidance based on what's missing
         if context.missing_fields:
-            base_prompt += (
-                f"\n\nFocus on extracting: {', '.join(context.missing_fields)}. "
-            )
+            base_prompt += f"\n\nFocus on extracting: {', '.join(context.missing_fields)}. "
 
         # Add context about preprocessed data
         if context.extracted_data:
             if context.extracted_data.get("assignee"):
-                base_prompt += f"\n\nAssignee already identified: {context.extracted_data['assignee']}. "
-            if context.extracted_data.get("site"):
                 base_prompt += (
-                    f"\n\nSite already identified: {context.extracted_data['site']}. "
+                    f"\n\nAssignee already identified: {context.extracted_data['assignee']}. "
                 )
+            if context.extracted_data.get("site"):
+                base_prompt += f"\n\nSite already identified: {context.extracted_data['site']}. "
             if context.extracted_data.get("time_references"):
                 base_prompt += f"\n\nTime context found: {', '.join(context.extracted_data['time_references'])}. "
 
@@ -134,23 +134,23 @@ class DynamicPromptGenerator:
         required_fields = entity_info.get("key_fields", [])
 
         # Filter out already extracted fields
-        existing_fields = (
-            set(context.extracted_data.keys()) if context.extracted_data else set()
-        )
+        existing_fields = set(context.extracted_data.keys()) if context.extracted_data else set()
         missing_fields = [f for f in required_fields if f not in existing_fields]
 
         if not missing_fields:
             return f"All required fields have been extracted for {context.entity_type}.{context.operation}."
 
-        prompt = f"Extract the following information for {context.entity_type} {context.operation}:\n"
+        prompt = (
+            f"Extract the following information for {context.entity_type} {context.operation}:\n"
+        )
         for field in missing_fields:
             prompt += f"- {field}: "
 
             # Add field-specific guidance
-            if field == "assignee" and context.extracted_data.get(
-                "unresolved_mentions"
-            ):
-                prompt += f"(Note: unresolved mentions {context.extracted_data['unresolved_mentions']})"
+            if field == "assignee" and context.extracted_data.get("unresolved_mentions"):
+                prompt += (
+                    f"(Note: unresolved mentions {context.extracted_data['unresolved_mentions']})"
+                )
             elif field == "list_name":
                 prompt += "(The name of the list to operate on)"
             elif field == "task_title":
@@ -171,9 +171,7 @@ class DynamicPromptGenerator:
         function with properly formatted parameters.
         """
         if not context.entity_type or not context.operation:
-            return (
-                "Determine the appropriate function to call based on the user's intent."
-            )
+            return "Determine the appropriate function to call based on the user's intent."
 
         # Map to function names
         function_map = {
@@ -196,7 +194,9 @@ class DynamicPromptGenerator:
         function_name = function_map.get((context.entity_type, context.operation))
 
         if not function_name:
-            return f"Determine the appropriate function for {context.entity_type}.{context.operation}."
+            return (
+                f"Determine the appropriate function for {context.entity_type}.{context.operation}."
+            )
 
         prompt = f"Call the {function_name} function with the following parameters:\n"
 
@@ -334,9 +334,7 @@ class DynamicPromptGenerator:
 
         # Build minimal prompt
         if context.missing_fields:
-            return (
-                f"Extract {', '.join(context.missing_fields)} for {entity} {operation}."
-            )
+            return f"Extract {', '.join(context.missing_fields)} for {entity} {operation}."
         else:
             return f"Execute {entity} {operation} with provided data."
 
@@ -358,9 +356,7 @@ class DynamicPromptGenerator:
             parts.append("and operation")
 
         if context.missing_fields:
-            parts.append(
-                f"Extract: {', '.join(context.missing_fields[:3])}"
-            )  # Limit to 3 fields
+            parts.append(f"Extract: {', '.join(context.missing_fields[:3])}")  # Limit to 3 fields
 
         return ". ".join(parts) + "."
 
@@ -540,9 +536,7 @@ class DynamicPromptGenerator:
             "execution_strategy": strategy,
             "estimated_tokens": int(estimated_tokens),
             "confidence_scores": context.confidence_scores or {},
-            "missing_fields_count": (
-                len(context.missing_fields) if context.missing_fields else 0
-            ),
+            "missing_fields_count": (len(context.missing_fields) if context.missing_fields else 0),
             "has_prefilled_data": bool(context.extracted_data),
             "prompt_cached": self._generate_cache_key(context) in self._prompt_cache,
         }

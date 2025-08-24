@@ -308,9 +308,9 @@ class MediaStorage:
             # Delete from Supabase if available
             if document_storage:
                 try:
-                    document_storage.supabase.table(
-                        "brain_bot_media_files"
-                    ).delete().eq("s3_key", s3_key).execute()
+                    document_storage.supabase.table("brain_bot_media_files").delete().eq(
+                        "s3_key", s3_key
+                    ).execute()
                 except Exception:
                     pass
 

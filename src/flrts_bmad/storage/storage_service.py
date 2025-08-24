@@ -104,9 +104,7 @@ class DocumentStorage:
 
                 # If content is identical, return existing ID
                 if existing_doc["content_hash"] == content_hash:
-                    logger.info(
-                        f"Document already exists with identical content: {file_path}"
-                    )
+                    logger.info(f"Document already exists with identical content: {file_path}")
                     return existing_doc["id"]
 
                 # If content changed and updates are allowed, update the document
@@ -161,12 +159,7 @@ class DocumentStorage:
             # Extract title from file path
             title = metadata.get("title") if metadata else None
             if not title:
-                title = (
-                    os.path.basename(file_path)
-                    .replace(".md", "")
-                    .replace("-", " ")
-                    .title()
-                )
+                title = os.path.basename(file_path).replace(".md", "").replace("-", " ").title()
 
             # Prepare document data
             doc_data = {
@@ -184,9 +177,7 @@ class DocumentStorage:
             }
 
             # Insert document atomically
-            result = (
-                self.supabase.table("brain_bot_documents").insert(doc_data).execute()
-            )
+            result = self.supabase.table("brain_bot_documents").insert(doc_data).execute()
 
             if result.data:
                 doc_id = result.data[0]["id"]
@@ -307,10 +298,7 @@ class DocumentStorage:
                     return cached_result
 
             result = (
-                self.supabase.table("brain_bot_documents")
-                .select("*")
-                .eq("id", doc_id)
-                .execute()
+                self.supabase.table("brain_bot_documents").select("*").eq("id", doc_id).execute()
             )
 
             if result.data:
@@ -382,9 +370,7 @@ class DocumentStorage:
             logger.error(f"Error retrieving documents by IDs: {e}")
             return []
 
-    async def get_documents_by_paths(
-        self, file_paths: List[str]
-    ) -> List[Dict[str, Any]]:
+    async def get_documents_by_paths(self, file_paths: List[str]) -> List[Dict[str, Any]]:
         """
         Retrieve multiple documents by their file paths in a single query
         """
@@ -444,9 +430,7 @@ class DocumentStorage:
         Returns:
             True if successful, False otherwise
         """
-        return await self._atomic_update_document(
-            doc_id=doc_id, content=content, metadata=metadata
-        )
+        return await self._atomic_update_document(doc_id=doc_id, content=content, metadata=metadata)
 
     async def update_document(
         self, file_path: str, content: str, metadata: Optional[Dict[str, Any]] = None
@@ -498,9 +482,7 @@ class DocumentStorage:
             # Check cache
             if cache_key in self._query_cache:
                 cached_result, timestamp = self._query_cache[cache_key]
-                if datetime.now() - timestamp < timedelta(
-                    seconds=30
-                ):  # Shorter cache for search
+                if datetime.now() - timestamp < timedelta(seconds=30):  # Shorter cache for search
                     return cached_result
 
             query_builder = self.supabase.table("brain_bot_documents").select("*")
@@ -578,9 +560,7 @@ class DocumentStorage:
                 .execute()
             )
 
-            logger.info(
-                f"Cleared {len(result.data) if result.data else 0} documents from Supabase"
-            )
+            logger.info(f"Cleared {len(result.data) if result.data else 0} documents from Supabase")
             return True
 
         except Exception as e:
@@ -761,10 +741,7 @@ class DocumentStorage:
 
             # Then delete the document
             delete_doc_result = (
-                self.supabase.table("brain_bot_documents")
-                .delete()
-                .eq("id", doc_id)
-                .execute()
+                self.supabase.table("brain_bot_documents").delete().eq("id", doc_id).execute()
             )
 
             if delete_doc_result.error:
@@ -820,11 +797,7 @@ class DocumentStorage:
                 "metadata": metadata or {},
             }
 
-            result = (
-                self.supabase.table("brain_bot_document_chunks")
-                .insert(chunk_data)
-                .execute()
-            )
+            result = self.supabase.table("brain_bot_document_chunks").insert(chunk_data).execute()
 
             if result.data:
                 return result.data[0]["id"]

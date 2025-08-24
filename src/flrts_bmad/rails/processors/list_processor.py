@@ -143,9 +143,7 @@ class ListProcessor(BaseProcessor):
         }
 
         if operation in required_fields:
-            missing = [
-                field for field in required_fields[operation] if field not in data
-            ]
+            missing = [field for field in required_fields[operation] if field not in data]
             if missing:
                 return False, f"Missing required fields: {', '.join(missing)}"
 
@@ -165,9 +163,7 @@ class ListProcessor(BaseProcessor):
         }
 
         if operation in operation_keywords:
-            if any(
-                keyword in message_lower for keyword in operation_keywords[operation]
-            ):
+            if any(keyword in message_lower for keyword in operation_keywords[operation]):
                 boost += 0.1
 
         # Item enumeration boosts list operations
@@ -193,9 +189,7 @@ class ListProcessor(BaseProcessor):
 
         return boost
 
-    def get_dynamic_extraction_schema(
-        self, operation: str, prefilled_data: Dict[str, Any]
-    ) -> str:
+    def get_dynamic_extraction_schema(self, operation: str, prefilled_data: Dict[str, Any]) -> str:
         """Generate dynamic extraction schema based on prefilled data."""
 
         if operation == "create":
@@ -282,9 +276,7 @@ class ListProcessor(BaseProcessor):
 
         try:
             # Validate the operation first
-            is_valid, message = await self.validate_operation(
-                operation, extracted_data, "user"
-            )
+            is_valid, message = await self.validate_operation(operation, extracted_data, "user")
 
             if not is_valid:
                 return {
@@ -333,9 +325,7 @@ class ListProcessor(BaseProcessor):
                 "execution_time": time.perf_counter() - start_time,
             }
 
-    async def _execute_create(
-        self, data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+    async def _execute_create(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """Execute list creation."""
         try:
             # Build list data
@@ -387,9 +377,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error creating list: {e}")
             return {"success": False, "error": f"Failed to create list: {str(e)}"}
 
-    async def _execute_add_items(
-        self, data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+    async def _execute_add_items(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """Execute adding items to a list."""
         try:
             # Find the list
@@ -429,9 +417,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error adding items to list: {e}")
             return {"success": False, "error": f"Failed to add items: {str(e)}"}
 
-    async def _execute_remove_items(
-        self, data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+    async def _execute_remove_items(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """Execute removing items from a list."""
         try:
             # Find the list
@@ -466,9 +452,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error removing items from list: {e}")
             return {"success": False, "error": f"Failed to remove items: {str(e)}"}
 
-    async def _execute_rename(
-        self, data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+    async def _execute_rename(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """Execute list renaming."""
         try:
             # Find the list
@@ -500,9 +484,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error renaming list: {e}")
             return {"success": False, "error": f"Failed to rename list: {str(e)}"}
 
-    async def _execute_clear(
-        self, data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+    async def _execute_clear(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """Execute clearing all items from a list."""
         try:
             # Find the list
@@ -515,10 +497,7 @@ class ListProcessor(BaseProcessor):
 
             # Delete all items
             response = await self._safe_db_operation(
-                self.supabase.table("list_items")
-                .delete()
-                .eq("list_id", list_obj["id"])
-                .execute()
+                self.supabase.table("list_items").delete().eq("list_id", list_obj["id"]).execute()
             )
 
             if response:
@@ -555,11 +534,7 @@ class ListProcessor(BaseProcessor):
                     return {"success": False, "error": "No lists found"}
 
             # Get list items
-            query = (
-                self.supabase.table("list_items")
-                .select("*")
-                .eq("list_id", list_obj["id"])
-            )
+            query = self.supabase.table("list_items").select("*").eq("list_id", list_obj["id"])
 
             filters = data.get("filters", {})
             if not filters.get("show_completed", True):
@@ -584,9 +559,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error reading list: {e}")
             return {"success": False, "error": f"Failed to read list: {str(e)}"}
 
-    async def _execute_delete(
-        self, data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+    async def _execute_delete(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """Execute list deletion."""
         try:
             # Find the list
@@ -599,10 +572,7 @@ class ListProcessor(BaseProcessor):
 
             # Delete list items first
             await self._safe_db_operation(
-                self.supabase.table("list_items")
-                .delete()
-                .eq("list_id", list_obj["id"])
-                .execute()
+                self.supabase.table("list_items").delete().eq("list_id", list_obj["id"]).execute()
             )
 
             # Delete the list

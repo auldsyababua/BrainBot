@@ -20,9 +20,7 @@ class BaseProcessor:
         """Get cached value if still valid."""
         if key in self._cache:
             timestamp = self._cache_timestamps.get(key)
-            if timestamp and datetime.now() - timestamp < timedelta(
-                seconds=self.cache_ttl
-            ):
+            if timestamp and datetime.now() - timestamp < timedelta(seconds=self.cache_ttl):
                 return self._cache[key]
         return None
 
@@ -52,9 +50,7 @@ class BaseProcessor:
         """Base extraction schema method to be overridden by subclasses."""
         raise NotImplementedError("Subclasses must implement get_extraction_schema")
 
-    def get_dynamic_extraction_schema(
-        self, operation: str, prefilled_data: Dict[str, Any]
-    ) -> str:
+    def get_dynamic_extraction_schema(self, operation: str, prefilled_data: Dict[str, Any]) -> str:
         """Generate dynamic extraction schema based on prefilled data.
 
         This method should be overridden by subclasses to provide operation-specific

@@ -36,7 +36,9 @@ class CloudflareVectorStore:
             raise ValueError("Cloudflare credentials not configured")
 
         # API endpoints
-        self.base_url = f"https://api.cloudflare.com/client/v4/accounts/{self.account_id}/vectorize/indexes"
+        self.base_url = (
+            f"https://api.cloudflare.com/client/v4/accounts/{self.account_id}/vectorize/indexes"
+        )
         self.index_url = f"{self.base_url}/{self.index_name}"
 
         # HTTP client with auth headers
@@ -73,24 +75,18 @@ class CloudflareVectorStore:
 
         openai.api_key = os.getenv("OPENAI_API_KEY")
         self.openai_client = openai.OpenAI()
-        self.embedding_model = os.getenv(
-            "OPENAI_EMBEDDING_MODEL", "text-embedding-3-small"
-        )
+        self.embedding_model = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
 
     async def _generate_embedding(self, text: str) -> List[float]:
         """Generate embedding vector using OpenAI."""
         try:
-            response = self.openai_client.embeddings.create(
-                model=self.embedding_model, input=text
-            )
+            response = self.openai_client.embeddings.create(model=self.embedding_model, input=text)
             return response.data[0].embedding
         except Exception as e:
             logger.error(f"Error generating embedding: {e}")
             raise
 
-    def _get_cache_key(
-        self, query: str, top_k: int, filter: Optional[str] = None
-    ) -> str:
+    def _get_cache_key(self, query: str, top_k: int, filter: Optional[str] = None) -> str:
         """Generate a cache key for a query."""
         key_parts = [query, str(top_k), filter or ""]
         key_string = "|".join(key_parts)
@@ -127,9 +123,7 @@ class CloudflareVectorStore:
             True if stored successfully, False otherwise
         """
         try:
-            logger.info(
-                f"📝 Storing document {document_id} in namespace: {namespace or 'default'}"
-            )
+            logger.info(f"📝 Storing document {document_id} in namespace: {namespace or 'default'}")
 
             # Generate embedding
             embedding = await self._generate_embedding(content)
@@ -142,9 +136,7 @@ class CloudflareVectorStore:
             metadata.update(
                 {
                     "indexed_at": datetime.now().isoformat(),
-                    "content_preview": (
-                        content[:1500] + "..." if len(content) > 1500 else content
-                    ),
+                    "content_preview": (content[:1500] + "..." if len(content) > 1500 else content),
                     "content_length": len(content),
                 }
             )
@@ -155,9 +147,7 @@ class CloudflareVectorStore:
 
             # Prepare vector data for Cloudflare
             vector_data = {
-                "vectors": [
-                    {"id": document_id, "values": embedding, "metadata": metadata}
-                ]
+                "vectors": [{"id": document_id, "values": embedding, "metadata": metadata}]
             }
 
             # Upsert to Cloudflare Vectorize
@@ -226,17 +216,13 @@ class CloudflareVectorStore:
 
             # Add filter if provided
             if filter:
-                search_data["filter"] = (
-                    json.loads(filter) if isinstance(filter, str) else filter
-                )
+                search_data["filter"] = json.loads(filter) if isinstance(filter, str) else filter
 
             # Add namespace filter if provided
             if namespace:
                 namespace_filter = {"namespace": {"$eq": namespace}}
                 if "filter" in search_data:
-                    search_data["filter"] = {
-                        "$and": [search_data["filter"], namespace_filter]
-                    }
+                    search_data["filter"] = {"$and": [search_data["filter"], namespace_filter]}
                 else:
                     search_data["filter"] = namespace_filter
 
@@ -248,9 +234,7 @@ class CloudflareVectorStore:
                 response.raise_for_status()
                 results = response.json().get("result", {}).get("matches", [])
 
-            logger.info(
-                f"🔍 Found {len(results)} results in namespace: {namespace or 'default'}"
-            )
+            logger.info(f"🔍 Found {len(results)} results in namespace: {namespace or 'default'}")
 
             # Format results
             formatted_results = []
@@ -283,9 +267,7 @@ class CloudflareVectorStore:
             logger.error(f"Error searching for query '{query}': {e}")
             return []
 
-    async def delete_document(
-        self, document_id: str, namespace: Optional[str] = None
-    ) -> bool:
+    async def delete_document(self, document_id: str, namespace: Optional[str] = None) -> bool:
         """
         Delete a document from the vector store.
 
@@ -357,9 +339,7 @@ class CloudflareVectorStore:
                 if namespace:
                     metadata["namespace"] = namespace
 
-                vectors.append(
-                    {"id": doc_id, "values": embedding, "metadata": metadata}
-                )
+                vectors.append({"id": doc_id, "values": embedding, "metadata": metadata})
 
             # Batch upsert to Cloudflare
             batch_data = {"vectors": vectors}
@@ -435,9 +415,7 @@ class CloudflareVectorStore:
             if mode == "patch":
                 existing = await self.fetch_document(document_id)
                 if not existing:
-                    logger.error(
-                        f"Document {document_id} not found for metadata update"
-                    )
+                    logger.error(f"Document {document_id} not found for metadata update")
                     return False
 
                 # Merge metadata
@@ -460,9 +438,7 @@ class CloudflareVectorStore:
             logger.error(f"Error updating metadata for {document_id}: {e}")
             return False
 
-    async def list_documents(
-        self, prefix: Optional[str] = None, limit: int = 100
-    ) -> List[str]:
+    async def list_documents(self, prefix: Optional[str] = None, limit: int = 100) -> List[str]:
         """
         List document IDs in the vector store.
         Note: This requires a metadata search or separate tracking.
@@ -505,9 +481,7 @@ class CloudflareVectorStore:
                     },
                 }
 
-                response = await client.post(
-                    self.base_url, headers=self.headers, json=create_data
-                )
+                response = await client.post(self.base_url, headers=self.headers, json=create_data)
 
                 if response.status_code != 409:  # 409 = already exists
                     response.raise_for_status()
@@ -571,11 +545,7 @@ class CloudflareVectorStore:
                             if document_data:
                                 full_content = document_data.get("content", "")
 
-                        if (
-                            not full_content
-                            and doc_info["file_path"]
-                            and document_storage
-                        ):
+                        if not full_content and doc_info["file_path"] and document_storage:
                             document_data = await document_storage.get_document(
                                 doc_info["file_path"]
                             )
@@ -604,18 +574,14 @@ class CloudflareVectorStore:
                             for chunk in doc_info["chunks"]:
                                 chunk_content = chunk.get("content")
                                 if not chunk_content and chunk.get("metadata"):
-                                    chunk_content = chunk["metadata"].get(
-                                        "content_preview"
-                                    )
+                                    chunk_content = chunk["metadata"].get("content_preview")
                                 if chunk_content:
                                     content_parts.append(chunk_content)
 
                             enhanced_result = {
                                 "id": doc_key,
                                 "score": doc_info["best_score"],
-                                "content": (
-                                    "\n\n".join(content_parts) if content_parts else ""
-                                ),
+                                "content": ("\n\n".join(content_parts) if content_parts else ""),
                                 "metadata": doc_info["metadata"],
                                 "chunks": doc_info["chunks"],
                                 "source": "chunks",
@@ -636,9 +602,7 @@ class CloudflareVectorStore:
                         enhanced_result = {
                             "id": doc_key,
                             "score": doc_info["best_score"],
-                            "content": (
-                                "\n\n".join(content_parts) if content_parts else ""
-                            ),
+                            "content": ("\n\n".join(content_parts) if content_parts else ""),
                             "metadata": doc_info["metadata"],
                             "chunks": doc_info["chunks"],
                             "source": "chunks",

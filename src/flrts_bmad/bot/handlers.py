@@ -68,9 +68,7 @@ async def check_authorization(update: Update) -> bool:
             f"Your username: @{user.username or 'not set'}\n"  # Corrected newline escaping
             f"Your ID: {user.id}"
         )
-        logger.warning(
-            f"Unauthorized access attempt (command): @{user.username} (ID: {user.id})"
-        )
+        logger.warning(f"Unauthorized access attempt (command): @{user.username} (ID: {user.id})")
         return False
     return True
 
@@ -143,11 +141,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def reset_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /reset command to start a new conversation."""
-    if (
-        not await check_authorization(update)
-        or not update.effective_chat
-        or not update.message
-    ):
+    if not await check_authorization(update) or not update.effective_chat or not update.message:
         return
 
     chat_id = str(update.effective_chat.id)
@@ -166,11 +160,7 @@ async def reset_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def continue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /continue command to restore previous conversation."""
-    if (
-        not await check_authorization(update)
-        or not update.effective_chat
-        or not update.message
-    ):
+    if not await check_authorization(update) or not update.effective_chat or not update.message:
         return
 
     chat_id = str(update.effective_chat.id)
@@ -240,9 +230,7 @@ async def report_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         # Create report content
         report_content = "# Conversation Report\n\n"
-        report_content += (
-            f"**Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-        )
+        report_content += f"**Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
         report_content += f"**User**: @{user.username or 'N/A'} (ID: {user.id})\n"
         report_content += f"**Bot Version**: {VERSION}\n\n"
 
@@ -251,9 +239,7 @@ async def report_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             role = msg.get("role", "unknown")
             content = msg.get("content", "")
             report_content += f"### Message {i+1} ({role})\n"
-            report_content += (
-                f"```\n{content[:500]}{'...' if len(content) > 500 else ''}\n```\n\n"
-            )
+            report_content += f"```\n{content[:500]}{'...' if len(content) > 500 else ''}\n```\n\n"
 
         # Save report to file
         report_filename = f"conversation_report_{chat_id}_{timestamp}.md"
@@ -303,9 +289,7 @@ async def version_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not await check_authorization(update) or not update.message:
         return
 
-    version_message = (
-        f"🤖 **Markdown Brain Bot v{VERSION}**\n\n" "**Latest Changes:**\n"
-    )
+    version_message = f"🤖 **Markdown Brain Bot v{VERSION}**\n\n" "**Latest Changes:**\n"
 
     for change in LATEST_CHANGES:
         version_message += f"• {change}\n"
@@ -345,12 +329,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Bryan_10NetZero",
             "Joel_10NetZero",
         ]:
-            logger.info(
-                f"Authorized user detected - Username: @{user.username}, ID: {user.id}"
-            )
-            logger.info(
-                f"Consider adding to AUTHORIZED_USER_IDS: {user.id}  # {user.username}"
-            )
+            logger.info(f"Authorized user detected - Username: @{user.username}, ID: {user.id}")
+            logger.info(f"Consider adding to AUTHORIZED_USER_IDS: {user.id}  # {user.username}")
 
         # Log incoming message with structured data
         log_operation(
@@ -431,12 +411,9 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         # Check if it's a markdown file
         if document.file_name and (
-            document.file_name.endswith(".md")
-            or document.file_name.endswith(".markdown")
+            document.file_name.endswith(".md") or document.file_name.endswith(".markdown")
         ):
-            logger.info(
-                f"📎 Received markdown file from {chat_id}: {document.file_name}"
-            )
+            logger.info(f"📎 Received markdown file from {chat_id}: {document.file_name}")
 
             # Show typing indicator
             await context.bot.send_chat_action(chat_id=chat_id, action="typing")
@@ -445,9 +422,7 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             file = await context.bot.get_file(document.file_id)
 
             # Create temporary file to store the content
-            with tempfile.NamedTemporaryFile(
-                mode="w+", suffix=".md", delete=False
-            ) as tmp_file:
+            with tempfile.NamedTemporaryFile(mode="w+", suffix=".md", delete=False) as tmp_file:
                 await file.download_to_drive(tmp_file.name)
                 tmp_file_path = tmp_file.name
 
@@ -529,9 +504,7 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             llm_message = f"I just imported a document called '{document.file_name}'. The document contains:\n\n{content[:500]}..."
             llm_response = await process_message(llm_message, str(chat_id))
 
-            response = (
-                f"✅ Successfully imported '{document.file_name}'\n\n{llm_response}"
-            )
+            response = f"✅ Successfully imported '{document.file_name}'\n\n{llm_response}"
             await update.message.reply_text(response)
 
         else:
@@ -552,11 +525,7 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Memory-related command handlers
 async def remember_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /remember command to explicitly store facts about the user."""
-    if (
-        not await check_authorization(update)
-        or not update.effective_chat
-        or not update.message
-    ):
+    if not await check_authorization(update) or not update.effective_chat or not update.message:
         return
 
     chat_id = str(update.effective_chat.id)
@@ -574,18 +543,13 @@ async def remember_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("❌ Sorry, I couldn't store that memory.")
     else:
         await update.message.reply_text(
-            "Please tell me what to remember!\n\n"
-            "Usage: `/remember I prefer morning reports`"
+            "Please tell me what to remember!\n\n" "Usage: `/remember I prefer morning reports`"
         )
 
 
 async def correct_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /correct command for teaching the bot corrections."""
-    if (
-        not await check_authorization(update)
-        or not update.effective_chat
-        or not update.message
-    ):
+    if not await check_authorization(update) or not update.effective_chat or not update.message:
         return
 
     chat_id = str(update.effective_chat.id)
@@ -594,9 +558,7 @@ async def correct_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if "->" in text:
         try:
             original, corrected = text.split("->", 1)
-            await bot_memory.store_correction(
-                chat_id, original.strip(), corrected.strip()
-            )
+            await bot_memory.store_correction(chat_id, original.strip(), corrected.strip())
             await update.message.reply_text(
                 "📝 Thanks for the correction! I'll learn from this.\n\n"
                 f"❌ Wrong: _{original.strip()}_\n"
@@ -605,9 +567,7 @@ async def correct_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         except Exception as e:
             logger.error(f"Error storing correction: {e}")
-            await update.message.reply_text(
-                "❌ Sorry, I couldn't store that correction."
-            )
+            await update.message.reply_text("❌ Sorry, I couldn't store that correction.")
     else:
         await update.message.reply_text(
             "Please provide a correction in the format:\n\n"
@@ -619,11 +579,7 @@ async def correct_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def memories_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Show user what the bot remembers about them."""
-    if (
-        not await check_authorization(update)
-        or not update.effective_chat
-        or not update.message
-    ):
+    if not await check_authorization(update) or not update.effective_chat or not update.message:
         return
 
     chat_id = str(update.effective_chat.id)
@@ -702,11 +658,7 @@ async def memories_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def forget_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /forget command to clear user memories."""
-    if (
-        not await check_authorization(update)
-        or not update.effective_chat
-        or not update.message
-    ):
+    if not await check_authorization(update) or not update.effective_chat or not update.message:
         return
 
     chat_id = str(update.effective_chat.id)
@@ -724,11 +676,7 @@ async def forget_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /graph command to explore knowledge graph relationships."""
-    if (
-        not await check_authorization(update)
-        or not update.effective_chat
-        or not update.message
-    ):
+    if not await check_authorization(update) or not update.effective_chat or not update.message:
         return
 
     chat_id = str(update.effective_chat.id)
@@ -748,9 +696,7 @@ async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         if text:
             # Query specific entity
-            relationships = await bot_memory.get_graph_relationships(
-                chat_id, entity=text
-            )
+            relationships = await bot_memory.get_graph_relationships(chat_id, entity=text)
 
             if relationships:
                 response = f"🕸️ **Connections for '{text}':**\n\n"
@@ -812,6 +758,4 @@ async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     except Exception as e:
         logger.error(f"Error exploring graph: {e}")
-        await update.message.reply_text(
-            "❌ Sorry, I couldn't explore the knowledge graph."
-        )
+        await update.message.reply_text("❌ Sorry, I couldn't explore the knowledge graph.")

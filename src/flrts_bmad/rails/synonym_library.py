@@ -154,13 +154,9 @@ class SynonymLibrary:
         confidence = base_match_confidence
 
         # Check confidence levels
-        if any(
-            phrase in message_lower for phrase in synonyms.get("high_confidence", [])
-        ):
+        if any(phrase in message_lower for phrase in synonyms.get("high_confidence", [])):
             confidence = max(confidence, 0.8)
-        elif any(
-            phrase in message_lower for phrase in synonyms.get("medium_confidence", [])
-        ):
+        elif any(phrase in message_lower for phrase in synonyms.get("medium_confidence", [])):
             confidence = max(confidence, 0.6)
 
         # Apply multipliers
@@ -196,10 +192,7 @@ class SynonymLibrary:
 
         if cache_key in self._indicator_cache:
             # Check if cache is still valid
-            if (
-                current_time - self._cache_timestamps.get(cache_key, 0)
-                < self._cache_ttl_seconds
-            ):
+            if current_time - self._cache_timestamps.get(cache_key, 0) < self._cache_ttl_seconds:
                 return self._indicator_cache[cache_key]
 
         indicators = {}
@@ -224,9 +217,7 @@ class SynonymLibrary:
         action_words = ["create", "new", "add", "remove", "show", "mark", "assign"]
         for word in action_words:
             if message_lower.find(word) < 10:  # Within first 10 characters
-                indicators["position_boost"] = self.confidence_multipliers[
-                    "position_boost"
-                ]
+                indicators["position_boost"] = self.confidence_multipliers["position_boost"]
                 break
 
         # Memory optimization: Cache the result

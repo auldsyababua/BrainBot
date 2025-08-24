@@ -23,7 +23,7 @@ from flrts_bmad.core.api_client import RetryConfig, get_resilient_client  # noqa
 from flrts_bmad.core.benchmarks import get_performance_monitor  # noqa: E402
 from flrts_bmad.core.llm import conversation_manager, process_message  # noqa: E402
 from flrts_bmad.storage.redis_store import redis_store  # noqa: E402
-from flrts_bmad.storage.vector_store import vector_store  # noqa: E402
+from flrts_bmad.storage import vector_store  # noqa: E402
 
 
 async def test_vector_cache():

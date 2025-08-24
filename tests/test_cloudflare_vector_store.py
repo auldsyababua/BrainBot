@@ -7,7 +7,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 import pytest
 
 # Mock the performance monitor at module level to prevent Redis initialization
-pytest.register_assert_rewrite("src.core.benchmarks")
+pytest.register_assert_rewrite("flrts_bmad.core.benchmarks")
 
 
 def mock_get_performance_monitor():
@@ -20,7 +20,7 @@ def mock_get_performance_monitor():
 
 # Patch at module level
 patch(
-    "src.core.benchmarks.get_performance_monitor",
+    "flrts_bmad.core.benchmarks.get_performance_monitor",
     side_effect=mock_get_performance_monitor,
 ).start()
 

@@ -42,9 +42,7 @@ class PerformanceMonitor:
     def __init__(self):
         self.health_url = os.getenv("HEALTH_URL", "http://localhost:8000/health")
         self.telegram_bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
-        self.alert_chat_id = os.getenv(
-            "ADMIN_CHAT_ID", os.getenv("AUTHORIZED_USER_IDS", "[]")
-        )
+        self.alert_chat_id = os.getenv("ADMIN_CHAT_ID", os.getenv("AUTHORIZED_USER_IDS", "[]"))
 
         # Alert thresholds
         self.thresholds = {
@@ -149,9 +147,7 @@ class PerformanceMonitor:
 
         for chat_id in chat_ids:
             try:
-                url = (
-                    f"https://api.telegram.org/bot{self.telegram_bot_token}/sendMessage"
-                )
+                url = f"https://api.telegram.org/bot{self.telegram_bot_token}/sendMessage"
                 payload = {"chat_id": chat_id, "text": message, "parse_mode": "HTML"}
                 response = requests.post(url, json=payload, timeout=5)
                 if response.status_code == 200:
@@ -174,14 +170,10 @@ class PerformanceMonitor:
 
         return False
 
-    def format_alert_message(
-        self, violations: List[str], metrics: PerformanceMetrics
-    ) -> str:
+    def format_alert_message(self, violations: List[str], metrics: PerformanceMetrics) -> str:
         """Format alert message for sending."""
         severity = (
-            "🚨 <b>CRITICAL</b>"
-            if any("🚨" in v for v in violations)
-            else "⚠️ <b>WARNING</b>"
+            "🚨 <b>CRITICAL</b>" if any("🚨" in v for v in violations) else "⚠️ <b>WARNING</b>"
         )
 
         message = f"{severity} - FLRTS Performance Alert\n\n"
@@ -218,9 +210,7 @@ class PerformanceMonitor:
 
         # Keep only last hour of metrics
         one_hour_ago = time.time() - 3600
-        self.metric_history = [
-            m for m in self.metric_history if m.timestamp > one_hour_ago
-        ]
+        self.metric_history = [m for m in self.metric_history if m.timestamp > one_hour_ago]
 
         # Check for violations
         violations = self.check_threshold_violations(metrics)

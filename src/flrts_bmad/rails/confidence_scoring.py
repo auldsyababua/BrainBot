@@ -156,9 +156,7 @@ class EnhancedConfidenceScorer:
         if keyword_match:
             match_length = len(keyword_match.group(0))
             message_length = len(message)
-            factors.pattern_match_strength = min(
-                match_length / max(message_length * 0.3, 1), 1.0
-            )
+            factors.pattern_match_strength = min(match_length / max(message_length * 0.3, 1), 1.0)
 
             # Keyword position factor
             match_position = keyword_match.start()
@@ -173,9 +171,7 @@ class EnhancedConfidenceScorer:
 
             # Keyword specificity
             matched_text = keyword_match.group(0).lower()
-            factors.keyword_specificity = self.keyword_specificity.get(
-                matched_text, 0.5
-            )
+            factors.keyword_specificity = self.keyword_specificity.get(matched_text, 0.5)
 
         # 2. Syntax Explicitness (100% confidence for explicit syntax)
         has_command = bool(self._command_pattern.search(message))
@@ -213,9 +209,7 @@ class EnhancedConfidenceScorer:
         if sum(all_contexts) > 1:
             context_score *= 0.7  # Reduce score for ambiguous context
 
-        factors.context_clarity = min(
-            context_score + (0.2 if context_matches > 0 else 0), 1.0
-        )
+        factors.context_clarity = min(context_score + (0.2 if context_matches > 0 else 0), 1.0)
 
         # 4. Extraction Completeness
         required_extractions = self._get_required_fields(entity_type, operation)
@@ -225,9 +219,7 @@ class EnhancedConfidenceScorer:
                 for field in required_extractions
                 if field in extracted_data and extracted_data[field]
             )
-            factors.extraction_completeness = extracted_count / len(
-                required_extractions
-            )
+            factors.extraction_completeness = extracted_count / len(required_extractions)
         else:
             factors.extraction_completeness = 0.5  # No specific requirements
 
@@ -251,9 +243,7 @@ class EnhancedConfidenceScorer:
             )
 
         if operation:
-            factors.operation_disambiguation = self.operation_clarity.get(
-                operation, 0.5
-            )
+            factors.operation_disambiguation = self.operation_clarity.get(operation, 0.5)
 
         # Calculate final confidence score
         confidence = factors.calculate_weighted_score()
@@ -266,11 +256,7 @@ class EnhancedConfidenceScorer:
             confidence = 1.0  # 100% for direct execution flags
 
         # Apply penalties for ambiguity
-        if (
-            "maybe" in message_lower
-            or "might" in message_lower
-            or "possibly" in message_lower
-        ):
+        if "maybe" in message_lower or "might" in message_lower or "possibly" in message_lower:
             confidence *= 0.8  # Uncertainty penalty
 
         if message_lower.count("or") > 1:

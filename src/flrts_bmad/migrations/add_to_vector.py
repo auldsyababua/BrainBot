@@ -81,9 +81,7 @@ async def add_content_directly(title: str, content: str, metadata: dict = None):
     if metadata is None:
         metadata = {}
 
-    metadata.update(
-        {"title": title, "type": metadata.get("type", "note"), "source": "direct_add"}
-    )
+    metadata.update({"title": title, "type": metadata.get("type", "note"), "source": "direct_add"})
 
     # Add to vector store
     success = await vector_store.embed_and_store(doc_id, content, metadata)

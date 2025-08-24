@@ -36,9 +36,7 @@ class ProductionLogger:
         self.direct_execution_metrics: list[DirectExecutionMetrics] = []
 
         # Configure structured logging format
-        formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
+        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
         # Add console handler if not exists
         if not self.logger.handlers:
@@ -214,9 +212,7 @@ class ProductionLogger:
                 "max_execution_time_ms": round(max_time, 1),
                 "under_500ms_rate": round(under_target, 3),
                 "story_1_6_performance": (
-                    "optimal"
-                    if avg_time < 200
-                    else "good" if avg_time < 500 else "needs_attention"
+                    "optimal" if avg_time < 200 else "good" if avg_time < 500 else "needs_attention"
                 ),
             },
             "by_entity": entity_stats,
@@ -229,9 +225,7 @@ def log_direct_execution_performance(logger: ProductionLogger):
 
     def decorator(func):
         @wraps(func)
-        async def wrapper(
-            self, operation: str, extracted_data: Dict[str, Any], user_id: str
-        ):
+        async def wrapper(self, operation: str, extracted_data: Dict[str, Any], user_id: str):
             start_time = time.perf_counter()
             success = False
             error = None

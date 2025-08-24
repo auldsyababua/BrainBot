@@ -69,6 +69,9 @@ htmlcov/
 .nox/
 tests/test_results/
 
+# AI development helper tests (not for production)
+tests/system/test_ai_babysitter.py
+
 # Jupyter Notebook
 .ipynb_checkpoints
 

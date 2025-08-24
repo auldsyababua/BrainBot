@@ -117,9 +117,7 @@ class WebhookTelegramBot:
         self.application.add_handler(
             MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
         )
-        self.application.add_handler(
-            MessageHandler(filters.Document.ALL, handle_document)
-        )
+        self.application.add_handler(MessageHandler(filters.Document.ALL, handle_document))
 
         logger.info("Bot handlers registered successfully")
 
@@ -381,13 +379,9 @@ class WebhookTelegramBot:
                     },
                     "bot": {
                         "id": bot_info.id if hasattr(bot_info, "id") else None,
-                        "username": (
-                            bot_info.username if hasattr(bot_info, "username") else None
-                        ),
+                        "username": (bot_info.username if hasattr(bot_info, "username") else None),
                         "first_name": (
-                            bot_info.first_name
-                            if hasattr(bot_info, "first_name")
-                            else None
+                            bot_info.first_name if hasattr(bot_info, "first_name") else None
                         ),
                         "can_join_groups": (
                             bot_info.can_join_groups
@@ -493,13 +487,9 @@ class WebhookTelegramBot:
             try:
                 # Validate Telegram secret token if configured
                 if TELEGRAM_WEBHOOK_SECRET:
-                    received_secret = request.headers.get(
-                        "X-Telegram-Bot-Api-Secret-Token"
-                    )
+                    received_secret = request.headers.get("X-Telegram-Bot-Api-Secret-Token")
                     if received_secret != TELEGRAM_WEBHOOK_SECRET:
-                        logger.warning(
-                            "Unauthorized webhook call: invalid secret token"
-                        )
+                        logger.warning("Unauthorized webhook call: invalid secret token")
                         return Response(status_code=HTTPStatus.UNAUTHORIZED)
 
                 logger.info("📋 Getting JSON from request")
@@ -559,13 +549,9 @@ class WebhookTelegramBot:
                 try:
                     ts_sec = int(x_request_timestamp)
                 except Exception:
-                    raise HTTPException(
-                        status_code=HTTPStatus.UNAUTHORIZED, detail="Bad timestamp"
-                    )
+                    raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Bad timestamp")
                 if abs(now_sec - ts_sec) > 300:
-                    raise HTTPException(
-                        status_code=HTTPStatus.UNAUTHORIZED, detail="Stale request"
-                    )
+                    raise HTTPException(status_code=HTTPStatus.UNAUTHORIZED, detail="Stale request")
 
                 # Read raw body as text to ensure exact HMAC
                 raw_body = await request.body()
@@ -596,21 +582,15 @@ class WebhookTelegramBot:
                 body_json = json.loads(payload)
                 raw_tg_json = body_json.get("body")
                 if not raw_tg_json:
-                    raise HTTPException(
-                        status_code=HTTPStatus.BAD_REQUEST, detail="Missing body"
-                    )
+                    raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Missing body")
 
                 # Optional context from Worker (history, vector results, media URLs, flags)
-                _context_payload = (
-                    body_json.get("context") or {}
-                )  # Reserved for future use
+                _context_payload = body_json.get("context") or {}  # Reserved for future use
 
                 # Deserialize Telegram Update and process
                 update = Update.de_json(json.loads(raw_tg_json), self.application.bot)
                 if not update:
-                    raise HTTPException(
-                        status_code=HTTPStatus.BAD_REQUEST, detail="Bad update"
-                    )
+                    raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Bad update")
 
                 # If handlers/processors need context, attach to request state
                 # or pass via a temporary mechanism; for now, proceed with normal flow

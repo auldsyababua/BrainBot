@@ -131,9 +131,7 @@ class MemoryWebhookHandler:
             try:
                 success = await self._deliver_webhook(payload)
                 if success:
-                    logger.info(
-                        f"Webhook delivered successfully: {event.value} for user {user_id}"
-                    )
+                    logger.info(f"Webhook delivered successfully: {event.value} for user {user_id}")
                     return True
 
             except Exception as e:
@@ -143,9 +141,7 @@ class MemoryWebhookHandler:
             if attempt < self.config.retry_attempts - 1:
                 await asyncio.sleep(self.config.retry_delay * (attempt + 1))
 
-        logger.error(
-            f"Webhook delivery failed after {self.config.retry_attempts} attempts"
-        )
+        logger.error(f"Webhook delivery failed after {self.config.retry_attempts} attempts")
         return False
 
     async def _deliver_webhook(self, payload: Dict[str, Any]) -> bool:
@@ -226,9 +222,7 @@ async def notify_memory_error(user_id: str, operation: str, error: str) -> bool:
     )
 
 
-async def notify_batch_completed(
-    user_id: str, operation: str, results: Dict[str, Any]
-) -> bool:
+async def notify_batch_completed(user_id: str, operation: str, results: Dict[str, Any]) -> bool:
     """Send webhook notification for batch operation completion."""
     return await memory_webhook_handler.send_webhook(
         event=MemoryWebhookEvent.BATCH_OPERATION_COMPLETED,
@@ -237,9 +231,7 @@ async def notify_batch_completed(
     )
 
 
-async def notify_graph_relationship_added(
-    user_id: str, relationship_data: Dict[str, Any]
-) -> bool:
+async def notify_graph_relationship_added(user_id: str, relationship_data: Dict[str, Any]) -> bool:
     """Send webhook notification for graph relationship addition."""
     return await memory_webhook_handler.send_webhook(
         event=MemoryWebhookEvent.GRAPH_RELATIONSHIP_ADDED,

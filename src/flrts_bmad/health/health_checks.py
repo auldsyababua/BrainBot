@@ -82,9 +82,7 @@ class HealthChecker:
             response_time = (time.perf_counter() - start_time) * 1000
 
             # Check if direct execution is working
-            direct_execution_working = (
-                result.use_direct_execution and result.confidence >= 0.95
-            )
+            direct_execution_working = result.use_direct_execution and result.confidence >= 0.95
 
             details: Dict[str, Any]
             if response_time > 100:  # Router should be very fast
@@ -235,9 +233,7 @@ class HealthChecker:
 
             # Story 1.6 specific metrics
             router_healthy = status_map.get("router", {}).get("status") == "healthy"
-            processors_healthy = (
-                status_map.get("processors", {}).get("status") == "healthy"
-            )
+            processors_healthy = status_map.get("processors", {}).get("status") == "healthy"
             direct_execution_ready = router_healthy and processors_healthy
 
             result = {
@@ -290,19 +286,15 @@ class HealthChecker:
         recent_checks = self.performance_history[-10:]  # Last 10 checks
 
         # Calculate averages
-        avg_response_time = sum(
-            check["total_time_ms"] for check in recent_checks
-        ) / len(recent_checks)
+        avg_response_time = sum(check["total_time_ms"] for check in recent_checks) / len(
+            recent_checks
+        )
 
         # Count statuses
-        healthy_count = sum(
-            1 for check in recent_checks if check["overall_status"] == "healthy"
-        )
+        healthy_count = sum(1 for check in recent_checks if check["overall_status"] == "healthy")
 
         # Check direct execution availability
-        direct_exec_available = sum(
-            1 for check in recent_checks if check["direct_execution_ready"]
-        )
+        direct_exec_available = sum(1 for check in recent_checks if check["direct_execution_ready"])
 
         return {
             "recent_checks": len(recent_checks),

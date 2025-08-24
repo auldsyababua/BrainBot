@@ -103,9 +103,8 @@ async def story_1_6_status():
         router_result = await health_checker.check_router_health()
 
         # Check if direct execution is working
-        direct_exec_working = (
-            router_result.status == "healthy"
-            and router_result.details.get("direct_execution", False)
+        direct_exec_working = router_result.status == "healthy" and router_result.details.get(
+            "direct_execution", False
         )
 
         performance_level = "optimal"
@@ -187,9 +186,7 @@ def register_health_endpoints(app):
     @health_bp.after_request
     def after_request(response):
         response.headers.add("Access-Control-Allow-Origin", "*")
-        response.headers.add(
-            "Access-Control-Allow-Headers", "Content-Type,Authorization"
-        )
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
         response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
         return response
 

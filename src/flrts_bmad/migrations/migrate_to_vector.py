@@ -55,9 +55,7 @@ async def migrate_file(file_path: str) -> bool:
         metadata, content = extract_frontmatter(full_content)
 
         # Create document ID from file path
-        doc_id = (
-            file_path.replace(NOTES_FOLDER, "").replace("/", "_").replace(".md", "")
-        )
+        doc_id = file_path.replace(NOTES_FOLDER, "").replace("/", "_").replace(".md", "")
         if doc_id.startswith("_"):
             doc_id = doc_id[1:]
 
@@ -74,9 +72,7 @@ async def migrate_file(file_path: str) -> bool:
 
         # Add any custom metadata from frontmatter
         for key, value in metadata.items():
-            if key not in vector_metadata and isinstance(
-                value, (str, int, float, bool, list)
-            ):
+            if key not in vector_metadata and isinstance(value, (str, int, float, bool, list)):
                 vector_metadata[key] = value
 
         # Store in vector database
@@ -131,9 +127,7 @@ async def migrate_file_chunked(
 
         # Add any custom metadata from frontmatter
         for key, value in metadata.items():
-            if key not in base_metadata and isinstance(
-                value, (str, int, float, bool, list)
-            ):
+            if key not in base_metadata and isinstance(value, (str, int, float, bool, list)):
                 base_metadata[key] = value
 
         # Chunk the document
@@ -152,9 +146,7 @@ async def migrate_file_chunked(
             chunk_id = chunk_metadata["chunk_id"]
 
             # Store in vector database
-            success = await vector_store.embed_and_store(
-                chunk_id, chunk_text, chunk_metadata
-            )
+            success = await vector_store.embed_and_store(chunk_id, chunk_text, chunk_metadata)
 
             if success:
                 success_count += 1
@@ -164,9 +156,7 @@ async def migrate_file_chunked(
         if success_count == len(chunks):
             print(f"✅ Migrated {file_path} ({len(chunks)} chunks)")
         elif success_count > 0:
-            print(
-                f"⚠️  Partially migrated {file_path} ({success_count}/{len(chunks)} chunks)"
-            )
+            print(f"⚠️  Partially migrated {file_path} ({success_count}/{len(chunks)} chunks)")
         else:
             print(f"❌ Failed to migrate any chunks from {file_path}")
 
@@ -270,9 +260,7 @@ async def test_search():
             for i, result in enumerate(results, 1):
                 print(f"   {i}. Score: {result['score']:.3f}")
                 if result.get("metadata"):
-                    print(
-                        f"      File: {result['metadata'].get('file_path', 'Unknown')}"
-                    )
+                    print(f"      File: {result['metadata'].get('file_path', 'Unknown')}")
                     print(f"      Title: {result['metadata'].get('title', 'Unknown')}")
                 if result.get("content"):
                     preview = result["content"][:100].replace("\n", " ")

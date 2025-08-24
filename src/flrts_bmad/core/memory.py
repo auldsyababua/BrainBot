@@ -44,18 +44,14 @@ class BotMemory:
                 config["embedder"] = {
                     "provider": "openai",
                     "config": {
-                        "model": os.getenv(
-                            "MEM0_EMBEDDER_MODEL", "text-embedding-3-small"
-                        ),
+                        "model": os.getenv("MEM0_EMBEDDER_MODEL", "text-embedding-3-small"),
                         "api_key": os.getenv("OPENAI_API_KEY"),
                         "embedding_dims": int(os.getenv("MEM0_EMBEDDING_DIMS", "1536")),
                     },
                 }
 
             # Configure Vector Store
-            if os.getenv("UPSTASH_VECTOR_REST_URL") and os.getenv(
-                "UPSTASH_VECTOR_REST_TOKEN"
-            ):
+            if os.getenv("UPSTASH_VECTOR_REST_URL") and os.getenv("UPSTASH_VECTOR_REST_TOKEN"):
                 # Use Upstash Vector for production
                 config["vector_store"] = {
                     "provider": "upstash_vector",
@@ -65,9 +61,7 @@ class BotMemory:
                         "collection_name": os.getenv(
                             "MEM0_COLLECTION_NAME", "markdown_bot_memories"
                         ),
-                        "enable_embeddings": os.getenv(
-                            "MEM0_ENABLE_HYBRID_SEARCH", "true"
-                        ).lower()
+                        "enable_embeddings": os.getenv("MEM0_ENABLE_HYBRID_SEARCH", "true").lower()
                         == "true",
                     },
                 }
@@ -140,9 +134,7 @@ class BotMemory:
 
             # Configure history database
             if os.getenv("MEM0_HISTORY_DB_PATH"):
-                config["history_db_path"] = os.path.expanduser(
-                    os.getenv("MEM0_HISTORY_DB_PATH")
-                )
+                config["history_db_path"] = os.path.expanduser(os.getenv("MEM0_HISTORY_DB_PATH"))
 
             # Disable history if requested
             if os.getenv("MEM0_DISABLE_HISTORY", "false").lower() == "true":
@@ -164,14 +156,10 @@ class BotMemory:
             else:
                 # Fallback to local memory for development
                 self.memory = Memory()
-                logger.info(
-                    "Using local memory for mem0 (no backend credentials found)"
-                )
+                logger.info("Using local memory for mem0 (no backend credentials found)")
 
             # Store performance settings
-            self.batch_operations = (
-                os.getenv("MEM0_BATCH_OPERATIONS", "true").lower() == "true"
-            )
+            self.batch_operations = os.getenv("MEM0_BATCH_OPERATIONS", "true").lower() == "true"
             self.batch_size = int(os.getenv("MEM0_BATCH_SIZE", "50"))
             self.parallel_processing = (
                 os.getenv("MEM0_PARALLEL_PROCESSING", "true").lower() == "true"
@@ -190,9 +178,7 @@ class BotMemory:
             )
             self.memory_decay_rate = float(os.getenv("MEM0_MEMORY_DECAY_RATE", "0.95"))
 
-            logger.info(
-                "BotMemory initialized successfully with advanced configuration"
-            )
+            logger.info("BotMemory initialized successfully with advanced configuration")
 
         except Exception as e:
             logger.error(f"Failed to initialize BotMemory: {e}")
@@ -236,9 +222,7 @@ class BotMemory:
             logger.error(f"Error storing memories: {e}")
             return None
 
-    async def recall_context(
-        self, query: str, user_id: str, limit: int = 5
-    ) -> List[Dict]:
+    async def recall_context(self, query: str, user_id: str, limit: int = 5) -> List[Dict]:
         """Retrieve relevant memories for the current context.
 
         Args:
@@ -276,9 +260,7 @@ class BotMemory:
             logger.error(f"Error retrieving memories: {e}")
             return []
 
-    async def store_preference(
-        self, user_id: str, preference: str, category: str = "general"
-    ):
+    async def store_preference(self, user_id: str, preference: str, category: str = "general"):
         """Store an explicit user preference.
 
         Args:
@@ -360,9 +342,7 @@ class BotMemory:
         except Exception as e:
             logger.error(f"Error storing correction: {e}")
 
-    async def get_all_memories(
-        self, user_id: str, memory_type: Optional[str] = None
-    ) -> List[Dict]:
+    async def get_all_memories(self, user_id: str, memory_type: Optional[str] = None) -> List[Dict]:
         """Retrieve all memories for a user, optionally filtered by type.
 
         Args:
@@ -394,9 +374,7 @@ class BotMemory:
             logger.error(f"Error getting all memories: {e}")
             return []
 
-    async def forget_memories(
-        self, user_id: str, memory_ids: Optional[List[str]] = None
-    ):
+    async def forget_memories(self, user_id: str, memory_ids: Optional[List[str]] = None):
         """Delete specific memories or all memories for a user.
 
         Args:
@@ -438,9 +416,7 @@ class BotMemory:
         except Exception as e:
             logger.error(f"Error deleting memories: {e}")
 
-    async def extract_entities_from_text(
-        self, text: str, user_id: str
-    ) -> Dict[str, List[str]]:
+    async def extract_entities_from_text(self, text: str, user_id: str) -> Dict[str, List[str]]:
         """Extract and store entities (locations, equipment, etc.) from text.
 
         Args:
@@ -481,9 +457,7 @@ class BotMemory:
             await self.store_preference(user_id, f"Works at {location}", "location")
 
         for equipment in entities["equipment"]:
-            await self.store_preference(
-                user_id, f"Has experience with {equipment}", "equipment"
-            )
+            await self.store_preference(user_id, f"Has experience with {equipment}", "equipment")
 
         return entities
 
@@ -512,13 +486,9 @@ class BotMemory:
                     # Get all user relationships
                     query = "What are all the relationships for this user?"
 
-                results = self.memory.graph.search(
-                    query=query, filters={"user_id": user_id}
-                )
+                results = self.memory.graph.search(query=query, filters={"user_id": user_id})
 
-                logger.info(
-                    f"Retrieved {len(results)} graph relationships for user {user_id}"
-                )
+                logger.info(f"Retrieved {len(results)} graph relationships for user {user_id}")
                 return results
             else:
                 logger.warning("Graph store not available despite has_graph=True")
@@ -554,7 +524,9 @@ class BotMemory:
 
         try:
             # Create a structured message that mem0 can extract relationships from
-            relationship_content = f"{source_entity} {relationship.lower().replace('_', ' ')} {target_entity}"
+            relationship_content = (
+                f"{source_entity} {relationship.lower().replace('_', ' ')} {target_entity}"
+            )
 
             # Prepare metadata for the relationship
             rel_metadata = {
@@ -633,19 +605,14 @@ class BotMemory:
                     target = metadata.get("target_entity", "")
 
                     # Check if this entity is involved in the relationship
-                    if (
-                        entity.lower() in source.lower()
-                        or entity.lower() in target.lower()
-                    ):
+                    if entity.lower() in source.lower() or entity.lower() in target.lower():
                         # Filter by relationship types if specified
                         if not relationship_types or relationship in relationship_types:
                             if relationship not in relationships:
                                 relationships[relationship] = []
 
                             # Add the related entity (not the queried entity)
-                            related_entity = (
-                                target if entity.lower() in source.lower() else source
-                            )
+                            related_entity = target if entity.lower() in source.lower() else source
                             relationships[relationship].append(
                                 {
                                     "entity": related_entity,
@@ -655,9 +622,7 @@ class BotMemory:
                                 }
                             )
 
-            logger.info(
-                f"Found relationships for {entity}: {list(relationships.keys())}"
-            )
+            logger.info(f"Found relationships for {entity}: {list(relationships.keys())}")
             return relationships
 
         except Exception as e:
@@ -698,9 +663,9 @@ class BotMemory:
 
                 # Calculate average confidence
                 if mentions:
-                    context["confidence_score"] = sum(
-                        m.get("score", 0.0) for m in mentions
-                    ) / len(mentions)
+                    context["confidence_score"] = sum(m.get("score", 0.0) for m in mentions) / len(
+                        mentions
+                    )
 
             # Get relationships from graph memory
             if include_relationships and self.has_graph:
@@ -755,15 +720,10 @@ class BotMemory:
                 import re
 
                 # Look for capitalized words that might be entities
-                potential_entities = re.findall(
-                    r"\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b", content
-                )
+                potential_entities = re.findall(r"\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b", content)
 
                 for potential_entity in potential_entities:
-                    if (
-                        potential_entity.lower() != entity.lower()
-                        and len(potential_entity) > 2
-                    ):
+                    if potential_entity.lower() != entity.lower() and len(potential_entity) > 2:
                         if potential_entity not in similar_entities:
                             similar_entities[potential_entity] = 0
                         similar_entities[potential_entity] += mention.get("score", 0.0)
@@ -782,9 +742,7 @@ class BotMemory:
                     }
                 )
 
-            logger.info(
-                f"Generated {len(suggestions)} connection suggestions for {entity}"
-            )
+            logger.info(f"Generated {len(suggestions)} connection suggestions for {entity}")
             return suggestions
 
         except Exception as e:
@@ -815,9 +773,7 @@ class BotMemory:
 
             # Process relationship memories
             relationship_memories = [
-                mem
-                for mem in all_memories
-                if mem.get("metadata", {}).get("type") == "relationship"
+                mem for mem in all_memories if mem.get("metadata", {}).get("type") == "relationship"
             ]
 
             for memory in relationship_memories:
@@ -860,14 +816,11 @@ class BotMemory:
 
             # Filter by entity types if specified
             if entity_types:
-                filtered_nodes = {
-                    k: v for k, v in nodes.items() if v["type"] in entity_types
-                }
+                filtered_nodes = {k: v for k, v in nodes.items() if v["type"] in entity_types}
                 filtered_edges = [
                     edge
                     for edge in edges
-                    if edge["source"] in filtered_nodes
-                    and edge["target"] in filtered_nodes
+                    if edge["source"] in filtered_nodes and edge["target"] in filtered_nodes
                 ]
                 nodes = filtered_nodes
                 edges = filtered_edges
@@ -879,9 +832,7 @@ class BotMemory:
                     "total_nodes": len(nodes),
                     "total_edges": len(edges),
                     "node_types": list(set(node["type"] for node in nodes.values())),
-                    "relationship_types": list(
-                        set(edge["relationship"] for edge in edges)
-                    ),
+                    "relationship_types": list(set(edge["relationship"] for edge in edges)),
                 },
             }
 
@@ -1001,9 +952,7 @@ class BotMemory:
 
         try:
             # Start with regular vector search
-            base_results = self.memory.search(
-                query=query, user_id=user_id, limit=limit // 2
-            )
+            base_results = self.memory.search(query=query, user_id=user_id, limit=limit // 2)
 
             enhanced_results = []
 
@@ -1018,9 +967,7 @@ class BotMemory:
                     # Simple entity extraction
                     import re
 
-                    entities = re.findall(
-                        r"\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b", content
-                    )
+                    entities = re.findall(r"\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b", content)
 
                     # Get relationship context for extracted entities
                     for entity in entities[:3]:  # Limit to first 3 entities
@@ -1042,9 +989,7 @@ class BotMemory:
                     content = result.get("memory", "")
                     import re
 
-                    entities = re.findall(
-                        r"\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b", content
-                    )
+                    entities = re.findall(r"\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b", content)
                     key_entities.update(entities[:2])  # Top 2 entities per result
 
                 # Search for memories related to these entities
@@ -1052,14 +997,10 @@ class BotMemory:
                     if len(enhanced_results) >= limit:
                         break
 
-                    related_memories = self.memory.search(
-                        query=entity, user_id=user_id, limit=2
-                    )
+                    related_memories = self.memory.search(query=entity, user_id=user_id, limit=2)
 
                     for memory in related_memories:
-                        if memory.get("id") not in [
-                            r.get("id") for r in enhanced_results
-                        ]:
+                        if memory.get("id") not in [r.get("id") for r in enhanced_results]:
                             memory["source"] = "graph_expansion"
                             memory["related_to"] = entity
                             enhanced_results.append(memory)
@@ -1068,9 +1009,7 @@ class BotMemory:
             enhanced_results.sort(key=lambda x: x.get("score", 0.0), reverse=True)
             final_results = enhanced_results[:limit]
 
-            logger.info(
-                f"Hybrid search returned {len(final_results)} results for query: '{query}'"
-            )
+            logger.info(f"Hybrid search returned {len(final_results)} results for query: '{query}'")
             return final_results
 
         except Exception as e:
@@ -1106,9 +1045,7 @@ class BotMemory:
             # Count by type
             for mem in memories:
                 mem_type = mem.get("metadata", {}).get("type", "other")
-                stats["memory_types"][mem_type] = (
-                    stats["memory_types"].get(mem_type, 0) + 1
-                )
+                stats["memory_types"][mem_type] = stats["memory_types"].get(mem_type, 0) + 1
 
             # Get enhanced graph stats if available
             if self.has_graph:
@@ -1138,29 +1075,22 @@ class BotMemory:
                     source = edge.get("source")
                     target = edge.get("target")
                     if source:
-                        entity_connections[source] = (
-                            entity_connections.get(source, 0) + 1
-                        )
+                        entity_connections[source] = entity_connections.get(source, 0) + 1
                     if target:
-                        entity_connections[target] = (
-                            entity_connections.get(target, 0) + 1
-                        )
+                        entity_connections[target] = entity_connections.get(target, 0) + 1
 
                 # Sort and get top 5 entities
-                top_entities = sorted(
-                    entity_connections.items(), key=lambda x: x[1], reverse=True
-                )[:5]
+                top_entities = sorted(entity_connections.items(), key=lambda x: x[1], reverse=True)[
+                    :5
+                ]
                 stats["top_entities"] = [
-                    {"entity": entity, "connections": count}
-                    for entity, count in top_entities
+                    {"entity": entity, "connections": count} for entity, count in top_entities
                 ]
 
                 # Calculate graph density (edges / possible edges)
                 num_nodes = stats["graph_entities"]
                 if num_nodes > 1:
-                    max_possible_edges = (
-                        num_nodes * (num_nodes - 1) / 2
-                    )  # Undirected graph
+                    max_possible_edges = num_nodes * (num_nodes - 1) / 2  # Undirected graph
                     stats["graph_density"] = (
                         stats["graph_relationships"] / max_possible_edges
                         if max_possible_edges > 0
@@ -1208,9 +1138,7 @@ class BotMemory:
 
                     tasks = []
                     for item in batch:
-                        task = asyncio.create_task(
-                            self._add_single_memory(item, user_id)
-                        )
+                        task = asyncio.create_task(self._add_single_memory(item, user_id))
                         tasks.append(task)
 
                     # Limit concurrent operations
@@ -1219,9 +1147,7 @@ class BotMemory:
                         batch_results = []
                         for j in range(0, len(tasks), self.max_concurrent):
                             concurrent_batch = tasks[j : j + self.max_concurrent]
-                            batch_results.extend(
-                                await asyncio.gather(*concurrent_batch)
-                            )
+                            batch_results.extend(await asyncio.gather(*concurrent_batch))
                         results.extend(batch_results)
                     else:
                         results.extend(await asyncio.gather(*tasks))
@@ -1309,9 +1235,7 @@ class BotMemory:
                 if duplicates:
                     await self.forget_memories(user_id, duplicates)
                     optimization_stats["duplicates_removed"] = len(duplicates)
-                    logger.info(
-                        f"Removed {len(duplicates)} duplicate memories for user {user_id}"
-                    )
+                    logger.info(f"Removed {len(duplicates)} duplicate memories for user {user_id}")
 
             if self.memory_decay_enabled:
                 # Apply decay to old memories based on importance
@@ -1374,9 +1298,7 @@ class BotMemory:
                 for rel in relationships[:20]:  # Top 20 relationships
                     if isinstance(rel, dict):
                         rel_type = rel.get("type", "unknown")
-                        relationship_counts[rel_type] = (
-                            relationship_counts.get(rel_type, 0) + 1
-                        )
+                        relationship_counts[rel_type] = relationship_counts.get(rel_type, 0) + 1
 
                 insights["key_relationships"] = list(relationship_counts.items())
 
@@ -1396,9 +1318,7 @@ class BotMemory:
             logger.warning(f"Unknown webhook event: {event}")
             return
 
-        await memory_webhook_handler.send_webhook(
-            event=webhook_event, user_id=user_id, data=data
-        )
+        await memory_webhook_handler.send_webhook(event=webhook_event, user_id=user_id, data=data)
 
     def get_user_config(self, user_id: str) -> Dict[str, Any]:
         """Get user-specific memory configuration from environment."""

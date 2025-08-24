@@ -36,9 +36,7 @@ env_usernames = os.getenv("AUTHORIZED_USERNAMES")
 if env_usernames:
     try:
         AUTHORIZED_USERNAMES = json.loads(env_usernames)
-        logger.info(
-            f"Loaded {len(AUTHORIZED_USERNAMES)} authorized usernames from environment"
-        )
+        logger.info(f"Loaded {len(AUTHORIZED_USERNAMES)} authorized usernames from environment")
     except json.JSONDecodeError as e:
         logger.error(f"Failed to parse AUTHORIZED_USERNAMES from environment: {e}")
 
@@ -46,16 +44,12 @@ env_user_ids = os.getenv("AUTHORIZED_USER_IDS")
 if env_user_ids:
     try:
         AUTHORIZED_USER_IDS = json.loads(env_user_ids)
-        logger.info(
-            f"Loaded {len(AUTHORIZED_USER_IDS)} authorized user IDs from environment"
-        )
+        logger.info(f"Loaded {len(AUTHORIZED_USER_IDS)} authorized user IDs from environment")
     except json.JSONDecodeError as e:
         logger.error(f"Failed to parse AUTHORIZED_USER_IDS from environment: {e}")
 
 
-def is_user_authorized(
-    username: Optional[str] = None, user_id: Optional[int] = None
-) -> bool:
+def is_user_authorized(username: Optional[str] = None, user_id: Optional[int] = None) -> bool:
     """Check if user is authorized to use the bot.
 
     Args:
@@ -104,6 +98,5 @@ def get_authorized_users_info() -> dict:
     return {
         "usernames": AUTHORIZED_USERNAMES,
         "user_ids": AUTHORIZED_USER_IDS,
-        "total_authorized": len(set(AUTHORIZED_USERNAMES))
-        + len(set(AUTHORIZED_USER_IDS)),
+        "total_authorized": len(set(AUTHORIZED_USERNAMES)) + len(set(AUTHORIZED_USER_IDS)),
     }

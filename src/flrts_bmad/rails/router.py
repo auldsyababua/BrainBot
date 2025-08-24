@@ -327,9 +327,7 @@ class ConfidenceScorer:
             r"\b(?:morning|afternoon|evening|night)\b",
         ]
 
-        time_match_count = sum(
-            1 for pattern in time_patterns if re.search(pattern, message_lower)
-        )
+        time_match_count = sum(1 for pattern in time_patterns if re.search(pattern, message_lower))
         if time_match_count > 0 and entity_type == "tasks":
             confidence += min(0.1 * time_match_count, 0.2)  # Cap at 0.2
 
@@ -346,10 +344,7 @@ class ConfidenceScorer:
 
         # Site-specific context for field reports
         site_names = ["eagle lake", "crockett", "mathis", "site", "location"]
-        if (
-            any(site in message_lower for site in site_names)
-            and entity_type == "field_reports"
-        ):
+        if any(site in message_lower for site in site_names) and entity_type == "field_reports":
             confidence += 0.15
 
         # Question words reduce confidence (might be a query, not an action)
@@ -754,17 +749,13 @@ class KeywordRouter:
         self._name_pattern = re.compile(
             r'(?:called|named)\s+["\']?([^"\'\.]+)["\']?', re.IGNORECASE
         )
-        self._time_pattern = re.compile(
-            r"(tomorrow|today|next week|at \d+[ap]m)", re.IGNORECASE
-        )
+        self._time_pattern = re.compile(r"(tomorrow|today|next week|at \d+[ap]m)", re.IGNORECASE)
 
         # Entity extraction patterns
         self._list_name_pattern = re.compile(
             r'(?:called|named)\s+["\']?([^"\'\.]+)["\']?', re.IGNORECASE
         )
-        self._items_pattern = re.compile(
-            r"(?:add|remove)\s+(.+?)\s+(?:to|from)", re.IGNORECASE
-        )
+        self._items_pattern = re.compile(r"(?:add|remove)\s+(.+?)\s+(?:to|from)", re.IGNORECASE)
         self._site_pattern = re.compile(r"(eagle lake|crockett|mathis)", re.IGNORECASE)
         self._time_ref_pattern = re.compile(
             r"(tomorrow|today|next week|at \d+[ap]m)", re.IGNORECASE
@@ -776,9 +767,7 @@ class KeywordRouter:
             re.IGNORECASE,
         )
 
-    def preprocess_message(
-        self, message: str
-    ) -> Tuple[str, Dict[str, Any], Dict[str, float]]:
+    def preprocess_message(self, message: str) -> Tuple[str, Dict[str, Any], Dict[str, float]]:
         """Extract deterministic syntax markers before routing.
 
         Phase 2.1 Enhancement: 100% confidence extraction of @mentions and /commands
@@ -822,12 +811,8 @@ class KeywordRouter:
                 cleaned_message = cleaned_message.replace(f"@{mention}", "")
 
             if valid_users:
-                prefilled["assignee"] = (
-                    valid_users[0] if len(valid_users) == 1 else valid_users
-                )
-                confidences["assignee_confidence"] = (
-                    1.0  # 100% confidence for explicit @mentions
-                )
+                prefilled["assignee"] = valid_users[0] if len(valid_users) == 1 else valid_users
+                confidences["assignee_confidence"] = 1.0  # 100% confidence for explicit @mentions
                 prefilled["extraction_type"] = "explicit_mention"
 
             if invalid_mentions:
@@ -913,9 +898,7 @@ class KeywordRouter:
                 prefilled["direct_execution"] = True
 
             # Remove the command from the message for clean LLM input
-            cleaned_message = cleaned_message.replace(
-                command_match.group(0), ""
-            ).strip()
+            cleaned_message = cleaned_message.replace(command_match.group(0), "").strip()
 
         # Extract additional deterministic patterns before LLM processing
         # T2.1.1: Extract time references with high confidence
@@ -987,10 +970,7 @@ class KeywordRouter:
             )
 
             # T2.1.1: Use direct execution for 100% confidence (bypass LLM)
-            use_direct = (
-                prefilled_data.get("direct_execution", False)
-                or combined_confidence == 1.0
-            )
+            use_direct = prefilled_data.get("direct_execution", False) or combined_confidence == 1.0
 
             return RouteResult(
                 entity_type=entity_type,
@@ -998,9 +978,7 @@ class KeywordRouter:
                 function_name=config.get("function"),
                 confidence=combined_confidence,
                 extracted_data={
-                    **self._extract_data(
-                        cleaned_message, entity_type, operation, message_lower
-                    ),
+                    **self._extract_data(cleaned_message, entity_type, operation, message_lower),
                     **prefilled_data,
                     "cleaned_message": cleaned_message,  # Include cleaned message for LLM
                 },
@@ -1052,9 +1030,7 @@ class KeywordRouter:
 
         # Check for Telegram commands (category routing with boost)
         telegram_boost = 0.0
-        forced_entity_type = prefilled_data.get(
-            "entity_type"
-        )  # Use prefilled entity if available
+        forced_entity_type = prefilled_data.get("entity_type")  # Use prefilled entity if available
 
         # Only check for telegram commands if we don't already have an entity type
         if not forced_entity_type:
@@ -1109,9 +1085,7 @@ class KeywordRouter:
 
                     # Boost reschedule confidence when temporal context is present
                     # This helps "move to next week" route to reschedule instead of reassign
-                    if operation == "reschedule" and prefilled_data.get(
-                        "has_temporal_context"
-                    ):
+                    if operation == "reschedule" and prefilled_data.get("has_temporal_context"):
                         confidence = min(confidence + 0.2, 1.0)
 
                     # Penalize reassign when temporal context is present but no user mention
@@ -1150,10 +1124,7 @@ class KeywordRouter:
                     # "don't forget to" usually indicates a task/reminder
                     # "don't forget" alone might be a list item
                     if "don't forget" in message_lower:
-                        if (
-                            "don't forget to" in message_lower
-                            or "don't forget we" in message_lower
-                        ):
+                        if "don't forget to" in message_lower or "don't forget we" in message_lower:
                             # This is likely a task/reminder
                             if entity_type == "tasks":
                                 confidence = min(confidence + 0.3, 1.0)
@@ -1189,9 +1160,7 @@ class KeywordRouter:
                             },
                             use_direct_execution=(confidence >= 0.8),
                             target_users=target_users,
-                            entity_confidence=confidences.get(
-                                "entity_confidence", confidence
-                            ),
+                            entity_confidence=confidences.get("entity_confidence", confidence),
                             operation_confidence=confidence,  # This is from keyword matching
                             assignee_confidence=confidences.get("assignee_confidence"),
                         )

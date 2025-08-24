@@ -20,9 +20,7 @@ class RedisStore:
     def __init__(self):
         """Initialize Redis-compatible client."""
         self.redis = CloudflareRedis()
-        self.ttl_seconds = (
-            86400  # 24 hours default TTL - matches ConversationManager default
-        )
+        self.ttl_seconds = 86400  # 24 hours default TTL - matches ConversationManager default
 
     async def get_conversation(self, chat_id: str) -> Optional[List[Dict]]:
         """

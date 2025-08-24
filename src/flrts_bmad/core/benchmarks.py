@@ -31,9 +31,7 @@ class PerformanceMonitor:
         self.redis = CloudflareRedis()
         self.ttl_seconds = 604800  # 7 days
 
-    def track_metric(
-        self, metric_name: str, value: float, tags: Optional[Dict[str, str]] = None
-    ):
+    def track_metric(self, metric_name: str, value: float, tags: Optional[Dict[str, str]] = None):
         """Track a performance metric.
 
         Args:
@@ -122,9 +120,7 @@ class PerformanceMonitor:
         )
 
         # Track token usage
-        self.redis.incrby(
-            "metrics:total_tokens_used", prompt_tokens + completion_tokens
-        )
+        self.redis.incrby("metrics:total_tokens_used", prompt_tokens + completion_tokens)
 
     def track_conversation_size(self, chat_id: str, message_count: int):
         """Track conversation history size."""
@@ -171,9 +167,7 @@ class PerformanceMonitor:
                 }
 
                 # Get recent values for percentiles
-                recent_values = self.redis.zrangebyscore(
-                    metric_key, cutoff_time, "+inf"
-                )
+                recent_values = self.redis.zrangebyscore(metric_key, cutoff_time, "+inf")
 
                 if recent_values:
                     values = [json.loads(v)["value"] for v in recent_values]
@@ -195,9 +189,7 @@ class PerformanceMonitor:
             summary["cache_hit_rate"] = 0.0
 
         # Add total token usage
-        summary["total_tokens_used"] = int(
-            self.redis.get("metrics:total_tokens_used") or 0
-        )
+        summary["total_tokens_used"] = int(self.redis.get("metrics:total_tokens_used") or 0)
 
         return summary
 

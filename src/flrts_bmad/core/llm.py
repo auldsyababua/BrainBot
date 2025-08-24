@@ -109,9 +109,7 @@ FUNCTION_DEFINITIONS = [
         "description": "Search for documents containing specific text using Supabase",
         "parameters": {
             "type": "object",
-            "properties": {
-                "query": {"type": "string", "description": "Text to search for"}
-            },
+            "properties": {"query": {"type": "string", "description": "Text to search for"}},
             "required": ["query"],
         },
     },
@@ -217,9 +215,7 @@ class ConversationManager:
         # 2. Generate summaries before deletion
         # 3. Track cleanup metrics
         logger = logging.getLogger(__name__)
-        logger.info(
-            f"Cleanup requested for conversations older than {days_inactive} days"
-        )
+        logger.info(f"Cleanup requested for conversations older than {days_inactive} days")
 
     async def get_conversation_stats(self, chat_id: str) -> Dict[str, Any]:
         """Get statistics about a conversation."""
@@ -262,9 +258,7 @@ try:
     from storage.storage_service import DocumentStorage
 
     storage = DocumentStorage()
-    keyword_router: Optional[KeywordRouter] = KeywordRouter(
-        supabase_client=storage.supabase
-    )
+    keyword_router: Optional[KeywordRouter] = KeywordRouter(supabase_client=storage.supabase)
     # Load user aliases asynchronously on first use
 
     # Initialize dynamic prompt generator for T2.1.2
@@ -326,9 +320,7 @@ async def restore_conversation(chat_id: str) -> bool:
     return False
 
 
-async def search_knowledge_base(
-    query: str, chat_id: Optional[str] = None
-) -> List[Dict]:
+async def search_knowledge_base(query: str, chat_id: Optional[str] = None) -> List[Dict]:
     """Search the vector knowledge base for relevant context with full document retrieval."""
     logger = logging.getLogger(__name__)
     try:
@@ -336,9 +328,7 @@ async def search_knowledge_base(
         # Note: search_with_full_content doesn't support namespace parameter yet
         # We need to use the regular search method with namespace
         if vector_store:
-            results = await vector_store.search(
-                query, top_k=3, include_metadata=True, namespace=""
-            )
+            results = await vector_store.search(query, top_k=3, include_metadata=True, namespace="")
             logger.info(
                 f"Vector search for '{query}' (namespace={chat_id}) returned {len(results)} results"
             )
@@ -434,9 +424,7 @@ async def _process_rails_command(
         return "Operation completed successfully"
 
     except Exception as e:
-        logger.error(
-            f"Error executing processor for '{entity_type}': {e}", exc_info=True
-        )
+        logger.error(f"Error executing processor for '{entity_type}': {e}", exc_info=True)
         return f"An error occurred while processing your {entity_type} command. Please try again."
 
 
@@ -444,9 +432,7 @@ async def _process_rails_command(
 async def process_message(user_message: str, chat_id: str = "default") -> str:
     """Process a user message using GPT-4o and execute any necessary document operations."""
     logger = logging.getLogger(__name__)
-    logger.info(
-        f"Processing message for chat_id={chat_id}: {(user_message or '')[:50]}..."
-    )
+    logger.info(f"Processing message for chat_id={chat_id}: {(user_message or '')[:50]}...")
 
     # Sub-agent selection via `.claude/agents`
     selected_agent, cleaned_for_agent = detect_agent_in_message(user_message)
@@ -492,39 +478,28 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                 )
 
                 # Determine execution strategy using T2.1.2 logic
-                execution_strategy = prompt_generator.determine_execution_strategy(
-                    prompt_context
-                )
+                execution_strategy = prompt_generator.determine_execution_strategy(prompt_context)
 
                 # Log performance metrics
                 metrics = prompt_generator.generate_performance_metrics(prompt_context)
-                logger.info(
-                    f"T2.1.2 Execution Strategy: {execution_strategy} | Metrics: {metrics}"
-                )
+                logger.info(f"T2.1.2 Execution Strategy: {execution_strategy} | Metrics: {metrics}")
 
                 if execution_strategy == "direct":
                     # Direct execution without LLM
                     logger.info(
                         f"Direct execution (confidence={route_result.confidence}): {route_result.entity_type}.{route_result.operation}"
                     )
-                    response = await _process_rails_command(
-                        route_result, chat_id, user_message
-                    )
+                    response = await _process_rails_command(route_result, chat_id, user_message)
                     if response:
                         logger.info(
                             f"Direct execution successful, saved ~{metrics['estimated_tokens']} tokens"
                         )
                         return response
                     else:
-                        logger.warning(
-                            "Direct execution failed. Falling back to focused LLM."
-                        )
+                        logger.warning("Direct execution failed. Falling back to focused LLM.")
                         execution_strategy = "focused_llm"
 
-                if (
-                    execution_strategy == "focused_llm"
-                    and route_result.confidence >= 0.7
-                ):
+                if execution_strategy == "focused_llm" and route_result.confidence >= 0.7:
                     # Use focused LLM with optimized prompts
                     logger.info(
                         f"Focused LLM execution for {route_result.entity_type}.{route_result.operation}"
@@ -537,15 +512,11 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                     #     )
                     # )
                     # Process with Rails command using focused approach
-                    response = await _process_rails_command(
-                        route_result, chat_id, user_message
-                    )
+                    response = await _process_rails_command(route_result, chat_id, user_message)
                     if response:
                         return response
                     else:
-                        logger.warning(
-                            "Focused execution failed. Falling back to full LLM."
-                        )
+                        logger.warning("Focused execution failed. Falling back to full LLM.")
                 elif execution_strategy == "full_llm":
                     logger.info(
                         f"Full LLM analysis required (confidence={route_result.confidence})"
@@ -602,11 +573,7 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
                 title = result.get("metadata", {}).get("title", "")
                 if not title:
                     file_path = result.get("metadata", {}).get("file_path", "")
-                    title = (
-                        file_path.split("/")[-1].replace(".md", "")
-                        if file_path
-                        else "unknown"
-                    )
+                    title = file_path.split("/")[-1].replace(".md", "") if file_path else "unknown"
 
                 # Memory optimization: Use string formatting efficiently
                 source_info = f"Source: {title}"
@@ -653,28 +620,24 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
             if hasattr(route_result, "prompt_context") and route_result.prompt_context:
                 # Use the pre-generated dynamic prompt
                 if hasattr(route_result, "dynamic_prompt"):
-                    enhanced_message = f"[System Instruction: {route_result.dynamic_prompt}]\n\n{user_message}"
+                    enhanced_message = (
+                        f"[System Instruction: {route_result.dynamic_prompt}]\n\n{user_message}"
+                    )
 
                 # Add extracted context
                 if route_result.extracted_data:
                     context_info = []
                     if route_result.extracted_data.get("assignee"):
-                        context_info.append(
-                            f"Assignee: {route_result.extracted_data['assignee']}"
-                        )
+                        context_info.append(f"Assignee: {route_result.extracted_data['assignee']}")
                     if route_result.extracted_data.get("site"):
-                        context_info.append(
-                            f"Site: {route_result.extracted_data['site']}"
-                        )
+                        context_info.append(f"Site: {route_result.extracted_data['site']}")
                     if route_result.extracted_data.get("time_references"):
                         context_info.append(
                             f"Time: {', '.join(route_result.extracted_data['time_references'])}"
                         )
 
                     if context_info:
-                        enhanced_message += "\n\n[Extracted Context]\n" + "\n".join(
-                            context_info
-                        )
+                        enhanced_message += "\n\n[Extracted Context]\n" + "\n".join(context_info)
 
         # Add knowledge base context if available
         if context_parts:
@@ -772,13 +735,9 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
             if len(recent_messages) > 1:  # Skip if only system message
                 # Get last 4 messages (2 exchanges) for memory extraction
                 messages_for_memory = (
-                    recent_messages[-4:]
-                    if len(recent_messages) > 4
-                    else recent_messages[1:]
+                    recent_messages[-4:] if len(recent_messages) > 4 else recent_messages[1:]
                 )
-                await bot_memory.remember_from_conversation(
-                    messages_for_memory, chat_id
-                )
+                await bot_memory.remember_from_conversation(messages_for_memory, chat_id)
 
             # Memory optimization: Explicit cleanup of large objects
             del search_results
@@ -810,9 +769,7 @@ async def process_message(user_message: str, chat_id: str = "default") -> str:
         recent_messages = await get_conversation_history(chat_id)
         if len(recent_messages) > 1:
             messages_for_memory = (
-                recent_messages[-4:]
-                if len(recent_messages) > 4
-                else recent_messages[1:]
+                recent_messages[-4:] if len(recent_messages) > 4 else recent_messages[1:]
             )
             await bot_memory.remember_from_conversation(messages_for_memory, chat_id)
 
@@ -928,9 +885,7 @@ def _enforce_cache_size_limit():
     """Enforce maximum cache size."""
     if len(_function_result_cache) > _MAX_CACHE_SIZE:
         # Remove oldest entries
-        sorted_keys = sorted(
-            _cache_timestamps.keys(), key=lambda k: _cache_timestamps[k]
-        )
+        sorted_keys = sorted(_cache_timestamps.keys(), key=lambda k: _cache_timestamps[k])
         keys_to_remove = sorted_keys[: len(sorted_keys) - _MAX_CACHE_SIZE]
 
         for key in keys_to_remove:
@@ -1110,9 +1065,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
             content = args.get("content")
 
             # Resolve the reference to document ID and existing content
-            file_path, document_id, existing_content = await resolve_document_reference(
-                reference
-            )
+            file_path, document_id, existing_content = await resolve_document_reference(reference)
 
             if not document_id and not file_path:
                 return {
@@ -1141,9 +1094,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
                 else:
                     # Use file path for backward compatibility
                     if file_path:
-                        success = await document_storage.update_document(
-                            file_path, updated_content
-                        )
+                        success = await document_storage.update_document(file_path, updated_content)
                         doc_ref = file_path.replace("/", "_").replace(".md", "")
                     else:
                         success = False
@@ -1152,15 +1103,11 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
                 if success:
                     # Delete old chunks from vector store
                     logging.info(f"🗑️ Removing old chunks for document {doc_ref}")
-                    old_chunks = await document_storage.get_document_chunks(
-                        document_id or doc_ref
-                    )
+                    old_chunks = await document_storage.get_document_chunks(document_id or doc_ref)
                     if old_chunks:
                         for chunk in old_chunks:
                             if vector_store:
-                                await vector_store.delete_document(
-                                    chunk["vector_id"], namespace=""
-                                )
+                                await vector_store.delete_document(chunk["vector_id"], namespace="")
 
                     # Re-chunk and store the updated document
                     metadata = {
@@ -1227,9 +1174,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
             reference = args.get("document_reference")
 
             # Resolve the reference to document ID and content
-            file_path, document_id, content = await resolve_document_reference(
-                reference
-            )
+            file_path, document_id, content = await resolve_document_reference(reference)
 
             if not document_id and not file_path:
                 return {
@@ -1281,9 +1226,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
                         formatted_results.append(
                             {
                                 "id": doc.get("id"),
-                                "title": doc.get("metadata", {}).get(
-                                    "title", "Untitled"
-                                ),
+                                "title": doc.get("metadata", {}).get("title", "Untitled"),
                                 "snippet": (
                                     doc.get("content", "")[:200] + "..."
                                     if len(doc.get("content", "")) > 200
@@ -1323,9 +1266,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
 
             try:
                 # List documents from Supabase
-                documents = await document_storage.list_documents(
-                    category=category, limit=limit
-                )
+                documents = await document_storage.list_documents(category=category, limit=limit)
 
                 # Convert to expected format
                 formatted_docs = []
@@ -1334,9 +1275,7 @@ async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str
                         formatted_docs.append(
                             {
                                 "id": doc.get("id"),
-                                "title": doc.get("metadata", {}).get(
-                                    "title", "Untitled"
-                                ),
+                                "title": doc.get("metadata", {}).get("title", "Untitled"),
                                 "type": doc.get("metadata", {}).get("type", "note"),
                                 "category": doc.get("category"),
                                 "created": doc.get("created_at"),

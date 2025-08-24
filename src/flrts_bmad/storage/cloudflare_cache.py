@@ -54,9 +54,7 @@ class CloudflareCache:
         """
         try:
             async with httpx.AsyncClient() as client:
-                response = await client.get(
-                    f"{self.base_url}/values/{key}", headers=self.headers
-                )
+                response = await client.get(f"{self.base_url}/values/{key}", headers=self.headers)
 
                 if response.status_code == 404:
                     return None
@@ -99,9 +97,7 @@ class CloudflareCache:
             params = {}
             if ttl or self.default_ttl:
                 expiration = int(
-                    (
-                        datetime.now() + timedelta(seconds=ttl or self.default_ttl)
-                    ).timestamp()
+                    (datetime.now() + timedelta(seconds=ttl or self.default_ttl)).timestamp()
                 )
                 params["expiration"] = expiration
 
@@ -121,9 +117,7 @@ class CloudflareCache:
             logger.error(f"Error setting cache key {key}: {e}")
             return False
 
-    async def setex(
-        self, key: str, ttl: int, value: Union[str, Dict, List, Any]
-    ) -> bool:
+    async def setex(self, key: str, ttl: int, value: Union[str, Dict, List, Any]) -> bool:
         """
         Set a value with expiration (Redis compatibility).
 

@@ -76,8 +76,7 @@ class ResilientOpenAIClient:
         """
         # Exponential backoff
         delay = min(
-            self.retry_config.base_delay
-            * (self.retry_config.exponential_base**attempt),
+            self.retry_config.base_delay * (self.retry_config.exponential_base**attempt),
             self.retry_config.max_delay,
         )
 
@@ -159,10 +158,7 @@ class ResilientOpenAIClient:
                 last_error = e
 
                 # Check if error is retryable
-                if (
-                    not self._is_retryable_error(e)
-                    or attempt == self.retry_config.max_retries
-                ):
+                if not self._is_retryable_error(e) or attempt == self.retry_config.max_retries:
                     # Non-retryable error or last attempt
                     duration = time.perf_counter() - start_time
 
@@ -183,8 +179,7 @@ class ResilientOpenAIClient:
 
                 # Log retry attempt
                 logger.warning(
-                    f"API call failed (attempt {attempt + 1}), "
-                    f"retrying in {delay:.2f}s: {e}"
+                    f"API call failed (attempt {attempt + 1}), " f"retrying in {delay:.2f}s: {e}"
                 )
 
                 # Wait before retry
@@ -275,9 +270,7 @@ class ResilientOpenAIClient:
             self.client.embeddings.create, input=input, model=model, **kwargs
         )
 
-    async def get_token_count(
-        self, messages: List[Dict[str, str]], model: str = "gpt-4o"
-    ) -> int:
+    async def get_token_count(self, messages: List[Dict[str, str]], model: str = "gpt-4o") -> int:
         """Estimate token count for messages.
 
         This is a simple estimation. For accurate counts, use tiktoken.
@@ -339,10 +332,7 @@ def with_retry(retry_config: Optional[RetryConfig] = None):
 
                     # Check if error is retryable
                     client = ResilientOpenAIClient(config)
-                    if (
-                        not client._is_retryable_error(e)
-                        or attempt == config.max_retries
-                    ):
+                    if not client._is_retryable_error(e) or attempt == config.max_retries:
                         raise
 
                     # Calculate delay

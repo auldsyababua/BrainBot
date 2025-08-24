@@ -67,6 +67,12 @@ addopts = [
 ]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "integration: marks tests as integration tests",
+    "benchmark: marks tests as benchmark tests",
+    "slow: marks tests as slow tests",
+    "performance: marks tests as performance tests"
+]
 
 [tool.black]
 line-length = 100

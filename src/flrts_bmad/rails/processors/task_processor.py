@@ -98,9 +98,7 @@ class TaskProcessor(BaseProcessor):
         }
 
         if operation in required_fields:
-            missing = [
-                field for field in required_fields[operation] if field not in data
-            ]
+            missing = [field for field in required_fields[operation] if field not in data]
             if missing:
                 return False, f"Missing required fields: {', '.join(missing)}"
 
@@ -124,9 +122,7 @@ class TaskProcessor(BaseProcessor):
                         for user in response.data:
                             valid_users.append(user["first_name"].lower())
                             if user.get("aliases"):
-                                valid_users.extend(
-                                    [alias.lower() for alias in user["aliases"]]
-                                )
+                                valid_users.extend([alias.lower() for alias in user["aliases"]])
 
                         if assignee.lower() not in valid_users:
                             return (
@@ -135,9 +131,7 @@ class TaskProcessor(BaseProcessor):
                             )
                     else:
                         # If we can't validate, fail gracefully
-                        logger.warning(
-                            "Could not validate assignee - database unavailable"
-                        )
+                        logger.warning("Could not validate assignee - database unavailable")
                         return (
                             False,
                             "Could not validate assignee - database unavailable",
@@ -169,9 +163,7 @@ class TaskProcessor(BaseProcessor):
         }
 
         if operation in operation_keywords:
-            if any(
-                keyword in message_lower for keyword in operation_keywords[operation]
-            ):
+            if any(keyword in message_lower for keyword in operation_keywords[operation]):
                 boost += 0.1
 
         # Time references boost task operations
@@ -210,9 +202,7 @@ class TaskProcessor(BaseProcessor):
 
         return boost
 
-    def get_dynamic_extraction_schema(
-        self, operation: str, prefilled_data: Dict[str, Any]
-    ) -> str:
+    def get_dynamic_extraction_schema(self, operation: str, prefilled_data: Dict[str, Any]) -> str:
         """Generate dynamic extraction schema based on prefilled data."""
 
         if operation == "create":
@@ -299,9 +289,7 @@ class TaskProcessor(BaseProcessor):
 
         try:
             # Validate the operation first
-            is_valid, message = await self.validate_operation(
-                operation, extracted_data, "user"
-            )
+            is_valid, message = await self.validate_operation(operation, extracted_data, "user")
 
             if not is_valid:
                 return {
@@ -348,9 +336,7 @@ class TaskProcessor(BaseProcessor):
                 "execution_time": time.perf_counter() - start_time,
             }
 
-    async def _execute_create(
-        self, data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+    async def _execute_create(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """Execute task creation."""
         try:
             # Build task data
@@ -395,9 +381,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error creating task: {e}")
             return {"success": False, "error": f"Failed to create task: {str(e)}"}
 
-    async def _execute_complete(
-        self, data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+    async def _execute_complete(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """Execute task completion."""
         try:
             # Find the task
@@ -419,10 +403,7 @@ class TaskProcessor(BaseProcessor):
                 update_data["completion_notes"] = data["completion_notes"]
 
             response = await self._safe_db_operation(
-                self.supabase.table("tasks")
-                .update(update_data)
-                .eq("id", task["id"])
-                .execute()
+                self.supabase.table("tasks").update(update_data).eq("id", task["id"]).execute()
             )
 
             if response and response.data:
@@ -438,9 +419,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error completing task: {e}")
             return {"success": False, "error": f"Failed to complete task: {str(e)}"}
 
-    async def _execute_reassign(
-        self, data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+    async def _execute_reassign(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """Execute task reassignment."""
         try:
             # Find the task
@@ -473,10 +452,7 @@ class TaskProcessor(BaseProcessor):
                 update_data["notes"] = f"{current_notes}\n{new_note}".strip()
 
             response = await self._safe_db_operation(
-                self.supabase.table("tasks")
-                .update(update_data)
-                .eq("id", task["id"])
-                .execute()
+                self.supabase.table("tasks").update(update_data).eq("id", task["id"]).execute()
             )
 
             if response and response.data:
@@ -492,9 +468,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error reassigning task: {e}")
             return {"success": False, "error": f"Failed to reassign task: {str(e)}"}
 
-    async def _execute_reschedule(
-        self, data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+    async def _execute_reschedule(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """Execute task rescheduling."""
         try:
             # Find the task
@@ -522,10 +496,7 @@ class TaskProcessor(BaseProcessor):
                 update_data["notes"] = f"{current_notes}\n{new_note}".strip()
 
             response = await self._safe_db_operation(
-                self.supabase.table("tasks")
-                .update(update_data)
-                .eq("id", task["id"])
-                .execute()
+                self.supabase.table("tasks").update(update_data).eq("id", task["id"]).execute()
             )
 
             if response and response.data:
@@ -541,9 +512,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error rescheduling task: {e}")
             return {"success": False, "error": f"Failed to reschedule task: {str(e)}"}
 
-    async def _execute_add_notes(
-        self, data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+    async def _execute_add_notes(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
         """Execute adding notes to a task."""
         try:
             # Find the task
@@ -567,10 +536,7 @@ class TaskProcessor(BaseProcessor):
             }
 
             response = await self._safe_db_operation(
-                self.supabase.table("tasks")
-                .update(update_data)
-                .eq("id", task["id"])
-                .execute()
+                self.supabase.table("tasks").update(update_data).eq("id", task["id"]).execute()
             )
 
             if response and response.data:
@@ -633,9 +599,7 @@ class TaskProcessor(BaseProcessor):
                             "priority": task["priority"],
                             "assigned_to": task.get("assigned_to"),
                             "due_date": task.get("due_date"),
-                            "description": task.get("description", "")[
-                                :100
-                            ],  # Truncate
+                            "description": task.get("description", "")[:100],  # Truncate
                         }
                     )
 

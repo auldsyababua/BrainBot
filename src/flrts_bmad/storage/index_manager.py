@@ -103,9 +103,7 @@ class IndexManager:
             logger.error(f"Failed to generate index for {category}: {e}")
             return None
 
-    async def update_index(
-        self, category: str, telegram_chat_id: Optional[str] = None
-    ) -> bool:
+    async def update_index(self, category: str, telegram_chat_id: Optional[str] = None) -> bool:
         """Update or create the index for a category.
 
         Args:
@@ -153,9 +151,7 @@ class IndexManager:
             logger.error(f"Failed to update index for {category}: {e}")
             return False
 
-    async def update_all_indexes(
-        self, telegram_chat_id: Optional[str] = None
-    ) -> Dict[str, bool]:
+    async def update_all_indexes(self, telegram_chat_id: Optional[str] = None) -> Dict[str, bool]:
         """Update all category indexes.
 
         Returns:
