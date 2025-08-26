@@ -1,0 +1,50 @@
+name: Test Self-Hosted Runner
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  test:
+    runs-on: [self-hosted, macOS, ARM64]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: System Info
+        run: |
+          echo "Runner: $(hostname)"
+          echo "OS: $(uname -a)"
+          echo "Python: $(python3 --version)"
+          
+      - name: Set up Python
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          
+      - name: Install dependencies
+        run: |
+          source venv/bin/activate
+          pip install -r requirements.txt
+          pip install black ruff mypy pytest pytest-asyncio
+          
+      - name: Run Black
+        run: |
+          source venv/bin/activate
+          black --check src/ tests/ main.py
+          
+      - name: Run Ruff
+        run: |
+          source venv/bin/activate
+          ruff check
+          
+      - name: Run Tests
+        run: |
+          source venv/bin/activate
+          python -m pytest tests/unit/ -v --tb=short
+          
+      - name: Cleanup
+        if: always()
+        run: rm -rf venv
