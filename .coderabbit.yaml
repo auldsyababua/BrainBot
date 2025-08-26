@@ -1,20 +1,51 @@
 # CodeRabbit Configuration
-# Skip reviewing non-code files to reduce noise
+# Focus on reviewing actual code, including tests
 
 reviews:
-  # Skip documentation and config files
+  # Skip documentation and non-code files
   path_filters:
     excluded:
+      # Documentation
       - "**/*.md"
       - "**/*.txt"
       - "**/docs/**"
       - "**/.bmad-core/**"
       - "**/LICENSE"
+      - "README*"
+      
+      # Config files that don't need review
       - "**/.gitignore"
+      - "**/*.log"
+      - "**/.env*"
+      - "**/.vscode/**"
+      - "**/.idea/**"
+      
+      # Lock files (auto-generated)
       - "**/package-lock.json"
       - "**/yarn.lock"
       - "**/poetry.lock"
-      - "**/*.log"
+      - "**/Pipfile.lock"
+      
+      # Build artifacts
+      - "**/dist/**"
+      - "**/build/**"
+      - "**/__pycache__/**"
+      - "**/*.pyc"
+      - "**/node_modules/**"
+      - "**/venv/**"
+      - "**/.pytest_cache/**"
+      
+    # Explicitly include (optional, but makes intent clear)
+    included:
+      - "src/**"
+      - "telegram-mini-app/**"
+      - "tests/**"
+      - "scripts/**"
+      - ".github/workflows/**"
+      - "*.py"
+      - "*.js"
+      - "*.ts"
+      - "*.tsx"
       
   # Only review actual code changes
   auto_review:
