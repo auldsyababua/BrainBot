@@ -25,6 +25,10 @@ ignore = [
     "B008",  # Function call in argument defaults
     "SIM108", # Use ternary operator - sometimes if/else is clearer
     "SIM105", # Use contextlib.suppress - try/except can be clearer
+    "UP035",  # typing.Dict vs dict - both work fine
+    "UP038",  # Union types - old syntax more compatible
+    "B011",   # assert False in tests - pytest handles this fine
+    "B904",   # Exception chaining - not always needed
 ]
 
 # Additional per-file ignores for test files
