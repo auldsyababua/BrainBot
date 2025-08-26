@@ -187,9 +187,7 @@ class BotMemory:
             self.has_graph = False
             self.webhook_url = None
 
-    async def remember_from_conversation(
-        self, messages: list[dict], user_id: str
-    ) -> dict | None:
+    async def remember_from_conversation(self, messages: list[dict], user_id: str) -> dict | None:
         """Extract and store important memories from a conversation.
 
         Args:

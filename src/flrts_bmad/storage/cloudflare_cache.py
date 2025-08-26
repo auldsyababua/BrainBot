@@ -72,9 +72,7 @@ class CloudflareCache:
             logger.error(f"Error getting cache key {key}: {e}")
             return None
 
-    async def set(
-        self, key: str, value: str | dict | list | Any, ttl: int | None = None
-    ) -> bool:
+    async def set(self, key: str, value: str | dict | list | Any, ttl: int | None = None) -> bool:
         """
         Set a value in cache with optional TTL.
 
