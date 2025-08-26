@@ -48,6 +48,9 @@ jobs:
       
       - name: Run tests with coverage
         env:
+          # Mark as CI environment
+          CI: "true"
+          GITHUB_ACTIONS: "true"
           # Keep unit tests hermetic - no external dependencies
           USE_CLOUDFLARE_VECTORIZE: "false"
           USE_CLOUDFLARE_CACHE: "false"
@@ -57,8 +60,13 @@ jobs:
           OPENAI_API_KEY: "test_key"
           SUPABASE_URL: "https://test.supabase.co"
           SUPABASE_KEY: "test_key"
+          SUPABASE_ANON_KEY: "test_anon_key"
         run: |
-          pytest tests/unit/ \
+          # Run only unit and smoke tests in CI
+          # Skip integration tests that need real services
+          pytest tests/ \
+            -m "unit or smoke" \
+            --ignore=tests/integration/ \
             --cov=src \
             --cov-report=term-missing \
             --cov-report=json \

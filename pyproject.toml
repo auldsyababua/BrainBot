@@ -68,10 +68,17 @@ addopts = [
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 markers = [
-    "integration: marks tests as integration tests",
+    "unit: Unit tests that don't require external services",
+    "integration: Integration tests requiring external services",
+    "smoke: Basic smoke tests for CI",
+    "security: Security validation tests",
+    "e2e: End-to-end tests requiring full environment",
     "benchmark: marks tests as benchmark tests",
+    "performance: marks tests as performance tests",
     "slow: marks tests as slow tests",
-    "performance: marks tests as performance tests"
+    "requires_supabase: Test requires Supabase connection",
+    "requires_telegram: Test requires Telegram API access",
+    "requires_openai: Test requires OpenAI API key",
 ]
 
 [tool.black]
