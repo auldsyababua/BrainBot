@@ -203,7 +203,7 @@ class TestListProcessorAntiMesa:
 
         tasks = [
             perform_operation(processor, op[0], op[1])
-            for processor, op in zip(processors, operations)
+            for processor, op in zip(processors, operations, strict=False)
         ]
 
         results = await asyncio.gather(*tasks, return_exceptions=True)
@@ -584,9 +584,9 @@ class ListProcessorStateMachine(RuleBasedStateMachine):
     def __init__(self):
         super().__init__()
         self.processor = ListProcessor(MagicMock())
-        self.created_lists: Set[str] = set()
-        self.list_items: Dict[str, Set[str]] = {}
-        self.deleted_lists: Set[str] = set()
+        self.created_lists: set[str] = set()
+        self.list_items: dict[str, set[str]] = {}
+        self.deleted_lists: set[str] = set()
 
     @initialize()
     def setup(self):

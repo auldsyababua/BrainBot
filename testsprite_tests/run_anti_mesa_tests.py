@@ -77,7 +77,7 @@ def run_anti_mesa_tests():
 
     # Try to load and display JSON results if available
     try:
-        with open("anti_mesa_results.json", "r") as f:
+        with open("anti_mesa_results.json") as f:
             results = json.load(f)
 
         print("\n" + "=" * 80)

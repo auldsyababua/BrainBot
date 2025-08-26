@@ -10,7 +10,7 @@ from pathlib import Path
 
 def update_imports_in_file(filepath):
     """Update imports in a single file."""
-    with open(filepath, 'r') as f:
+    with open(filepath) as f:
         content = f.read()
     
     original_content = content

@@ -163,9 +163,7 @@ class TestCloudflareCache:
 
             # Test hget (mock existing hash)
             mock_get_response.status_code = 200
-            mock_get_response.text = json.dumps(
-                {"field1": "value1", "field2": "value2"}
-            )
+            mock_get_response.text = json.dumps({"field1": "value1", "field2": "value2"})
 
             value = await cache.hget("myhash", "field1")
             assert value == "value1"

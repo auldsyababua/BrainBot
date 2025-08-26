@@ -40,9 +40,7 @@ class TestDeterministicPreprocessing:
             "@sarah and @mike.smith need to review"
         )
 
-        assert (
-            cleaned == "and need to review"
-        ), f"Expected 'and need to review' but got '{cleaned}'"
+        assert cleaned == "and need to review", f"Expected 'and need to review' but got '{cleaned}'"
         assert prefilled["assignee"] == [
             "sarah",
             "mike",
@@ -89,15 +87,9 @@ class TestDeterministicPreprocessing:
             message = f"{command} show me everything"
             cleaned, prefilled, confidences = router.preprocess_message(message)
 
-            assert (
-                cleaned == "show me everything"
-            ), f"Command not removed: got '{cleaned}'"
-            assert (
-                prefilled["entity_type"] == expected_entity
-            ), f"Wrong entity for {command}"
-            assert (
-                prefilled.get("operation") == expected_op
-            ), f"Wrong operation for {command}"
+            assert cleaned == "show me everything", f"Command not removed: got '{cleaned}'"
+            assert prefilled["entity_type"] == expected_entity, f"Wrong entity for {command}"
+            assert prefilled.get("operation") == expected_op, f"Wrong operation for {command}"
             assert confidences["entity_confidence"] == expected_entity_conf
             assert confidences.get("operation_confidence") == expected_op_conf
             assert prefilled["command_source"] == command
@@ -245,15 +237,11 @@ class TestRoutingConfidence:
 
         # With user assignment boost (+0.2)
         result_user = router.route("add milk to list for joel")
-        assert result_user.confidence == pytest.approx(
-            min(base_confidence + 0.2, 1.0), abs=0.01
-        )
+        assert result_user.confidence == pytest.approx(min(base_confidence + 0.2, 1.0), abs=0.01)
 
         # With @ mention boost (+0.2 + 0.1)
         result_mention = router.route("add milk to list for @joel")
-        assert result_mention.confidence == pytest.approx(
-            min(base_confidence + 0.3, 1.0), abs=0.01
-        )
+        assert result_mention.confidence == pytest.approx(min(base_confidence + 0.3, 1.0), abs=0.01)
 
     def test_ambiguity_penalty_exact_reduction(self):
         """Ambiguous words reduce confidence by exact amounts."""
@@ -269,9 +257,7 @@ class TestRoutingConfidence:
         # Should have lower confidence due to ambiguity
         assert ambiguous_result.confidence < clear_confidence
         # The word "update" reduces confidence by 0.1
-        assert (
-            clear_confidence - ambiguous_result.confidence >= 0.05
-        )  # At least some reduction
+        assert clear_confidence - ambiguous_result.confidence >= 0.05  # At least some reduction
 
 
 class TestDirectExecutionLogic:
@@ -434,19 +420,11 @@ class TestEdgeCasesAndErrors:
             == "lists"
         )
         assert (
-            lower_result.operation
-            == upper_result.operation
-            == mixed_result.operation
-            == "create"
+            lower_result.operation == upper_result.operation == mixed_result.operation == "create"
         )
 
         # But confidence should be exactly the same
-        assert (
-            lower_result.confidence
-            == upper_result.confidence
-            == mixed_result.confidence
-            == 1.0
-        )
+        assert lower_result.confidence == upper_result.confidence == mixed_result.confidence == 1.0
 
 
 class TestPerformanceInvariants:

@@ -18,7 +18,7 @@ class SupabaseLogHandler(logging.Handler):
 
     def __init__(
         self,
-        supabase_client: Optional[Client] = None,
+        supabase_client: Client | None = None,
         batch_size: int = 10,
         flush_interval: int = 5,
     ):
@@ -26,7 +26,7 @@ class SupabaseLogHandler(logging.Handler):
         self.supabase = supabase_client or create_client(SUPABASE_URL, SUPABASE_KEY)
         self.batch_size = batch_size
         self.flush_interval = flush_interval
-        self.log_buffer: List[Dict[str, Any]] = []
+        self.log_buffer: list[dict[str, Any]] = []
         self.last_flush = time.time()
 
     def emit(self, record: logging.LogRecord) -> None:
@@ -129,7 +129,7 @@ def log_operation(logger: logging.Logger, level: int, message: str, **kwargs) ->
         **kwargs: Additional fields (user_id, operation, entity_type, etc.)
     """
     # Create a log record with extra fields
-    extra: Dict[str, Any] = {}
+    extra: dict[str, Any] = {}
     for key, value in kwargs.items():
         if value is not None:
             extra[key] = value

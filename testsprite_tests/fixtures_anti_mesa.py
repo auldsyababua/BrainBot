@@ -9,9 +9,10 @@ import asyncio
 import json
 import random
 import string
+from collections.abc import Callable
 from contextlib import contextmanager
 from datetime import datetime, timedelta
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Dict, List, Optional
 from unittest.mock import MagicMock
 
 
@@ -56,12 +57,12 @@ class MockSupabaseClient:
         self.query_chain.append(f"select({columns})")
         return self
 
-    def insert(self, data: Dict[str, Any]):
+    def insert(self, data: dict[str, Any]):
         """Mock insert operation."""
         self.query_chain.append(f"insert({json.dumps(data)})")
         return self
 
-    def update(self, data: Dict[str, Any]):
+    def update(self, data: dict[str, Any]):
         """Mock update operation."""
         self.query_chain.append(f"update({json.dumps(data)})")
         return self
@@ -149,7 +150,7 @@ class MockSupabaseClient:
         response.error = None
         return response
 
-    def _get_mock_data(self) -> List[Dict[str, Any]]:
+    def _get_mock_data(self) -> list[dict[str, Any]]:
         """Generate mock data based on table and query."""
         if self.table_name == "sites":
             return [
@@ -215,7 +216,7 @@ class MockSupabaseClient:
         self.successful_queries = 0
         self.query_history = []
 
-    def get_stats(self) -> Dict[str, Any]:
+    def get_stats(self) -> dict[str, Any]:
         """Get query statistics."""
         return {
             "total_queries": self.total_queries,
@@ -240,7 +241,7 @@ class MockRedisStore:
         self.set_count = 0
         self.delete_count = 0
 
-    async def get(self, key: str) -> Optional[str]:
+    async def get(self, key: str) -> str | None:
         """Get value from store."""
         self.operation_count += 1
         self.get_count += 1
@@ -283,7 +284,7 @@ class MockRedisStore:
         self.set_count = 0
         self.delete_count = 0
 
-    def get_stats(self) -> Dict[str, int]:
+    def get_stats(self) -> dict[str, int]:
         """Get operation statistics."""
         return {
             "total_operations": self.operation_count,

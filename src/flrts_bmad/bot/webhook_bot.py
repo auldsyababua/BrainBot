@@ -121,7 +121,7 @@ class WebhookTelegramBot:
 
         logger.info("Bot handlers registered successfully")
 
-    async def _check_database_connectivity(self) -> Dict[str, Any]:
+    async def _check_database_connectivity(self) -> dict[str, Any]:
         """Check database connectivity (Redis and Vector Store)."""
         redis_status = {"status": "unknown", "error": None, "response_time_ms": None}
         vector_status = {"status": "unknown", "error": None, "response_time_ms": None}
@@ -175,7 +175,7 @@ class WebhookTelegramBot:
 
         return {"redis": redis_status, "vector_store": vector_status}
 
-    async def _check_memory_system(self) -> Dict[str, Any]:
+    async def _check_memory_system(self) -> dict[str, Any]:
         """Check memory system (mem0) connectivity."""
         try:
             from core.memory import BotMemory
@@ -193,7 +193,7 @@ class WebhookTelegramBot:
         except Exception as e:
             return {"status": "unhealthy", "error": str(e), "response_time_ms": None}
 
-    def _get_system_metrics(self) -> Dict[str, Any]:
+    def _get_system_metrics(self) -> dict[str, Any]:
         """Get system resource metrics."""
         try:
             # Memory usage
@@ -566,7 +566,7 @@ class WebhookTelegramBot:
 
                 expected = hmac.new(
                     CF_PROXY_SECRET.encode("utf-8"),
-                    f"{x_request_timestamp}.{payload}".encode("utf-8"),
+                    f"{x_request_timestamp}.{payload}".encode(),
                     hashlib.sha256,
                 ).hexdigest()
 

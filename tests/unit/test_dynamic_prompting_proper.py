@@ -5,6 +5,7 @@ no conditional logic, and meaningful validation of actual prompt content.
 """
 
 import pytest
+
 from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
 
 
@@ -45,8 +46,7 @@ class TestPromptGeneration:
         # EXACT range check
         assert 20 <= len(prompt) <= 200, f"Prompt outside range: {len(prompt)} chars"
         assert (
-            prompt
-            == "Process tasks. operation: reassign. Extract: task_id, new_assignee, reason."
+            prompt == "Process tasks. operation: reassign. Extract: task_id, new_assignee, reason."
         )
         assert len(prompt) == 75  # Exact character count
 
@@ -333,10 +333,7 @@ class TestFunctionSchemaGeneration:
         assert schema["parameters"]["type"] == "object"
         assert "list_name" in schema["parameters"]["properties"]
         assert schema["parameters"]["properties"]["list_name"]["type"] == "string"
-        assert (
-            schema["parameters"]["properties"]["list_name"]["description"]
-            == "Name of the list"
-        )
+        assert schema["parameters"]["properties"]["list_name"]["description"] == "Name of the list"
         assert schema["parameters"]["required"] == ["list_name"]
 
         # Check default value injection
@@ -534,15 +531,10 @@ class TestEdgeCasesAndValidation:
         """Unknown operations produce EXACT fallback prompts."""
         generator = DynamicPromptGenerator()
 
-        context = PromptContext(
-            entity_type="custom_entity", operation="custom_operation"
-        )
+        context = PromptContext(entity_type="custom_entity", operation="custom_operation")
 
         prompt = generator.generate_function_calling_prompt(context)
-        assert (
-            prompt
-            == "Determine the appropriate function for custom_entity.custom_operation."
-        )
+        assert prompt == "Determine the appropriate function for custom_entity.custom_operation."
 
         # Function schema should use fallback
         schema = generator._generate_function_schema(context)

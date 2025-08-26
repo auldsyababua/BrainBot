@@ -10,7 +10,7 @@ from pathlib import Path
 
 def comment_lines(filepath, line_ranges):
     """Comment out specific line ranges in a file."""
-    with open(filepath, "r") as f:
+    with open(filepath) as f:
         lines = f.readlines()
 
     for start, end in line_ranges:
@@ -33,7 +33,7 @@ def comment_field_report_sections():
     if router_file.exists():
         print(f"Processing {router_file}...")
         # We'll need to be more surgical here - comment specific dictionary entries
-        with open(router_file, "r") as f:
+        with open(router_file) as f:
             content = f.read()
 
         # Comment out field_reports in OPERATIONS dictionary
@@ -111,7 +111,7 @@ def add_skip_decorators_to_tests():
     for filepath, test_names in test_files:
         full_path = base_path / filepath
         if full_path.exists():
-            with open(full_path, "r") as f:
+            with open(full_path) as f:
                 content = f.read()
 
             for test_name in test_names:

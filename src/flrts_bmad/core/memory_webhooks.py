@@ -42,8 +42,8 @@ class MemoryWebhookEvent(Enum):
 class WebhookConfig:
     """Configuration for webhook delivery."""
 
-    url: Optional[str] = None
-    headers: Dict[str, str] = None
+    url: str | None = None
+    headers: dict[str, str] = None
     timeout: int = 30
     retry_attempts: int = 3
     retry_delay: float = 1.0
@@ -73,7 +73,7 @@ class MemoryWebhookHandler:
             enabled=os.getenv("MEMORY_WEBHOOK_ENABLED", "true").lower() == "true",
         )
 
-    def _get_webhook_headers(self) -> Dict[str, str]:
+    def _get_webhook_headers(self) -> dict[str, str]:
         """Get webhook headers from environment configuration."""
         headers = {"Content-Type": "application/json"}
 
@@ -99,7 +99,7 @@ class MemoryWebhookHandler:
         event: MemoryWebhookEvent,
         user_id: str,
         data: Any = None,
-        metadata: Optional[Dict[str, Any]] = None,
+        metadata: dict[str, Any] | None = None,
     ) -> bool:
         """
         Send a webhook notification for a memory event.
@@ -144,7 +144,7 @@ class MemoryWebhookHandler:
         logger.error(f"Webhook delivery failed after {self.config.retry_attempts} attempts")
         return False
 
-    async def _deliver_webhook(self, payload: Dict[str, Any]) -> bool:
+    async def _deliver_webhook(self, payload: dict[str, Any]) -> bool:
         """
         Deliver a webhook payload to the configured endpoint.
 
@@ -173,7 +173,7 @@ class MemoryWebhookHandler:
                         )
                         return False
 
-        except asyncio.TimeoutError:
+        except TimeoutError:
             logger.warning(f"Webhook delivery timed out after {self.config.timeout}s")
             return False
         except aiohttp.ClientError as e:
@@ -187,7 +187,7 @@ class MemoryWebhookHandler:
         """Check if webhook delivery is enabled and configured."""
         return self.config.enabled and bool(self.config.url)
 
-    def get_config_summary(self) -> Dict[str, Any]:
+    def get_config_summary(self) -> dict[str, Any]:
         """Get a summary of the current webhook configuration."""
         return {
             "enabled": self.config.enabled,
@@ -222,7 +222,7 @@ async def notify_memory_error(user_id: str, operation: str, error: str) -> bool:
     )
 
 
-async def notify_batch_completed(user_id: str, operation: str, results: Dict[str, Any]) -> bool:
+async def notify_batch_completed(user_id: str, operation: str, results: dict[str, Any]) -> bool:
     """Send webhook notification for batch operation completion."""
     return await memory_webhook_handler.send_webhook(
         event=MemoryWebhookEvent.BATCH_OPERATION_COMPLETED,
@@ -231,7 +231,7 @@ async def notify_batch_completed(user_id: str, operation: str, results: Dict[str
     )
 
 
-async def notify_graph_relationship_added(user_id: str, relationship_data: Dict[str, Any]) -> bool:
+async def notify_graph_relationship_added(user_id: str, relationship_data: dict[str, Any]) -> bool:
     """Send webhook notification for graph relationship addition."""
     return await memory_webhook_handler.send_webhook(
         event=MemoryWebhookEvent.GRAPH_RELATIONSHIP_ADDED,

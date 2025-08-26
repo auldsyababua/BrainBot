@@ -22,7 +22,7 @@ class HealthStatus:
     service: str
     status: str  # "healthy", "degraded", "unhealthy"
     response_time_ms: float
-    details: Dict[str, Any]
+    details: dict[str, Any]
     timestamp: str
 
 
@@ -30,7 +30,7 @@ class HealthChecker:
     """Centralized health checking for FLRTS-BMAD system."""
 
     def __init__(self):
-        self.performance_history: List[Dict[str, Any]] = []
+        self.performance_history: list[dict[str, Any]] = []
         self.max_history = 100  # Keep last 100 checks
 
     async def check_database_health(self, supabase_client) -> HealthStatus:
@@ -43,7 +43,7 @@ class HealthChecker:
 
             response_time = (time.perf_counter() - start_time) * 1000
 
-            details: Dict[str, Any]
+            details: dict[str, Any]
             if response_time > 1000:  # >1s is concerning for small team
                 status = "degraded"
                 details = {"warning": "Database response time is high"}
@@ -84,7 +84,7 @@ class HealthChecker:
             # Check if direct execution is working
             direct_execution_working = result.use_direct_execution and result.confidence >= 0.95
 
-            details: Dict[str, Any]
+            details: dict[str, Any]
             if response_time > 100:  # Router should be very fast
                 status = "degraded"
                 details = {"warning": "Router response time is high"}
@@ -138,7 +138,7 @@ class HealthChecker:
             response_time = (time.perf_counter() - start_time) * 1000
 
             # Target is <500ms for actual operations, validation should be much faster
-            details: Dict[str, Any]
+            details: dict[str, Any]
             if response_time > 50:
                 status = "degraded"
                 details = {"warning": "Processor validation is slow"}
@@ -192,7 +192,7 @@ class HealthChecker:
                 timestamp=datetime.utcnow().isoformat(),
             )
 
-    async def comprehensive_health_check(self, supabase_client=None) -> Dict[str, Any]:
+    async def comprehensive_health_check(self, supabase_client=None) -> dict[str, Any]:
         """Run all health checks and return comprehensive status."""
         start_time = time.perf_counter()
 
@@ -214,7 +214,7 @@ class HealthChecker:
             health_results = await asyncio.gather(*tasks, return_exceptions=True)
 
             # Process results
-            status_map: Dict[str, Any] = {}
+            status_map: dict[str, Any] = {}
             overall_status = "healthy"
 
             for result in health_results:
@@ -278,7 +278,7 @@ class HealthChecker:
                 "story_1_6_status": {"direct_execution_ready": False},
             }
 
-    def get_performance_summary(self) -> Dict[str, Any]:
+    def get_performance_summary(self) -> dict[str, Any]:
         """Get performance summary from recent health checks."""
         if not self.performance_history:
             return {"status": "no_data"}
@@ -313,7 +313,7 @@ class HealthChecker:
 health_checker = HealthChecker()
 
 
-async def quick_health_check() -> Dict[str, str]:
+async def quick_health_check() -> dict[str, str]:
     """Quick health check for basic monitoring."""
     try:
         result = await health_checker.check_router_health()

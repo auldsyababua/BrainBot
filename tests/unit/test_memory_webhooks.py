@@ -8,7 +8,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 # Skip these tests as they don't match the current implementation
-pytestmark = pytest.mark.skip(reason="Tests need to be updated to match current MemoryWebhookHandler implementation")
+pytestmark = pytest.mark.skip(
+    reason="Tests need to be updated to match current MemoryWebhookHandler implementation"
+)
 
 from flrts_bmad.core.memory_webhooks import (
     MemoryWebhookEvent,

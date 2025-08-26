@@ -48,5 +48,4 @@ known-first-party = ["flrts", "flrts_bmad"]
 max-doc-length = 100
 
 # Don't complain about TODO comments
-[lint.flake8-todos]
-allowed = ["TODO", "FIXME", "HACK", "NOTE"]
+# Note: flake8-todos not yet supported in Ruff

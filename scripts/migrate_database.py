@@ -32,7 +32,7 @@ class DatabaseMigrator:
             "list_items": ["id", "list_id", "content", "is_completed"],
         }
 
-    async def validate_database_schema(self, supabase_client) -> Dict[str, Any]:
+    async def validate_database_schema(self, supabase_client) -> dict[str, Any]:
         """Validate that required tables and columns exist."""
         validation_results = {
             "schema_valid": True,
@@ -93,7 +93,7 @@ class DatabaseMigrator:
                 "issues": [f"Database connection failed: {e}"],
             }
 
-    async def run_basic_migrations(self, supabase_client) -> Dict[str, Any]:
+    async def run_basic_migrations(self, supabase_client) -> dict[str, Any]:
         """Run any basic data migrations needed."""
         migration_results = {"migrations_run": [], "success": True, "issues": []}
 
@@ -117,7 +117,7 @@ class DatabaseMigrator:
 
         return migration_results
 
-    def print_migration_results(self, results: Dict[str, Any]) -> None:
+    def print_migration_results(self, results: dict[str, Any]) -> None:
         """Print migration results."""
         print("\n" + "=" * 50)
         print("🗄️  FLRTS-BMAD Database Migration Results")

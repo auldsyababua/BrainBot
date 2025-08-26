@@ -7,8 +7,9 @@ determine what to run, skip, or mock.
 """
 
 import os
-import pytest
 from functools import wraps
+
+import pytest
 
 # Environment detection
 IS_CI = os.getenv("CI") == "true" or os.getenv("GITHUB_ACTIONS") == "true"

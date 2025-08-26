@@ -42,7 +42,7 @@ class CloudflareCache:
         # Default TTL (5 minutes)
         self.default_ttl = int(os.getenv("CACHE_DEFAULT_TTL", "300"))
 
-    async def get(self, key: str) -> Optional[Union[str, Dict, List]]:
+    async def get(self, key: str) -> str | dict | list | None:
         """
         Get a value from cache.
 
@@ -73,7 +73,7 @@ class CloudflareCache:
             return None
 
     async def set(
-        self, key: str, value: Union[str, Dict, List, Any], ttl: Optional[int] = None
+        self, key: str, value: str | dict | list | Any, ttl: int | None = None
     ) -> bool:
         """
         Set a value in cache with optional TTL.
@@ -117,7 +117,7 @@ class CloudflareCache:
             logger.error(f"Error setting cache key {key}: {e}")
             return False
 
-    async def setex(self, key: str, ttl: int, value: Union[str, Dict, List, Any]) -> bool:
+    async def setex(self, key: str, ttl: int, value: str | dict | list | Any) -> bool:
         """
         Set a value with expiration (Redis compatibility).
 
@@ -159,7 +159,7 @@ class CloudflareCache:
             logger.error(f"Error deleting cache key {key}: {e}")
             return False
 
-    async def keys(self, pattern: str = "*") -> List[str]:
+    async def keys(self, pattern: str = "*") -> list[str]:
         """
         List keys matching a pattern.
 
@@ -253,7 +253,7 @@ class CloudflareCache:
             logger.error(f"Error setting hash field {name}.{key}: {e}")
             return False
 
-    async def hget(self, name: str, key: str) -> Optional[Any]:
+    async def hget(self, name: str, key: str) -> Any | None:
         """
         Get field from a hash (Redis compatibility).
 
@@ -274,7 +274,7 @@ class CloudflareCache:
             logger.error(f"Error getting hash field {name}.{key}: {e}")
             return None
 
-    async def hgetall(self, name: str) -> Dict:
+    async def hgetall(self, name: str) -> dict:
         """
         Get all fields from a hash (Redis compatibility).
 
@@ -352,7 +352,7 @@ class CloudflareCache:
             logger.error(f"Error pushing to list {key}: {e}")
             return 0
 
-    async def lrange(self, key: str, start: int, stop: int) -> List:
+    async def lrange(self, key: str, start: int, stop: int) -> list:
         """
         Get range of elements from a list (Redis compatibility).
 
@@ -450,10 +450,10 @@ class CloudflareRedis:
         self.cache = CloudflareCache()
 
     # Delegate all methods to CloudflareCache
-    async def get(self, key: str) -> Optional[Any]:
+    async def get(self, key: str) -> Any | None:
         return await self.cache.get(key)
 
-    async def set(self, key: str, value: Any, ex: Optional[int] = None) -> bool:
+    async def set(self, key: str, value: Any, ex: int | None = None) -> bool:
         return await self.cache.set(key, value, ttl=ex)
 
     async def setex(self, key: str, ttl: int, value: Any) -> bool:
@@ -462,7 +462,7 @@ class CloudflareRedis:
     async def delete(self, key: str) -> bool:
         return await self.cache.delete(key)
 
-    async def keys(self, pattern: str = "*") -> List[str]:
+    async def keys(self, pattern: str = "*") -> list[str]:
         return await self.cache.keys(pattern)
 
     async def exists(self, key: str) -> bool:
@@ -474,10 +474,10 @@ class CloudflareRedis:
     async def hset(self, name: str, key: str, value: Any) -> bool:
         return await self.cache.hset(name, key, value)
 
-    async def hget(self, name: str, key: str) -> Optional[Any]:
+    async def hget(self, name: str, key: str) -> Any | None:
         return await self.cache.hget(name, key)
 
-    async def hgetall(self, name: str) -> Dict:
+    async def hgetall(self, name: str) -> dict:
         return await self.cache.hgetall(name)
 
     async def hdel(self, name: str, *keys: str) -> int:
@@ -486,7 +486,7 @@ class CloudflareRedis:
     async def lpush(self, key: str, *values: Any) -> int:
         return await self.cache.lpush(key, *values)
 
-    async def lrange(self, key: str, start: int, stop: int) -> List:
+    async def lrange(self, key: str, start: int, stop: int) -> list:
         return await self.cache.lrange(key, start, stop)
 
     async def llen(self, key: str) -> int:
@@ -496,13 +496,13 @@ class CloudflareRedis:
         return await self.cache.ping()
 
     # Redis sorted set operations (simplified implementation)
-    def zadd(self, key: str, mapping: Dict[Any, float]) -> int:
+    def zadd(self, key: str, mapping: dict[Any, float]) -> int:
         """Add members to sorted set (simplified implementation)."""
         # For now, just store as a hash with scores
         # This is a simplified implementation for compatibility
         return 1
 
-    def zrangebyscore(self, key: str, min_score: float, max_score: float) -> List:
+    def zrangebyscore(self, key: str, min_score: float, max_score: float) -> list:
         """Get members in score range (simplified implementation)."""
         # Return empty list for now - proper implementation would need sorted storage
         return []

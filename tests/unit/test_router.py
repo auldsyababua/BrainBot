@@ -52,10 +52,7 @@ class TestEnhancedRouter:
             assert variant_result.entity_type == base_result.entity_type
             assert variant_result.operation == base_result.operation
             # Confidence should be within reasonable bounds
-            assert (
-                abs(variant_result.confidence - base_result.confidence)
-                < MAX_ACCURACY_ERROR * 2
-            )
+            assert abs(variant_result.confidence - base_result.confidence) < MAX_ACCURACY_ERROR * 2
 
         # Invariant 3: Alias precedence - explicit syntax overrides inference
         router.synonym_lib.user_aliases = {"joel": "joel"}
@@ -153,15 +150,11 @@ class TestEnhancedRouter:
         # Test alias resolution with operation
         result = router.route("assign task to the canadian")
         assert "joel" in result.target_users, "Should resolve alias to canonical user"
-        assert (
-            "the canadian" not in result.target_users
-        ), "Should not include alias itself"
+        assert "the canadian" not in result.target_users, "Should not include alias itself"
 
         # Test reassignment operation semantics
         result = router.route("reassign to @bryan the generator task")
-        assert (
-            "bryan" in result.target_users
-        ), "Should identify reassignment target user"
+        assert "bryan" in result.target_users, "Should identify reassignment target user"
         assert result.operation == "reassign", "Should recognize reassign operation"
 
     def test_contextual_semantic_enhancement(self):
@@ -184,9 +177,7 @@ class TestEnhancedRouter:
 
         # List structure should enhance list operations
         result = router.route("add milk, eggs, bread to shopping list")
-        assert (
-            result.entity_type == "lists"
-        ), "Comma-separated items should suggest list entity"
+        assert result.entity_type == "lists", "Comma-separated items should suggest list entity"
         assert "items" in result.extracted_data, "Should extract item structure"
 
     def test_interactive_mode_semantics(self):
@@ -344,9 +335,7 @@ class TestConfidenceScorer:
             if result.entity_type == "field_reports":
                 assert result.confidence >= MIN_CONFIDENCE_THRESHOLD
                 extracted_site = result.extracted_data.get("site", "")
-                assert (
-                    expected_site in extracted_site or extracted_site in expected_site
-                )
+                assert expected_site in extracted_site or extracted_site in expected_site
 
     def test_word_boundary_semantic_precision(self):
         """Test that word boundaries maintain semantic precision."""
@@ -377,9 +366,7 @@ class TestPreprocessing:
         router.synonym_lib.user_aliases = {"joel": "joel", "bryan": "bryan"}
 
         # Test semantic extraction of user mentions
-        cleaned, prefilled, confidences = router.preprocess_message(
-            "@joel /lists add milk"
-        )
+        cleaned, prefilled, confidences = router.preprocess_message("@joel /lists add milk")
         assert cleaned == "add milk", "Should remove syntax markers"
         assert prefilled["assignee"] == "joel", "Should extract user assignment"
         assert prefilled["entity_type"] == "lists", "Should extract entity context"
@@ -388,9 +375,7 @@ class TestPreprocessing:
         ), "Explicit mentions should have max confidence"
 
         # Test semantic extraction of commands
-        cleaned, prefilled, confidences = router.preprocess_message(
-            "/addtolist milk and eggs"
-        )
+        cleaned, prefilled, confidences = router.preprocess_message("/addtolist milk and eggs")
         assert (
             "entity_type" in prefilled and "operation" in prefilled
         ), "Commands should extract both entity and operation"
@@ -405,12 +390,8 @@ class TestPreprocessing:
 
         # Explicit syntax should produce deterministic high-confidence results
         result = router.route("@joel /newlist grocery items")
-        assert (
-            result.confidence == 1.0
-        ), "Explicit syntax should yield maximum confidence"
-        assert (
-            result.use_direct_execution is True
-        ), "High confidence should enable direct execution"
+        assert result.confidence == 1.0, "Explicit syntax should yield maximum confidence"
+        assert result.use_direct_execution is True, "High confidence should enable direct execution"
         assert "joel" in result.target_users, "User assignment should be preserved"
 
         # Interactive commands should maintain entity context
@@ -426,15 +407,9 @@ class TestPreprocessing:
 
         # Complete explicit command should have all confidences at maximum
         result = router.route("@joel /newtask check generator")
-        assert (
-            result.entity_confidence == 1.0
-        ), "Explicit entity should have max confidence"
-        assert (
-            result.operation_confidence == 1.0
-        ), "Explicit operation should have max confidence"
-        assert (
-            result.assignee_confidence == 1.0
-        ), "Explicit assignment should have max confidence"
+        assert result.entity_confidence == 1.0, "Explicit entity should have max confidence"
+        assert result.operation_confidence == 1.0, "Explicit operation should have max confidence"
+        assert result.assignee_confidence == 1.0, "Explicit assignment should have max confidence"
 
         # Partial command should have selective confidence
         result = router.route("/lists")
@@ -448,7 +423,5 @@ class TestPreprocessing:
 
         # Syntax markers should be extracted but not passed to LLM processing
         cleaned, _, _ = router.preprocess_message("@joel /lists add milk, eggs")
-        assert (
-            "@" not in cleaned and "/" not in cleaned
-        ), "Syntax markers should be removed"
+        assert "@" not in cleaned and "/" not in cleaned, "Syntax markers should be removed"
         assert cleaned == "add milk, eggs", "Content should be preserved without syntax"

@@ -133,9 +133,7 @@ class TestProcessorConstructorRegression(unittest.TestCase):
                     instance = processor_class(supabase_client=mock_client)
 
                     # Verify the instance was created
-                    self.assertIsNotNone(
-                        instance, f"Failed to create {class_name} instance"
-                    )
+                    self.assertIsNotNone(instance, f"Failed to create {class_name} instance")
 
                     # Verify it's the right type
                     self.assertIsInstance(

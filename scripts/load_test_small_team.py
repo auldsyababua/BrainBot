@@ -20,7 +20,7 @@ class SmallTeamLoadTester:
 
     def __init__(self, base_url: str = "http://localhost:5000"):
         self.base_url = base_url
-        self.results: List[Dict[str, Any]] = []
+        self.results: list[dict[str, Any]] = []
 
         # Test messages that should trigger direct execution
         self.direct_execution_commands = [
@@ -44,7 +44,7 @@ class SmallTeamLoadTester:
 
     async def test_health_endpoints(
         self, session: aiohttp.ClientSession
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Test health check endpoints performance."""
         health_tests = []
 
@@ -85,7 +85,7 @@ class SmallTeamLoadTester:
 
     async def simulate_user_session(
         self, session: aiohttp.ClientSession, user_id: str, commands_per_user: int = 5
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Simulate a single user's commands."""
         user_results = []
 
@@ -134,7 +134,7 @@ class SmallTeamLoadTester:
                         }
                     )
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 user_results.append(
                     {
                         "user_id": user_id,
@@ -160,7 +160,7 @@ class SmallTeamLoadTester:
 
     async def run_concurrent_users_test(
         self, num_users: int = 10, commands_per_user: int = 5
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Run load test with multiple concurrent users."""
         print(
             f"🚀 Starting load test: {num_users} users, {commands_per_user} commands each"
@@ -198,11 +198,11 @@ class SmallTeamLoadTester:
 
     def analyze_results(
         self,
-        results: List[Dict[str, Any]],
-        health_results: Dict[str, Any],
+        results: list[dict[str, Any]],
+        health_results: dict[str, Any],
         total_time: float,
         num_users: int,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Analyze load test results."""
 
         successful_results = [r for r in results if r.get("success", False)]
@@ -317,10 +317,10 @@ class SmallTeamLoadTester:
 
     def generate_recommendations(
         self,
-        successful_results: List[Dict[str, Any]],
-        response_times: List[float],
-        direct_exec_times: List[float],
-    ) -> List[str]:
+        successful_results: list[dict[str, Any]],
+        response_times: list[float],
+        direct_exec_times: list[float],
+    ) -> list[str]:
         """Generate recommendations based on test results."""
         recommendations = []
 
@@ -369,7 +369,7 @@ class SmallTeamLoadTester:
 
         return recommendations
 
-    def print_results(self, results: Dict[str, Any]) -> None:
+    def print_results(self, results: dict[str, Any]) -> None:
         """Print formatted test results."""
         print("\n" + "=" * 60)
         print("🧪 FLRTS-BMAD Small Team Load Test Results")

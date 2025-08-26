@@ -17,7 +17,9 @@ import pytest
 # from src.core.graph_memory_seeder import seed_graph_memory  # Module not found
 from flrts_bmad.core.memory import BotMemory
 
-pytest.skip("Graph memory integration tests disabled - seeder module not found", allow_module_level=True)
+pytest.skip(
+    "Graph memory integration tests disabled - seeder module not found", allow_module_level=True
+)
 
 
 class TestGraphMemoryIntegration:
@@ -372,14 +374,10 @@ class TestGraphMemoryIntegration:
                 )
 
                 # Mock the config path
-                with patch(
-                    "src.core.graph_memory_seeder.GraphMemorySeeder"
-                ) as mock_seeder_class:
+                with patch("src.core.graph_memory_seeder.GraphMemorySeeder") as mock_seeder_class:
                     mock_seeder = mock_seeder_class.return_value
                     mock_seeder.config_path = Path(config_path)
-                    mock_seeder.seed_organizational_relationships = MagicMock(
-                        return_value=True
-                    )
+                    mock_seeder.seed_organizational_relationships = MagicMock(return_value=True)
 
                     # Test seeding
                     result = await seed_graph_memory()

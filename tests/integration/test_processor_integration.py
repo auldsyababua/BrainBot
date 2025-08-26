@@ -29,9 +29,7 @@ class TestProcessorIntegration:
         # Mock the insert response
         mock_response = MockSupabaseResponse([{"id": "test-list-id"}])
         mock_supabase.table().insert().execute = AsyncMock(return_value=mock_response)
-        mock_supabase.table().select().eq().single().execute = AsyncMock(
-            return_value=None
-        )
+        mock_supabase.table().select().eq().single().execute = AsyncMock(return_value=None)
 
         processor = ListProcessor(mock_supabase)
 
@@ -63,9 +61,7 @@ class TestProcessorIntegration:
         task_response = MockSupabaseResponse([{"id": "test-task-id"}])
 
         # Set up mock returns
-        mock_supabase.table().select().eq().execute = AsyncMock(
-            return_value=personnel_response
-        )
+        mock_supabase.table().select().eq().execute = AsyncMock(return_value=personnel_response)
         mock_supabase.table().insert().execute = AsyncMock(return_value=task_response)
 
         processor = TaskProcessor(mock_supabase)
@@ -128,9 +124,7 @@ class TestProcessorIntegration:
             return default
 
         # Patch the _safe_db_operation method
-        with patch.object(
-            processor, "_safe_db_operation", side_effect=mock_safe_db_operation
-        ):
+        with patch.object(processor, "_safe_db_operation", side_effect=mock_safe_db_operation):
             params = {
                 "operation": "add_items",
                 "list_name": "Shopping List",

@@ -15,15 +15,13 @@ import sys
 import time
 
 # Add project root to path
-sys.path.insert(
-    0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from flrts_bmad.core.api_client import RetryConfig, get_resilient_client  # noqa: E402
 from flrts_bmad.core.benchmarks import get_performance_monitor  # noqa: E402
 from flrts_bmad.core.llm import conversation_manager, process_message  # noqa: E402
-from flrts_bmad.storage.redis_store import redis_store  # noqa: E402
 from flrts_bmad.storage import vector_store  # noqa: E402
+from flrts_bmad.storage.redis_store import redis_store  # noqa: E402
 
 
 async def test_vector_cache():
@@ -103,9 +101,7 @@ async def test_conversation_sliding_window():
     # Check final conversation size
     final_messages = await conversation_manager.get_conversation_history(chat_id)
     print(f"Final message count: {len(final_messages)}")
-    print(
-        f"Expected max: {conversation_manager.max_messages + 1} (including system prompt)"
-    )
+    print(f"Expected max: {conversation_manager.max_messages + 1} (including system prompt)")
 
     # Verify sliding window is working
     if len(final_messages) <= conversation_manager.max_messages + 1:
@@ -132,9 +128,7 @@ async def test_performance_metrics():
 
     # Test a full message processing flow
     print("Processing a test message...")
-    response = await process_message(
-        "What is the capital of France?", chat_id="test_metrics"
-    )
+    response = await process_message("What is the capital of France?", chat_id="test_metrics")
     print(f"Response received: {response[:100]}...")
 
     # Wait a moment for metrics to be recorded

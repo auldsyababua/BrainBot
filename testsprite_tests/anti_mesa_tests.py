@@ -282,7 +282,7 @@ class TestStateManipulation:
 
                 return copy.deepcopy(self._state)
 
-            def dispatch(self, action: Dict[str, Any]):
+            def dispatch(self, action: dict[str, Any]):
                 # Only allow valid actions
                 valid_actions = ["ADD_TASK", "UPDATE_TASK", "DELETE_TASK"]
                 if action.get("type") not in valid_actions:

@@ -17,9 +17,7 @@ from flrts_bmad.rails.router import KeywordRouter
 class TestE2EWebhookToDatabase:
     """Test complete flow from webhook to database storage."""
 
-    async def test_e2e_create_task_flow(
-        self, supabase_test_client, test_personnel, db_manager
-    ):
+    async def test_e2e_create_task_flow(self, supabase_test_client, test_personnel, db_manager):
         """Test complete flow: webhook message → task creation → database storage."""
 
         # Mock webhook message data
@@ -132,9 +130,7 @@ class TestE2EWebhookToDatabase:
         assert "first aid kit" in item_texts
         assert "water bottles" in item_texts
 
-    async def test_e2e_create_field_report_flow(
-        self, supabase_test_client, test_site, db_manager
-    ):
+    async def test_e2e_create_field_report_flow(self, supabase_test_client, test_site, db_manager):
         """Test complete flow: webhook message → field report creation → database storage."""
 
         webhook_message = {
@@ -187,9 +183,7 @@ class TestE2EWebhookToDatabase:
         assert created_report["status"] == "Submitted"
         assert "Generator tested at 10:30 AM" in created_report["content"]
 
-    async def test_e2e_error_handling_invalid_data(
-        self, supabase_test_client, db_manager
-    ):
+    async def test_e2e_error_handling_invalid_data(self, supabase_test_client, db_manager):
         """Test error handling when LLM extraction fails or produces invalid data."""
 
         webhook_message = {
@@ -237,9 +231,7 @@ class TestE2EWebhookToDatabase:
 
         assert len(tasks.data) == 0
 
-    async def test_e2e_ambiguous_message_handling(
-        self, supabase_test_client, db_manager
-    ):
+    async def test_e2e_ambiguous_message_handling(self, supabase_test_client, db_manager):
         """Test handling of ambiguous messages that don't clearly indicate intent."""
 
         webhook_message = {
@@ -363,9 +355,7 @@ class TestE2EWebhookToDatabase:
 
         async def mock_get_completion(*args, **kwargs):
             nonlocal call_count
-            response = json.dumps(
-                mock_llm_responses[call_count % len(mock_llm_responses)]
-            )
+            response = json.dumps(mock_llm_responses[call_count % len(mock_llm_responses)])
             call_count += 1
             return response
 
@@ -381,15 +371,11 @@ class TestE2EWebhookToDatabase:
             router = KeywordRouter(supabase_test_client)
             router.llm_client = mock_llm
 
-            with patch(
-                "src.bot.webhook_bot.send_message", side_effect=mock_send_message
-            ):
+            with patch("src.bot.webhook_bot.send_message", side_effect=mock_send_message):
                 return await process_message(message)
 
         # Process messages concurrently
-        results = await asyncio.gather(
-            *[process_single_message(msg) for msg in webhook_messages]
-        )
+        results = await asyncio.gather(*[process_single_message(msg) for msg in webhook_messages])
 
         processing_time = time.time() - start_time
 
@@ -407,13 +393,9 @@ class TestE2EWebhookToDatabase:
         assert len(tasks.data) == 3
 
         # Performance assertion
-        assert (
-            processing_time < 20.0
-        ), f"E2E processing took {processing_time:.2f}s, expected < 20s"
+        assert processing_time < 20.0, f"E2E processing took {processing_time:.2f}s, expected < 20s"
 
-        print(
-            f"Processed {len(webhook_messages)} concurrent messages in {processing_time:.2f}s"
-        )
+        print(f"Processed {len(webhook_messages)} concurrent messages in {processing_time:.2f}s")
 
     async def test_e2e_message_persistence_and_logging(
         self, supabase_test_client, test_personnel, db_manager
@@ -483,9 +465,7 @@ class TestE2EWebhookToDatabase:
         assert created_task["priority"] == "High"
         assert created_task["assigned_to"] == test_personnel["id"]
 
-    async def test_e2e_failure_injection_llm_timeout(
-        self, supabase_test_client, test_personnel
-    ):
+    async def test_e2e_failure_injection_llm_timeout(self, supabase_test_client, test_personnel):
         """Test handling of LLM timeout during message processing."""
 
         webhook_message = {
@@ -500,7 +480,7 @@ class TestE2EWebhookToDatabase:
 
         async def timeout_completion(*args, **kwargs):
             await asyncio.sleep(0.1)  # Small delay
-            raise asyncio.TimeoutError("LLM request timed out")
+            raise TimeoutError("LLM request timed out")
 
         mock_llm.get_completion.side_effect = timeout_completion
 
@@ -554,9 +534,7 @@ class TestE2EWebhookToDatabase:
                 raise Exception("Database write failed for list_items")
             return original_insert(data)
 
-        monkeypatch.setattr(
-            supabase_test_client.table("list_items"), "insert", failing_insert
-        )
+        monkeypatch.setattr(supabase_test_client.table("list_items"), "insert", failing_insert)
 
         router = KeywordRouter(supabase_test_client)
         router.llm_client = mock_llm
@@ -636,9 +614,7 @@ class TestE2EWebhookToDatabase:
             router = KeywordRouter(supabase_test_client)
             router.llm_client = mock_llm
 
-            with patch(
-                "src.bot.webhook_bot.send_message", side_effect=mock_send_message
-            ):
+            with patch("src.bot.webhook_bot.send_message", side_effect=mock_send_message):
                 return await process_message(message)
 
         # Process both messages concurrently
@@ -663,9 +639,7 @@ class TestE2EWebhookToDatabase:
         # Should have 1 or 2 tasks (depending on race condition handling)
         assert len(tasks.data) in [1, 2]
 
-    async def test_e2e_failure_injection_malformed_json(
-        self, supabase_test_client, test_personnel
-    ):
+    async def test_e2e_failure_injection_malformed_json(self, supabase_test_client, test_personnel):
         """Test handling when LLM returns malformed JSON."""
 
         webhook_message = {
@@ -786,9 +760,7 @@ class TestE2EWebhookToDatabase:
                     break
                 except Exception as e:
                     if attempt == max_retries - 1:
-                        response_text = (
-                            f"❌ Failed after {max_retries} attempts: {str(e)}"
-                        )
+                        response_text = f"❌ Failed after {max_retries} attempts: {str(e)}"
                     else:
                         await asyncio.sleep(2**attempt)  # Exponential backoff
 
@@ -801,9 +773,7 @@ class TestE2EWebhookToDatabase:
         if call_count > 1:
             assert elapsed_time >= 1.0  # At least some backoff occurred
 
-    @pytest.mark.skipif(
-        not os.getenv("TEST_SUPABASE_URL"), reason="Test database not configured"
-    )
+    @pytest.mark.skipif(not os.getenv("TEST_SUPABASE_URL"), reason="Test database not configured")
     async def test_e2e_real_database_stress_test(
         self, supabase_test_client, test_personnel, db_manager
     ):
@@ -832,9 +802,7 @@ class TestE2EWebhookToDatabase:
                 }
             )
 
-        mock_llm.get_completion.side_effect = [
-            await generate_response(i) for i in range(10)
-        ]
+        mock_llm.get_completion.side_effect = [await generate_response(i) for i in range(10)]
 
         async def process_operation(op):
             router = KeywordRouter(supabase_test_client)
@@ -850,9 +818,7 @@ class TestE2EWebhookToDatabase:
             async def mock_send_message(chat_id, text, **kwargs):
                 return {"message_id": op["message_id"] + 1000, "text": text}
 
-            with patch(
-                "src.bot.webhook_bot.send_message", side_effect=mock_send_message
-            ):
+            with patch("src.bot.webhook_bot.send_message", side_effect=mock_send_message):
                 return await process_message(webhook_message)
 
         start_time = time.time()
@@ -868,9 +834,7 @@ class TestE2EWebhookToDatabase:
         successes = sum(1 for r in results if isinstance(r, str) and "✅" in r)
         failures = len(results) - successes
 
-        print(
-            f"Stress test: {successes} successes, {failures} failures in {elapsed_time:.2f}s"
-        )
+        print(f"Stress test: {successes} successes, {failures} failures in {elapsed_time:.2f}s")
 
         # At least 70% should succeed
         assert successes >= 7

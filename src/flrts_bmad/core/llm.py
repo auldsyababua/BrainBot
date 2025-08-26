@@ -145,14 +145,14 @@ class ConversationManager:
         """
         self.max_messages = max_messages
         self.ttl_seconds = ttl_hours * 3600
-        self.monitor: Optional[Any] = None
+        self.monitor: Any | None = None
 
     async def _ensure_monitor(self):
         """Ensure performance monitor is initialized."""
         if self.monitor is None:
             self.monitor = get_performance_monitor()
 
-    async def get_conversation_history(self, chat_id: str) -> List[Dict[str, str]]:
+    async def get_conversation_history(self, chat_id: str) -> list[dict[str, str]]:
         """Get conversation history with sliding window management."""
         # Memory optimization: Use weak references and limit object retention
         messages = await redis_store.get_conversation(chat_id)
@@ -217,7 +217,7 @@ class ConversationManager:
         logger = logging.getLogger(__name__)
         logger.info(f"Cleanup requested for conversations older than {days_inactive} days")
 
-    async def get_conversation_stats(self, chat_id: str) -> Dict[str, Any]:
+    async def get_conversation_stats(self, chat_id: str) -> dict[str, Any]:
         """Get statistics about a conversation."""
         messages = await redis_store.get_conversation(chat_id)
 
@@ -246,11 +246,11 @@ conversation_manager = ConversationManager(
 )
 
 # Cache for function results and schemas with memory limits
-_function_result_cache: Dict[str, Any] = {}
-_function_schema_cache: Optional[List[Dict[str, Any]]] = None
+_function_result_cache: dict[str, Any] = {}
+_function_schema_cache: list[dict[str, Any]] | None = None
 _MAX_CACHE_SIZE = 100
 _CACHE_TTL_SECONDS = 3600
-_cache_timestamps: Dict[str, float] = {}
+_cache_timestamps: dict[str, float] = {}
 
 # Initialize the Rails KeywordRouter and DynamicPromptGenerator
 try:
@@ -258,11 +258,11 @@ try:
     from storage.storage_service import DocumentStorage
 
     storage = DocumentStorage()
-    keyword_router: Optional[KeywordRouter] = KeywordRouter(supabase_client=storage.supabase)
+    keyword_router: KeywordRouter | None = KeywordRouter(supabase_client=storage.supabase)
     # Load user aliases asynchronously on first use
 
     # Initialize dynamic prompt generator for T2.1.2
-    prompt_generator: Optional[DynamicPromptGenerator] = DynamicPromptGenerator()
+    prompt_generator: DynamicPromptGenerator | None = DynamicPromptGenerator()
 except Exception as e:
     logging.getLogger(__name__).error(f"Failed to initialize Rails components: {e}")
     keyword_router = None
@@ -270,8 +270,8 @@ except Exception as e:
 
 
 async def get_conversation_history(
-    chat_id: str, max_messages: Optional[int] = None
-) -> List[Dict[str, str]]:
+    chat_id: str, max_messages: int | None = None
+) -> list[dict[str, str]]:
     """Get conversation history for a chat.
 
     This is a compatibility wrapper for the new ConversationManager.
@@ -320,7 +320,7 @@ async def restore_conversation(chat_id: str) -> bool:
     return False
 
 
-async def search_knowledge_base(query: str, chat_id: Optional[str] = None) -> List[Dict]:
+async def search_knowledge_base(query: str, chat_id: str | None = None) -> list[dict]:
     """Search the vector knowledge base for relevant context with full document retrieval."""
     logger = logging.getLogger(__name__)
     try:
@@ -360,8 +360,8 @@ async def search_knowledge_base(query: str, chat_id: Optional[str] = None) -> Li
 
 
 async def _process_rails_command(
-    route_result: RouteResult, chat_id: str, original_message: Optional[str] = None
-) -> Optional[str]:
+    route_result: RouteResult, chat_id: str, original_message: str | None = None
+) -> str | None:
     """
     Process a command routed by the KeywordRouter.
 
@@ -391,7 +391,7 @@ async def _process_rails_command(
         # Import and instantiate the appropriate processor
         from src.rails.processors.base_processor import BaseProcessor
 
-        processor_instance: Optional[BaseProcessor] = None
+        processor_instance: BaseProcessor | None = None
 
         if storage and storage.supabase:
             if entity_type == "lists":
@@ -799,8 +799,8 @@ def is_uuid(value: str) -> bool:
 
 
 async def resolve_document_reference(
-    reference: Optional[str],
-) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+    reference: str | None,
+) -> tuple[str | None, str | None, str | None]:
     """Resolve a document reference to (file_path, document_id, content).
 
     Args:
@@ -852,7 +852,7 @@ async def resolve_document_reference(
         return None, None, None
 
 
-def _get_optimized_functions(messages: List[Dict[str, str]]) -> List[Dict[str, Any]]:
+def _get_optimized_functions(messages: list[dict[str, str]]) -> list[dict[str, Any]]:
     """Return optimized function definitions based on context."""
     global _function_schema_cache
 
@@ -904,7 +904,7 @@ def _create_weakref_safe_copy(obj):
     return obj
 
 
-def _determine_missing_fields(route_result: RouteResult) -> List[str]:
+def _determine_missing_fields(route_result: RouteResult) -> list[str]:
     """Determine which required fields are missing from the route result.
 
     T2.1.2: Helper function to identify missing fields for dynamic prompting.
@@ -947,7 +947,7 @@ def _determine_missing_fields(route_result: RouteResult) -> List[str]:
     return missing
 
 
-async def execute_function(function_name: str, args: Dict[str, Any]) -> Dict[str, Any]:
+async def execute_function(function_name: str, args: dict[str, Any]) -> dict[str, Any]:
     """Execute a function based on GPT's decision."""
     try:
         if function_name == "create_document":

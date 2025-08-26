@@ -62,9 +62,7 @@ def main():
     parser.add_argument("--all", action="store_true", help="Run all integration tests")
 
     # Test options
-    parser.add_argument(
-        "--performance", action="store_true", help="Include performance tests"
-    )
+    parser.add_argument("--performance", action="store_true", help="Include performance tests")
     parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
     parser.add_argument("--failfast", action="store_true", help="Stop on first failure")
 

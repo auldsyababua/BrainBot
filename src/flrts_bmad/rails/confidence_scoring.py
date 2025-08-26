@@ -27,7 +27,7 @@ class ConfidenceFactors:
     entity_disambiguation: float = 0.0  # How clear the entity type is
     operation_disambiguation: float = 0.0  # How clear the operation is
 
-    def calculate_weighted_score(self, weights: Dict[str, float] = None) -> float:
+    def calculate_weighted_score(self, weights: dict[str, float] = None) -> float:
         """Calculate weighted confidence score."""
         default_weights = {
             "pattern_match_strength": 0.25,
@@ -136,11 +136,11 @@ class EnhancedConfidenceScorer:
     def calculate_confidence(
         self,
         message: str,
-        entity_type: Optional[str],
-        operation: Optional[str],
-        extracted_data: Dict[str, Any],
-        keyword_match: Optional[re.Match] = None,
-    ) -> Tuple[float, ConfidenceFactors]:
+        entity_type: str | None,
+        operation: str | None,
+        extracted_data: dict[str, Any],
+        keyword_match: re.Match | None = None,
+    ) -> tuple[float, ConfidenceFactors]:
         """Calculate confidence score with detailed factor analysis.
 
         T2.1.1: Enhanced confidence scoring that considers multiple factors
@@ -265,8 +265,8 @@ class EnhancedConfidenceScorer:
         return confidence, factors
 
     def _get_required_fields(
-        self, entity_type: Optional[str], operation: Optional[str]
-    ) -> List[str]:
+        self, entity_type: str | None, operation: str | None
+    ) -> list[str]:
         """Get required fields for an entity-operation pair."""
         requirements = {
             ("lists", "create"): ["list_name", "list_type"],
@@ -284,7 +284,7 @@ class EnhancedConfidenceScorer:
         return requirements.get((entity_type, operation), [])
 
     def _calculate_entity_clarity(
-        self, message: str, entity_type: str, extracted_data: Dict[str, Any]
+        self, message: str, entity_type: str, extracted_data: dict[str, Any]
     ) -> float:
         """Calculate how clearly the entity type is indicated."""
         clarity = 0.5  # Base score

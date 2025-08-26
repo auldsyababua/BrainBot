@@ -16,7 +16,7 @@ class BaseProcessor:
         self._cache_timestamps = {}
         self.cache_ttl = 300  # 5 minutes
 
-    def _get_cached(self, key: str) -> Optional[Any]:
+    def _get_cached(self, key: str) -> Any | None:
         """Get cached value if still valid."""
         if key in self._cache:
             timestamp = self._cache_timestamps.get(key)
@@ -41,8 +41,8 @@ class BaseProcessor:
             return default
 
     async def validate_operation(
-        self, operation: str, data: Dict[str, Any], user_role: str
-    ) -> Tuple[bool, str]:
+        self, operation: str, data: dict[str, Any], user_role: str
+    ) -> tuple[bool, str]:
         """Base validation method to be overridden by subclasses."""
         raise NotImplementedError("Subclasses must implement validate_operation")
 
@@ -50,7 +50,7 @@ class BaseProcessor:
         """Base extraction schema method to be overridden by subclasses."""
         raise NotImplementedError("Subclasses must implement get_extraction_schema")
 
-    def get_dynamic_extraction_schema(self, operation: str, prefilled_data: Dict[str, Any]) -> str:
+    def get_dynamic_extraction_schema(self, operation: str, prefilled_data: dict[str, Any]) -> str:
         """Generate dynamic extraction schema based on prefilled data.
 
         This method should be overridden by subclasses to provide operation-specific

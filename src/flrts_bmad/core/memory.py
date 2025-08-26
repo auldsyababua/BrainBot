@@ -142,7 +142,7 @@ class BotMemory:
 
             # Configure webhook if provided
             self.webhook_url = os.getenv("MEM0_WEBHOOK_URL")
-            self.webhook_headers: Dict[str, str] = {}
+            self.webhook_headers: dict[str, str] = {}
             if self.webhook_url:
                 webhook_token = os.getenv("MEM0_WEBHOOK_TOKEN")
                 if webhook_token:
@@ -188,8 +188,8 @@ class BotMemory:
             self.webhook_url = None
 
     async def remember_from_conversation(
-        self, messages: List[Dict], user_id: str
-    ) -> Optional[Dict]:
+        self, messages: list[dict], user_id: str
+    ) -> dict | None:
         """Extract and store important memories from a conversation.
 
         Args:
@@ -222,7 +222,7 @@ class BotMemory:
             logger.error(f"Error storing memories: {e}")
             return None
 
-    async def recall_context(self, query: str, user_id: str, limit: int = 5) -> List[Dict]:
+    async def recall_context(self, query: str, user_id: str, limit: int = 5) -> list[dict]:
         """Retrieve relevant memories for the current context.
 
         Args:
@@ -342,7 +342,7 @@ class BotMemory:
         except Exception as e:
             logger.error(f"Error storing correction: {e}")
 
-    async def get_all_memories(self, user_id: str, memory_type: Optional[str] = None) -> List[Dict]:
+    async def get_all_memories(self, user_id: str, memory_type: str | None = None) -> list[dict]:
         """Retrieve all memories for a user, optionally filtered by type.
 
         Args:
@@ -374,7 +374,7 @@ class BotMemory:
             logger.error(f"Error getting all memories: {e}")
             return []
 
-    async def forget_memories(self, user_id: str, memory_ids: Optional[List[str]] = None):
+    async def forget_memories(self, user_id: str, memory_ids: list[str] | None = None):
         """Delete specific memories or all memories for a user.
 
         Args:
@@ -416,7 +416,7 @@ class BotMemory:
         except Exception as e:
             logger.error(f"Error deleting memories: {e}")
 
-    async def extract_entities_from_text(self, text: str, user_id: str) -> Dict[str, List[str]]:
+    async def extract_entities_from_text(self, text: str, user_id: str) -> dict[str, list[str]]:
         """Extract and store entities (locations, equipment, etc.) from text.
 
         Args:
@@ -462,8 +462,8 @@ class BotMemory:
         return entities
 
     async def get_graph_relationships(
-        self, user_id: str, entity: Optional[str] = None
-    ) -> List[Dict[str, Any]]:
+        self, user_id: str, entity: str | None = None
+    ) -> list[dict[str, Any]]:
         """Retrieve relationship data from graph memory.
 
         Args:
@@ -504,8 +504,8 @@ class BotMemory:
         source_entity: str,
         relationship: str,
         target_entity: str,
-        metadata: Optional[Dict[str, Any]] = None,
-    ) -> Optional[Dict]:
+        metadata: dict[str, Any] | None = None,
+    ) -> dict | None:
         """Store an explicit relationship between entities in the graph.
 
         Args:
@@ -571,9 +571,9 @@ class BotMemory:
         self,
         user_id: str,
         entity: str,
-        relationship_types: Optional[List[str]] = None,
+        relationship_types: list[str] | None = None,
         max_depth: int = 2,
-    ) -> Dict[str, List[Dict[str, Any]]]:
+    ) -> dict[str, list[dict[str, Any]]]:
         """Find entities related to a given entity through graph traversal.
 
         Args:
@@ -595,7 +595,7 @@ class BotMemory:
             )
 
             # Organize results by relationship type
-            relationships: Dict[str, Any] = {}
+            relationships: dict[str, Any] = {}
 
             for memory in related_memories:
                 if memory.get("metadata", {}).get("type") == "relationship":
@@ -635,7 +635,7 @@ class BotMemory:
         entity: str,
         include_relationships: bool = True,
         include_mentions: bool = True,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Get comprehensive context about an entity from both vector and graph memory.
 
         Args:
@@ -689,7 +689,7 @@ class BotMemory:
 
     async def suggest_connections(
         self, user_id: str, entity: str, limit: int = 5
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Suggest potential connections for an entity based on context analysis.
 
         Args:
@@ -708,7 +708,7 @@ class BotMemory:
             context = await self.get_entity_context(user_id, entity)
 
             # Find entities that appear in similar contexts
-            similar_entities: Dict[str, Any] = {}
+            similar_entities: dict[str, Any] = {}
 
             for mention in context["direct_mentions"]:
                 # Extract other entities from the same memory
@@ -750,8 +750,8 @@ class BotMemory:
             return []
 
     async def build_knowledge_graph(
-        self, user_id: str, entity_types: Optional[List[str]] = None
-    ) -> Dict[str, Any]:
+        self, user_id: str, entity_types: list[str] | None = None
+    ) -> dict[str, Any]:
         """Build a knowledge graph representation of the user's memory.
 
         Args:
@@ -768,7 +768,7 @@ class BotMemory:
             # Get all memories for the user
             all_memories = await self.get_all_memories(user_id)
 
-            nodes: Dict[str, Any] = {}  # entity -> node data
+            nodes: dict[str, Any] = {}  # entity -> node data
             edges = []  # list of edge data
 
             # Process relationship memories
@@ -934,7 +934,7 @@ class BotMemory:
         include_related: bool = True,
         relationship_depth: int = 1,
         limit: int = 10,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Perform hybrid search combining vector similarity and graph relationships.
 
         Args:
@@ -1016,7 +1016,7 @@ class BotMemory:
             logger.error(f"Error in hybrid search: {e}")
             return []
 
-    async def get_memory_stats(self, user_id: str) -> Dict[str, Any]:
+    async def get_memory_stats(self, user_id: str) -> dict[str, Any]:
         """Get statistics about stored memories.
 
         Args:
@@ -1070,7 +1070,7 @@ class BotMemory:
                     )
 
                 # Top entities by connection count
-                entity_connections: Dict[str, Any] = {}
+                entity_connections: dict[str, Any] = {}
                 for edge in knowledge_graph["edges"]:
                     source = edge.get("source")
                     target = edge.get("target")
@@ -1103,8 +1103,8 @@ class BotMemory:
         return stats
 
     async def batch_add_memories(
-        self, memory_items: List[Dict[str, Any]], user_id: str
-    ) -> List[Dict]:
+        self, memory_items: list[dict[str, Any]], user_id: str
+    ) -> list[dict]:
         """Add multiple memories in batch for better performance.
 
         Args:
@@ -1187,7 +1187,7 @@ class BotMemory:
             )
             return []
 
-    async def _add_single_memory(self, item: Dict[str, Any], user_id: str) -> Dict:
+    async def _add_single_memory(self, item: dict[str, Any], user_id: str) -> dict:
         """Add a single memory item."""
         try:
             return self.memory.add(
@@ -1218,7 +1218,7 @@ class BotMemory:
 
             if self.deduplicate_memories:
                 # Find and merge duplicate memories
-                seen_content: Dict[str, Any] = {}
+                seen_content: dict[str, Any] = {}
                 duplicates = []
 
                 for mem in memories:
@@ -1260,7 +1260,7 @@ class BotMemory:
                 data={"operation": "optimize_memories", "error": str(e)},
             )
 
-    async def get_memory_insights(self, user_id: str) -> Dict[str, Any]:
+    async def get_memory_insights(self, user_id: str) -> dict[str, Any]:
         """Get insights about user's memory patterns.
 
         Args:
@@ -1280,7 +1280,7 @@ class BotMemory:
             memories = await self.get_all_memories(user_id)
 
             # Analyze memory categories
-            category_counts: Dict[str, Any] = {}
+            category_counts: dict[str, Any] = {}
             for mem in memories:
                 category = mem.get("metadata", {}).get("category", "general")
                 category_counts[category] = category_counts.get(category, 0) + 1
@@ -1294,7 +1294,7 @@ class BotMemory:
             if self.has_graph:
                 relationships = await self.get_graph_relationships(user_id)
                 # Extract key relationships
-                relationship_counts: Dict[str, Any] = {}
+                relationship_counts: dict[str, Any] = {}
                 for rel in relationships[:20]:  # Top 20 relationships
                     if isinstance(rel, dict):
                         rel_type = rel.get("type", "unknown")
@@ -1320,9 +1320,9 @@ class BotMemory:
 
         await memory_webhook_handler.send_webhook(event=webhook_event, user_id=user_id, data=data)
 
-    def get_user_config(self, user_id: str) -> Dict[str, Any]:
+    def get_user_config(self, user_id: str) -> dict[str, Any]:
         """Get user-specific memory configuration from environment."""
-        user_config: Dict[str, Any] = {}
+        user_config: dict[str, Any] = {}
 
         # Check for user-specific settings
         user_prefix = f"MEM0_USER_{user_id.upper()}_"

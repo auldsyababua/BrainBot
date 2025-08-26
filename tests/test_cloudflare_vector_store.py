@@ -52,9 +52,7 @@ def mock_openai():
 @pytest.fixture
 async def vector_store(mock_env, mock_openai):
     """Create a CloudflareVectorStore instance for testing."""
-    with patch(
-        "src.storage.cloudflare_vector_store.get_performance_monitor"
-    ) as mock_monitor:
+    with patch("src.storage.cloudflare_vector_store.get_performance_monitor") as mock_monitor:
         mock_monitor.return_value = None  # Disable performance monitoring in tests
         store = CloudflareVectorStore()
         return store
@@ -246,9 +244,7 @@ async def test_singleton_pattern(mock_env):
         mock_client.embeddings.create.return_value = mock_response
         mock_openai_class.return_value = mock_client
 
-        with patch(
-            "src.storage.cloudflare_vector_store.get_performance_monitor"
-        ) as mock_monitor:
+        with patch("src.storage.cloudflare_vector_store.get_performance_monitor") as mock_monitor:
             mock_monitor.return_value = None  # Disable performance monitoring
             from src.storage.cloudflare_vector_store import cloudflare_vector_store
 

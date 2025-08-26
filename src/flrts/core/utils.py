@@ -5,7 +5,7 @@ from typing import Any, Dict
 import yaml
 
 
-def parse_frontmatter(content: str) -> tuple[Dict[str, Any], str]:
+def parse_frontmatter(content: str) -> tuple[dict[str, Any], str]:
     """Parse YAML frontmatter from markdown content."""
     if content.startswith("---\n"):
         try:

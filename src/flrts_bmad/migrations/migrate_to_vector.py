@@ -21,7 +21,7 @@ NOTES_FOLDER = os.getenv("NOTES_FOLDER", "10nz_kb")
 TARGET_FOLDER = os.getenv("MIGRATION_FOLDER", "CompanyDocs")
 
 
-def extract_frontmatter(content: str) -> Tuple[Dict, str]:
+def extract_frontmatter(content: str) -> tuple[dict, str]:
     """Extract YAML frontmatter and content from markdown file."""
     if content.startswith("---\n"):
         try:
@@ -45,7 +45,7 @@ async def migrate_file(file_path: str) -> bool:
     """Migrate a single markdown file to vector database."""
     try:
         # Read file content
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             full_content = f.read()
         if not full_content:
             print(f"⚠️  Skipping empty file: {file_path}")
@@ -105,7 +105,7 @@ async def migrate_file_chunked(
     """
     try:
         # Read file content
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             full_content = f.read()
         if not full_content:
             print(f"⚠️  Skipping empty file: {file_path}")
@@ -167,7 +167,7 @@ async def migrate_file_chunked(
         return 0
 
 
-async def get_10netzero_files() -> List[str]:
+async def get_10netzero_files() -> list[str]:
     """Get all markdown files in the 10NetZero folder."""
     target_path = os.path.join(NOTES_FOLDER, TARGET_FOLDER)
 

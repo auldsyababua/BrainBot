@@ -39,10 +39,7 @@ class TestWebhookEndpoints:
             assert data["status"] == "ok"
             assert "webhook_config" in data
             assert data["webhook_config"]["enabled"] is True
-            assert (
-                data["webhook_config"]["webhook_url"]
-                == "https://test.example.com/webhook"
-            )
+            assert data["webhook_config"]["webhook_url"] == "https://test.example.com/webhook"
 
     def test_memory_webhook_test_endpoint(self):
         """Test memory webhook test endpoint."""

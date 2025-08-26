@@ -18,8 +18,8 @@ class ChunkMetadata:
     total_chunks: int
     start_char: int
     end_char: int
-    title: Optional[str] = None
-    type: Optional[str] = None
+    title: str | None = None
+    type: str | None = None
 
 
 class DocumentChunker:
@@ -29,7 +29,7 @@ class DocumentChunker:
         self,
         chunk_size: int = 1000,
         chunk_overlap: int = 200,
-        separators: Optional[List[str]] = None,
+        separators: list[str] | None = None,
         keep_separator: bool = True,
     ):
         """
@@ -63,7 +63,7 @@ class DocumentChunker:
             "",  # Characters
         ]
 
-    def chunk_document(self, content: str, metadata: Dict) -> List[Tuple[str, Dict]]:
+    def chunk_document(self, content: str, metadata: dict) -> list[tuple[str, dict]]:
         """
         Split document into overlapping chunks.
 
@@ -107,7 +107,7 @@ class DocumentChunker:
 
         return result
 
-    def _split_text(self, text: str) -> List[str]:
+    def _split_text(self, text: str) -> list[str]:
         """
         Recursively split text using the configured separators.
 
@@ -147,7 +147,7 @@ class DocumentChunker:
 
         return final_chunks
 
-    def _split_by_separator(self, text: str, separator: str) -> List[str]:
+    def _split_by_separator(self, text: str, separator: str) -> list[str]:
         """
         Split text by a specific separator.
 
@@ -176,7 +176,7 @@ class DocumentChunker:
         else:
             return [s for s in text.split(separator) if s]
 
-    def _split_by_character(self, texts: List[str]) -> List[str]:
+    def _split_by_character(self, texts: list[str]) -> list[str]:
         """
         Split texts by character count as a last resort.
 
@@ -198,7 +198,7 @@ class DocumentChunker:
                         result.append(chunk)
         return result
 
-    def _merge_and_overlap(self, splits: List[str]) -> List[str]:
+    def _merge_and_overlap(self, splits: list[str]) -> list[str]:
         """
         Merge small splits and add overlap between chunks.
 
@@ -241,10 +241,10 @@ class DocumentChunker:
 def chunk_markdown_document(
     content: str,
     file_path: str,
-    metadata: Optional[Dict] = None,
+    metadata: dict | None = None,
     chunk_size: int = 1000,
     chunk_overlap: int = 200,
-) -> List[Tuple[str, Dict]]:
+) -> list[tuple[str, dict]]:
     """
     Convenience function to chunk a markdown document.
 

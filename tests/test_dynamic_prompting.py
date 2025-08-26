@@ -324,8 +324,7 @@ class TestIntegrationWithRouter:
             operation=route_result.operation,
             extracted_data=route_result.extracted_data or {},
             confidence_scores={
-                "entity_confidence": route_result.entity_confidence
-                or route_result.confidence,
+                "entity_confidence": route_result.entity_confidence or route_result.confidence,
                 "operation_confidence": route_result.operation_confidence
                 or route_result.confidence,
             },
@@ -361,8 +360,7 @@ class TestIntegrationWithRouter:
                 operation=route_result.operation,
                 extracted_data=route_result.extracted_data or {},
                 confidence_scores={
-                    "entity_confidence": route_result.entity_confidence
-                    or route_result.confidence,
+                    "entity_confidence": route_result.entity_confidence or route_result.confidence,
                     "operation_confidence": route_result.operation_confidence
                     or route_result.confidence,
                 },

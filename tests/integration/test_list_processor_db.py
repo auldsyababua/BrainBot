@@ -329,10 +329,7 @@ class TestListProcessorDatabaseIntegration:
 
         # Verify list status changed
         updated_list = (
-            await db_manager.client.table("lists")
-            .select("*")
-            .eq("id", test_list["id"])
-            .execute()
+            await db_manager.client.table("lists").select("*").eq("id", test_list["id"]).execute()
         )
 
         assert len(updated_list.data) == 1
@@ -364,11 +361,7 @@ class TestListProcessorDatabaseIntegration:
         )
 
         # Should either prevent duplicate or modify name
-        assert (
-            "exists" in result.lower()
-            or "duplicate" in result.lower()
-            or "✅" in result
-        )
+        assert "exists" in result.lower() or "duplicate" in result.lower() or "✅" in result
 
     @pytest.mark.performance
     async def test_large_list_performance(self, list_processor, db_manager):
@@ -652,10 +645,7 @@ class TestListProcessorDatabaseIntegration:
 
         # Verify name changed
         updated_list = (
-            await db_manager.client.table("lists")
-            .select("*")
-            .eq("id", test_list["id"])
-            .execute()
+            await db_manager.client.table("lists").select("*").eq("id", test_list["id"]).execute()
         )
 
         assert len(updated_list.data) == 1
@@ -683,18 +673,11 @@ class TestListProcessorDatabaseIntegration:
         )
 
         # Should be prevented
-        assert (
-            "❌" in result
-            or "denied" in result.lower()
-            or "protected" in result.lower()
-        )
+        assert "❌" in result or "denied" in result.lower() or "protected" in result.lower()
 
         # Verify list still exists
         list_check = (
-            await db_manager.client.table("lists")
-            .select("*")
-            .eq("id", site_list["id"])
-            .execute()
+            await db_manager.client.table("lists").select("*").eq("id", site_list["id"]).execute()
         )
 
         assert len(list_check.data) == 1
@@ -758,9 +741,7 @@ class TestListProcessorDatabaseIntegration:
         async def network_error(*args, **kwargs):
             raise ConnectionError("Network is unreachable")
 
-        monkeypatch.setattr(
-            list_processor.supabase.table("sites"), "select", network_error
-        )
+        monkeypatch.setattr(list_processor.supabase.table("sites"), "select", network_error)
 
         result = await list_processor.process(
             {
@@ -775,9 +756,7 @@ class TestListProcessorDatabaseIntegration:
         assert "❌" in result or "error" in result.lower()
         assert "database" in result.lower() or "network" in result.lower()
 
-    @pytest.mark.skipif(
-        not os.getenv("TEST_SUPABASE_URL"), reason="Test database not configured"
-    )
+    @pytest.mark.skipif(not os.getenv("TEST_SUPABASE_URL"), reason="Test database not configured")
     async def test_real_database_connection(self, supabase_test_client):
         """Test actual database connectivity for lists table."""
 

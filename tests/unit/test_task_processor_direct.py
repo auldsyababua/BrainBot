@@ -79,14 +79,10 @@ class TestTaskProcessorDirectExecution:
         """Test successful task completion via direct execution."""
         # Setup mock responses
         find_response = Mock()
-        find_response.data = [
-            {"id": "task-123", "title": "Test Task", "status": "To Do"}
-        ]
+        find_response.data = [{"id": "task-123", "title": "Test Task", "status": "To Do"}]
 
         update_response = Mock()
-        update_response.data = [
-            {"id": "task-123", "title": "Test Task", "status": "Completed"}
-        ]
+        update_response.data = [{"id": "task-123", "title": "Test Task", "status": "Completed"}]
 
         mock_supabase.execute.side_effect = [find_response, update_response]
 
@@ -128,9 +124,7 @@ class TestTaskProcessorDirectExecution:
         """Test successful task reassignment."""
         # Setup mock responses
         find_task = Mock()
-        find_task.data = [
-            {"id": "task-123", "title": "Test Task", "assigned_to": "user-old"}
-        ]
+        find_task.data = [{"id": "task-123", "title": "Test Task", "assigned_to": "user-old"}]
 
         find_user = Mock()
         find_user.data = [{"id": "user-new", "first_name": "NewUser", "aliases": []}]
@@ -158,9 +152,7 @@ class TestTaskProcessorDirectExecution:
         """Test successful task rescheduling."""
         # Setup mock responses
         find_response = Mock()
-        find_response.data = [
-            {"id": "task-123", "title": "Test Task", "due_date": "2024-01-01"}
-        ]
+        find_response.data = [{"id": "task-123", "title": "Test Task", "due_date": "2024-01-01"}]
 
         update_response = Mock()
         update_response.data = [{"id": "task-123"}]
@@ -185,9 +177,7 @@ class TestTaskProcessorDirectExecution:
         """Test adding notes to a task."""
         # Setup mock responses
         find_response = Mock()
-        find_response.data = [
-            {"id": "task-123", "title": "Test Task", "notes": "Original notes"}
-        ]
+        find_response.data = [{"id": "task-123", "title": "Test Task", "notes": "Original notes"}]
 
         update_response = Mock()
         update_response.data = [{"id": "task-123"}]
@@ -280,9 +270,7 @@ class TestTaskProcessorDirectExecution:
     @pytest.mark.asyncio
     async def test_performance_benchmark(self, task_processor, mock_supabase):
         """Test that operations are benchmarked."""
-        with patch(
-            "src.rails.processors.task_processor.async_benchmark"
-        ) as mock_benchmark:
+        with patch("src.rails.processors.task_processor.async_benchmark") as mock_benchmark:
             # Setup mock response
             mock_response = Mock()
             mock_response.data = [{"id": "task-123"}]

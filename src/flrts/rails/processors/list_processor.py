@@ -89,8 +89,8 @@ class ListProcessor(BaseProcessor):
             raise KeyError(f"Unknown operation: {operation}")
 
     async def validate_operation(
-        self, operation: str, data: Dict[str, Any], user_role: str = "user"
-    ) -> Tuple[bool, str]:
+        self, operation: str, data: dict[str, Any], user_role: str = "user"
+    ) -> tuple[bool, str]:
         """Validate if operation is allowed and data is complete."""
 
         if operation is None:
@@ -189,7 +189,7 @@ class ListProcessor(BaseProcessor):
 
         return boost
 
-    def get_dynamic_extraction_schema(self, operation: str, prefilled_data: Dict[str, Any]) -> str:
+    def get_dynamic_extraction_schema(self, operation: str, prefilled_data: dict[str, Any]) -> str:
         """Generate dynamic extraction schema based on prefilled data."""
 
         if operation == "create":
@@ -259,8 +259,8 @@ class ListProcessor(BaseProcessor):
     @async_benchmark("list_direct_execution")
     @log_direct_execution_performance(production_logger)
     async def execute_direct(
-        self, operation: str, extracted_data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+        self, operation: str, extracted_data: dict[str, Any], user_id: str
+    ) -> dict[str, Any]:
         """
         Execute list operation directly without LLM.
 
@@ -325,7 +325,7 @@ class ListProcessor(BaseProcessor):
                 "execution_time": time.perf_counter() - start_time,
             }
 
-    async def _execute_create(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_create(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute list creation."""
         try:
             # Build list data
@@ -377,7 +377,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error creating list: {e}")
             return {"success": False, "error": f"Failed to create list: {str(e)}"}
 
-    async def _execute_add_items(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_add_items(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute adding items to a list."""
         try:
             # Find the list
@@ -417,7 +417,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error adding items to list: {e}")
             return {"success": False, "error": f"Failed to add items: {str(e)}"}
 
-    async def _execute_remove_items(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_remove_items(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute removing items from a list."""
         try:
             # Find the list
@@ -452,7 +452,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error removing items from list: {e}")
             return {"success": False, "error": f"Failed to remove items: {str(e)}"}
 
-    async def _execute_rename(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_rename(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute list renaming."""
         try:
             # Find the list
@@ -484,7 +484,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error renaming list: {e}")
             return {"success": False, "error": f"Failed to rename list: {str(e)}"}
 
-    async def _execute_clear(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_clear(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute clearing all items from a list."""
         try:
             # Find the list
@@ -513,7 +513,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error clearing list: {e}")
             return {"success": False, "error": f"Failed to clear list: {str(e)}"}
 
-    async def _execute_read(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_read(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute reading/displaying a list."""
         try:
             # Find the list
@@ -559,7 +559,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error reading list: {e}")
             return {"success": False, "error": f"Failed to read list: {str(e)}"}
 
-    async def _execute_delete(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_delete(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute list deletion."""
         try:
             # Find the list
@@ -593,7 +593,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error deleting list: {e}")
             return {"success": False, "error": f"Failed to delete list: {str(e)}"}
 
-    async def _find_list_by_name(self, name: str) -> Optional[Dict[str, Any]]:
+    async def _find_list_by_name(self, name: str) -> dict[str, Any] | None:
         """Find a list by name (case-insensitive)."""
         if not name:
             return None

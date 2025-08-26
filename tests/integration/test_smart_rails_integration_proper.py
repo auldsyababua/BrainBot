@@ -103,9 +103,7 @@ class TestEndToEndMessageFlow:
             extracted_data=route_result.extracted_data,
             confidence_scores={"entity_confidence": 0.8, "operation_confidence": 0.8},
             missing_fields=(
-                ["list_name"]
-                if "suggested_name" not in route_result.extracted_data
-                else []
+                ["list_name"] if "suggested_name" not in route_result.extracted_data else []
             ),
         )
 

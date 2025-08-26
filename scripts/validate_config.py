@@ -16,8 +16,8 @@ class ConfigValidator:
     """Validates production configuration."""
 
     def __init__(self):
-        self.errors: List[str] = []
-        self.warnings: List[str] = []
+        self.errors: list[str] = []
+        self.warnings: list[str] = []
         self.env_vars = dict(os.environ)
 
     def validate_required_vars(self) -> None:
@@ -143,7 +143,7 @@ class ConfigValidator:
         except ValueError:
             self.warnings.append("MAX_TOKENS should be a number")
 
-    def validate_all(self) -> Tuple[List[str], List[str]]:
+    def validate_all(self) -> tuple[list[str], list[str]]:
         """Run all validations and return errors and warnings."""
         self.validate_required_vars()
         self.validate_telegram_config()

@@ -54,12 +54,12 @@ class DocumentStorage:
         self,
         file_path: str,
         content: str,
-        metadata: Optional[Dict[str, Any]] = None,
-        category: Optional[str] = None,
-        tags: Optional[List[str]] = None,
+        metadata: dict[str, Any] | None = None,
+        category: str | None = None,
+        tags: list[str] | None = None,
         is_public: bool = False,
-        telegram_chat_id: Optional[int] = None,
-        telegram_user_id: Optional[int] = None,
+        telegram_chat_id: int | None = None,
+        telegram_user_id: int | None = None,
         created_by: str = "manual",
         allow_update: bool = True,
     ) -> str:
@@ -198,14 +198,14 @@ class DocumentStorage:
         self,
         file_path: str,
         content: str,
-        metadata: Optional[Dict[str, Any]] = None,
-        category: Optional[str] = None,
-        tags: Optional[List[str]] = None,
+        metadata: dict[str, Any] | None = None,
+        category: str | None = None,
+        tags: list[str] | None = None,
         is_public: bool = False,
-        telegram_chat_id: Optional[int] = None,
-        telegram_user_id: Optional[int] = None,
+        telegram_chat_id: int | None = None,
+        telegram_user_id: int | None = None,
         created_by: str = "manual",
-    ) -> Optional[Dict[str, Any]]:
+    ) -> dict[str, Any] | None:
         """
         Store a document in Supabase and return the full document data.
 
@@ -239,7 +239,7 @@ class DocumentStorage:
             logger.error(f"Error in store_and_return_document: {e}")
             return None
 
-    async def get_document(self, file_path: str) -> Optional[Dict[str, Any]]:
+    async def get_document(self, file_path: str) -> dict[str, Any] | None:
         """
         Retrieve a document by file path with caching
         """
@@ -285,7 +285,7 @@ class DocumentStorage:
             logger.error(f"Error retrieving document: {e}")
             return None
 
-    async def get_document_by_id(self, doc_id: str) -> Optional[Dict[str, Any]]:
+    async def get_document_by_id(self, doc_id: str) -> dict[str, Any] | None:
         """
         Retrieve a document by ID with caching
         """
@@ -324,7 +324,7 @@ class DocumentStorage:
             logger.error(f"Error retrieving document by ID: {e}")
             return None
 
-    async def get_documents_by_ids(self, doc_ids: List[str]) -> List[Dict[str, Any]]:
+    async def get_documents_by_ids(self, doc_ids: list[str]) -> list[dict[str, Any]]:
         """
         Retrieve multiple documents by their IDs in a single query
         """
@@ -370,7 +370,7 @@ class DocumentStorage:
             logger.error(f"Error retrieving documents by IDs: {e}")
             return []
 
-    async def get_documents_by_paths(self, file_paths: List[str]) -> List[Dict[str, Any]]:
+    async def get_documents_by_paths(self, file_paths: list[str]) -> list[dict[str, Any]]:
         """
         Retrieve multiple documents by their file paths in a single query
         """
@@ -417,7 +417,7 @@ class DocumentStorage:
             return []
 
     async def update_document_by_id(
-        self, doc_id: str, content: str, metadata: Optional[Dict[str, Any]] = None
+        self, doc_id: str, content: str, metadata: dict[str, Any] | None = None
     ) -> bool:
         """
         Update an existing document by ID, creating a new version
@@ -433,7 +433,7 @@ class DocumentStorage:
         return await self._atomic_update_document(doc_id=doc_id, content=content, metadata=metadata)
 
     async def update_document(
-        self, file_path: str, content: str, metadata: Optional[Dict[str, Any]] = None
+        self, file_path: str, content: str, metadata: dict[str, Any] | None = None
     ) -> bool:
         """
         Update an existing document, creating a new version
@@ -463,13 +463,13 @@ class DocumentStorage:
 
     async def search_documents(
         self,
-        query: Optional[str] = None,
-        category: Optional[str] = None,
-        tags: Optional[List[str]] = None,
-        telegram_chat_id: Optional[int] = None,
-        is_public: Optional[bool] = None,
+        query: str | None = None,
+        category: str | None = None,
+        tags: list[str] | None = None,
+        telegram_chat_id: int | None = None,
+        is_public: bool | None = None,
         limit: int = 10,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """
         Search documents with various filters and caching
         """
@@ -586,12 +586,12 @@ class DocumentStorage:
         self,
         doc_id: str,
         content: str,
-        metadata: Optional[Dict[str, Any]] = None,
-        category: Optional[str] = None,
-        tags: Optional[List[str]] = None,
+        metadata: dict[str, Any] | None = None,
+        category: str | None = None,
+        tags: list[str] | None = None,
         is_public: bool = False,
-        telegram_chat_id: Optional[int] = None,
-        telegram_user_id: Optional[int] = None,
+        telegram_chat_id: int | None = None,
+        telegram_user_id: int | None = None,
         created_by: str = "manual",
     ) -> bool:
         """
@@ -766,8 +766,8 @@ class DocumentStorage:
         vector_id: str,
         start_char: int,
         end_char: int,
-        metadata: Optional[Dict[str, Any]] = None,
-    ) -> Optional[str]:
+        metadata: dict[str, Any] | None = None,
+    ) -> str | None:
         """
         Store a document chunk reference
 
@@ -808,7 +808,7 @@ class DocumentStorage:
             logger.error(f"Error storing chunk: {e}")
             return None
 
-    async def get_document_chunks(self, document_id: str) -> List[Dict[str, Any]]:
+    async def get_document_chunks(self, document_id: str) -> list[dict[str, Any]]:
         """
         Get all chunks for a document
 

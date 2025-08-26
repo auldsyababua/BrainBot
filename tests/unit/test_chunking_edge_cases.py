@@ -197,9 +197,7 @@ class TestChunkingEdgeCases:
         contents = [f"Document {i} content" * 50 for i in range(10)]
 
         for content in contents:
-            t = threading.Thread(
-                target=chunk_document, args=(content, results_queue, errors_queue)
-            )
+            t = threading.Thread(target=chunk_document, args=(content, results_queue, errors_queue))
             threads.append(t)
             t.start()
 
@@ -326,7 +324,7 @@ class TestChunkingEdgeCases:
             try:
                 await asyncio.wait_for(slow_chunk_process(), timeout=0.1)
                 assert False, "Should have timed out"
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 # Expected behavior
                 pass
 

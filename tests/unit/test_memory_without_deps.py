@@ -22,18 +22,14 @@ def test_memory_initialization():
     mock_neo4j = Mock()
     mock_langchain_neo4j = Mock()
 
-    with patch.dict(
-        "sys.modules", {"neo4j": mock_neo4j, "langchain_neo4j": mock_langchain_neo4j}
-    ):
+    with patch.dict("sys.modules", {"neo4j": mock_neo4j, "langchain_neo4j": mock_langchain_neo4j}):
         try:
             from src.core.memory import BotMemory
 
             print("Environment variables:")
             print(f"  NEO4J_URL: {os.getenv('NEO4J_URL')}")
             print(f"  NEO4J_USERNAME: {os.getenv('NEO4J_USERNAME')}")
-            print(
-                f"  NEO4J_PASSWORD: {'***' if os.getenv('NEO4J_PASSWORD') else 'Not set'}"
-            )
+            print(f"  NEO4J_PASSWORD: {'***' if os.getenv('NEO4J_PASSWORD') else 'Not set'}")
 
             # Initialize memory
             memory = BotMemory()
@@ -43,9 +39,7 @@ def test_memory_initialization():
                 return True
             else:
                 print("❌ BotMemory initialized but graph support is disabled")
-                print(
-                    "This might be due to missing OpenAI API key or other configuration"
-                )
+                print("This might be due to missing OpenAI API key or other configuration")
                 return False
 
         except Exception as e:

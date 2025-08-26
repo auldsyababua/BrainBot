@@ -22,7 +22,7 @@ class RedisStore:
         self.redis = CloudflareRedis()
         self.ttl_seconds = 86400  # 24 hours default TTL - matches ConversationManager default
 
-    async def get_conversation(self, chat_id: str) -> Optional[List[Dict]]:
+    async def get_conversation(self, chat_id: str) -> list[dict] | None:
         """
         Retrieve conversation history for a given chat ID.
 
@@ -45,7 +45,7 @@ class RedisStore:
             print(f"Error retrieving conversation {chat_id}: {e}")
             return None
 
-    async def save_conversation(self, chat_id: str, messages: List[Dict]) -> bool:
+    async def save_conversation(self, chat_id: str, messages: list[dict]) -> bool:
         """
         Save conversation history with automatic expiration.
 
@@ -103,7 +103,7 @@ class RedisStore:
             print(f"Error deleting conversation {chat_id}: {e}")
             return False
 
-    async def get_active_conversations(self) -> List[str]:
+    async def get_active_conversations(self) -> list[str]:
         """
         Get list of all active conversation IDs.
 
@@ -114,13 +114,13 @@ class RedisStore:
             # Note: Upstash doesn't support SCAN, so we'll need to track active conversations differently
             # For now, this is a placeholder that would need a different implementation
             # Consider maintaining a separate set of active chat IDs
-            keys: List[str] = []
+            keys: list[str] = []
             return keys
         except Exception as e:
             print(f"Error getting active conversations: {e}")
             return []
 
-    async def get_conversation_metadata(self, chat_id: str) -> Optional[Dict]:
+    async def get_conversation_metadata(self, chat_id: str) -> dict | None:
         """
         Get metadata about a conversation (TTL, size, etc).
 

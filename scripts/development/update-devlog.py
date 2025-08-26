@@ -48,7 +48,7 @@ config_file = os.path.join(project_root, ".devlog", "config.json")
 
 if os.path.exists(config_file):
     try:
-        with open(config_file, "r") as f:
+        with open(config_file) as f:
             config = json.load(f)
             if "repositories" in config:
                 # Merge with default emojis
@@ -75,7 +75,7 @@ def run_git_command(cmd: str, repo_path: str = None) -> str:
         return ""
 
 
-def get_commit_stats(commit_hash: str, repo_path: str) -> Dict:
+def get_commit_stats(commit_hash: str, repo_path: str) -> dict:
     """Get file and line change statistics for a commit."""
     try:
         # Get the list of changed files with their change counts
@@ -141,7 +141,7 @@ def get_commit_stats(commit_hash: str, repo_path: str) -> Dict:
         }
 
 
-def get_commit_info() -> List[Dict]:
+def get_commit_info() -> list[dict]:
     """Get detailed commit information from git log across all repositories."""
     all_commits = []
 
@@ -199,7 +199,7 @@ def get_commit_info() -> List[Dict]:
     return all_commits
 
 
-def categorize_commit(subject: str) -> Tuple[str, str]:
+def categorize_commit(subject: str) -> tuple[str, str]:
     """Categorize commit by type."""
     subject_lower = subject.lower()
 
@@ -221,7 +221,7 @@ def categorize_commit(subject: str) -> Tuple[str, str]:
         return "🟢", "Update"
 
 
-def format_commit_entry(commit: Dict, show_repo_badge: bool = True) -> str:
+def format_commit_entry(commit: dict, show_repo_badge: bool = True) -> str:
     """Format a single commit entry."""
     repo_name = commit["repo"]
     repo_config = REPOS[repo_name]
@@ -452,7 +452,7 @@ Click on any repository section below to see commits filtered by that repository
 
 
 def generate_statistics(
-    commits: List[Dict], commits_by_repo: Dict[str, List[Dict]]
+    commits: list[dict], commits_by_repo: dict[str, list[dict]]
 ) -> str:
     """Generate statistics section."""
     total_commits = len(commits)

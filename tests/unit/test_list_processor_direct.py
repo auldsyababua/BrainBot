@@ -42,9 +42,7 @@ class TestListProcessorDirectExecution:
         """Test successful list creation via direct execution."""
         # Setup mock response
         mock_response = Mock()
-        mock_response.data = [
-            {"id": "list-123", "name": "Shopping List", "type": "Shopping List"}
-        ]
+        mock_response.data = [{"id": "list-123", "name": "Shopping List", "type": "Shopping List"}]
         mock_supabase.execute.return_value = mock_response
 
         # Execute
@@ -98,9 +96,7 @@ class TestListProcessorDirectExecution:
         assert result["execution_time"] < 0.5
 
     @pytest.mark.asyncio
-    async def test_execute_add_items_list_not_found(
-        self, list_processor, mock_supabase
-    ):
+    async def test_execute_add_items_list_not_found(self, list_processor, mock_supabase):
         """Test adding items when list is not found."""
         # Setup mock response with no data
         mock_response = Mock()
@@ -202,9 +198,7 @@ class TestListProcessorDirectExecution:
         """Test reading a list and its items."""
         # Setup mock responses
         find_list = Mock()
-        find_list.data = [
-            {"id": "list-123", "name": "Shopping List", "type": "Shopping List"}
-        ]
+        find_list.data = [{"id": "list-123", "name": "Shopping List", "type": "Shopping List"}]
 
         get_items = Mock()
         get_items.data = [
@@ -334,9 +328,7 @@ class TestListProcessorDirectExecution:
                 user_id="user-123",
             )
 
-            assert (
-                result["execution_time"] < 0.5
-            ), f"{operation} took {result['execution_time']}s"
+            assert result["execution_time"] < 0.5, f"{operation} took {result['execution_time']}s"
 
     @pytest.mark.asyncio
     async def test_error_handling(self, list_processor, mock_supabase):

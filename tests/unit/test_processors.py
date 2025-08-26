@@ -148,19 +148,13 @@ class TestListProcessor:
             await processor.validate_operation("create", {"list_name": "test"}, None)
 
         # Test 2: Empty string handling
-        valid, msg = await processor.validate_operation(
-            "", {"list_name": "test"}, "user"
-        )
+        valid, msg = await processor.validate_operation("", {"list_name": "test"}, "user")
         assert valid is False
 
-        valid, msg = await processor.validate_operation(
-            "create", {"list_name": ""}, "user"
-        )
+        valid, msg = await processor.validate_operation("create", {"list_name": ""}, "user")
         assert valid is True or (valid is False and "empty" in msg.lower())
 
-        valid, msg = await processor.validate_operation(
-            "create", {"list_name": "test"}, ""
-        )
+        valid, msg = await processor.validate_operation("create", {"list_name": "test"}, "")
         assert valid is False or msg  # Should handle gracefully
 
         # Test 3: Maximum length inputs
@@ -178,9 +172,7 @@ class TestListProcessor:
 
         # Other types return gracefully (string, list)
         for wrong_data in ["string", []]:
-            valid, msg = await processor.validate_operation(
-                "create", wrong_data, "user"
-            )
+            valid, msg = await processor.validate_operation("create", wrong_data, "user")
             assert valid is False
             assert "Missing required fields" in msg
 
@@ -199,9 +191,7 @@ class TestListProcessor:
         # Wrong types that don't have .lower() method raise AttributeError
         for wrong_value in [123, ["array", "value"], {"nested": "object"}]:
             with pytest.raises(AttributeError):
-                await processor.validate_operation(
-                    "create", {"list_name": wrong_value}, "user"
-                )
+                await processor.validate_operation("create", {"list_name": wrong_value}, "user")
 
         # Test 6: SQL injection in data fields
         injection_data = [
@@ -230,9 +220,7 @@ class TestListProcessor:
         processor = ListProcessor(None)
 
         # Specific keywords boost - "add to" must be exact match
-        boost = processor.get_confidence_boost_factors(
-            "add to shopping list", "add_items"
-        )
+        boost = processor.get_confidence_boost_factors("add to shopping list", "add_items")
         assert boost >= 0.1
 
         # Item enumeration boost (keyword + comma)
@@ -430,9 +418,7 @@ class TestTaskProcessor:
 
         # Test 1: Null/None inputs
         # None operation returns True (no validation rules match)
-        valid, msg = await processor.validate_operation(
-            None, {"task_title": "Test"}, "user"
-        )
+        valid, msg = await processor.validate_operation(None, {"task_title": "Test"}, "user")
         assert valid is True
 
         # None data raises TypeError
@@ -440,9 +426,7 @@ class TestTaskProcessor:
             await processor.validate_operation("create", None, "user")
 
         # None user returns True (user_role not used in validation)
-        valid, msg = await processor.validate_operation(
-            "create", {"task_title": "Test"}, None
-        )
+        valid, msg = await processor.validate_operation("create", {"task_title": "Test"}, None)
         assert valid is True
 
         # Test 2: Empty string handling
@@ -517,9 +501,7 @@ class TestTaskProcessor:
         processor = TaskProcessor(None)
 
         # Time references boost - check what we actually get
-        boost = processor.get_confidence_boost_factors(
-            "new task for tomorrow at 3pm", "create"
-        )
+        boost = processor.get_confidence_boost_factors("new task for tomorrow at 3pm", "create")
         # "new task" gives 0.1 (keyword), "tomorrow" and "at" and "pm" each give 0.1 (time indicators)
         assert boost >= 0.2
 
@@ -529,9 +511,7 @@ class TestTaskProcessor:
         assert boost >= 0.25  # keyword + @ mention
 
         # Priority indicators boost (0.05 for priority words)
-        boost = processor.get_confidence_boost_factors(
-            "urgent task high priority", "create"
-        )
+        boost = processor.get_confidence_boost_factors("urgent task high priority", "create")
         assert boost >= 0.05
 
         # EDGE CASE TESTING ADDITIONS
@@ -608,9 +588,7 @@ class TestProcessorErrorHandling:
         mock_supabase.table.side_effect = Exception("Connection refused")
 
         processor = ListProcessor(mock_supabase)
-        valid, msg = await processor.validate_operation(
-            "create", {"list_name": "test"}, "user"
-        )
+        valid, msg = await processor.validate_operation("create", {"list_name": "test"}, "user")
 
         assert valid is False
         assert "database" in msg.lower() or "error" in msg.lower()
@@ -631,9 +609,7 @@ class TestProcessorErrorHandling:
             mock_supabase = AsyncMock()
             mock_supabase.table.side_effect = exception
             processor = ListProcessor(mock_supabase)
-            valid, msg = await processor.validate_operation(
-                "create", {"list_name": "test"}, "user"
-            )
+            valid, msg = await processor.validate_operation("create", {"list_name": "test"}, "user")
             assert valid is False
             assert len(msg) > 0  # Should have error message
 
@@ -644,9 +620,7 @@ class TestProcessorErrorHandling:
         mock_supabase.table.return_value = mock_table
 
         processor = ListProcessor(mock_supabase)
-        valid, msg = await processor.validate_operation(
-            "create", {"list_name": "test"}, "user"
-        )
+        valid, msg = await processor.validate_operation("create", {"list_name": "test"}, "user")
         assert valid is False
 
     async def test_malformed_database_response(self):
@@ -683,9 +657,7 @@ class TestProcessorErrorHandling:
         for response in malformed_responses:
             mock_supabase = AsyncMock()
             mock_table = MagicMock()
-            mock_table.select.return_value.eq.return_value.execute.return_value = (
-                response
-            )
+            mock_table.select.return_value.eq.return_value.execute.return_value = response
             mock_supabase.table.return_value = mock_table
 
             processor = TaskProcessor(mock_supabase)
@@ -712,9 +684,7 @@ class TestProcessorErrorHandling:
             mock_response.data = user_data
 
             mock_table = MagicMock()
-            mock_table.select.return_value.eq.return_value.execute.return_value = (
-                mock_response
-            )
+            mock_table.select.return_value.eq.return_value.execute.return_value = mock_response
             mock_supabase.table.return_value = mock_table
 
             processor = TaskProcessor(mock_supabase)
@@ -792,9 +762,7 @@ class TestProcessorErrorHandling:
             mock_response.data = [user_data]
 
             mock_table = MagicMock()
-            mock_table.select.return_value.eq.return_value.execute.return_value = (
-                mock_response
-            )
+            mock_table.select.return_value.eq.return_value.execute.return_value = mock_response
             mock_supabase.table.return_value = mock_table
 
             processor = TaskProcessor(mock_supabase)
@@ -812,9 +780,7 @@ class TestProcessorErrorHandling:
         mock_response.data = [{"id": 1, "first_name": "Joel", "aliases": large_aliases}]
 
         mock_table = MagicMock()
-        mock_table.select.return_value.eq.return_value.execute.return_value = (
-            mock_response
-        )
+        mock_table.select.return_value.eq.return_value.execute.return_value = mock_response
         mock_supabase.table.return_value = mock_table
 
         processor = TaskProcessor(mock_supabase)
@@ -852,7 +818,7 @@ class TestProcessorErrorHandling:
             (TimeoutError("Query timeout"), "execute"),
             (TimeoutError("Connection timeout"), "table"),
             (TimeoutError("Network timeout"), "select"),
-            (asyncio.TimeoutError("Async timeout"), "execute"),
+            (TimeoutError("Async timeout"), "execute"),
         ]
 
         for error, failure_point in timeout_scenarios:
@@ -960,9 +926,7 @@ class TestProcessorErrorHandling:
         ),
     ],
 )
-async def test_validation_comprehensive(
-    operation, data, user_role, should_pass, error_contains
-):
+async def test_validation_comprehensive(operation, data, user_role, should_pass, error_contains):
     """Test all validation paths with various inputs."""
     # Mock sites for protected list checking
     mock_supabase = AsyncMock()
@@ -990,9 +954,7 @@ async def test_validation_comprehensive(
         if table_name == "sites":
             mock_table.select.return_value.execute = async_execute_sites
         elif table_name == "personnel":
-            mock_table.select.return_value.eq.return_value.execute = (
-                async_execute_personnel
-            )
+            mock_table.select.return_value.eq.return_value.execute = async_execute_personnel
         return mock_table
 
     mock_supabase.table = table_mock
@@ -1014,11 +976,7 @@ async def test_validation_comprehensive(
         # Check data fields to determine processor
         if "task_title" in data or "assigned_to" in data or "new_assignee" in data:
             processor = TaskProcessor(mock_supabase)
-        elif (
-            "site_name" in data
-            or "report_content_full" in data
-            or "report_type" in data
-        ):
+        elif "site_name" in data or "report_content_full" in data or "report_type" in data:
             processor = FieldReportProcessor(mock_supabase)
         else:
             processor = ListProcessor(mock_supabase)

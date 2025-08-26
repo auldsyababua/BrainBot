@@ -54,9 +54,7 @@ async def test_graph_memory():
             print("Check your environment variables:")
             print(f"  NEO4J_URL: {os.getenv('NEO4J_URL')}")
             print(f"  NEO4J_USERNAME: {os.getenv('NEO4J_USERNAME')}")
-            print(
-                f"  NEO4J_PASSWORD: {'***' if os.getenv('NEO4J_PASSWORD') else 'Not set'}"
-            )
+            print(f"  NEO4J_PASSWORD: {'***' if os.getenv('NEO4J_PASSWORD') else 'Not set'}")
 
     except ImportError as e:
         print(f"❌ Import error: {e}")

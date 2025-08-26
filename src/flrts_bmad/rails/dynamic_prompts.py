@@ -16,15 +16,15 @@ logger = logging.getLogger(__name__)
 class PromptContext:
     """Context for dynamic prompt generation."""
 
-    entity_type: Optional[str] = None
-    operation: Optional[str] = None
-    extracted_data: Dict[str, Any] = None
-    confidence_scores: Dict[str, float] = None
+    entity_type: str | None = None
+    operation: str | None = None
+    extracted_data: dict[str, Any] = None
+    confidence_scores: dict[str, float] = None
     cleaned_message: str = ""
     original_message: str = ""
     has_mentions: bool = False
     has_commands: bool = False
-    missing_fields: List[str] = None
+    missing_fields: list[str] = None
 
 
 class DynamicPromptGenerator:
@@ -389,7 +389,7 @@ class DynamicPromptGenerator:
 
     def generate_smart_function_prompt(
         self, context: PromptContext
-    ) -> Tuple[str, Optional[Dict[str, Any]]]:
+    ) -> tuple[str, dict[str, Any] | None]:
         """Generate smart function calling prompt with schema.
 
         T2.1.2: Returns both prompt and function schema for direct injection.
@@ -408,7 +408,7 @@ class DynamicPromptGenerator:
 
         return prompt, function_schema
 
-    def _generate_function_schema(self, context: PromptContext) -> Dict[str, Any]:
+    def _generate_function_schema(self, context: PromptContext) -> dict[str, Any]:
         """Generate function schema based on context.
 
         T2.1.2: Dynamic schema generation for optimal function calling.
@@ -436,7 +436,7 @@ class DynamicPromptGenerator:
         )
 
         # Build parameter schema dynamically
-        parameters: Dict[str, Any] = {
+        parameters: dict[str, Any] = {
             "type": "object",
             "properties": {},
             "required": [],
@@ -515,7 +515,7 @@ class DynamicPromptGenerator:
         # Full LLM for low confidence or complex scenarios
         return "full_llm"
 
-    def generate_performance_metrics(self, context: PromptContext) -> Dict[str, Any]:
+    def generate_performance_metrics(self, context: PromptContext) -> dict[str, Any]:
         """Generate metrics for prompt performance tracking.
 
         T2.1.2: Track prompt efficiency and optimization opportunities.

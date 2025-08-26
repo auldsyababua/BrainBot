@@ -25,7 +25,7 @@ class DirectExecutionMetrics:
     user_id: str
     bypassed_llm: bool
     timestamp: str
-    error: Optional[str] = None
+    error: str | None = None
 
 
 class ProductionLogger:
@@ -54,7 +54,7 @@ class ProductionLogger:
         success: bool,
         user_id: str,
         bypassed_llm: bool,
-        error: Optional[str] = None,
+        error: str | None = None,
     ) -> None:
         """Log Story 1.6 direct execution metrics."""
 
@@ -100,8 +100,8 @@ class ProductionLogger:
     def log_router_decision(
         self,
         message: str,
-        entity_type: Optional[str],
-        operation: Optional[str],
+        entity_type: str | None,
+        operation: str | None,
         confidence: float,
         use_direct_execution: bool,
         user_id: str,
@@ -153,7 +153,7 @@ class ProductionLogger:
         )
 
     def log_system_event(
-        self, event_type: str, details: Dict[str, Any], level: str = "info"
+        self, event_type: str, details: dict[str, Any], level: str = "info"
     ) -> None:
         """Log general system events."""
 
@@ -169,7 +169,7 @@ class ProductionLogger:
 
         self.logger.log(log_level, f"[STORY-1.6-SYSTEM] {event_type}")
 
-    def get_performance_summary(self) -> Dict[str, Any]:
+    def get_performance_summary(self) -> dict[str, Any]:
         """Get performance summary for monitoring."""
         if not self.direct_execution_metrics:
             return {"status": "no_data"}
@@ -225,7 +225,7 @@ def log_direct_execution_performance(logger: ProductionLogger):
 
     def decorator(func):
         @wraps(func)
-        async def wrapper(self, operation: str, extracted_data: Dict[str, Any], user_id: str):
+        async def wrapper(self, operation: str, extracted_data: dict[str, Any], user_id: str):
             start_time = time.perf_counter()
             success = False
             error = None

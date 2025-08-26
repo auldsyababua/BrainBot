@@ -13,9 +13,7 @@ import pytest
 class TestTaskProcessorDatabaseIntegration:
     """Test TaskProcessor operations against real database."""
 
-    async def test_create_task_with_assignee(
-        self, task_processor, test_personnel, db_manager
-    ):
+    async def test_create_task_with_assignee(self, task_processor, test_personnel, db_manager):
         """Test creating a task with valid assignee."""
 
         # Create task data
@@ -102,10 +100,7 @@ class TestTaskProcessorDatabaseIntegration:
 
         # Verify task status changed
         updated_task = (
-            await db_manager.client.table("tasks")
-            .select("*")
-            .eq("id", test_task["id"])
-            .execute()
+            await db_manager.client.table("tasks").select("*").eq("id", test_task["id"]).execute()
         )
 
         assert len(updated_task.data) == 1
@@ -140,10 +135,7 @@ class TestTaskProcessorDatabaseIntegration:
 
         # Verify reassignment in database
         updated_task = (
-            await db_manager.client.table("tasks")
-            .select("*")
-            .eq("id", test_task["id"])
-            .execute()
+            await db_manager.client.table("tasks").select("*").eq("id", test_task["id"]).execute()
         )
 
         assert len(updated_task.data) == 1
@@ -220,10 +212,7 @@ class TestTaskProcessorDatabaseIntegration:
 
         # Verify notes were added
         updated_task = (
-            await db_manager.client.table("tasks")
-            .select("*")
-            .eq("id", test_task["id"])
-            .execute()
+            await db_manager.client.table("tasks").select("*").eq("id", test_task["id"]).execute()
         )
 
         assert len(updated_task.data) == 1
@@ -256,10 +245,7 @@ class TestTaskProcessorDatabaseIntegration:
 
         # Verify new due date
         updated_task = (
-            await db_manager.client.table("tasks")
-            .select("*")
-            .eq("id", test_task["id"])
-            .execute()
+            await db_manager.client.table("tasks").select("*").eq("id", test_task["id"]).execute()
         )
 
         assert len(updated_task.data) == 1
@@ -272,9 +258,7 @@ class TestTaskProcessorDatabaseIntegration:
         async def mock_safe_db_operation(*args, **kwargs):
             raise Exception("Database connection error")
 
-        monkeypatch.setattr(
-            task_processor, "_safe_db_operation", mock_safe_db_operation
-        )
+        monkeypatch.setattr(task_processor, "_safe_db_operation", mock_safe_db_operation)
 
         result = await task_processor.process(
             {
@@ -287,9 +271,7 @@ class TestTaskProcessorDatabaseIntegration:
         assert "❌" in result
         assert "error" in result.lower() or "failed" in result.lower()
 
-    async def test_idempotent_task_creation(
-        self, task_processor, test_personnel, db_manager
-    ):
+    async def test_idempotent_task_creation(self, task_processor, test_personnel, db_manager):
         """Test that creating the same task twice is handled gracefully."""
 
         task_data = {
@@ -362,10 +344,7 @@ class TestTaskProcessorDatabaseIntegration:
 
         # Verify final state is consistent
         final_task = (
-            await db_manager.client.table("tasks")
-            .select("*")
-            .eq("id", test_task["id"])
-            .execute()
+            await db_manager.client.table("tasks").select("*").eq("id", test_task["id"]).execute()
         )
 
         assert len(final_task.data) == 1
@@ -402,9 +381,7 @@ class TestTaskProcessorDatabaseIntegration:
         # Should handle relative dates
         assert result2 is not None
 
-    async def test_database_retry_mechanism(
-        self, task_processor, test_personnel, monkeypatch
-    ):
+    async def test_database_retry_mechanism(self, task_processor, test_personnel, monkeypatch):
         """Test retry mechanism for transient database failures."""
 
         call_count = 0
@@ -439,9 +416,7 @@ class TestTaskProcessorDatabaseIntegration:
         assert result is not None
         assert isinstance(result, tuple)
 
-    async def test_task_with_special_characters(
-        self, task_processor, test_personnel, db_manager
-    ):
+    async def test_task_with_special_characters(self, task_processor, test_personnel, db_manager):
         """Test task creation with special characters and SQL injection attempts."""
 
         # Test with special characters
@@ -472,9 +447,7 @@ class TestTaskProcessorDatabaseIntegration:
         tables_check = await db_manager.client.table("tasks").select("count").execute()
         assert tables_check is not None  # Table should still exist
 
-    async def test_task_cache_invalidation(
-        self, task_processor, test_personnel, db_manager
-    ):
+    async def test_task_cache_invalidation(self, task_processor, test_personnel, db_manager):
         """Test that cache is properly invalidated after updates."""
 
         # Create task
@@ -517,9 +490,7 @@ class TestTaskProcessorDatabaseIntegration:
         assert "TEST Cache invalidation task" in result2
         assert "Completed" in result2 or "✅" in result2
 
-    async def test_partial_failure_in_batch(
-        self, task_processor, test_personnel, db_manager
-    ):
+    async def test_partial_failure_in_batch(self, task_processor, test_personnel, db_manager):
         """Test handling of partial failures in batch operations."""
 
         # Create one valid user and reference one invalid
@@ -607,9 +578,7 @@ class TestTaskProcessorDatabaseIntegration:
         assert len(tasks.data) == tasks_to_create
 
         # Performance assertion (should create 5 tasks in under 10 seconds)
-        assert (
-            creation_time < 10.0
-        ), f"Bulk creation took {creation_time:.2f}s, expected < 10s"
+        assert creation_time < 10.0, f"Bulk creation took {creation_time:.2f}s, expected < 10s"
 
         print(f"Created {tasks_to_create} tasks in {creation_time:.2f}s")
 
@@ -619,9 +588,7 @@ class TestTaskProcessorDatabaseIntegration:
         async def network_error(*args, **kwargs):
             raise ConnectionError("Network is unreachable")
 
-        monkeypatch.setattr(
-            task_processor.supabase.table("personnel"), "select", network_error
-        )
+        monkeypatch.setattr(task_processor.supabase.table("personnel"), "select", network_error)
 
         result = await task_processor.process(
             {
@@ -635,9 +602,7 @@ class TestTaskProcessorDatabaseIntegration:
         assert "❌" in result or "error" in result.lower()
         assert "database" in result.lower() or "network" in result.lower()
 
-    @pytest.mark.skipif(
-        not os.getenv("TEST_SUPABASE_URL"), reason="Test database not configured"
-    )
+    @pytest.mark.skipif(not os.getenv("TEST_SUPABASE_URL"), reason="Test database not configured")
     async def test_real_database_connection(self, supabase_test_client):
         """Test actual database connectivity and configuration."""
 

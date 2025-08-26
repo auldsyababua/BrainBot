@@ -78,7 +78,7 @@ class LocalDevSimulator:
 
     def create_message_update(
         self, text: str, message_type: str = "text"
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Create a Telegram Update object for a text message.
 
@@ -111,7 +111,7 @@ class LocalDevSimulator:
             },
         }
 
-    def create_document_update(self, filename: str, content: str) -> Dict[str, Any]:
+    def create_document_update(self, filename: str, content: str) -> dict[str, Any]:
         """
         Create a Telegram Update object for a document upload.
 

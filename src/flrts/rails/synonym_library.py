@@ -15,8 +15,8 @@ class SynonymLibrary:
         # Memory optimization: Add cache size limits
         self._max_cache_size = 1000
         self._cache_ttl_seconds = 3600  # 1 hour
-        self._cache_timestamps: Dict[str, float] = {}
-        self._indicator_cache: Dict[str, Dict[str, float]] = {}
+        self._cache_timestamps: dict[str, float] = {}
+        self._indicator_cache: dict[str, dict[str, float]] = {}
 
         # Based on natural_language_operations_comprehensive.yaml analysis
         self.operation_synonyms = {
@@ -184,7 +184,7 @@ class SynonymLibrary:
 
         return min(max(confidence, 0.0), 1.0)  # Clamp 0-1
 
-    def extract_confidence_indicators(self, message: str) -> Dict[str, float]:
+    def extract_confidence_indicators(self, message: str) -> dict[str, float]:
         """Extract all confidence indicators from message."""
         # Memory optimization: Use cache key to avoid recomputation
         cache_key = f"indicators:{hash(message)}"

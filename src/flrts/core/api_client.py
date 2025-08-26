@@ -12,8 +12,9 @@ import asyncio
 import logging
 import random
 import time
+from collections.abc import Callable
 from functools import wraps
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import openai
 from dotenv import load_dotenv
@@ -49,7 +50,7 @@ class RetryConfig:
 class ResilientOpenAIClient:
     """OpenAI client with built-in retry logic and performance monitoring."""
 
-    def __init__(self, retry_config: Optional[RetryConfig] = None):
+    def __init__(self, retry_config: RetryConfig | None = None):
         """Initialize the resilient OpenAI client.
 
         Args:
@@ -192,10 +193,10 @@ class ResilientOpenAIClient:
 
     async def chat_completion(
         self,
-        messages: List[Dict[str, str]],
+        messages: list[dict[str, str]],
         model: str = "gpt-4o",
         temperature: float = 0.7,
-        max_tokens: Optional[int] = None,
+        max_tokens: int | None = None,
         **kwargs,
     ) -> ChatCompletion:
         """Create a chat completion with retry logic.
@@ -221,10 +222,10 @@ class ResilientOpenAIClient:
 
     def sync_chat_completion(
         self,
-        messages: List[Dict[str, str]],
+        messages: list[dict[str, str]],
         model: str = "gpt-4o",
         temperature: float = 0.7,
-        max_tokens: Optional[int] = None,
+        max_tokens: int | None = None,
         **kwargs,
     ) -> ChatCompletion:
         """Synchronous version of chat completion with retry logic.
@@ -272,7 +273,7 @@ class ResilientOpenAIClient:
             self.client.embeddings.create, input=input, model=model, **kwargs
         )
 
-    async def get_token_count(self, messages: List[Dict[str, str]], model: str = "gpt-4o") -> int:
+    async def get_token_count(self, messages: list[dict[str, str]], model: str = "gpt-4o") -> int:
         """Estimate token count for messages.
 
         This is a simple estimation. For accurate counts, use tiktoken.
@@ -290,11 +291,11 @@ class ResilientOpenAIClient:
 
 
 # Global client instance
-_resilient_client: Optional[ResilientOpenAIClient] = None
+_resilient_client: ResilientOpenAIClient | None = None
 
 
 def get_resilient_client(
-    retry_config: Optional[RetryConfig] = None,
+    retry_config: RetryConfig | None = None,
 ) -> ResilientOpenAIClient:
     """Get or create the global resilient OpenAI client.
 
@@ -310,7 +311,7 @@ def get_resilient_client(
     return _resilient_client
 
 
-def with_retry(retry_config: Optional[RetryConfig] = None):
+def with_retry(retry_config: RetryConfig | None = None):
     """Decorator to add retry logic to any async function.
 
     Usage:

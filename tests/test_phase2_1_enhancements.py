@@ -11,7 +11,10 @@ import pytest
 # Add parent directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from flrts_bmad.rails.confidence_scoring import ConfidenceFactors, EnhancedConfidenceScorer
+from flrts_bmad.rails.confidence_scoring import (
+    ConfidenceFactors,
+    EnhancedConfidenceScorer,
+)
 from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
 from flrts_bmad.rails.router import KeywordRouter
 
@@ -53,9 +56,7 @@ class TestDeterministicPreprocessing:
         assert confidences.get("assignee_confidence") == 1.0
 
         # Test invalid @mention
-        cleaned, prefilled, confidences = router.preprocess_message(
-            "task for @unknown_user"
-        )
+        cleaned, prefilled, confidences = router.preprocess_message("task for @unknown_user")
 
         assert "@unknown_user" not in cleaned
         assert prefilled.get("unresolved_mentions") == ["unknown_user"]
@@ -66,9 +67,7 @@ class TestDeterministicPreprocessing:
         router = KeywordRouter()
 
         # Test entity type command
-        cleaned, prefilled, confidences = router.preprocess_message(
-            "/lists show my shopping items"
-        )
+        cleaned, prefilled, confidences = router.preprocess_message("/lists show my shopping items")
 
         assert "/lists" not in cleaned
         assert prefilled.get("entity_type") == "lists"
@@ -122,9 +121,7 @@ class TestDeterministicPreprocessing:
         router.synonym_lib.user_aliases = {"sarah": "sarah"}
 
         # Test complete cleaning
-        cleaned, _, _ = router.preprocess_message(
-            "/addtolist @sarah needs milk, eggs, bread"
-        )
+        cleaned, _, _ = router.preprocess_message("/addtolist @sarah needs milk, eggs, bread")
 
         assert cleaned == "needs milk, eggs, bread"
         assert "/addtolist" not in cleaned
@@ -235,9 +232,7 @@ class TestDynamicPrompting:
         assert "joel" in prompt
 
         # Test with uncertain context
-        context = PromptContext(
-            entity_type=None, confidence_scores={"entity_confidence": 0.3}
-        )
+        context = PromptContext(entity_type=None, confidence_scores={"entity_confidence": 0.3})
 
         prompt = generator.generate_system_prompt(context)
         assert "determine" in prompt.lower()
@@ -330,9 +325,7 @@ class TestEnhancedConfidenceScoring:
 
         assert factors.syntax_explicitness == 1.0
         # Adjust for actual scoring algorithm
-        assert (
-            confidence >= 0.4
-        )  # Explicit syntax provides boost but not guaranteed 0.95
+        assert confidence >= 0.4  # Explicit syntax provides boost but not guaranteed 0.95
 
         # Test with @mentions
         confidence, factors = scorer.calculate_confidence(
@@ -418,9 +411,7 @@ class TestEnhancedConfidenceScoring:
 
         explanation = scorer.explain_confidence(0.4, factors)
         assert "Low confidence" in explanation
-        assert (
-            "ambiguous context" in explanation or "incomplete extraction" in explanation
-        )
+        assert "ambiguous context" in explanation or "incomplete extraction" in explanation
 
 
 class TestIntegration:
@@ -433,9 +424,7 @@ class TestIntegration:
         router.synonym_lib.user_aliases = {"joel": "joel", "sarah": "sarah"}
 
         # Test complex message with multiple extractions
-        message = (
-            "/newtask for @joel and @sarah: Check Eagle Lake generator tomorrow at 3pm"
-        )
+        message = "/newtask for @joel and @sarah: Check Eagle Lake generator tomorrow at 3pm"
 
         result = router.route(message)
 

@@ -32,8 +32,10 @@ if __name__ == "__main__" and not __package__:
 import uvicorn  # noqa: E402
 
 from flrts_bmad.bot.webhook_bot import create_webhook_bot  # noqa: E402
-from flrts_bmad.core.config import TELEGRAM_BOT_TOKEN  # noqa: E402
-from flrts_bmad.core.config import TELEGRAM_WEBHOOK_SECRET  # noqa: E402
+from flrts_bmad.core.config import (
+    TELEGRAM_BOT_TOKEN,  # noqa: E402
+    TELEGRAM_WEBHOOK_SECRET,  # noqa: E402
+)
 from flrts_bmad.core.supabase_logger import setup_supabase_logging  # noqa: E402
 
 # Set up logging

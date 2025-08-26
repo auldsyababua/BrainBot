@@ -125,8 +125,7 @@ async def test_media_storage_edge_cases():
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         loop = asyncio.get_event_loop()
         tasks = [
-            loop.run_in_executor(executor, asyncio.run, concurrent_duplicate(i))
-            for i in range(10)
+            loop.run_in_executor(executor, asyncio.run, concurrent_duplicate(i)) for i in range(10)
         ]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
@@ -178,16 +177,12 @@ async def test_media_storage_edge_cases():
     # Test 10: Presigned URL edge cases
     print("\n🔍 Testing presigned URL edge cases...")
     # Upload a test file first
-    test_result = await storage.upload_media(
-        b"URL test content", "url-test.txt", "text/plain"
-    )
+    test_result = await storage.upload_media(b"URL test content", "url-test.txt", "text/plain")
 
     # Test invalid expiration times
     for expires_in in [0, -1, sys.maxsize]:
         try:
-            url = await storage.get_media_url(
-                test_result["s3_key"], expires_in=expires_in
-            )
+            url = await storage.get_media_url(test_result["s3_key"], expires_in=expires_in)
             # Should either work or raise exception
         except (ValueError, OverflowError):
             pass
@@ -417,12 +412,8 @@ async def test_media_metadata_edge_cases():
                 b"telegram test",
                 "telegram.txt",
                 "text/plain",
-                telegram_chat_id=(
-                    int(telegram_id) if telegram_id != float("inf") else 999999
-                ),
-                telegram_user_id=(
-                    int(telegram_id) if telegram_id != float("inf") else 999999
-                ),
+                telegram_chat_id=(int(telegram_id) if telegram_id != float("inf") else 999999),
+                telegram_user_id=(int(telegram_id) if telegram_id != float("inf") else 999999),
             )
             # Should handle gracefully
         except (ValueError, OverflowError):

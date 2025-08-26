@@ -16,7 +16,7 @@ class IndexManager:
     def __init__(self):
         self.storage = document_storage
 
-    async def generate_index(self, category: str) -> Optional[str]:
+    async def generate_index(self, category: str) -> str | None:
         """Generate an index for a specific category.
 
         Args:
@@ -46,7 +46,7 @@ class IndexManager:
             ]
 
             # Group by subcategory if applicable
-            subcategories: Dict[str, Any] = {}
+            subcategories: dict[str, Any] = {}
             direct_docs = []
 
             for doc in documents:
@@ -103,7 +103,7 @@ class IndexManager:
             logger.error(f"Failed to generate index for {category}: {e}")
             return None
 
-    async def update_index(self, category: str, telegram_chat_id: Optional[str] = None) -> bool:
+    async def update_index(self, category: str, telegram_chat_id: str | None = None) -> bool:
         """Update or create the index for a category.
 
         Args:
@@ -151,7 +151,7 @@ class IndexManager:
             logger.error(f"Failed to update index for {category}: {e}")
             return False
 
-    async def update_all_indexes(self, telegram_chat_id: Optional[str] = None) -> Dict[str, bool]:
+    async def update_all_indexes(self, telegram_chat_id: str | None = None) -> dict[str, bool]:
         """Update all category indexes.
 
         Returns:
@@ -171,7 +171,7 @@ class IndexManager:
                         categories.add("/".join(parts[:i]))
 
             # Update each category's index
-            results: Dict[str, Any] = {}
+            results: dict[str, Any] = {}
             for category in sorted(categories):
                 results[category] = await self.update_index(category, telegram_chat_id)
 

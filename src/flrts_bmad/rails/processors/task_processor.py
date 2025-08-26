@@ -83,12 +83,12 @@ class TaskProcessor(BaseProcessor):
             raise KeyError(f"Unknown operation: {operation}")
 
     async def validate_operation(
-        self, operation: str, data: Dict[str, Any], user_role: str = "user"
+        self, operation: str, data: dict[str, Any], user_role: str = "user"
     ) -> tuple[bool, str]:
         """Validate if operation is allowed and data is complete."""
 
         # Validate required fields
-        required_fields: Dict[str, List[str]] = {
+        required_fields: dict[str, list[str]] = {
             "create": ["task_title"],
             "complete": ["task_title"],
             "reassign": ["task_title", "new_assignee"],
@@ -202,7 +202,7 @@ class TaskProcessor(BaseProcessor):
 
         return boost
 
-    def get_dynamic_extraction_schema(self, operation: str, prefilled_data: Dict[str, Any]) -> str:
+    def get_dynamic_extraction_schema(self, operation: str, prefilled_data: dict[str, Any]) -> str:
         """Generate dynamic extraction schema based on prefilled data."""
 
         if operation == "create":
@@ -272,8 +272,8 @@ class TaskProcessor(BaseProcessor):
     @async_benchmark("task_direct_execution")
     @log_direct_execution_performance(production_logger)
     async def execute_direct(
-        self, operation: str, extracted_data: Dict[str, Any], user_id: str
-    ) -> Dict[str, Any]:
+        self, operation: str, extracted_data: dict[str, Any], user_id: str
+    ) -> dict[str, Any]:
         """
         Execute task operation directly without LLM.
 
@@ -336,7 +336,7 @@ class TaskProcessor(BaseProcessor):
                 "execution_time": time.perf_counter() - start_time,
             }
 
-    async def _execute_create(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_create(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute task creation."""
         try:
             # Build task data
@@ -381,7 +381,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error creating task: {e}")
             return {"success": False, "error": f"Failed to create task: {str(e)}"}
 
-    async def _execute_complete(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_complete(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute task completion."""
         try:
             # Find the task
@@ -419,7 +419,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error completing task: {e}")
             return {"success": False, "error": f"Failed to complete task: {str(e)}"}
 
-    async def _execute_reassign(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_reassign(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute task reassignment."""
         try:
             # Find the task
@@ -468,7 +468,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error reassigning task: {e}")
             return {"success": False, "error": f"Failed to reassign task: {str(e)}"}
 
-    async def _execute_reschedule(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_reschedule(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute task rescheduling."""
         try:
             # Find the task
@@ -512,7 +512,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error rescheduling task: {e}")
             return {"success": False, "error": f"Failed to reschedule task: {str(e)}"}
 
-    async def _execute_add_notes(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_add_notes(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute adding notes to a task."""
         try:
             # Find the task
@@ -552,7 +552,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error adding notes to task: {e}")
             return {"success": False, "error": f"Failed to add notes: {str(e)}"}
 
-    async def _execute_read(self, data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
+    async def _execute_read(self, data: dict[str, Any], user_id: str) -> dict[str, Any]:
         """Execute task reading/listing."""
         try:
             # Build query
@@ -616,7 +616,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error reading tasks: {e}")
             return {"success": False, "error": f"Failed to read tasks: {str(e)}"}
 
-    async def _find_task_by_title(self, title: str) -> Optional[Dict[str, Any]]:
+    async def _find_task_by_title(self, title: str) -> dict[str, Any] | None:
         """Find a task by title (case-insensitive)."""
         try:
             response = await self._safe_db_operation(
@@ -635,7 +635,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error finding task: {e}")
             return None
 
-    async def _resolve_user_id(self, username: str) -> Optional[str]:
+    async def _resolve_user_id(self, username: str) -> str | None:
         """Resolve username or alias to user ID."""
         try:
             # Check cache first

@@ -2,7 +2,8 @@
 
 import os
 import uuid
-from typing import Any, AsyncGenerator, Dict
+from collections.abc import AsyncGenerator
+from typing import Any, Dict
 
 import pytest
 from supabase import Client, create_client
@@ -48,14 +49,12 @@ class TestDatabaseManager:
         for table in tables_to_clean:
             try:
                 # Delete records created by tests (identified by test prefixes)
-                await self.client.table(table).delete().like(
-                    "title", "TEST_%"
-                ).execute()
+                await self.client.table(table).delete().like("title", "TEST_%").execute()
                 await self.client.table(table).delete().like("name", "TEST_%").execute()
             except Exception as e:
                 print(f"Warning: Could not clean {table}: {e}")
 
-    async def create_test_site(self, name: str = None) -> Dict[str, Any]:
+    async def create_test_site(self, name: str = None) -> dict[str, Any]:
         """Create a test site for use in tests."""
         site_name = name or f"TEST_Site_{uuid.uuid4().hex[:8]}"
 
@@ -70,7 +69,7 @@ class TestDatabaseManager:
         result = self.client.table("sites").insert(site_data).execute()
         return result.data[0] if result.data else site_data
 
-    async def create_test_personnel(self, first_name: str = None) -> Dict[str, Any]:
+    async def create_test_personnel(self, first_name: str = None) -> dict[str, Any]:
         """Create test personnel for use in tests."""
         name = first_name or f"TEST_User_{uuid.uuid4().hex[:8]}"
 
@@ -86,7 +85,7 @@ class TestDatabaseManager:
         result = self.client.table("personnel").insert(personnel_data).execute()
         return result.data[0] if result.data else personnel_data
 
-    async def create_test_task(self, **overrides) -> Dict[str, Any]:
+    async def create_test_task(self, **overrides) -> dict[str, Any]:
         """Create a test task with optional overrides."""
         task_data = {
             "title": f"TEST_Task_{uuid.uuid4().hex[:8]}",
@@ -100,7 +99,7 @@ class TestDatabaseManager:
         result = self.client.table("tasks").insert(task_data).execute()
         return result.data[0] if result.data else task_data
 
-    async def create_test_list(self, **overrides) -> Dict[str, Any]:
+    async def create_test_list(self, **overrides) -> dict[str, Any]:
         """Create a test list with optional overrides."""
         list_data = {
             "name": f"TEST_List_{uuid.uuid4().hex[:8]}",
@@ -120,9 +119,7 @@ def test_database_config():
     return {
         "url": os.getenv("TEST_SUPABASE_URL", os.getenv("SUPABASE_URL")),
         "anon_key": os.getenv("TEST_SUPABASE_ANON_KEY", os.getenv("SUPABASE_ANON_KEY")),
-        "service_key": os.getenv(
-            "TEST_SUPABASE_SERVICE_KEY", os.getenv("SUPABASE_SERVICE_KEY")
-        ),
+        "service_key": os.getenv("TEST_SUPABASE_SERVICE_KEY", os.getenv("SUPABASE_SERVICE_KEY")),
     }
 
 
@@ -175,13 +172,13 @@ async def list_processor(supabase_test_client) -> ListProcessor:
 
 
 @pytest.fixture
-async def test_personnel(db_manager) -> Dict[str, Any]:
+async def test_personnel(db_manager) -> dict[str, Any]:
     """Create test personnel for use in tests."""
     return await db_manager.create_test_personnel("TestUser")
 
 
 @pytest.fixture
-async def test_site(db_manager) -> Dict[str, Any]:
+async def test_site(db_manager) -> dict[str, Any]:
     """Create test site for use in tests."""
     return await db_manager.create_test_site("TEST_Eagle_Lake")
 

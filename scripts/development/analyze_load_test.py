@@ -15,7 +15,7 @@ from pathlib import Path
 def analyze_stats(stats_file):
     """Analyze Locust stats and provide recommendations."""
     try:
-        with open(stats_file, "r") as f:
+        with open(stats_file) as f:
             data = json.load(f)
     except FileNotFoundError:
         print(f"❌ Could not find {stats_file}")

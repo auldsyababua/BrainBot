@@ -24,9 +24,7 @@ import pytest
 import pytest_asyncio
 
 # Add project root to path
-sys.path.insert(
-    0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from flrts_bmad.core.llm import process_message
 from flrts_bmad.storage import vector_store
@@ -42,19 +40,15 @@ class ConversationContext:
     """Track entities and topics across conversation turns."""
 
     def __init__(self):
-        self.entities: Dict[int, Dict[str, Set[str]]] = {}
-        self.topics: Dict[int, str] = {}
+        self.entities: dict[int, dict[str, set[str]]] = {}
+        self.topics: dict[int, str] = {}
 
-    def extract_entities(self, response: str, turn: int) -> Dict[str, Set[str]]:
+    def extract_entities(self, response: str, turn: int) -> dict[str, set[str]]:
         """Extract document names, technical terms, and numbers."""
         entities = {
-            "documents": set(
-                re.findall(r"(Booth|IEEE \d+|GPSA|Breeze|Brantley)", response, re.I)
-            ),
+            "documents": set(re.findall(r"(Booth|IEEE \d+|GPSA|Breeze|Brantley)", response, re.I)),
             "technical_terms": set(
-                re.findall(
-                    r"(microgrids?|turbines?|efficiency|resilience)", response, re.I
-                )
+                re.findall(r"(microgrids?|turbines?|efficiency|resilience)", response, re.I)
             ),
             "numbers": set(re.findall(r"(\d+\.?\d*%?)", response)),
         }
@@ -80,9 +74,7 @@ def has_contextual_references(response: str) -> bool:
     return any(ref in response_lower for ref in pronouns + references + explicit_refs)
 
 
-def assert_contains_concepts(
-    response: str, concepts: List[str], min_matches: int = None
-):
+def assert_contains_concepts(response: str, concepts: list[str], min_matches: int = None):
     """Flexible assertion for key concepts."""
     response_lower = response.lower()
     matches = sum(1 for concept in concepts if concept.lower() in response_lower)
@@ -211,9 +203,7 @@ async def inject_test_data():
         },
         {
             "id": "test_field_ops_001",
-            "content": PDF_FIXTURES["field_operations_brantley"]["test_content"][
-                "chunk1"
-            ]
+            "content": PDF_FIXTURES["field_operations_brantley"]["test_content"]["chunk1"]
             + " "
             + PDF_FIXTURES["field_operations_brantley"]["test_content"]["chunk2"],
             "metadata": {
@@ -253,9 +243,7 @@ class TestMultiTurnConversations:
     """Test multi-turn conversations with context verification."""
 
     @pytest.mark.asyncio
-    async def test_microgrids_conversation_with_mock(
-        self, mock_vector_search, clean_redis
-    ):
+    async def test_microgrids_conversation_with_mock(self, mock_vector_search, clean_redis):
         """Test 1: Microgrids Resilience Multi-turn Conversation (Mocked)"""
         chat_id = "test_microgrids_mock"
         context = ConversationContext()
@@ -281,9 +269,7 @@ class TestMultiTurnConversations:
         )
 
         # Verify Turn 1
-        assert_contains_concepts(
-            response1, ["microgrids", "resilience", "energy", "Booth"]
-        )
+        assert_contains_concepts(response1, ["microgrids", "resilience", "energy", "Booth"])
         entities1 = context.extract_entities(response1, turn=1)
         assert "Booth" in str(entities1["documents"]) or "booth" in response1.lower()
 
@@ -308,9 +294,7 @@ class TestMultiTurnConversations:
         assert has_contextual_references(
             response2
         ), "Response 2 should reference previous discussion"
-        assert_contains_concepts(
-            response2, ["benefits", "reliability", "renewable"], min_matches=2
-        )
+        assert_contains_concepts(response2, ["benefits", "reliability", "renewable"], min_matches=2)
 
         # Turn 3: Comparison question
         response3 = await process_message(
@@ -318,9 +302,7 @@ class TestMultiTurnConversations:
         )
 
         # Verify Turn 3 maintains context about microgrids
-        assert has_contextual_references(
-            response3
-        ), "Response 3 should maintain microgrid context"
+        assert has_contextual_references(response3), "Response 3 should maintain microgrid context"
         assert "microgrids" in response3.lower() or "traditional" in response3.lower()
 
     @pytest.mark.asyncio
@@ -346,9 +328,7 @@ class TestMultiTurnConversations:
             chat_id=chat_id,
         )
 
-        assert_contains_concepts(
-            response1, ["IEEE 3006", "evaluation", "practices", "recommended"]
-        )
+        assert_contains_concepts(response1, ["IEEE 3006", "evaluation", "practices", "recommended"])
 
         # Turn 2: Specific areas covered
         mock_vector_search.return_value = [
@@ -360,21 +340,14 @@ class TestMultiTurnConversations:
             }
         ]
 
-        response2 = await process_message(
-            "What specific areas does it cover?", chat_id=chat_id
-        )
+        response2 = await process_message("What specific areas does it cover?", chat_id=chat_id)
 
         assert has_contextual_references(response2)
         assert "IEEE 3006" in response1  # Verify context from turn 1
-        assert any(
-            term in response2.lower()
-            for term in ["reliability", "maintenance", "analysis"]
-        )
+        assert any(term in response2.lower() for term in ["reliability", "maintenance", "analysis"])
 
     @pytest.mark.asyncio
-    async def test_gas_turbine_efficiency_conversation(
-        self, mock_vector_search, clean_redis
-    ):
+    async def test_gas_turbine_efficiency_conversation(self, mock_vector_search, clean_redis):
         """Test 3: Gas Turbine Efficiency Multi-turn Conversation"""
         chat_id = "test_gas_turbine"
 
@@ -450,9 +423,7 @@ class TestMultiTurnConversations:
             {
                 "id": "microgrid_generation",
                 "content": "Microgrids can incorporate various generation sources including gas turbines for reliable distributed power.",
-                "metadata": {
-                    "document": "Microgrids_and_energy_resiliance_Samuel_Booth.pdf"
-                },
+                "metadata": {"document": "Microgrids_and_energy_resiliance_Samuel_Booth.pdf"},
                 "score": 0.88,
             },
         ]
@@ -505,11 +476,7 @@ class TestMultiTurnConversations:
             print(
                 f"\n🔍 VECTOR SEARCH CALLED: query='{args[0] if args else kwargs.get('query', 'N/A')}'"
             )
-            result = (
-                []
-                if original_search is None
-                else await original_search(*args, **kwargs)
-            )
+            result = [] if original_search is None else await original_search(*args, **kwargs)
             print(f"   ↳ Returning {len(result)} results")
             return result
 
@@ -520,9 +487,7 @@ class TestMultiTurnConversations:
         with patch("src.core.tools.list_all_files") as mock_list_files:
 
             def log_list_files():
-                call_log.append(
-                    {"function": "list_all_files", "timestamp": time.time()}
-                )
+                call_log.append({"function": "list_all_files", "timestamp": time.time()})
                 print("\n📁 LIST_ALL_FILES CALLED")
                 # Return some test files that match what the system expects
                 return [
@@ -566,9 +531,7 @@ class TestMultiTurnConversations:
                 print("\n" + "=" * 60)
                 print("📊 CALL LOG SUMMARY:")
                 for i, call in enumerate(call_log):
-                    print(
-                        f"{i+1}. {call['function']} at {call.get('timestamp', 'N/A'):.2f}"
-                    )
+                    print(f"{i+1}. {call['function']} at {call.get('timestamp', 'N/A'):.2f}")
                 print("=" * 60)
 
                 # Should acknowledge no such document exists
@@ -645,9 +608,7 @@ class TestMultiTurnConversations:
 
                     async def log_knowledge_base(*args, **kwargs):
                         print("\n🔎 SEARCH_KNOWLEDGE_BASE CALLED")
-                        print(
-                            f"   Query: {args[0] if args else kwargs.get('query', 'N/A')}"
-                        )
+                        print(f"   Query: {args[0] if args else kwargs.get('query', 'N/A')}")
                         result = await original_kb(*args, **kwargs)
                         print(f"   Results returned: {len(result)}")
                         for i, r in enumerate(result[:2]):
@@ -674,9 +635,7 @@ class TestMultiTurnConversations:
                             # Handle both dict and Pydantic model formats
                             role = msg.role if hasattr(msg, "role") else msg.get("role")
                             content = (
-                                msg.content
-                                if hasattr(msg, "content")
-                                else msg.get("content", "")
+                                msg.content if hasattr(msg, "content") else msg.get("content", "")
                             )
                             if role == "system":
                                 print("\n   📜 SYSTEM PROMPT (first 300 chars):")
@@ -688,17 +647,12 @@ class TestMultiTurnConversations:
                             # Handle both dict and Pydantic model formats
                             role = msg.role if hasattr(msg, "role") else msg.get("role")
                             content = (
-                                msg.content
-                                if hasattr(msg, "content")
-                                else msg.get("content", "")
+                                msg.content if hasattr(msg, "content") else msg.get("content", "")
                             )
                             if role == "user":
                                 print("\n   👤 USER MESSAGE:")
                                 # Check if it contains search results
-                                if (
-                                    "[System:" in content
-                                    or "search results" in content.lower()
-                                ):
+                                if "[System:" in content or "search results" in content.lower():
                                     print("   🔍 CONTAINS SEARCH RESULTS!")
                                     print(f"      Full content:\n{content}")
                                 else:
@@ -709,9 +663,7 @@ class TestMultiTurnConversations:
                         result = await original_create(**kwargs)
                         return result
 
-                    with patch.object(
-                        client.client.chat.completions, "create", new=log_llm_call
-                    ):
+                    with patch.object(client.client.chat.completions, "create", new=log_llm_call):
                         print("\n" + "=" * 60)
                         print("🚀 TURN 2 - Query for technical PDF documents")
                         print("=" * 60)
@@ -725,9 +677,7 @@ class TestMultiTurnConversations:
                 print("\n" + "=" * 60)
                 print("📊 FINAL CALL LOG:")
                 for i, call in enumerate(call_log):
-                    print(
-                        f"{i+1}. {call['function']} at {call.get('timestamp', 'N/A'):.2f}"
-                    )
+                    print(f"{i+1}. {call['function']} at {call.get('timestamp', 'N/A'):.2f}")
                     if "file_path" in call:
                         print(f"   File: {call['file_path']}")
                 print("=" * 60)
@@ -735,10 +685,7 @@ class TestMultiTurnConversations:
                 print(f"\n✅ RESPONSE 2: {response2}")
 
                 # Should list available documents
-                assert (
-                    "microgrid" in response2.lower()
-                    or "gas turbine" in response2.lower()
-                )
+                assert "microgrid" in response2.lower() or "gas turbine" in response2.lower()
 
 
 class TestContextVerification:
@@ -759,12 +706,8 @@ class TestContextVerification:
     def test_contextual_reference_detection(self):
         """Test detection of contextual references."""
         # Positive cases
-        assert has_contextual_references(
-            "This efficiency is higher than traditional systems"
-        )
-        assert has_contextual_references(
-            "As mentioned earlier, microgrids provide benefits"
-        )
+        assert has_contextual_references("This efficiency is higher than traditional systems")
+        assert has_contextual_references("As mentioned earlier, microgrids provide benefits")
         assert has_contextual_references("The standard covers these areas")
 
         # Negative cases
@@ -773,20 +716,14 @@ class TestContextVerification:
 
     def test_concept_assertion(self):
         """Test flexible concept matching."""
-        response = (
-            "The IEEE 3006 standard provides evaluation methods for power systems."
-        )
+        response = "The IEEE 3006 standard provides evaluation methods for power systems."
 
         # Should pass with most concepts present
-        assert_contains_concepts(
-            response, ["IEEE 3006", "evaluation", "power"], min_matches=2
-        )
+        assert_contains_concepts(response, ["IEEE 3006", "evaluation", "power"], min_matches=2)
 
         # Should fail if too few matches
         with pytest.raises(AssertionError):
-            assert_contains_concepts(
-                response, ["microgrids", "Booth", "resilience"], min_matches=2
-            )
+            assert_contains_concepts(response, ["microgrids", "Booth", "resilience"], min_matches=2)
 
 
 class TestPerformanceAndIntegration:
@@ -844,9 +781,7 @@ class TestWithRealData:
 
     @pytest.mark.asyncio
     @pytest.mark.integration
-    async def test_microgrids_conversation_with_real_data(
-        self, inject_test_data, clean_redis
-    ):
+    async def test_microgrids_conversation_with_real_data(self, inject_test_data, clean_redis):
         """Test with real data injection for end-to-end verification."""
         chat_id = "test_microgrids"
         test_documents = inject_test_data

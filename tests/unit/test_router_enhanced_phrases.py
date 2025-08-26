@@ -44,9 +44,7 @@ class TestEnhancedPhrasingVariations:
             result = router.route(phrase)
             assert result.entity_type == expected_entity, f"Failed for: {phrase}"
             assert result.operation == expected_op, f"Failed for: {phrase}"
-            assert (
-                result.confidence >= min_confidence
-            ), f"Confidence too low for: {phrase}"
+            assert result.confidence >= min_confidence, f"Confidence too low for: {phrase}"
 
     # Task Reading Variations
     def test_task_reading_variations(self, router):
@@ -74,9 +72,7 @@ class TestEnhancedPhrasingVariations:
             result = router.route(phrase)
             assert result.entity_type == expected_entity, f"Failed for: {phrase}"
             assert result.operation == expected_op, f"Failed for: {phrase}"
-            assert (
-                result.confidence >= min_confidence
-            ), f"Confidence too low for: {phrase}"
+            assert result.confidence >= min_confidence, f"Confidence too low for: {phrase}"
 
     # Task Completion Variations
     def test_task_completion_variations(self, router):
@@ -100,9 +96,7 @@ class TestEnhancedPhrasingVariations:
             result = router.route(phrase)
             assert result.entity_type == expected_entity, f"Failed for: {phrase}"
             assert result.operation == expected_op, f"Failed for: {phrase}"
-            assert (
-                result.confidence >= min_confidence
-            ), f"Confidence too low for: {phrase}"
+            assert result.confidence >= min_confidence, f"Confidence too low for: {phrase}"
 
     # List Creation Variations
     def test_list_creation_variations(self, router):
@@ -130,9 +124,7 @@ class TestEnhancedPhrasingVariations:
             result = router.route(phrase)
             assert result.entity_type == expected_entity, f"Failed for: {phrase}"
             assert result.operation == expected_op, f"Failed for: {phrase}"
-            assert (
-                result.confidence >= min_confidence
-            ), f"Confidence too low for: {phrase}"
+            assert result.confidence >= min_confidence, f"Confidence too low for: {phrase}"
 
     # List Item Addition Variations
     def test_list_add_items_variations(self, router):
@@ -156,9 +148,7 @@ class TestEnhancedPhrasingVariations:
             result = router.route(phrase)
             assert result.entity_type == expected_entity, f"Failed for: {phrase}"
             assert result.operation == expected_op, f"Failed for: {phrase}"
-            assert (
-                result.confidence >= min_confidence
-            ), f"Confidence too low for: {phrase}"
+            assert result.confidence >= min_confidence, f"Confidence too low for: {phrase}"
 
     # List Item Removal Variations
     def test_list_remove_items_variations(self, router):
@@ -182,9 +172,7 @@ class TestEnhancedPhrasingVariations:
             result = router.route(phrase)
             assert result.entity_type == expected_entity, f"Failed for: {phrase}"
             assert result.operation == expected_op, f"Failed for: {phrase}"
-            assert (
-                result.confidence >= min_confidence
-            ), f"Confidence too low for: {phrase}"
+            assert result.confidence >= min_confidence, f"Confidence too low for: {phrase}"
 
     # Task Assignment Variations
     def test_task_assignment_variations(self, router):
@@ -208,9 +196,7 @@ class TestEnhancedPhrasingVariations:
             result = router.route(phrase)
             assert result.entity_type == expected_entity, f"Failed for: {phrase}"
             assert result.operation == expected_op, f"Failed for: {phrase}"
-            assert (
-                result.confidence >= min_confidence
-            ), f"Confidence too low for: {phrase}"
+            assert result.confidence >= min_confidence, f"Confidence too low for: {phrase}"
 
     # Task Rescheduling Variations
     def test_task_rescheduling_variations(self, router):
@@ -234,9 +220,7 @@ class TestEnhancedPhrasingVariations:
             result = router.route(phrase)
             assert result.entity_type == expected_entity, f"Failed for: {phrase}"
             assert result.operation == expected_op, f"Failed for: {phrase}"
-            assert (
-                result.confidence >= min_confidence
-            ), f"Confidence too low for: {phrase}"
+            assert result.confidence >= min_confidence, f"Confidence too low for: {phrase}"
 
     # Complex Natural Language Patterns
     def test_complex_natural_patterns(self, router):
@@ -271,9 +255,7 @@ class TestEnhancedPhrasingVariations:
             result = router.route(phrase)
             assert result.entity_type == expected_entity, f"Failed for: {phrase}"
             assert result.operation == expected_op, f"Failed for: {phrase}"
-            assert (
-                result.confidence >= min_confidence
-            ), f"Confidence too low for: {phrase}"
+            assert result.confidence >= min_confidence, f"Confidence too low for: {phrase}"
 
     # Confidence Score Validation
     def test_confidence_scoring_improvements(self, router):
@@ -289,9 +271,7 @@ class TestEnhancedPhrasingVariations:
 
         for phrase in high_confidence_phrases:
             result = router.route(phrase)
-            assert (
-                result.confidence >= 0.85
-            ), f"Confidence too low for clear command: {phrase}"
+            assert result.confidence >= 0.85, f"Confidence too low for clear command: {phrase}"
 
         # Ambiguous phrases should have lower confidence
         low_confidence_phrases = [
@@ -303,9 +283,7 @@ class TestEnhancedPhrasingVariations:
 
         for phrase in low_confidence_phrases:
             result = router.route(phrase)
-            assert (
-                result.confidence < 0.7
-            ), f"Confidence too high for ambiguous phrase: {phrase}"
+            assert result.confidence < 0.7, f"Confidence too high for ambiguous phrase: {phrase}"
 
         # Questions should reduce confidence
         question_phrases = [
@@ -318,6 +296,4 @@ class TestEnhancedPhrasingVariations:
             result = router.route(phrase)
             # Questions might still route but with lower confidence
             if result.entity_type:
-                assert (
-                    result.confidence < 0.8
-                ), f"Confidence too high for question: {phrase}"
+                assert result.confidence < 0.8, f"Confidence too high for question: {phrase}"

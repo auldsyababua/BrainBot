@@ -30,7 +30,7 @@ def get_agents_directory() -> str:
     return os.path.join(_get_project_root(), ".claude", "agents")
 
 
-def list_agents() -> List[str]:
+def list_agents() -> list[str]:
     """List available agent names (filenames without `.md`)."""
     agents_dir = get_agents_directory()
     try:
@@ -38,14 +38,14 @@ def list_agents() -> List[str]:
     except FileNotFoundError:
         return []
 
-    names: List[str] = []
+    names: list[str] = []
     for name in entries:
         if name.lower().endswith(".md"):
             names.append(name[:-3])
     return sorted(names)
 
 
-def load_agent_prompt(agent_name: str) -> Optional[str]:
+def load_agent_prompt(agent_name: str) -> str | None:
     """Load agent prompt content from `.md` file by name.
 
     Returns None if not found or unreadable.
@@ -53,7 +53,7 @@ def load_agent_prompt(agent_name: str) -> Optional[str]:
     agents_dir = get_agents_directory()
     file_path = os.path.join(agents_dir, f"{agent_name}.md")
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             return f.read()
     except (FileNotFoundError, OSError):
         return None
@@ -63,7 +63,7 @@ _AT_AGENT_PATTERN = re.compile(r"^@([a-zA-Z0-9_\-]+)\s*[:\-]?\s*(.*)$", re.DOTAL
 _SLASH_AGENT_PATTERN = re.compile(r"^/agent\s+([a-zA-Z0-9_\-]+)\s*[:\-]?\s*(.*)$", re.DOTALL)
 
 
-def detect_agent_in_message(message: str) -> Tuple[Optional[str], str]:
+def detect_agent_in_message(message: str) -> tuple[str | None, str]:
     """Detect explicit agent selection in a user message.
 
     Supports two syntaxes:

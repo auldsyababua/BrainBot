@@ -39,9 +39,7 @@ def integration_test_environment():
 
     # Check if we're using test environment or fallback to main
     test_env_available = all(os.getenv(var) for var in required_env_vars)
-    main_env_available = all(
-        os.getenv(var.replace("TEST_", "")) for var in required_env_vars
-    )
+    main_env_available = all(os.getenv(var.replace("TEST_", "")) for var in required_env_vars)
 
     if not test_env_available and not main_env_available:
         pytest.skip(
@@ -84,12 +82,8 @@ def pytest_configure(config):
     config.addinivalue_line(
         "markers", "integration: marks tests as integration tests (may be slow)"
     )
-    config.addinivalue_line(
-        "markers", "database: marks tests that require database access"
-    )
-    config.addinivalue_line(
-        "markers", "performance: marks tests that measure performance"
-    )
+    config.addinivalue_line("markers", "database: marks tests that require database access")
+    config.addinivalue_line("markers", "performance: marks tests that measure performance")
     config.addinivalue_line("markers", "e2e: marks tests as end-to-end tests")
 
 
@@ -147,9 +141,7 @@ def pytest_runtest_setup(item):
         if not item.config.getoption("--run-integration") and not item.config.getoption(
             "--integration-only"
         ):
-            pytest.skip(
-                "Integration tests require --run-integration or --integration-only flag"
-            )
+            pytest.skip("Integration tests require --run-integration or --integration-only flag")
 
     # Skip non-integration tests if integration-only is specified
     if item.config.getoption("--integration-only"):

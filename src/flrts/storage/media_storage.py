@@ -79,15 +79,15 @@ class MediaStorage:
 
     async def upload_media(
         self,
-        file_content: Union[BinaryIO, bytes],
+        file_content: BinaryIO | bytes,
         file_name: str,
-        file_type: Optional[str] = None,
-        metadata: Optional[Dict] = None,
-        telegram_chat_id: Optional[int] = None,
-        telegram_user_id: Optional[int] = None,
-        description: Optional[str] = None,
-        tags: Optional[list] = None,
-    ) -> Dict:
+        file_type: str | None = None,
+        metadata: dict | None = None,
+        telegram_chat_id: int | None = None,
+        telegram_user_id: int | None = None,
+        description: str | None = None,
+        tags: list | None = None,
+    ) -> dict:
         """
         Upload media file to S3
 
@@ -111,7 +111,7 @@ class MediaStorage:
 
         try:
             # Handle bytes vs file-like object
-            file_stream: Union[io.BytesIO, BinaryIO]
+            file_stream: io.BytesIO | BinaryIO
             if isinstance(file_content, bytes):
                 file_stream = io.BytesIO(file_content)
             else:
@@ -226,7 +226,7 @@ class MediaStorage:
             logger.error(f"Error uploading media: {e}")
             raise
 
-    async def download_media(self, s3_key: str) -> Optional[bytes]:
+    async def download_media(self, s3_key: str) -> bytes | None:
         """
         Download media file from S3
 
@@ -262,7 +262,7 @@ class MediaStorage:
             logger.error(f"Error downloading media: {e}")
             return None
 
-    async def get_media_url(self, s3_key: str, expires_in: int = 3600) -> Optional[str]:
+    async def get_media_url(self, s3_key: str, expires_in: int = 3600) -> str | None:
         """
         Generate a presigned URL for media access
 
@@ -324,8 +324,8 @@ class MediaStorage:
 
     async def list_media(
         self,
-        prefix: Optional[str] = None,
-        media_type: Optional[str] = None,
+        prefix: str | None = None,
+        media_type: str | None = None,
         limit: int = 100,
     ) -> list:
         """

@@ -55,10 +55,10 @@ class PerformanceMonitor:
         }
 
         # Track recent metrics for trend analysis
-        self.metric_history: List[PerformanceMetrics] = []
+        self.metric_history: list[PerformanceMetrics] = []
         self.alert_cooldown = {}  # Prevent alert spam
 
-    def check_health(self) -> Optional[Dict]:
+    def check_health(self) -> dict | None:
         """Check system health endpoint."""
         try:
             response = requests.get(self.health_url, timeout=5)
@@ -68,7 +68,7 @@ class PerformanceMonitor:
             logger.error(f"Health check failed: {e}")
         return None
 
-    def analyze_metrics(self, health_data: Dict) -> PerformanceMetrics:
+    def analyze_metrics(self, health_data: dict) -> PerformanceMetrics:
         """Analyze health data and extract metrics."""
         system = health_data.get("system", {})
 
@@ -87,7 +87,7 @@ class PerformanceMonitor:
 
         return metrics
 
-    def check_threshold_violations(self, metrics: PerformanceMetrics) -> List[str]:
+    def check_threshold_violations(self, metrics: PerformanceMetrics) -> list[str]:
         """Check if any metrics violate thresholds."""
         violations = []
 
@@ -170,7 +170,7 @@ class PerformanceMonitor:
 
         return False
 
-    def format_alert_message(self, violations: List[str], metrics: PerformanceMetrics) -> str:
+    def format_alert_message(self, violations: list[str], metrics: PerformanceMetrics) -> str:
         """Format alert message for sending."""
         severity = (
             "🚨 <b>CRITICAL</b>" if any("🚨" in v for v in violations) else "⚠️ <b>WARNING</b>"

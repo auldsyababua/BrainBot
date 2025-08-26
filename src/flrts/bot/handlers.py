@@ -202,7 +202,7 @@ async def report_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         # Collect conversation data
-        report_data: Dict[str, Any] = {
+        report_data: dict[str, Any] = {
             "timestamp": timestamp,
             "user": {
                 "id": user.id,
@@ -470,7 +470,7 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 tmp_file_path = tmp_file.name
 
             # Read the file content
-            with open(tmp_file_path, "r", encoding="utf-8") as f:
+            with open(tmp_file_path, encoding="utf-8") as f:
                 content = f.read()
 
             # Clean up temp file
@@ -766,7 +766,7 @@ async def graph_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 response = "🕸️ **Your Knowledge Graph:**\n\n"
 
                 # Group by entity
-                entity_map: Dict[str, Any] = {}
+                entity_map: dict[str, Any] = {}
                 for rel in relationships:
                     if isinstance(rel, dict):
                         source = rel.get("source", "")

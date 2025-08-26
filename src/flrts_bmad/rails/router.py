@@ -14,17 +14,17 @@ logger = logging.getLogger(__name__)
 class RouteResult:
     """Result of routing decision."""
 
-    entity_type: Optional[str]  # 'lists', 'field_reports', 'tasks', None
-    operation: Optional[str]  # Specific operation like 'add_items', 'complete', etc.
-    function_name: Optional[str]  # Function to restrict LLM to
+    entity_type: str | None  # 'lists', 'field_reports', 'tasks', None
+    operation: str | None  # Specific operation like 'add_items', 'complete', etc.
+    function_name: str | None  # Function to restrict LLM to
     confidence: float  # 0.0 to 1.0
-    extracted_data: Dict[str, Any] = field(default_factory=dict)
+    extracted_data: dict[str, Any] = field(default_factory=dict)
     use_direct_execution: bool = False  # Skip function calling for high confidence
-    target_users: List[str] = field(default_factory=list)  # Extracted user assignments
+    target_users: list[str] = field(default_factory=list)  # Extracted user assignments
     # Separate confidence scores for different aspects
-    entity_confidence: Optional[float] = None  # Confidence in entity type detection
-    operation_confidence: Optional[float] = None  # Confidence in operation detection
-    assignee_confidence: Optional[float] = None  # Confidence in assignee extraction
+    entity_confidence: float | None = None  # Confidence in entity type detection
+    operation_confidence: float | None = None  # Confidence in operation detection
+    assignee_confidence: float | None = None  # Confidence in assignee extraction
     _match_length: int = 0  # Internal field for tiebreaker comparisons
 
 
@@ -208,7 +208,7 @@ class SynonymLibrary:
         except Exception as e:
             logger.error(f"Failed to load user aliases: {e}")
 
-    def resolve_user_mentions(self, message: str) -> List[str]:
+    def resolve_user_mentions(self, message: str) -> list[str]:
         """Extract user mentions and resolve to canonical usernames."""
         users = []
         message_lower = message.lower()
@@ -229,11 +229,11 @@ class SynonymLibrary:
 
         return users
 
-    def get_synonyms(self, term: str) -> List[str]:
+    def get_synonyms(self, term: str) -> list[str]:
         """Get all synonyms for a term."""
         return self.synonyms.get(term, [term])
 
-    def find_canonical_term(self, phrase: str) -> Optional[str]:
+    def find_canonical_term(self, phrase: str) -> str | None:
         """Find canonical term that matches phrase."""
         phrase_lower = phrase.lower()
 
@@ -256,7 +256,7 @@ class ConfidenceScorer:
         entity_type: str,
         operation: str,
         keyword_match: re.Match,
-        target_users: List[str],
+        target_users: list[str],
     ) -> float:
         """Calculate confidence score based on multiple factors."""
 
@@ -767,7 +767,7 @@ class KeywordRouter:
             re.IGNORECASE,
         )
 
-    def preprocess_message(self, message: str) -> Tuple[str, Dict[str, Any], Dict[str, float]]:
+    def preprocess_message(self, message: str) -> tuple[str, dict[str, Any], dict[str, float]]:
         """Extract deterministic syntax markers before routing.
 
         Phase 2.1 Enhancement: 100% confidence extraction of @mentions and /commands
@@ -1225,8 +1225,8 @@ class KeywordRouter:
         message: str,
         entity_type: str,
         operation: str,
-        message_lower: Optional[str] = None,
-    ) -> Dict[str, Any]:
+        message_lower: str | None = None,
+    ) -> dict[str, Any]:
         """Extract relevant data from message based on entity type and operation."""
         data = {}
         if message_lower is None:
