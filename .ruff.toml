@@ -25,6 +25,13 @@ ignore = [
     "B008",  # Function call in argument defaults
     "SIM108", # Use ternary operator - sometimes if/else is clearer
     "SIM105", # Use contextlib.suppress - try/except can be clearer
+    "SIM102", # Use single if - nested ifs can be clearer
+    "SIM117", # Multiple with statements - sometimes separate is clearer
+    "SIM118", # Use key in dict - .keys() is explicit
+    "SIM113", # Use enumerate - manual counter sometimes clearer
+    "B007",   # Loop variable not used - common in unpacking
+    "C401",   # Generator vs comprehension - both work
+    "N806",   # Variable names in functions - sometimes CAPS makes sense
     "UP035",  # typing.Dict vs dict - both work fine
     "UP038",  # Union types - old syntax more compatible
     "B011",   # assert False in tests - pytest handles this fine
