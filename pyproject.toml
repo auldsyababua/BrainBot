@@ -89,6 +89,19 @@ include = '\.pyi?$'
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+# Exclude common directories
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    "__pycache__",
+    "migrations",
+    "node_modules",
+    "venv",
+]
+# Allow fix for safe issues
+fix = true
+unfixable = []  # Don't prevent any auto-fixes
 
 [tool.isort]
 profile = "black"
