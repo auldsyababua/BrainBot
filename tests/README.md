@@ -16,24 +16,33 @@ This guide covers all testing procedures for the Markdown Brain Bot, with specia
 
 ## 🚀 Quick Start
 
-### Run All Tests
+### Local Test Execution (Mac Mini M4)
+We use a **self-hosted GitHub Actions runner** for CI, but you can also run tests locally:
+
 ```bash
-# Run the complete test suite
-python tests/test_all_storage.py
+# Run all unit tests (fast, mocked services)
+pytest tests/unit/ -v
+
+# Run integration tests (requires env vars)
+pytest tests/integration/ -v
 
 # Run performance tests
 python tests/test_performance.py
 
-# Run specific test categories
-python tests/integration/test_storage_integrations.py
-python tests/unit/test_search_resilience.py
+# Run with coverage
+pytest --cov=src --cov-report=html
 ```
+
+### CI/CD with Self-Hosted Runner
+- **Runner Location**: `~/actions-runner/` on Mac Mini M4
+- **Status Check**: `ps aux | grep Runner.Listener`
+- **Workflow**: `.github/workflows/test-self-hosted.yml`
+- **Benefits**: Instant execution, no queue time!
 
 ### Prerequisites
 - Python 3.11+
-- All environment variables configured (see `.env.example`)
-- Redis instance running (Upstash Redis)
-- Vector database configured (Upstash Vector)
+- Environment variables (dummy values OK for unit tests)
+- For integration tests: Redis, Vector DB, Supabase configured
 
 ## 📊 Performance Testing
 

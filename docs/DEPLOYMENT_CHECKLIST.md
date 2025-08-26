@@ -3,12 +3,18 @@
 ## Pre-Deployment Verification
 
 ### 1. Code Review
-- [ ] Review all changes in `feat/cf-migration-phase1` branch
+- [ ] Review all changes in feature branch
 - [ ] Verify no sensitive data is hardcoded
-- [ ] Check that CF_PROXY_SECRET is retrieved from secure store (not hardcoded)
+- [ ] Check that secrets are retrieved from environment variables
 - [ ] Rotate any secrets that were accidentally exposed in commits
 - [ ] Check that all tests pass locally
 - [ ] Ensure CI/CD workflows are configured correctly
+
+### 2. Testing
+- [ ] Run unit tests locally: `pytest tests/unit/`
+- [ ] Run integration tests: `pytest tests/integration/`
+- [ ] Verify self-hosted runner is active: `ps aux | grep Runner.Listener`
+- [ ] Check CI status on GitHub (uses Mac Mini M4 runner for instant execution)
 
 ### 2. Infrastructure Readiness
 - [ ] Cloudflare Workers deployed and accessible:

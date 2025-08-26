@@ -175,17 +175,38 @@ def test_with_mock_db(mock_client):
 
 ## CI/CD Testing
 
-### GitHub Actions
+### Self-Hosted Runner on Mac Mini M4
+We use a **self-hosted GitHub Actions runner** for instant test execution:
+- **Location**: Mac Mini M4 (local machine)
+- **Benefits**: Zero queue time, tests start immediately
+- **Performance**: Much faster than GitHub's free runners
+
+#### Managing the Runner
+```bash
+# Check if runner is running
+ps aux | grep Runner.Listener
+
+# Start runner (if stopped)
+cd ~/actions-runner && ./run.sh
+
+# View runner logs
+cd ~/actions-runner && tail -f runner.log
+
+# Stop runner
+cd ~/actions-runner && ./svc.sh stop
+```
+
+### GitHub Actions Workflows
 Tests run automatically on:
 - Pull requests to `develop` or `main`
 - Push to `develop` or `main`
-- Daily scheduled runs
+- Uses self-hosted runner (no more 15+ minute queues!)
 
 ### Required Checks
-- All unit tests must pass
-- Integration tests must pass
-- Code coverage > 80%
-- No security vulnerabilities
+- Black formatting must pass
+- Unit tests must pass (integration tests currently categorized)
+- Ruff linting (temporarily relaxed rules in `.ruff.toml`)
+- Security scanning via Semgrep
 
 ## Live Bot Testing
 
