@@ -156,7 +156,7 @@ class TestProcessorConstructorRegression(unittest.TestCase):
         Verify that all processors inherit from BaseProcessor correctly
         and don't override __init__ with different signatures.
         """
-        from src.rails.processors.base_processor import BaseProcessor
+        from flrts_bmad.rails.processors.base_processor import BaseProcessor
 
         for processor_class, class_name in self.processors_to_test:
             with self.subTest(processor=class_name):

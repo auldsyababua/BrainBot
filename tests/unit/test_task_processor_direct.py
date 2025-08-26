@@ -270,7 +270,7 @@ class TestTaskProcessorDirectExecution:
     @pytest.mark.asyncio
     async def test_performance_benchmark(self, task_processor, mock_supabase):
         """Test that operations are benchmarked."""
-        with patch("src.rails.processors.task_processor.async_benchmark") as mock_benchmark:
+        with patch("flrts_bmad.rails.processors.task_processor.async_benchmark") as mock_benchmark:
             # Setup mock response
             mock_response = Mock()
             mock_response.data = [{"id": "task-123"}]
