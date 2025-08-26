@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { AppProvider } from './context/AppContext';
-import { SmartRailsProvider } from './context/SmartRailsContext';
 import { AppContainer } from './components/Layout/AppContainer';
 import { initTelegramWebApp } from './utils/telegramSecurity';
 
@@ -12,9 +11,7 @@ export function App() {
 
   return (
     <AppProvider>
-      <SmartRailsProvider>
-        <AppContainer />
-      </SmartRailsProvider>
+      <AppContainer />
     </AppProvider>
   );
 }

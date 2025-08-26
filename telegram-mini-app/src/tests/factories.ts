@@ -21,14 +21,6 @@ export const createMockList = (overrides = {}) => ({
   ...overrides
 })
 
-export const createMockPerformanceMetrics = (overrides = {}) => ({
-  totalCommands: 150,
-  tokensSaved: 45000,
-  averageResponseTime: 42,
-  directExecutionRate: 85,
-  ...overrides
-})
-
 export const createMockBotStatus = (overrides = {}) => ({
   status: 'healthy' as const,
   message: 'All systems operational',

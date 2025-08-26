@@ -7,15 +7,13 @@ Comprehensive test script for all storage integrations:
 - AWS S3 (media storage)
 """
 
+import asyncio
 import os
 import sys
-import asyncio
 from datetime import datetime
 
 # Add parent directory to path
-sys.path.insert(
-    0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from dotenv import load_dotenv
 
@@ -94,9 +92,7 @@ async def test_redis():
             print("  ✗ Delete operation failed")
 
     except ImportError as e:
-        print_result(
-            "redis", False, f"Import error - check if RedisStore exists: {str(e)}"
-        )
+        print_result("redis", False, f"Import error - check if RedisStore exists: {str(e)}")
     except Exception as e:
         print_result("redis", False, f"Error: {type(e).__name__}: {str(e)}")
 
@@ -140,9 +136,7 @@ async def test_vector():
             print("  ⚠ Delete method not implemented - skipping")
 
     except ImportError as e:
-        print_result(
-            "vector", False, f"Import error - check vector_store location: {str(e)}"
-        )
+        print_result("vector", False, f"Import error - check vector_store location: {str(e)}")
     except Exception as e:
         print_result("vector", False, f"Error: {type(e).__name__}: {str(e)}")
 
@@ -159,9 +153,7 @@ async def test_supabase():
 
         # Test 1: Save document using create_file
         test_title = "Storage Test Document"
-        test_content = (
-            "# Storage Test\n\nTesting Supabase document storage integration."
-        )
+        test_content = "# Storage Test\n\nTesting Supabase document storage integration."
         test_folder = "test"
         test_tags = ["test", "storage", "integration"]
 
@@ -207,9 +199,7 @@ async def test_supabase():
         print_result("supabase", True, "All storage operations completed successfully")
 
     except ImportError as e:
-        print_result(
-            "supabase", False, f"Import error - check StorageService: {str(e)}"
-        )
+        print_result("supabase", False, f"Import error - check StorageService: {str(e)}")
     except Exception as e:
         print_result("supabase", False, f"Error: {type(e).__name__}: {str(e)}")
 
@@ -239,9 +229,7 @@ async def test_s3():
 
         # Test 2: Upload binary data (simulate image)
         # Create fake image data instead of using PIL
-        fake_image_data = (
-            b"\x89PNG\r\n\x1a\n" + b"\x00" * 100
-        )  # Minimal PNG header + data
+        fake_image_data = b"\x89PNG\r\n\x1a\n" + b"\x00" * 100  # Minimal PNG header + data
 
         img_key = "test/test_image.png"
         img_url = storage.upload_media(img_key, fake_image_data, "image/png")
@@ -268,9 +256,9 @@ async def test_integration():
     print_header("Testing Integrated Workflow")
 
     try:
-        from src.storage.storage_service import StorageService
         from src.storage.media_storage import MediaStorage
         from src.storage.redis_store import RedisStore
+        from src.storage.storage_service import StorageService
 
         # Simulate a complete workflow
         user_id = "integration_test_user"
@@ -375,9 +363,7 @@ Attendees: Team A, Team B
                 failures.append("Storage")
             if not media_ok:
                 failures.append("S3")
-            print_result(
-                "integration", False, f"Failed components: {', '.join(failures)}"
-            )
+            print_result("integration", False, f"Failed components: {', '.join(failures)}")
 
     except ImportError as e:
         print_result("integration", False, f"Import error: {str(e)}")

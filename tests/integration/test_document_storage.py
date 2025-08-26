@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """Test Document Storage Service with comprehensive edge case coverage"""
 import asyncio
-import sys
-import os
-import pytest
 import concurrent.futures
+import os
+import sys
 from unittest.mock import patch
+
+import pytest
 from dotenv import load_dotenv
 
 # Add parent directory to path before importing our modules
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-from src.storage.storage_service import DocumentStorage
+from flrts_bmad.storage.storage_service import DocumentStorage
 
 # Load environment variables
 load_dotenv()
@@ -69,18 +70,14 @@ async def test_document_storage_edge_cases():
     print("\n🔍 Testing malicious inputs...")
     for malicious in MALICIOUS_INPUTS:
         # Should sanitize or reject malicious file paths
-        result = await storage.store_document(
-            f"test/{malicious}.md", "safe content", {}
-        )
+        result = await storage.store_document(f"test/{malicious}.md", "safe content", {})
         # Verify no SQL injection occurred
         docs = await storage.search_documents("safe content")
         assert isinstance(docs, list)
 
     # Test 5: Large content handling
     print("\n🔍 Testing large content...")
-    large_doc_id = await storage.store_document(
-        "test/large.md", LARGE_CONTENT, {"size": "10MB"}
-    )
+    large_doc_id = await storage.store_document("test/large.md", LARGE_CONTENT, {"size": "10MB"})
     assert large_doc_id is not None
 
     # Test 6: Concurrent access
@@ -95,8 +92,7 @@ async def test_document_storage_edge_cases():
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         loop = asyncio.get_event_loop()
         tasks = [
-            loop.run_in_executor(executor, asyncio.run, concurrent_store(i))
-            for i in range(10)
+            loop.run_in_executor(executor, asyncio.run, concurrent_store(i)) for i in range(10)
         ]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
@@ -116,9 +112,7 @@ async def test_document_storage_edge_cases():
     print("\n🔍 Testing resource limits...")
     # Try to store document with massive metadata
     huge_metadata = {f"key_{i}": "value" * 100 for i in range(1000)}
-    result = await storage.store_document(
-        "test/huge-metadata.md", "content", huge_metadata
-    )
+    result = await storage.store_document("test/huge-metadata.md", "content", huge_metadata)
     # Should either succeed or fail gracefully
     assert result is not None or result is None
 
@@ -162,8 +156,7 @@ async def test_document_storage_edge_cases():
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         loop = asyncio.get_event_loop()
         tasks = [
-            loop.run_in_executor(executor, asyncio.run, concurrent_update(i))
-            for i in range(5)
+            loop.run_in_executor(executor, asyncio.run, concurrent_update(i)) for i in range(5)
         ]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
@@ -196,9 +189,7 @@ async def test_document_chunk_edge_cases():
     storage = DocumentStorage()
 
     # Create a test document first
-    doc_id = await storage.store_document(
-        "test/chunk-test.md", "Test content for chunks", {}
-    )
+    doc_id = await storage.store_document("test/chunk-test.md", "Test content for chunks", {})
 
     if not doc_id:
         print("❌ Failed to create test document")
@@ -282,9 +273,7 @@ async def test_document_storage():
             if os.getenv("SUPABASE_URL")
             else "❌ Missing"
         )
-        print(
-            f"SUPABASE_ANON_KEY: {'SET' if os.getenv('SUPABASE_ANON_KEY') else '❌ Missing'}"
-        )
+        print(f"SUPABASE_ANON_KEY: {'SET' if os.getenv('SUPABASE_ANON_KEY') else '❌ Missing'}")
         print()
 
         storage = DocumentStorage()
@@ -331,9 +320,7 @@ Created for testing purposes."""
 
         # Test 3: Search documents
         print("\n🔍 Testing document search...")
-        results = await storage.search_documents(
-            query="storage system", category="test", limit=5
-        )
+        results = await storage.search_documents(query="storage system", category="test", limit=5)
 
         print(f"✅ Found {len(results)} matching documents")
         for result in results:

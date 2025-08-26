@@ -1,9 +1,11 @@
 """Performance tests for Smart Rails to ensure routing meets speed requirements."""
 
-import pytest
-import time
 import statistics
-from src.rails.router import KeywordRouter
+import time
+
+import pytest
+
+from flrts_bmad.rails.router import KeywordRouter
 
 
 class TestSmartRailsPerformance:
@@ -71,9 +73,7 @@ class TestSmartRailsPerformance:
         assert avg_empty < 5, f"Empty string routing too slow: {avg_empty:.2f}ms"
 
         # Test 3: Extremely long messages
-        extremely_long = (
-            "add " + ", ".join([f"item{i}" for i in range(1000)]) + " to list"
-        )
+        extremely_long = "add " + ", ".join([f"item{i}" for i in range(1000)]) + " to list"
         long_times = []
         for _ in range(10):  # Fewer iterations for long messages
             start = time.perf_counter()
@@ -202,9 +202,7 @@ class TestSmartRailsPerformance:
                         results.append(tuple(sorted(result.target_users)))
 
                 # All resolutions should be identical
-                assert (
-                    len(set(results)) <= 1
-                ), f"Inconsistent alias resolution for {alias}"
+                assert len(set(results)) <= 1, f"Inconsistent alias resolution for {alias}"
 
                 if results:
                     resolved_users[alias] = results[0]
@@ -231,9 +229,7 @@ class TestSmartRailsPerformance:
             time_measurements.append(avg_time)
 
             # Performance requirement
-            assert (
-                avg_time < 15
-            ), f"Routing too slow with many aliases: {avg_time:.2f}ms"
+            assert avg_time < 15, f"Routing too slow with many aliases: {avg_time:.2f}ms"
 
         # Property 3: Complex messages shouldn't be disproportionately slow
         simple_time = time_measurements[0]
@@ -276,9 +272,7 @@ class TestSmartRailsPerformance:
 
         # Object count shouldn't grow significantly
         object_growth = final_objects - initial_objects
-        assert (
-            object_growth < 1000
-        ), f"Possible memory leak: {object_growth} new objects"
+        assert object_growth < 1000, f"Possible memory leak: {object_growth} new objects"
 
         # EDGE CASE TESTING ADDITIONS
 
@@ -382,13 +376,8 @@ class TestSmartRailsPerformance:
                     # Route with it
                     router_concurrent.route(f"task for t{thread_id}_a{i}")
                     # Remove it
-                    if (
-                        f"t{thread_id}_a{i}"
-                        in router_concurrent.synonym_lib.user_aliases
-                    ):
-                        del router_concurrent.synonym_lib.user_aliases[
-                            f"t{thread_id}_a{i}"
-                        ]
+                    if f"t{thread_id}_a{i}" in router_concurrent.synonym_lib.user_aliases:
+                        del router_concurrent.synonym_lib.user_aliases[f"t{thread_id}_a{i}"]
             except Exception as e:
                 errors.append(e)
 
@@ -399,9 +388,7 @@ class TestSmartRailsPerformance:
             t.join()
 
         # Should handle concurrent modifications
-        assert (
-            len(errors) < 5
-        ), f"Too many errors during concurrent access: {len(errors)}"
+        assert len(errors) < 5, f"Too many errors during concurrent access: {len(errors)}"
 
         # Test 6: Case sensitivity edge cases
         router_case = KeywordRouter()
@@ -446,9 +433,7 @@ class TestSmartRailsPerformance:
             avg_route_time = statistics.mean(route_times)
 
             # Confidence calculation should be minimal overhead
-            assert (
-                avg_route_time < 7
-            ), f"Complex confidence calc took {avg_route_time:.2f}ms"
+            assert avg_route_time < 7, f"Complex confidence calc took {avg_route_time:.2f}ms"
 
         # EDGE CASE TESTING ADDITIONS
 
@@ -530,9 +515,7 @@ class TestSmartRailsPerformance:
                 special_times.append(elapsed)
 
             avg_special = statistics.mean(special_times)
-            assert (
-                avg_special < 10
-            ), f"Special char confidence slow: {avg_special:.2f}ms"
+            assert avg_special < 10, f"Special char confidence slow: {avg_special:.2f}ms"
 
         # Test 6: Performance degradation over time
         degradation_msg = "create task for @user tomorrow at 3pm"
@@ -589,9 +572,7 @@ class TestSmartRailsPerformance:
         avg1 = statistics.mean(times1)
         avg2 = statistics.mean(times2)
 
-        assert (
-            abs(avg1 - avg2) < 1
-        ), f"Router performance varies: {avg1:.2f}ms vs {avg2:.2f}ms"
+        assert abs(avg1 - avg2) < 1, f"Router performance varies: {avg1:.2f}ms vs {avg2:.2f}ms"
 
         # EDGE CASE TESTING ADDITIONS
 
@@ -635,9 +616,7 @@ class TestSmartRailsPerformance:
                 pattern_times.append(elapsed)
 
             avg_pattern = statistics.mean(pattern_times)
-            assert (
-                avg_pattern < 10
-            ), f"Special pattern slow: '{pattern}' took {avg_pattern:.2f}ms"
+            assert avg_pattern < 10, f"Special pattern slow: '{pattern}' took {avg_pattern:.2f}ms"
 
         # Test 3: Router state isolation with regex
         router_a = KeywordRouter()
@@ -656,9 +635,7 @@ class TestSmartRailsPerformance:
             fresh_times.append(elapsed)
 
         avg_fresh = statistics.mean(fresh_times)
-        assert (
-            avg_fresh < 5
-        ), f"Fresh router slow after heavy use of another: {avg_fresh:.2f}ms"
+        assert avg_fresh < 5, f"Fresh router slow after heavy use of another: {avg_fresh:.2f}ms"
 
         # Test 4: Memory efficiency with many routers
         import gc
@@ -676,9 +653,7 @@ class TestSmartRailsPerformance:
         final_memory = len(gc.get_objects())
 
         memory_growth = final_memory - initial_memory
-        assert (
-            memory_growth < 500
-        ), f"Memory leak detected: {memory_growth} objects remain"
+        assert memory_growth < 500, f"Memory leak detected: {memory_growth} objects remain"
 
         # Test 5: Concurrent router creation
         import threading
@@ -703,13 +678,9 @@ class TestSmartRailsPerformance:
             t.join()
         concurrent_time = (time.perf_counter() - start_concurrent) * 1000
 
-        assert (
-            len(creation_errors) == 0
-        ), f"Errors during concurrent creation: {creation_errors}"
+        assert len(creation_errors) == 0, f"Errors during concurrent creation: {creation_errors}"
         assert len(created_routers) == 10, "Not all routers created"
-        assert (
-            concurrent_time < 200
-        ), f"Concurrent creation too slow: {concurrent_time:.2f}ms"
+        assert concurrent_time < 200, f"Concurrent creation too slow: {concurrent_time:.2f}ms"
 
         # Test 6: Regex edge cases
         regex_edge_cases = [

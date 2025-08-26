@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-🚀 Markdown Brain Bot - Main Entry Point
+🚀 FLRTS-BMAD - Main Entry Point
 
-This is the primary entry point for the Markdown Brain Bot.
+This is the primary entry point for the FLRTS-BMAD application.
 
 Mode Selection:
 - For local development: Use `python scripts/local_dev.py` (interactive simulator)
@@ -21,16 +21,22 @@ Local Development:
 import logging
 import os
 import sys
+from pathlib import Path
 
-# Add src to Python path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
+# For direct execution (python main.py) in development
+# This allows running without installation
+if __name__ == "__main__" and not __package__:
+    sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 # These imports must come after the path setup
 import uvicorn  # noqa: E402
-from bot.webhook_bot import create_webhook_bot  # noqa: E402
-from core.config import TELEGRAM_BOT_TOKEN  # noqa: E402
-from core.config import TELEGRAM_WEBHOOK_SECRET  # noqa: E402
-from core.supabase_logger import setup_supabase_logging  # noqa: E402
+
+from flrts_bmad.bot.webhook_bot import create_webhook_bot  # noqa: E402
+from flrts_bmad.core.config import (
+    TELEGRAM_BOT_TOKEN,  # noqa: E402
+    TELEGRAM_WEBHOOK_SECRET,  # noqa: E402
+)
+from flrts_bmad.core.supabase_logger import setup_supabase_logging  # noqa: E402
 
 # Set up logging
 logging.basicConfig(

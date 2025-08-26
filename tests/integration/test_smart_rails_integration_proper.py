@@ -4,11 +4,12 @@ These tests verify end-to-end behavior with minimal mocking,
 real database interactions, and exact expected outputs.
 """
 
-import pytest
 import time
 
-from src.rails.router import KeywordRouter
-from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+import pytest
+
+from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from flrts_bmad.rails.router import KeywordRouter
 
 
 class TestEndToEndMessageFlow:
@@ -102,9 +103,7 @@ class TestEndToEndMessageFlow:
             extracted_data=route_result.extracted_data,
             confidence_scores={"entity_confidence": 0.8, "operation_confidence": 0.8},
             missing_fields=(
-                ["list_name"]
-                if "suggested_name" not in route_result.extracted_data
-                else []
+                ["list_name"] if "suggested_name" not in route_result.extracted_data else []
             ),
         )
 

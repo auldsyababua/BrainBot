@@ -1,0 +1,62 @@
+# Ruff configuration file - Professional team settings
+# This configures Ruff to be less pedantic about style issues
+
+[lint]
+# Select which rules to enable
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+]
+
+# Ignore these annoying rules that don't affect code quality
+ignore = [
+    "E712",  # Comparison to True/False - sometimes clearer with ==
+    "E711",  # Comparison to None - sometimes needed for SQLAlchemy
+    "F841",  # Unused variable - often needed for unpacking
+    "E501",  # Line too long - handled by Black
+    "E402",  # Import not at top - needed for path manipulation
+    "F401",  # Unused import - sometimes needed for re-exports
+    "B008",  # Function call in argument defaults
+    "SIM108", # Use ternary operator - sometimes if/else is clearer
+    "SIM105", # Use contextlib.suppress - try/except can be clearer
+    "SIM102", # Use single if - nested ifs can be clearer
+    "SIM117", # Multiple with statements - sometimes separate is clearer
+    "SIM118", # Use key in dict - .keys() is explicit
+    "SIM113", # Use enumerate - manual counter sometimes clearer
+    "B007",   # Loop variable not used - common in unpacking
+    "C401",   # Generator vs comprehension - both work
+    "N806",   # Variable names in functions - sometimes CAPS makes sense
+    "UP035",  # typing.Dict vs dict - both work fine
+    "UP038",  # Union types - old syntax more compatible
+    "B011",   # assert False in tests - pytest handles this fine
+    "B904",   # Exception chaining - not always needed
+]
+
+# Additional per-file ignores for test files
+[lint.per-file-ignores]
+"tests/*" = [
+    "F841",  # Unused variables common in tests
+    "E712",  # Comparisons to True/False are fine in assertions
+    "F401",  # Unused imports for fixtures
+]
+"**/__init__.py" = ["F401"]  # Star imports in __init__ files
+"scripts/*" = ["E402"]  # Scripts often need path setup first
+
+[lint.flake8-quotes]
+inline-quotes = "double"
+
+[lint.isort]
+known-first-party = ["flrts", "flrts_bmad"]
+
+# Allow longer lines in comments and docstrings
+[lint.pycodestyle]
+max-doc-length = 100
+
+# Don't complain about TODO comments
+# Note: flake8-todos not yet supported in Ruff

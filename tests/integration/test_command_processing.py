@@ -1,10 +1,11 @@
 """End-to-end command processing integration tests."""
 
-import pytest
 import asyncio
-from unittest.mock import patch, AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
-from src.core.llm import process_message
+import pytest
+
+from flrts_bmad.core.llm import process_message
 
 
 class TestCommandProcessingIntegration:
@@ -32,12 +33,8 @@ class TestCommandProcessingIntegration:
 
         for command, expected_entity in test_commands:
             with (
-                patch(
-                    "src.rails.processors.list_processor.ListProcessor"
-                ) as mock_list_proc,
-                patch(
-                    "src.rails.processors.task_processor.TaskProcessor"
-                ) as mock_task_proc,
+                patch("src.rails.processors.list_processor.ListProcessor") as mock_list_proc,
+                patch("src.rails.processors.task_processor.TaskProcessor") as mock_task_proc,
                 patch(
                     "src.rails.processors.field_report_processor.FieldReportProcessor"
                 ) as mock_fr_proc,
@@ -103,9 +100,7 @@ class TestCommandProcessingIntegration:
                 f'src.rails.processors.{entity[:-1] if entity.endswith("s") else entity}_processor.{entity.title().replace("_", "")}Processor'
             ) as mock_proc:
                 mock_instance = AsyncMock()
-                mock_instance.process.return_value = (
-                    f"Processed {operation} for {entity}"
-                )
+                mock_instance.process.return_value = f"Processed {operation} for {entity}"
                 mock_proc.return_value = mock_instance
 
                 await process_message(command, self.chat_id)
@@ -123,13 +118,11 @@ class TestCommandProcessingIntegration:
             (ImportError("Module not found"), "error occurred"),
             (AttributeError("Processor not found"), "error occurred"),
             (Exception("Generic error"), "error occurred"),
-            (asyncio.TimeoutError("Timeout"), "error occurred"),
+            (TimeoutError("Timeout"), "error occurred"),
         ]
 
         for error, expected_in_response in error_scenarios:
-            with patch(
-                "src.rails.processors.list_processor.ListProcessor"
-            ) as mock_proc:
+            with patch("src.rails.processors.list_processor.ListProcessor") as mock_proc:
                 mock_instance = AsyncMock()
                 mock_instance.process.side_effect = error
                 mock_proc.return_value = mock_instance
@@ -164,12 +157,8 @@ class TestCommandProcessingIntegration:
             if command_type == "rails":
                 # Mock Rails processor
                 with (
-                    patch(
-                        "src.rails.processors.list_processor.ListProcessor"
-                    ) as mock_list,
-                    patch(
-                        "src.rails.processors.task_processor.TaskProcessor"
-                    ) as mock_task,
+                    patch("src.rails.processors.list_processor.ListProcessor") as mock_list,
+                    patch("src.rails.processors.task_processor.TaskProcessor") as mock_task,
                     patch(
                         "src.rails.processors.field_report_processor.FieldReportProcessor"
                     ) as mock_fr,
@@ -232,9 +221,7 @@ class TestCommandProcessingIntegration:
                 return await process_message(cmd, self.chat_id)
 
         # Process commands concurrently
-        results = await asyncio.gather(
-            *[process_command_with_mocks(cmd) for cmd in commands]
-        )
+        results = await asyncio.gather(*[process_command_with_mocks(cmd) for cmd in commands])
 
         # Verify all commands were processed
         assert len(results) == len(commands)
@@ -265,9 +252,7 @@ class TestCommandProcessingIntegration:
             mock_response.choices[0].message.function_call = None
             mock_llm.return_value = mock_response
 
-            response = await process_message(
-                "What's on my shopping list?", self.chat_id
-            )
+            response = await process_message("What's on my shopping list?", self.chat_id)
 
             # Verify context was searched
             mock_search.assert_called_once()
@@ -291,9 +276,7 @@ class TestCommandProcessingIntegration:
             elapsed_time = time.time() - start_time
 
             # Rails commands should be fast
-            assert (
-                elapsed_time < 0.5
-            ), f"Rails command took {elapsed_time}s, expected < 0.5s"
+            assert elapsed_time < 0.5, f"Rails command took {elapsed_time}s, expected < 0.5s"
             assert response == "Quick response"
 
     @pytest.mark.asyncio
@@ -309,9 +292,7 @@ class TestCommandProcessingIntegration:
 
         for malicious_input in malicious_inputs:
             # Should handle without security issues
-            with patch(
-                "src.rails.processors.list_processor.ListProcessor"
-            ) as mock_proc:
+            with patch("src.rails.processors.list_processor.ListProcessor") as mock_proc:
                 mock_instance = AsyncMock()
                 mock_instance.process.return_value = "Safely processed"
                 mock_proc.return_value = mock_instance
@@ -346,9 +327,7 @@ class TestCommandProcessingIntegration:
             assert "error" in response2.lower()
 
         # Third command should still work
-        with patch(
-            "src.rails.processors.field_report_processor.FieldReportProcessor"
-        ) as mock_proc:
+        with patch("src.rails.processors.field_report_processor.FieldReportProcessor") as mock_proc:
             mock_instance = AsyncMock()
             mock_instance.process.return_value = "Report created"
             mock_proc.return_value = mock_instance

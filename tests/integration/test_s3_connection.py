@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Test S3 connection and credentials with comprehensive edge case coverage"""
-import boto3
-import os
 import concurrent.futures
+import os
 from unittest.mock import patch
+
+import boto3
 from botocore.exceptions import (
     ClientError,
-    NoCredentialsError,
     EndpointConnectionError,
+    NoCredentialsError,
     ParamValidationError,
 )
 from dotenv import load_dotenv
@@ -128,9 +129,7 @@ def test_s3_connection_edge_cases():
             upload_id = response["UploadId"]
 
             # Abort the multipart upload (cleanup)
-            s3_client.abort_multipart_upload(
-                Bucket=bucket_name, Key=large_key, UploadId=upload_id
-            )
+            s3_client.abort_multipart_upload(Bucket=bucket_name, Key=large_key, UploadId=upload_id)
             print("   ✅ Multipart upload operations working")
         except ClientError as e:
             print(f"   ⚠️ Multipart upload test failed: {e}")
@@ -181,9 +180,7 @@ def test_s3_connection_edge_cases():
         test_key = "brain-bot/test/presigned-test.txt"
 
         # Upload test object
-        s3_client.put_object(
-            Bucket=bucket_name, Key=test_key, Body=b"Presigned URL test"
-        )
+        s3_client.put_object(Bucket=bucket_name, Key=test_key, Body=b"Presigned URL test")
 
         # Test various expiration times
         expiration_times = [1, 60, 3600, 604800]  # 1s, 1m, 1h, 1 week
@@ -278,9 +275,7 @@ def test_s3_connection():
         bucket_name = os.getenv("S3_BUCKET_NAME", "t2t2-images")
 
         print("🔍 Testing S3 Connection")
-        print(
-            f"Access Key: {aws_access_key[:10]}..." if aws_access_key else "❌ Missing"
-        )
+        print(f"Access Key: {aws_access_key[:10]}..." if aws_access_key else "❌ Missing")
         print(f"Secret Key: {'*' * 10}..." if aws_secret_key else "❌ Missing")
         print(f"Region: {aws_region}")
         print(f"Bucket: {bucket_name}")
@@ -321,9 +316,7 @@ def test_s3_connection():
                 for obj in response["Contents"]:
                     print(f"  - {obj['Key']} ({obj['Size']} bytes)")
             else:
-                print(
-                    "No items found in brain-bot/ folder (this is normal for first run)"
-                )
+                print("No items found in brain-bot/ folder (this is normal for first run)")
         except Exception as e:
             print(f"❌ Error listing objects: {e}")
 

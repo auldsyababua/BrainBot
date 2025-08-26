@@ -2,14 +2,22 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    tsconfigPaths() // Handles TypeScript path aliases
+  ],
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/tests/setup.ts'],
     css: true,
+    // Fix for CI environment differences
+    pool: 'forks', // Use forks instead of threads to avoid issues
+    testTimeout: 10000,
+    hookTimeout: 10000,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
@@ -74,6 +82,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@services': path.resolve(__dirname, './src/services'),
+      '@context': path.resolve(__dirname, './src/context'),
     },
   },
 })

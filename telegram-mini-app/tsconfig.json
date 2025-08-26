@@ -5,6 +5,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -21,10 +22,14 @@
     "noFallthroughCasesInSwitch": true,
     
     /* Path mapping */
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@services/*": ["./src/services/*"],
+      "@context/*": ["./src/context/*"]
     }
   },
-  "include": ["src", "src/types"],
+  "include": ["src", "src/tests", "src/types"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

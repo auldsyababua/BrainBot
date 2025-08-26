@@ -4,7 +4,8 @@ Tests the dynamic prompting module without requiring full system initialization.
 """
 
 import pytest
-from src.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+
+from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
 
 
 class TestDynamicPromptGeneration:
@@ -275,9 +276,7 @@ class TestPromptOptimization:
             ),
         ]
 
-        prompts = [
-            self.generator.generate_optimized_system_prompt(ctx) for ctx in contexts
-        ]
+        prompts = [self.generator.generate_optimized_system_prompt(ctx) for ctx in contexts]
         lengths = [len(p) for p in prompts]
 
         # Verify length ordering: high conf < medium conf < low conf

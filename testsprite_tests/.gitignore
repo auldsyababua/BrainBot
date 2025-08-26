@@ -1,0 +1,7 @@
+*.local.json
+.eslintrc.local.json
+.prettierrc.local.json
+.eslintcache
+.prettier-cache
+.vscode/settings.json
+.idea/

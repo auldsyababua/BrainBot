@@ -12,20 +12,21 @@ Usage:
     python test_storage_integrations.py --test s3
 """
 
+import argparse
+import asyncio
 import os
 import sys
-import asyncio
 from datetime import datetime
-import argparse
 
 # Add src to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
+from flrts_bmad.storage import vector_store
+from flrts_bmad.storage.media_storage import media_storage
+
 # Import storage modules
-from storage.redis_store import redis_store
-from storage.vector_store import vector_store
-from storage.storage_service import document_storage
-from storage.media_storage import media_storage
+from flrts_bmad.storage.redis_store import redis_store
+from flrts_bmad.storage.storage_service import document_storage
 
 
 # Color codes for terminal output
@@ -115,9 +116,7 @@ class StorageTestSuite:
 
             # Store conversation
             self.log(f"Storing conversation for chat_id: {test_chat_id}")
-            store_result = await redis_store.save_conversation(
-                test_chat_id, test_messages
-            )
+            store_result = await redis_store.save_conversation(test_chat_id, test_messages)
 
             success = store_result is True
             print_test_result("Store conversation", success)
@@ -249,12 +248,8 @@ class StorageTestSuite:
                 )
 
                 success = store_result is True
-                print_test_result(
-                    f"Store document: {doc['metadata']['title']}", success
-                )
-                self.test_results["vector"].append(
-                    (f"Store {doc['metadata']['title']}", success)
-                )
+                print_test_result(f"Store document: {doc['metadata']['title']}", success)
+                self.test_results["vector"].append((f"Store {doc['metadata']['title']}", success))
                 if not success:
                     all_passed = False
 
@@ -267,14 +262,11 @@ class StorageTestSuite:
 
             for query, expected_title in search_queries:
                 self.log(f"Searching for: {query}")
-                search_results = await vector_store.search(
-                    query, top_k=3, include_metadata=True
-                )
+                search_results = await vector_store.search(query, top_k=3, include_metadata=True)
 
                 success = (
                     len(search_results) > 0
-                    and search_results[0].get("metadata", {}).get("title")
-                    == expected_title
+                    and search_results[0].get("metadata", {}).get("title") == expected_title
                 )
                 details = f"Found {len(search_results)} results, top match: {search_results[0].get('metadata', {}).get('title', 'N/A') if search_results else 'None'}"
                 print_test_result(f"Search: '{query[:30]}...'", success, details)
@@ -323,9 +315,7 @@ class StorageTestSuite:
             # Test 5: Update metadata
             new_metadata = {"updated_at": datetime.now().isoformat(), "test_flag": True}
             self.log(f"Updating metadata for: {test_doc_id}")
-            update_result = await vector_store.update_metadata(
-                test_doc_id, new_metadata
-            )
+            update_result = await vector_store.update_metadata(test_doc_id, new_metadata)
 
             success = update_result is True
             print_test_result("Update metadata", success)
@@ -441,8 +431,7 @@ This is a test markdown document for Supabase storage testing.
 
             # Test 4: Update document
             updated_content = (
-                test_content
-                + "\n\n## Updated Section\nThis content was added during testing."
+                test_content + "\n\n## Updated Section\nThis content was added during testing."
             )
             updated_metadata = {"last_test_update": datetime.now().isoformat()}
 
@@ -472,9 +461,7 @@ This is a test markdown document for Supabase storage testing.
                         query=query, **extra_params[0]
                     )
                 else:
-                    search_results = await document_storage.search_documents(
-                        query=query
-                    )
+                    search_results = await document_storage.search_documents(query=query)
 
                 success = len(search_results) > 0
                 print_test_result(
@@ -514,16 +501,12 @@ This is a test markdown document for Supabase storage testing.
                         get_chunks_success,
                         f"Found {len(chunks)} chunks",
                     )
-                    self.test_results["supabase"].append(
-                        ("Get chunks", get_chunks_success)
-                    )
+                    self.test_results["supabase"].append(("Get chunks", get_chunks_success))
                     if not get_chunks_success:
                         all_passed = False
 
             except Exception as e:
-                print_warning(
-                    f"Chunk operations not available (table may not exist): {e}"
-                )
+                print_warning(f"Chunk operations not available (table may not exist): {e}")
 
             # Cleanup: Delete test document
             self.log("Cleaning up test document")
@@ -578,9 +561,7 @@ This is a test markdown document for Supabase storage testing.
 
             for path in special_paths:
                 try:
-                    doc_id = await document_storage.store_document(
-                        path, "Special path test", {}
-                    )
+                    doc_id = await document_storage.store_document(path, "Special path test", {})
                     if doc_id:
                         await document_storage.delete_document(path)
                         success = True
@@ -601,14 +582,10 @@ This is a test markdown document for Supabase storage testing.
             injection_safe = True
             for path in malicious_paths:
                 try:
-                    doc_id = await document_storage.store_document(
-                        path, "Injection test", {}
-                    )
+                    doc_id = await document_storage.store_document(path, "Injection test", {})
                     if doc_id:
                         # Verify no injection occurred
-                        search_results = await document_storage.search_documents(
-                            "Injection test"
-                        )
+                        search_results = await document_storage.search_documents("Injection test")
                         await document_storage.delete_document(path)
                 except Exception:
                     pass  # Expected to fail
@@ -704,9 +681,7 @@ This is a test markdown document for Supabase storage testing.
                 )
 
                 details = (
-                    f"S3 Key: {upload_result.get('s3_key', 'N/A')[:30]}..."
-                    if upload_result
-                    else ""
+                    f"S3 Key: {upload_result.get('s3_key', 'N/A')[:30]}..." if upload_result else ""
                 )
                 print_test_result(f"Upload: {test_file['name']}", success, details)
                 self.test_results["s3"].append((f"Upload {test_file['name']}", success))
@@ -724,19 +699,14 @@ This is a test markdown document for Supabase storage testing.
                 self.log(f"Downloading file: {s3_key}")
                 downloaded_content = await media_storage.download_media(s3_key)
 
-                success = (
-                    downloaded_content is not None
-                    and downloaded_content == original_content
-                )
+                success = downloaded_content is not None and downloaded_content == original_content
 
                 print_test_result(
                     f"Download: {test_files[i]['name']}",
                     success,
                     f"Size: {len(downloaded_content) if downloaded_content else 0} bytes",
                 )
-                self.test_results["s3"].append(
-                    (f"Download {test_files[i]['name']}", success)
-                )
+                self.test_results["s3"].append((f"Download {test_files[i]['name']}", success))
                 if not success:
                     all_passed = False
 
@@ -745,9 +715,7 @@ This is a test markdown document for Supabase storage testing.
                 s3_key = upload_result["s3_key"]
 
                 self.log(f"Generating presigned URL for: {s3_key}")
-                presigned_url = await media_storage.get_media_url(
-                    s3_key, expires_in=300
-                )
+                presigned_url = await media_storage.get_media_url(s3_key, expires_in=300)
 
                 success = (
                     presigned_url is not None
@@ -756,9 +724,7 @@ This is a test markdown document for Supabase storage testing.
                 )
 
                 print_test_result(f"Presigned URL: {test_files[i]['name']}", success)
-                self.test_results["s3"].append(
-                    (f"Presigned URL {test_files[i]['name']}", success)
-                )
+                self.test_results["s3"].append((f"Presigned URL {test_files[i]['name']}", success))
                 if not success:
                     all_passed = False
 
@@ -767,9 +733,7 @@ This is a test markdown document for Supabase storage testing.
             media_list = await media_storage.list_media(media_type="image", limit=10)
 
             success = isinstance(media_list, list)
-            print_test_result(
-                "List media files", success, f"Found {len(media_list)} files"
-            )
+            print_test_result("List media files", success, f"Found {len(media_list)} files")
             self.test_results["s3"].append(("List media", success))
             if not success:
                 all_passed = False
@@ -801,9 +765,7 @@ This is a test markdown document for Supabase storage testing.
             self.test_results["s3"].append(("Null content", success))
 
             # Test 7: Empty file
-            empty_result = await media_storage.upload_media(
-                b"", "empty.txt", "text/plain"
-            )
+            empty_result = await media_storage.upload_media(b"", "empty.txt", "text/plain")
             success = empty_result is not None
             print_test_result("Empty file upload", success)
             self.test_results["s3"].append(("Empty file", success))
@@ -886,9 +848,7 @@ This is a test markdown document for Supabase storage testing.
                     s3_keys.add(result["s3_key"])
 
             success = len(s3_keys) == 1  # All deduplicated to same key
-            print_test_result(
-                "Concurrent deduplication", success, f"Unique keys: {len(s3_keys)}"
-            )
+            print_test_result("Concurrent deduplication", success, f"Unique keys: {len(s3_keys)}")
             self.test_results["s3"].append(("Deduplication", success))
 
             # Cleanup dedup test
@@ -929,9 +889,7 @@ This is a test markdown document for Supabase storage testing.
             total_tests += service_total
             total_passed += service_passed
 
-            percentage = (
-                (service_passed / service_total * 100) if service_total > 0 else 0
-            )
+            percentage = (service_passed / service_total * 100) if service_total > 0 else 0
             color = (
                 Colors.GREEN
                 if percentage == 100
@@ -949,9 +907,7 @@ This is a test markdown document for Supabase storage testing.
                     print(f"  {status_color}{test_name:<30} [{status}]{Colors.END}")
 
         print()
-        overall_percentage = (
-            (total_passed / total_tests * 100) if total_tests > 0 else 0
-        )
+        overall_percentage = (total_passed / total_tests * 100) if total_tests > 0 else 0
         overall_color = (
             Colors.GREEN
             if overall_percentage == 100
@@ -971,9 +927,7 @@ This is a test markdown document for Supabase storage testing.
                 f"{Colors.YELLOW}{Colors.BOLD}⚠️  Most tests passed, but some issues detected{Colors.END}"
             )
         else:
-            print(
-                f"{Colors.RED}{Colors.BOLD}❌ Multiple storage systems have issues{Colors.END}"
-            )
+            print(f"{Colors.RED}{Colors.BOLD}❌ Multiple storage systems have issues{Colors.END}")
 
 
 async def main():

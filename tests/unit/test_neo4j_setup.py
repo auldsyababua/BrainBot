@@ -4,8 +4,8 @@ Test script to verify Neo4j setup and install missing dependencies.
 """
 
 import os
-import sys
 import subprocess
+import sys
 
 
 def install_package(package):
@@ -106,9 +106,7 @@ def main():
     print("\n2. Testing Neo4j connection...")
     if not test_neo4j_connection():
         print("❌ Neo4j connection test failed")
-        print(
-            "   Make sure Neo4j is running: docker-compose -f docker-compose.neo4j.yml up -d"
-        )
+        print("   Make sure Neo4j is running: docker-compose -f docker-compose.neo4j.yml up -d")
         return False
 
     # Step 3: Test memory initialization

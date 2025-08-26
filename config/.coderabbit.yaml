@@ -1,0 +1,251 @@
+# CodeRabbit Configuration for FLRTS Project
+# AI-powered code review and analysis for Field Logistics & Remote Telemetry System
+
+# Language version requirements
+language_version:
+  python: "3.9"
+  node: "18.0.0"
+  typescript: "5.6.0"
+
+# Review settings
+reviews:
+  # Review profile: balanced between thoroughness and speed
+  review_status: true
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  auto_review:
+    enabled: true
+    # Ignore test files and generated files
+    ignore_title_keywords:
+      - "WIP"
+      - "[skip ci]"
+      - "[no review]"
+    drafts: false
+    base_branches:
+      - main
+      - develop
+  
+  # Path-specific instructions for different parts of the codebase
+  path_instructions:
+    # Python backend files
+    - path: "src/**/*.py"
+      instructions: |
+        Review Python code for:
+        - Type hints usage and correctness
+        - Async/await best practices for Telegram bot handlers
+        - Proper error handling with try-except blocks (use Exception, not bare except)
+        - Redis and Upstash Vector integration patterns
+        - Supabase client usage and RLS considerations
+        - Memory leak prevention in async operations
+        - Proper use of python-dotenv for secrets management
+        - Adherence to Black formatting (88 char line length)
+        - Ensure all async functions properly await coroutines
+    
+    # Smart Rails processors
+    - path: "src/rails/processors/**/*.py"
+      instructions: |
+        Validate processor implementations:
+        - Proper inheritance from base_processor.py
+        - Consistent error handling and logging
+        - Confidence scoring accuracy (0.0 to 1.0 range)
+        - Field validation and data sanitization
+        - Dynamic prompt generation efficiency
+        - Task/list/field report specific logic correctness
+    
+    # Telegram Mini App React/TypeScript
+    - path: "telegram-mini-app/src/**/*.{ts,tsx}"
+      instructions: |
+        Review TypeScript/React code for:
+        - Proper TypeScript typing (avoid 'any' type)
+        - React hooks usage (useState, useEffect, useContext)
+        - Component composition and prop drilling avoidance
+        - Tailwind CSS class organization and responsive design
+        - Telegram WebApp API integration correctness
+        - Error boundaries implementation
+        - Loading states and user feedback
+        - Accessibility considerations (ARIA labels, keyboard navigation)
+        - MSW mock handlers for testing
+    
+    # CloudFlare Workers
+    - path: "cf/**/*.ts"
+      instructions: |
+        Review CloudFlare Worker code for:
+        - Wrangler.toml configuration correctness
+        - KV namespace and Durable Objects usage
+        - Request/Response handling efficiency
+        - CORS and security headers
+        - Rate limiting implementation
+        - Error responses and logging
+        - Environment variable usage
+        - Worker size optimization (< 1MB)
+    
+    # Test files
+    - path: "tests/**/*.py"
+      instructions: |
+        Ensure test quality:
+        - Pytest fixtures usage and conftest.py organization
+        - Async test handling with pytest-asyncio
+        - Mock usage following test_mocking_guidelines.md
+        - Integration vs unit test separation
+        - Performance test coverage (locustfile.py patterns)
+        - Anti-mesa testing patterns for edge cases
+        - Clear test naming and documentation
+        - No hardcoded values or credentials
+    
+    # Configuration files
+    - path: "**/*.{yaml,yml,toml}"
+      instructions: |
+        Validate configuration files for:
+        - Correct YAML/TOML syntax
+        - No exposed secrets or API keys
+        - Environment-specific settings properly separated
+        - Docker compose configurations
+        - CI/CD pipeline definitions
+        - Dependency version pinning
+    
+    # Documentation
+    - path: "docs/**/*.md"
+      instructions: |
+        Review documentation for:
+        - Clear and concise language
+        - Accurate code examples
+        - Updated API endpoints and parameters
+        - Deployment instructions completeness
+        - Architecture diagrams accuracy
+        - No outdated information
+    
+    # SQL and Database
+    - path: "scripts/database/**/*.sql"
+      instructions: |
+        Review SQL scripts for:
+        - Proper indexing strategies
+        - RLS (Row Level Security) policies
+        - Migration ordering and dependencies
+        - Data integrity constraints
+        - Performance considerations
+        - Backup and recovery procedures
+
+  # AST-based code analysis rules
+  tools:
+    ast-grep:
+      essential_rules: true
+      rule_dirs:
+        - ".coderabbit/rules"
+      util_dirs:
+        - ".coderabbit/utils"
+    
+    # Python linting with Ruff
+    ruff:
+      enabled: true
+      config:
+        line-length: 88
+        target-version: "py39"
+        select:
+          - E  # pycodestyle errors
+          - F  # pyflakes
+          - I  # isort
+          - N  # pep8-naming
+          - UP # pyupgrade
+          - B  # flake8-bugbear
+          - C4 # flake8-comprehensions
+          - DTZ # flake8-datetimez
+          - ISC # flake8-implicit-str-concat
+          - PIE # flake8-pie
+          - RSE # flake8-raise
+          - RET # flake8-return
+          - SIM # flake8-simplify
+          - TCH # flake8-type-checking
+          - PTH # flake8-use-pathlib
+          - ASYNC # flake8-async
+    
+    # Security scanning with Semgrep
+    semgrep:
+      enabled: true
+      rulesets:
+        - python.lang.security
+        - javascript.react.security
+        - typescript.react.security
+    
+    # TypeScript/JavaScript linting
+    biome:
+      enabled: true
+      config_path: "telegram-mini-app/biome.json"
+
+# Code generation settings
+code_generation:
+  docstrings:
+    enabled: true
+    style: "google"
+    path_instructions:
+      - path: "src/**/*.py"
+        instructions: |
+          Generate Google-style docstrings with:
+          - Args section for parameters with types
+          - Returns section with type
+          - Raises section for exceptions
+          - Examples section for complex functions
+          Do not add "Auto-generated by CodeRabbit" notices.
+      
+      - path: "telegram-mini-app/src/**/*.{ts,tsx}"
+        instructions: |
+          Generate JSDoc comments with:
+          - @param tags with types
+          - @returns tag with type
+          - @throws for error conditions
+          - @example for complex components
+
+# Chat and interaction settings
+chat:
+  auto_reply: true
+
+# Knowledge base and learning
+knowledge_base:
+  enabled: true
+  learnings:
+    scope: "global"
+  
+  # Project-specific context
+  additional_context: |
+    FLRTS (Field Logistics & Remote Telemetry System) is a Telegram bot platform for:
+    - Field operations management
+    - Document and knowledge base storage
+    - Task and list management
+    - Smart routing with AI processors
+    - Multi-site operations support (Eagle Lake, Crockett, Mathis)
+    
+    Tech Stack:
+    - Backend: Python 3.9, Flask, python-telegram-bot
+    - Frontend: React 18, TypeScript, Tailwind CSS, Vite
+    - Storage: Supabase (PostgreSQL), Redis, Upstash Vector, S3
+    - AI: OpenAI GPT-4, Mem0 for memory, LangChain
+    - Infrastructure: CloudFlare Workers, Render.com
+    - Testing: Pytest, Vitest, MSW, Locust
+
+# Performance and anti-patterns
+anti_patterns:
+  - pattern: "except:"
+    message: "Use 'except Exception:' instead of bare except"
+    severity: "error"
+  
+  - pattern: "console.log"
+    message: "Remove console.log statements in production code"
+    severity: "warning"
+    exclude_paths:
+      - "**/*.test.ts"
+      - "**/*.test.tsx"
+  
+  - pattern: "any"
+    message: "Avoid using 'any' type in TypeScript"
+    severity: "warning"
+  
+  - pattern: "TODO|FIXME|HACK"
+    message: "Address TODO/FIXME/HACK comments before merging"
+    severity: "info"
+
+# Early access features
+early_access:
+  enabled: true
+
+# Telemetry (optional)
+telemetry:
+  enabled: false
