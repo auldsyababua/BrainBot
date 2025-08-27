@@ -42,9 +42,7 @@ class SmallTeamLoadTester:
             "can you help me understand the workflow?",
         ]
 
-    async def test_health_endpoints(
-        self, session: aiohttp.ClientSession
-    ) -> dict[str, Any]:
+    async def test_health_endpoints(self, session: aiohttp.ClientSession) -> dict[str, Any]:
         """Test health check endpoints performance."""
         health_tests = []
 
@@ -64,9 +62,7 @@ class SmallTeamLoadTester:
                         }
                     )
             except Exception as e:
-                health_tests.append(
-                    {"endpoint": endpoint, "error": str(e), "success": False}
-                )
+                health_tests.append({"endpoint": endpoint, "error": str(e), "success": False})
 
         return {
             "health_check_results": health_tests,
@@ -162,9 +158,7 @@ class SmallTeamLoadTester:
         self, num_users: int = 10, commands_per_user: int = 5
     ) -> dict[str, Any]:
         """Run load test with multiple concurrent users."""
-        print(
-            f"🚀 Starting load test: {num_users} users, {commands_per_user} commands each"
-        )
+        print(f"🚀 Starting load test: {num_users} users, {commands_per_user} commands each")
 
         start_time = time.perf_counter()
 
@@ -192,9 +186,7 @@ class SmallTeamLoadTester:
                 else:
                     print(f"User session error: {user_result}")
 
-            return self.analyze_results(
-                all_results, health_results, total_time, num_users
-            )
+            return self.analyze_results(all_results, health_results, total_time, num_users)
 
     def analyze_results(
         self,
@@ -230,15 +222,9 @@ class SmallTeamLoadTester:
         ]
 
         direct_exec_times = [
-            r["response_time_ms"]
-            for r in direct_exec_results
-            if "response_time_ms" in r
+            r["response_time_ms"] for r in direct_exec_results if "response_time_ms" in r
         ]
-        llm_times = [
-            r["response_time_ms"]
-            for r in llm_fallback_results
-            if "response_time_ms" in r
-        ]
+        llm_times = [r["response_time_ms"] for r in llm_fallback_results if "response_time_ms" in r]
 
         analysis = {
             "load_test_summary": {
@@ -256,26 +242,18 @@ class SmallTeamLoadTester:
             },
             "response_time_analysis": {
                 "avg_response_time_ms": (
-                    round(statistics.mean(response_times), 1)
-                    if response_times
-                    else None
+                    round(statistics.mean(response_times), 1) if response_times else None
                 ),
                 "median_response_time_ms": (
-                    round(statistics.median(response_times), 1)
-                    if response_times
-                    else None
+                    round(statistics.median(response_times), 1) if response_times else None
                 ),
                 "p95_response_time_ms": (
                     round(sorted(response_times)[int(0.95 * len(response_times))], 1)
                     if len(response_times) > 5
                     else None
                 ),
-                "max_response_time_ms": (
-                    round(max(response_times), 1) if response_times else None
-                ),
-                "min_response_time_ms": (
-                    round(min(response_times), 1) if response_times else None
-                ),
+                "max_response_time_ms": (round(max(response_times), 1) if response_times else None),
+                "min_response_time_ms": (round(min(response_times), 1) if response_times else None),
             },
             "story_1_6_performance": {
                 "direct_execution_requests": len(direct_exec_results),
@@ -286,23 +264,16 @@ class SmallTeamLoadTester:
                     else 0
                 ),
                 "avg_direct_exec_time_ms": (
-                    round(statistics.mean(direct_exec_times), 1)
-                    if direct_exec_times
-                    else None
+                    round(statistics.mean(direct_exec_times), 1) if direct_exec_times else None
                 ),
                 "avg_llm_fallback_time_ms": (
                     round(statistics.mean(llm_times), 1) if llm_times else None
                 ),
                 "direct_exec_under_500ms": (
-                    sum(1 for t in direct_exec_times if t < 500)
-                    if direct_exec_times
-                    else 0
+                    sum(1 for t in direct_exec_times if t < 500) if direct_exec_times else 0
                 ),
                 "direct_exec_target_met": (
-                    (
-                        sum(1 for t in direct_exec_times if t < 500)
-                        / len(direct_exec_times)
-                    )
+                    (sum(1 for t in direct_exec_times if t < 500) / len(direct_exec_times))
                     if direct_exec_times
                     else 0
                 ),
@@ -332,17 +303,13 @@ class SmallTeamLoadTester:
                     "❌ Average response time is >2s - investigate performance issues"
                 )
             elif avg_response > 1000:
-                recommendations.append(
-                    "⚠️ Average response time is >1s - consider optimization"
-                )
+                recommendations.append("⚠️ Average response time is >1s - consider optimization")
             else:
                 recommendations.append("✅ Response times are acceptable")
 
         if direct_exec_times:
             avg_direct = statistics.mean(direct_exec_times)
-            target_met_rate = sum(1 for t in direct_exec_times if t < 500) / len(
-                direct_exec_times
-            )
+            target_met_rate = sum(1 for t in direct_exec_times if t < 500) / len(direct_exec_times)
 
             if avg_direct > 500:
                 recommendations.append(
@@ -353,14 +320,10 @@ class SmallTeamLoadTester:
                     "⚠️ <90% of direct execution under 500ms - monitor performance"
                 )
             else:
-                recommendations.append(
-                    "✅ Story 1.6 direct execution meeting <500ms target"
-                )
+                recommendations.append("✅ Story 1.6 direct execution meeting <500ms target")
 
         success_rate = (
-            len(successful_results) / len(successful_results)
-            if successful_results
-            else 0
+            len(successful_results) / len(successful_results) if successful_results else 0
         )
         if success_rate < 0.95:
             recommendations.append("❌ Success rate <95% - investigate failures")
@@ -389,9 +352,7 @@ class SmallTeamLoadTester:
             print(f"   Average: {perf['avg_response_time_ms']}ms")
             print(f"   Median:  {perf['median_response_time_ms']}ms")
             print(f"   95th %:  {perf['p95_response_time_ms']}ms")
-            print(
-                f"   Range:   {perf['min_response_time_ms']}-{perf['max_response_time_ms']}ms"
-            )
+            print(f"   Range:   {perf['min_response_time_ms']}-{perf['max_response_time_ms']}ms")
 
         print("\n🚀 Story 1.6 Direct Execution:")
         story = results["story_1_6_performance"]

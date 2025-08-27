@@ -69,9 +69,7 @@ async def run_diagnostics():
         if value:
             # Mask sensitive values
             if "TOKEN" in var_name or "KEY" in var_name or "URL" in var_name:
-                masked_value = (
-                    value[:10] + "..." + value[-5:] if len(value) > 15 else "***"
-                )
+                masked_value = value[:10] + "..." + value[-5:] if len(value) > 15 else "***"
                 print_success(f"{var_name}: {masked_value}")
             else:
                 print_success(f"{var_name}: {value}")
@@ -83,9 +81,7 @@ async def run_diagnostics():
                 print_info(f"{var_name}: Not set (optional)")
 
     if missing_required:
-        print_error(
-            f"\nMissing required environment variables: {', '.join(missing_required)}"
-        )
+        print_error(f"\nMissing required environment variables: {', '.join(missing_required)}")
         return False
 
     # 3. Test imports
@@ -145,9 +141,7 @@ async def run_diagnostics():
 
         if total_found == 0:
             print_error("\nNo 10NetZero documents found in vector store!")
-            print_warning(
-                "You need to run migration: python migrate_to_vector.py --chunked"
-            )
+            print_warning("You need to run migration: python migrate_to_vector.py --chunked")
         else:
             print_success(f"\nTotal documents found: {total_found}")
 

@@ -47,12 +47,7 @@ class DatabaseMigrator:
             for table in self.required_tables:
                 try:
                     # Simple query to check if table exists
-                    response = (
-                        await supabase_client.table(table)
-                        .select("*")
-                        .limit(1)
-                        .execute()
-                    )
+                    response = await supabase_client.table(table).select("*").limit(1).execute()
                     print(f"✅ Table '{table}' exists")
 
                 except Exception as e:
@@ -109,9 +104,7 @@ class DatabaseMigrator:
 
         if not schema_validation["story_1_6_ready"]:
             migration_results["success"] = False
-            migration_results["issues"].append(
-                "Database not ready for Story 1.6 direct execution"
-            )
+            migration_results["issues"].append("Database not ready for Story 1.6 direct execution")
 
         migration_results["schema_validation"] = schema_validation
 
@@ -137,9 +130,7 @@ class DatabaseMigrator:
             print(
                 f"   Tables validated: {len(self.required_tables) - len(schema.get('missing_tables', []))}/{len(self.required_tables)}"
             )
-            print(
-                f"   Story 1.6 ready: {'✅' if schema.get('story_1_6_ready') else '❌'}"
-            )
+            print(f"   Story 1.6 ready: {'✅' if schema.get('story_1_6_ready') else '❌'}")
 
             if schema.get("missing_tables"):
                 print(f"   Missing tables: {', '.join(schema['missing_tables'])}")
@@ -160,9 +151,7 @@ async def main():
         print("✅ Database connection established")
     except Exception as e:
         print(f"❌ Failed to connect to database: {e}")
-        print(
-            "💡 Make sure your .env file is configured with SUPABASE_URL and SUPABASE_KEY"
-        )
+        print("💡 Make sure your .env file is configured with SUPABASE_URL and SUPABASE_KEY")
         sys.exit(1)
 
     # Run migrations

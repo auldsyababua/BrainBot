@@ -79,9 +79,7 @@ def get_commit_stats(commit_hash: str, repo_path: str) -> dict:
     """Get file and line change statistics for a commit."""
     try:
         # Get the list of changed files with their change counts
-        numstat_output = run_git_command(
-            f'git show --numstat --format="" {commit_hash}', repo_path
-        )
+        numstat_output = run_git_command(f'git show --numstat --format="" {commit_hash}', repo_path)
 
         files_changed = []
         total_insertions = 0
@@ -271,14 +269,10 @@ def format_commit_entry(commit: dict, show_repo_badge: bool = True) -> str:
                 file_change_parts.append(f"+{file_insertions}")
             if file_deletions > 0:
                 file_change_parts.append(f"-{file_deletions}")
-            file_changes = (
-                " ".join(file_change_parts) if file_change_parts else "no changes"
-            )
+            file_changes = " ".join(file_change_parts) if file_change_parts else "no changes"
             files_display.append(f"  - `{filename}` ({file_changes})")
 
-    files_section = (
-        "\n".join(files_display) if files_display else "  - *No files modified*"
-    )
+    files_section = "\n".join(files_display) if files_display else "  - *No files modified*"
 
     # Build commit entry
     entry = f"""### [{commit['hash_short']}] {commit['subject']}
@@ -391,9 +385,7 @@ Showing all commits from all repositories in chronological order.
     dates_shown = 0
     for date_key in sorted(commits_by_date.keys(), reverse=True):
         if dates_shown >= 10:
-            devlog_content += (
-                "\n*For older commits, see the per-repository sections below.*\n\n"
-            )
+            devlog_content += "\n*For older commits, see the per-repository sections below.*\n\n"
             break
 
         date_commits = commits_by_date[date_key]
@@ -451,15 +443,15 @@ Click on any repository section below to see commits filtered by that repository
     return devlog_content
 
 
-def generate_statistics(
-    commits: list[dict], commits_by_repo: dict[str, list[dict]]
-) -> str:
+def generate_statistics(commits: list[dict], commits_by_repo: dict[str, list[dict]]) -> str:
     """Generate statistics section."""
     total_commits = len(commits)
     unique_authors = len(set(commit["author"] for commit in commits))
 
     if commits:
-        date_range = f"{commits[0]['date'].strftime('%B %d')}-{commits[-1]['date'].strftime('%d, %Y')}"
+        date_range = (
+            f"{commits[0]['date'].strftime('%B %d')}-{commits[-1]['date'].strftime('%d, %Y')}"
+        )
     else:
         date_range = "No commits found"
 
@@ -517,9 +509,7 @@ def generate_statistics(
 """
 
     # Sort by commit count
-    for repo_name, stats in sorted(
-        repo_stats.items(), key=lambda x: x[1]["commits"], reverse=True
-    ):
+    for repo_name, stats in sorted(repo_stats.items(), key=lambda x: x[1]["commits"], reverse=True):
         emoji = REPOS[repo_name].get("emoji", "📦")
         contributors = len(stats["authors"])
         line_changes = f"+{stats['insertions']:,} -{stats['deletions']:,}"
@@ -540,9 +530,7 @@ def generate_statistics(
 
 def main():
     """Main function to generate enhanced DEVLOG."""
-    parser = argparse.ArgumentParser(
-        description="Generate enhanced multi-repository DEVLOG.md"
-    )
+    parser = argparse.ArgumentParser(description="Generate enhanced multi-repository DEVLOG.md")
     parser.add_argument("--debug", action="store_true", help="Enable debug output")
     parser.add_argument("--output", default="DEVLOG.md", help="Output filename")
     args = parser.parse_args()

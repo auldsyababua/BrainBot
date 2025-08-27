@@ -7,11 +7,13 @@ This guide covers all testing procedures for the Markdown Brain Bot, with specia
 ## 📋 Table of Contents
 
 - [Quick Start](#quick-start)
+- [Test Directory Structure](#test-directory-structure)
 - [Performance Testing](#performance-testing)
 - [Integration Testing](#integration-testing)
 - [Unit Testing](#unit-testing)
 - [Local Development Testing](#local-development-testing)
 - [Monitoring & Metrics](#monitoring--metrics)
+- [Archive Policy](#archive-policy)
 - [Troubleshooting](#troubleshooting)
 
 ## 🚀 Quick Start
@@ -43,6 +45,33 @@ pytest --cov=src --cov-report=html
 - Python 3.11+
 - Environment variables (dummy values OK for unit tests)
 - For integration tests: Redis, Vector DB, Supabase configured
+
+## 🗂️ Test Directory Structure
+
+```
+tests/
+├── unit/                    # Unit tests for individual components
+├── integration/            # Integration tests for backend services
+├── fixtures/               # Test data and mock objects
+├── performance/            # Performance testing benchmarks
+├── security/               # Security testing scripts
+├── system/                 # System-level tests
+├── manual/                 # Manual testing scripts
+├── archive/                # Historical test artifacts
+│   ├── coverage/          # Archived coverage reports
+│   ├── reports/           # Archived test reports
+│   └── test_results/      # Archived test result JSON files
+├── conftest.py            # Shared pytest fixtures
+├── conftest_integration.py # Integration test fixtures
+└── README.md              # This file
+```
+
+### Test Organization Standards
+
+- **File Naming**: Unit tests follow pattern `test_{module_name}.py`
+- **Integration Tests**: Follow pattern `test_{feature}_integration.py`
+- **Fixtures**: Shared test data and mocks in `tests/fixtures/`
+- **Archives**: Old reports and results moved to `tests/archive/` monthly
 
 ## 📊 Performance Testing
 
@@ -344,6 +373,33 @@ async def test_service_integration():
     
     # Cleanup
     await service_a.cleanup(result_a.id)
+```
+
+## 📁 Archive Policy
+
+### Purpose
+Historical test artifacts are archived to maintain repository cleanliness while preserving test history for debugging and analysis.
+
+### Archive Schedule
+- **Monthly**: Archive test reports and results from previous month
+- **Quarterly**: Review and compress older archives
+- **Annually**: Move year-old archives to cold storage
+
+### Archive Structure
+```
+tests/archive/
+├── coverage/         # Historical coverage reports
+│   └── YYYY-MM/     # Organized by year-month
+├── reports/          # Test execution reports
+│   └── YYYY-MM/     # Organized by year-month
+└── test_results/     # JSON test results
+    └── YYYY-MM/     # Organized by year-month
+```
+
+### Cleanup Instructions
+Run the maintenance script monthly:
+```bash
+python scripts/maintenance/cleanup_artifacts.py
 ```
 
 ## 🚀 Continuous Integration

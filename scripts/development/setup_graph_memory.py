@@ -88,9 +88,7 @@ networks:
 def check_docker():
     """Check if Docker is running."""
     try:
-        result = subprocess.run(
-            ["docker", "ps"], capture_output=True, text=True, timeout=10
-        )
+        result = subprocess.run(["docker", "ps"], capture_output=True, text=True, timeout=10)
         if result.returncode == 0:
             print("✅ Docker is running")
             return True
@@ -329,9 +327,7 @@ def main():
     # Check Docker
     print("\n2. Checking Docker...")
     if not check_docker():
-        print(
-            "⚠️  Docker is not running. Please start Docker Desktop and run this script again."
-        )
+        print("⚠️  Docker is not running. Please start Docker Desktop and run this script again.")
         return False
 
     # Start Neo4j

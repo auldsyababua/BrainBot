@@ -3,7 +3,7 @@
 import logging
 import time
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from flrts_bmad.core.benchmarks import async_benchmark
 from flrts_bmad.monitoring import log_direct_execution_performance, production_logger

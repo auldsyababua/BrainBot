@@ -312,18 +312,16 @@ def generate_random_data(data_type: str, **kwargs) -> Any:
             "task_description_detailed": f"Description {''.join(random.choices(string.ascii_letters + ' ', k=50))}",
             "assigned_to": random.choice(["John", "Jane", "Bob"]),
             "priority": random.choice(["High", "Medium", "Low"]),
-            "due_date": (
-                datetime.now() + timedelta(days=random.randint(1, 30))
-            ).strftime("%Y-%m-%d"),
+            "due_date": (datetime.now() + timedelta(days=random.randint(1, 30))).strftime(
+                "%Y-%m-%d"
+            ),
         }
 
     elif data_type == "list":
         return {
             "list_name": f"List {''.join(random.choices(string.ascii_letters, k=8))}",
             "items": [f"Item {i}" for i in range(random.randint(1, 10))],
-            "list_type": random.choice(
-                ["Shopping List", "Tools Inventory", "Safety Checklist"]
-            ),
+            "list_type": random.choice(["Shopping List", "Tools Inventory", "Safety Checklist"]),
         }
 
     elif data_type == "field_report":

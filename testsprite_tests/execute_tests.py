@@ -46,9 +46,7 @@ def run_basic_processor_tests():
     results["tests_run"] += 1
 
     # Test 2: Check supabase_client parameter (regression test)
-    print(
-        "\n[TEST 2] Checking TaskProcessor constructor for supabase_client parameter..."
-    )
+    print("\n[TEST 2] Checking TaskProcessor constructor for supabase_client parameter...")
     try:
         import inspect
 
@@ -63,13 +61,9 @@ def run_basic_processor_tests():
             test_results.append(("TaskProcessor supabase_client parameter", True, None))
             results["tests_passed"] += 1
         else:
-            error_msg = (
-                f"TaskProcessor missing supabase_client parameter. Has: {params}"
-            )
+            error_msg = f"TaskProcessor missing supabase_client parameter. Has: {params}"
             print(f"❌ {error_msg}")
-            test_results.append(
-                ("TaskProcessor supabase_client parameter", False, error_msg)
-            )
+            test_results.append(("TaskProcessor supabase_client parameter", False, error_msg))
             results["tests_failed"] += 1
             results["failures"].append(error_msg)
     except Exception as e:
@@ -159,9 +153,7 @@ def run_basic_processor_tests():
 
         # The processor should sanitize this input
         # For now, we just check it doesn't crash
-        mock_supabase.table.return_value.insert.return_value.execute.return_value = {
-            "data": []
-        }
+        mock_supabase.table.return_value.insert.return_value.execute.return_value = {"data": []}
 
         print("✅ SQL injection prevention mechanisms in place")
         test_results.append(("SQL injection prevention", True, None))
@@ -231,9 +223,7 @@ def generate_report():
 
 if __name__ == "__main__":
     print("Starting Anti-Mesa Test Execution...")
-    print(
-        f"Project Root: {os.path.dirname(os.path.dirname(os.path.abspath(__file__)))}"
-    )
+    print(f"Project Root: {os.path.dirname(os.path.dirname(os.path.abspath(__file__)))}")
 
     # Run tests
     test_results = run_basic_processor_tests()

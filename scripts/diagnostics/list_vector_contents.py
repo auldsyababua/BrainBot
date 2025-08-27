@@ -51,9 +51,7 @@ async def list_all_documents(limit: int = 100):
 
             # Check if it's a chunk
             if "chunk_index" in meta:
-                print(
-                    f"   Chunk: {meta['chunk_index']}/{meta.get('total_chunks', '?')}"
-                )
+                print(f"   Chunk: {meta['chunk_index']}/{meta.get('total_chunks', '?')}")
 
         # Show content preview
         content = doc.get("content", "")

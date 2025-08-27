@@ -207,12 +207,8 @@ if __name__ == "__main__":
             print(f"Unknown option: {sys.argv[1]}")
             print("Usage:")
             print("  python run_anti_mesa_tests.py          # Run all tests")
-            print(
-                "  python run_anti_mesa_tests.py --property  # Run property tests only"
-            )
-            print(
-                "  python run_anti_mesa_tests.py --concurrent  # Run concurrent tests only"
-            )
+            print("  python run_anti_mesa_tests.py --property  # Run property tests only")
+            print("  python run_anti_mesa_tests.py --concurrent  # Run concurrent tests only")
             print("  python run_anti_mesa_tests.py --test <name>  # Run specific test")
             exit_code = 1
     else:

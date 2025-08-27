@@ -240,9 +240,7 @@ class TestFrontendCommandInjection:
             # Remove script tags
             import re
 
-            command = re.sub(
-                r"<script[^>]*>.*?</script>", "", command, flags=re.IGNORECASE
-            )
+            command = re.sub(r"<script[^>]*>.*?</script>", "", command, flags=re.IGNORECASE)
             # Remove SQL injection attempts
             command = re.sub(
                 r"(DROP|DELETE|INSERT|UPDATE)\\s+TABLE",
@@ -396,9 +394,7 @@ class TestEndToEndSecurity:
         # Layer 3: Backend processing
         from src.core.llm import process_message
 
-        response = await process_message(
-            validated["text"], attack_payload["telegram_id"]
-        )
+        response = await process_message(validated["text"], attack_payload["telegram_id"])
 
         # Verify no injection succeeded
         assert "XSS" not in response

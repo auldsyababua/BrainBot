@@ -129,9 +129,7 @@ async def main():
                     }
                 )
 
-                success = await vector_store.embed_and_store(
-                    chunk_id, chunk_content, chunk_meta
-                )
+                success = await vector_store.embed_and_store(chunk_id, chunk_content, chunk_meta)
 
                 if success:
                     chunk_count += 1
@@ -152,9 +150,7 @@ async def main():
         except Exception as e:
             print(f"   ❌ Error processing {file_path}: {e}")
 
-    print(
-        f"\n✅ Indexed {indexed_count}/{len(md_files)} documents ({chunk_count} chunks total)"
-    )
+    print(f"\n✅ Indexed {indexed_count}/{len(md_files)} documents ({chunk_count} chunks total)")
 
     # Wait for eventual consistency
     print("\n⏳ Waiting 5 seconds for eventual consistency...")

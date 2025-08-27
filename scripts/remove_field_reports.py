@@ -117,7 +117,9 @@ def add_skip_decorators_to_tests():
             for test_name in test_names:
                 # Add skip decorator before test methods
                 pattern = rf"(\n)([ \t]*)(def {test_name}\([^)]*\):)"
-                replacement = r'\1\2@pytest.mark.skip(reason="Field reports postponed to post-MVP")\n\2\3'
+                replacement = (
+                    r'\1\2@pytest.mark.skip(reason="Field reports postponed to post-MVP")\n\2\3'
+                )
                 content = re.sub(pattern, replacement, content)
 
             with open(full_path, "w") as f:

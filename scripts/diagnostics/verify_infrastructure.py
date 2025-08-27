@@ -166,9 +166,7 @@ async def test_memory_initialization():
                 return True
         except Exception as e:
             if "not installed" in str(e):
-                print(
-                    f"⚠️  Memory initialization failed due to missing dependencies: {e}"
-                )
+                print(f"⚠️  Memory initialization failed due to missing dependencies: {e}")
                 print("   This is expected until Neo4j packages are installed")
                 return True  # Expected failure
             else:
