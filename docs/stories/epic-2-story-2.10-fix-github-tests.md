@@ -21,7 +21,7 @@ As a developer, I need all GitHub tests passing so that code can be merged to de
 
 #### 2. Comprehensive Test Suite (`comprehensive_tests.yml`)
 - **Backend Tests**: FAILING
-  - Anti-mesa pattern test file missing: `testsprite_tests/anti_mesa_tests.py`
+  - Anti-mesa pattern test file missing: `tests/testsprite_tests/anti_mesa_tests.py`
   - Unit test failures
 - **Frontend Tests**: FAILING
   - TypeScript compilation errors
@@ -66,7 +66,7 @@ As a developer, I need all GitHub tests passing so that code can be merged to de
 
 4. **Anti-Mesa Security Tests**:
    - CRITICAL: These tests prevent AI agent exploitation and mesa-optimization attacks
-   - Move from `testsprite_tests/` to `tests/security/` directory
+   - Move from `tests/testsprite_tests/` to `tests/security/` directory
    - Fix all imports: `src.core.llm` → `src.flrts.core.llm`
    - These tests MUST be preserved - they defend against prompt injection and AI bypass attempts
 

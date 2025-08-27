@@ -103,7 +103,7 @@ The GitHub Actions workflow (`.github/workflows/comprehensive_tests.yml`) automa
 
 ## Test Results
 
-Results are saved to `testsprite_tests/results/` including:
+Results are saved to `tests/testsprite_tests/results/` including:
 - Coverage reports (HTML)
 - Security scan results (JSON)
 - Performance benchmarks (JSON)
@@ -155,12 +155,12 @@ npm install
 
 3. **Run Anti-Mesa Tests**:
 ```bash
-python testsprite_tests/anti_mesa_tests.py
+python tests/testsprite_tests/anti_mesa_tests.py
 ```
 
 4. **Run Full Test Suite**:
 ```bash
-./testsprite_tests/run_tests.sh
+./tests/testsprite_tests/run_tests.sh
 ```
 
 ## Monitoring and Maintenance

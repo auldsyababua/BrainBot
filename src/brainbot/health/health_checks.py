@@ -1,5 +1,5 @@
 """
-Health Check System for BrainBot-BMAD Production Monitoring
+Health Check System for BrainBot Production Monitoring
 
 Provides endpoints and utilities for monitoring system health,
 including Story 1.6 direct execution performance.
@@ -27,7 +27,7 @@ class HealthStatus:
 
 
 class HealthChecker:
-    """Centralized health checking for BrainBot-BMAD system."""
+    """Centralized health checking for BrainBot system."""
 
     def __init__(self):
         self.performance_history: list[dict[str, Any]] = []

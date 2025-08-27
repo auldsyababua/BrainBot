@@ -1,5 +1,5 @@
 """
-Health Check Module for BrainBot-BMAD Production Monitoring
+Health Check Module for BrainBot Production Monitoring
 
 Provides health checking capabilities for the BrainBot system,
 including Story 1.6 direct execution monitoring.

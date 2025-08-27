@@ -1,5 +1,5 @@
 """
-Production Monitoring Module for BrainBot-BMAD
+Production Monitoring Module for BrainBot
 
 Provides production logging and monitoring capabilities.
 """

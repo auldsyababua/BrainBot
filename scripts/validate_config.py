@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Production Configuration Validator for BrainBot-BMAD
+Production Configuration Validator for BrainBot
 
 Validates that all required environment variables are set and production-ready.
 """
@@ -156,7 +156,7 @@ class ConfigValidator:
         """Print validation results and return True if valid."""
         errors, warnings = self.validate_all()
 
-        print("🔍 BrainBot-BMAD Configuration Validation")
+        print("🔍 BrainBot Configuration Validation")
         print("=" * 50)
 
         if errors:

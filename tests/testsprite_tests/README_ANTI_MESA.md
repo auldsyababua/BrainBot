@@ -85,36 +85,36 @@ This test suite implements comprehensive anti-mesa patterns for the BrainBot pro
 
 ### Run All Anti-Mesa Tests
 ```bash
-python testsprite_tests/run_anti_mesa_tests.py
+python tests/testsprite_tests/run_anti_mesa_tests.py
 ```
 
 ### Run Specific Test Categories
 ```bash
 # Property-based tests only
-python testsprite_tests/run_anti_mesa_tests.py --property
+python tests/testsprite_tests/run_anti_mesa_tests.py --property
 
 # Concurrent tests only
-python testsprite_tests/run_anti_mesa_tests.py --concurrent
+python tests/testsprite_tests/run_anti_mesa_tests.py --concurrent
 
 # Specific test by name
-python testsprite_tests/run_anti_mesa_tests.py --test test_idempotent_task_creation
+python tests/testsprite_tests/run_anti_mesa_tests.py --test test_idempotent_task_creation
 ```
 
 ### Run Individual Test Files
 ```bash
 # TaskProcessor tests
-pytest testsprite_tests/test_task_processor_anti_mesa.py -v
+pytest tests/testsprite_tests/test_task_processor_anti_mesa.py -v
 
 # ListProcessor tests
-pytest testsprite_tests/test_list_processor_anti_mesa.py -v
+pytest tests/testsprite_tests/test_list_processor_anti_mesa.py -v
 
 # FieldReportProcessor tests
-pytest testsprite_tests/test_field_report_processor_anti_mesa.py -v
+pytest tests/testsprite_tests/test_field_report_processor_anti_mesa.py -v
 ```
 
 ### Generate Coverage Report
 ```bash
-pytest testsprite_tests/test_*_anti_mesa.py \
+pytest tests/testsprite_tests/test_*_anti_mesa.py \
   --cov=src.rails.processors \
   --cov-report=html:htmlcov_anti_mesa \
   --cov-report=term-missing
@@ -178,7 +178,7 @@ data = {"task_title": "'; DROP TABLE tasks; --"}
 - name: Run Anti-Mesa Tests
   run: |
     pip install -r requirements-test.txt
-    python testsprite_tests/run_anti_mesa_tests.py
+    python tests/testsprite_tests/run_anti_mesa_tests.py
     
 - name: Upload Coverage
   uses: codecov/codecov-action@v3
@@ -208,10 +208,10 @@ data = {"task_title": "'; DROP TABLE tasks; --"}
 ### Debug Mode
 ```bash
 # Run with verbose output and full traceback
-pytest testsprite_tests/test_task_processor_anti_mesa.py -vvv --tb=long
+pytest tests/testsprite_tests/test_task_processor_anti_mesa.py -vvv --tb=long
 
 # Run with pdb on failure
-pytest testsprite_tests/test_task_processor_anti_mesa.py --pdb
+pytest tests/testsprite_tests/test_task_processor_anti_mesa.py --pdb
 ```
 
 ## Future Enhancements

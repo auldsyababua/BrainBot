@@ -393,7 +393,7 @@ async def main():
 
 
 if __name__ == "__main__":
-    print("🧪 BrainBot-BMAD Small Team Load Test")
+    print("🧪 BrainBot Small Team Load Test")
     print("⚠️  Note: Ensure the application is running before starting the test")
     print("📍 Testing against: http://localhost:5000")
 

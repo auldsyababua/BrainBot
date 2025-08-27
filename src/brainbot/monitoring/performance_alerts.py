@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Performance Alerting System for BrainBot-BMAD
+Performance Alerting System for BrainBot
 Monitors Story 1.6 Direct Execution and system performance
 """
 

@@ -84,7 +84,7 @@ Draft
 
 **Other Files:**
 - `web-bundles/expansion-packs/bmad-infrastructure-devops/agents/infra-devops-platform.txt`
-- `testsprite_tests/README_ANTI_MESA.md`
+- `tests/testsprite_tests/README_ANTI_MESA.md`
 
 ### Migration Archive Strategy
 1. Create `archive/migrations/` directory

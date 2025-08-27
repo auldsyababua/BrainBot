@@ -36,7 +36,7 @@ pytest tests/integration/
 pytest tests/performance/
 
 # Run TestSprite tests
-cd testsprite_tests && ./run_tests.sh
+cd tests/testsprite_tests && ./run_tests.sh
 ```
 
 ### Test Categories

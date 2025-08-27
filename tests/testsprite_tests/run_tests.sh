@@ -20,7 +20,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 BACKEND_PATH="$PROJECT_ROOT"
 FRONTEND_PATH="$PROJECT_ROOT/telegram-mini-app"
-TEST_RESULTS_PATH="$PROJECT_ROOT/testsprite_tests/results"
+TEST_RESULTS_PATH="$PROJECT_ROOT/tests/testsprite_tests/results"
 
 # Create results directory
 mkdir -p "$TEST_RESULTS_PATH"
@@ -43,7 +43,7 @@ run_backend_tests() {
     pytest tests/integration -v
     
     echo "Running anti-mesa pattern tests..."
-    python "$PROJECT_ROOT/testsprite_tests/anti_mesa_tests.py"
+    python "$PROJECT_ROOT/tests/testsprite_tests/anti_mesa_tests.py"
     
     # Run security scan
     echo "Running security scan..."

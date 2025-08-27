@@ -1,5 +1,5 @@
 """
-Health Check Endpoints for BrainBot-BMAD Flask Application
+Health Check Endpoints for BrainBot Flask Application
 
 Provides HTTP endpoints for monitoring system health in production.
 """

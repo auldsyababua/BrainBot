@@ -1,8 +1,8 @@
 {
   "name": "testsprite_tests",
   "version": "1.0.0",
-  "description": "This directory contains comprehensive test plans and implementations for the FLRTS project, with special focus on anti-mesa pattern detection and prevention.",
-  "main": "flrts_ui_verification.js",
+  "description": "This directory contains comprehensive test plans and implementations for the BrainBot project, with special focus on anti-mesa pattern detection and prevention.",
+  "main": "brainbot_ui_verification.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

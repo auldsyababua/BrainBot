@@ -87,7 +87,7 @@ Successfully bootstrapped comprehensive anti-mesa pattern testing for the BrainB
 
 ### Core Test Files
 ```
-/Users/colinaulds/Desktopprojects/BrainBot/testsprite_tests/
+/Users/colinaulds/Desktopprojects/BrainBot/tests/testsprite_tests/
 ├── test_task_processor_anti_mesa.py        # 847 lines - Task processing tests
 ├── test_list_processor_anti_mesa.py        # 692 lines - List management tests  
 ├── test_field_report_processor_anti_mesa.py # 834 lines - Field report tests

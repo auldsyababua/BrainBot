@@ -2,6 +2,12 @@
 .*/
 .*/*
 
+# Archive directories - DO NOT REFERENCE
+**/ARCHIVE_DEPRACATED_DO_NOT_OPEN_OR_REFERENCE/
+**/ARCHIVE - DEPRACATED - DO NOT OPEN OR REFERENCE/
+**/archive (depracated files - all team members should ignore)/
+**/ARCHIVE (depracated files - all team members should ignore)/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -62,8 +68,8 @@ debug.log
 error.log
 
 # Test-specific
-testsprite_tests/tmp/config.json
-testsprite_tests/tmp/*.local.json
+tests/testsprite_tests/tmp/config.json
+tests/testsprite_tests/tmp/*.local.json
 
 # Testing
 .pytest_cache/
@@ -86,8 +92,8 @@ coverage.xml
 .hypothesis/
 .testmondata
 .testmondata.*
-testsprite_tests/tmp/
-testsprite_tests/screenshots/
+tests/testsprite_tests/tmp/
+tests/testsprite_tests/screenshots/
 tests/temp/
 tests/manual/
 

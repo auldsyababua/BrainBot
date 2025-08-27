@@ -1,7 +1,7 @@
 # Semgrep ignore file
 # Exclude test files and fixtures
 tests/
-testsprite_tests/
+tests/tests/testsprite_tests/
 **/*_test.py
 **/*_test.ts
 **/*_test.tsx
@@ -54,6 +54,12 @@ deprecated/
 temp/
 tmp/
 docs/ARCHIVE/
+
+# Archive directories - DO NOT SCAN
+**/ARCHIVE_DEPRACATED_DO_NOT_OPEN_OR_REFERENCE/
+**/ARCHIVE - DEPRACATED - DO NOT OPEN OR REFERENCE/
+**/archive (depracated files - all team members should ignore)/
+**/ARCHIVE (depracated files - all team members should ignore)/
 
 # Exclude web bundles (non-executable)
 web-bundles/

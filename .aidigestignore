@@ -29,6 +29,12 @@ Thumbs.db
 # Exclude the digest file itself
 codebase.md
 
+# Archive directories - DO NOT REFERENCE OR PROCESS
+**/ARCHIVE_DEPRACATED_DO_NOT_OPEN_OR_REFERENCE/
+**/ARCHIVE - DEPRACATED - DO NOT OPEN OR REFERENCE/
+**/archive (depracated files - all team members should ignore)/
+**/ARCHIVE (depracated files - all team members should ignore)/
+
 # Exclude other large, non-essential directories
 .bmad-core/
 .bmad-infrastructure-devops/
@@ -46,5 +52,5 @@ docs/
 scripts/
 temp_removal/
 tests/
-testsprite_tests/
+tests/tests/tests/testsprite_tests/
 web-bundles/

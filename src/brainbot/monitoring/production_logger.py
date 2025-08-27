@@ -1,5 +1,5 @@
 """
-Production Logging for BrainBot-BMAD
+Production Logging for BrainBot
 
 Enhanced logging for production monitoring, with special focus on
 Story 1.6 direct execution performance and user patterns.
@@ -300,5 +300,5 @@ def setup_production_logging():
     )
 
     logging.getLogger("brainbot.production").info(
-        "Production logging configured for BrainBot-BMAD with Story 1.6 monitoring"
+        "Production logging configured for BrainBot with Story 1.6 monitoring"
     )
