@@ -9,33 +9,33 @@ def fix_imports_in_file(filepath):
     """Fix imports in a single file."""
     with open(filepath) as f:
         content = f.read()
-    
+
     original = content
-    
+
     # Replace various import patterns
     replacements = [
         # Direct module imports
-        (r'from src\.core\.', 'from flrts.core.'),
-        (r'from src\.storage\.', 'from flrts.storage.'),
-        (r'from src\.rails\.', 'from flrts.rails.'),
-        (r'from src\.flrts\.', 'from flrts.'),
-        
+        (r"from src\.core\.", "from flrts.core."),
+        (r"from src\.storage\.", "from flrts.storage."),
+        (r"from src\.rails\.", "from flrts.rails."),
+        (r"from src\.flrts\.", "from flrts."),
         # Import statements
-        (r'import src\.core\.', 'import flrts.core.'),
-        (r'import src\.storage\.', 'import flrts.storage.'),
-        (r'import src\.rails\.', 'import flrts.rails.'),
-        (r'import src\.flrts\.', 'import flrts.'),
+        (r"import src\.core\.", "import flrts.core."),
+        (r"import src\.storage\.", "import flrts.storage."),
+        (r"import src\.rails\.", "import flrts.rails."),
+        (r"import src\.flrts\.", "import flrts."),
     ]
-    
+
     for pattern, replacement in replacements:
         content = re.sub(pattern, replacement, content)
-    
+
     # Write back if changed
     if content != original:
-        with open(filepath, 'w') as f:
+        with open(filepath, "w") as f:
             f.write(content)
         return True
     return False
+
 
 def main():
     """Fix all imports in test files."""
@@ -49,9 +49,9 @@ def main():
         "tests/integration/test_graph_memory_integration.py",
         "tests/integration/test_llm_conversations.py",
         "tests/test_cloudflare_vector_store.py",
-        "tests/system/test_all_storage.py"
+        "tests/system/test_all_storage.py",
     ]
-    
+
     fixed_files = []
     for file in test_files:
         filepath = Path(file)
@@ -61,9 +61,10 @@ def main():
                 print(f"Fixed imports in: {file}")
         else:
             print(f"File not found: {file}")
-    
+
     print(f"\nFixed {len(fixed_files)} files")
     return fixed_files
+
 
 if __name__ == "__main__":
     main()

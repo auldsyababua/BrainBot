@@ -1,6 +1,6 @@
 """Utility functions for the bot."""
 
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 import yaml
 

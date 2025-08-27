@@ -44,9 +44,7 @@ def setup_webhook(webhook_url):
             webhook_info = info["result"]
             print("\nWebhook info:")
             print(f"  URL: {webhook_info.get('url')}")
-            print(
-                f"  Has custom certificate: {webhook_info.get('has_custom_certificate')}"
-            )
+            print(f"  Has custom certificate: {webhook_info.get('has_custom_certificate')}")
             print(f"  Pending update count: {webhook_info.get('pending_update_count')}")
             if webhook_info.get("last_error_message"):
                 print(f"  ⚠️  Last error: {webhook_info.get('last_error_message')}")

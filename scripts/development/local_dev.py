@@ -76,9 +76,7 @@ class LocalDevSimulator:
         logger.info(f"Chat ID: {self.chat_id}")
         logger.info(f"User ID: {self.user_id}")
 
-    def create_message_update(
-        self, text: str, message_type: str = "text"
-    ) -> dict[str, Any]:
+    def create_message_update(self, text: str, message_type: str = "text") -> dict[str, Any]:
         """
         Create a Telegram Update object for a text message.
 

@@ -114,17 +114,13 @@ class TestListProcessorAntiMesa:
 
         for list_name in protected_lists:
             data = {"list_name": list_name}
-            is_valid, message = await list_processor.validate_operation(
-                "delete", data, "admin"
-            )
+            is_valid, message = await list_processor.validate_operation("delete", data, "admin")
 
             assert not is_valid
             assert "cannot delete site-specific" in message.lower()
 
     @pytest.mark.asyncio
-    async def test_site_protection_case_insensitive(
-        self, list_processor, mock_supabase_client
-    ):
+    async def test_site_protection_case_insensitive(self, list_processor, mock_supabase_client):
         """Test that site protection is case-insensitive."""
         mock_supabase_client.execute.return_value.data = [{"site_name": "Eagle Lake"}]
 
@@ -137,27 +133,19 @@ class TestListProcessorAntiMesa:
 
         for list_name in test_cases:
             data = {"list_name": list_name}
-            is_valid, message = await list_processor.validate_operation(
-                "delete", data, "admin"
-            )
+            is_valid, message = await list_processor.validate_operation("delete", data, "admin")
 
             assert not is_valid
             assert "site-specific" in message.lower()
 
     @pytest.mark.asyncio
-    async def test_site_protection_database_failure(
-        self, list_processor, mock_supabase_client
-    ):
+    async def test_site_protection_database_failure(self, list_processor, mock_supabase_client):
         """Test behavior when site validation database check fails."""
         # Simulate database error
-        mock_supabase_client.execute.side_effect = Exception(
-            "Database connection failed"
-        )
+        mock_supabase_client.execute.side_effect = Exception("Database connection failed")
 
         data = {"list_name": "eagle lake inventory"}
-        is_valid, message = await list_processor.validate_operation(
-            "delete", data, "admin"
-        )
+        is_valid, message = await list_processor.validate_operation("delete", data, "admin")
 
         assert not is_valid
         assert "database error" in message.lower()
@@ -230,9 +218,7 @@ class TestListProcessorAntiMesa:
 
         for op_type, data in operations:
             # Validation should pass (actual DB operation would fail)
-            is_valid, message = await list_processor.validate_operation(
-                op_type, data, "user"
-            )
+            is_valid, message = await list_processor.validate_operation(op_type, data, "user")
             assert is_valid  # Validation doesn't check existence
 
     @pytest.mark.asyncio
@@ -266,9 +252,7 @@ class TestListProcessorAntiMesa:
 
         results = []
         for _ in range(3):
-            result = await list_processor.validate_operation(
-                "create", create_data, "user"
-            )
+            result = await list_processor.validate_operation("create", create_data, "user")
             results.append(result)
 
         # All results should be identical
@@ -294,9 +278,7 @@ class TestListProcessorAntiMesa:
         # Multiple removal attempts of same non-existent item
         results = []
         for _ in range(3):
-            result = await list_processor.validate_operation(
-                "remove_items", remove_data, "user"
-            )
+            result = await list_processor.validate_operation("remove_items", remove_data, "user")
             results.append(result)
 
         assert all(r == results[0] for r in results)
@@ -304,25 +286,19 @@ class TestListProcessorAntiMesa:
     # ===== Test 5: Database Failure Injection =====
 
     @pytest.mark.asyncio
-    async def test_database_timeout_during_validation(
-        self, list_processor, mock_supabase_client
-    ):
+    async def test_database_timeout_during_validation(self, list_processor, mock_supabase_client):
         """Test handling of database timeout during validation."""
         mock_supabase_client.execute.side_effect = TimeoutError("Connection timeout")
 
         data = {"list_name": "test_list"}
-        is_valid, message = await list_processor.validate_operation(
-            "delete", data, "admin"
-        )
+        is_valid, message = await list_processor.validate_operation("delete", data, "admin")
 
         # Should handle timeout gracefully
         assert not is_valid
         assert "database" in message.lower() or "validation" in message.lower()
 
     @pytest.mark.asyncio
-    async def test_partial_operation_rollback(
-        self, list_processor, mock_supabase_client
-    ):
+    async def test_partial_operation_rollback(self, list_processor, mock_supabase_client):
         """Test that partial operations are rolled back on failure."""
         call_count = 0
 
@@ -348,9 +324,7 @@ class TestListProcessorAntiMesa:
         # No partial state should exist
 
     @pytest.mark.asyncio
-    async def test_intermittent_database_failures(
-        self, list_processor, mock_supabase_client
-    ):
+    async def test_intermittent_database_failures(self, list_processor, mock_supabase_client):
         """Test behavior with intermittent database failures."""
         failure_pattern = [False, True, False, True, False]  # Alternating failures
         call_index = 0
@@ -387,9 +361,7 @@ class TestListProcessorAntiMesa:
 
         # Try with different non-admin roles
         for role in ["user", "viewer", "editor", None, ""]:
-            is_valid, message = await list_processor.validate_operation(
-                "delete", data, role
-            )
+            is_valid, message = await list_processor.validate_operation("delete", data, role)
             assert not is_valid
             assert "admin" in message.lower() or "privilege" in message.lower()
 
@@ -419,9 +391,7 @@ class TestListProcessorAntiMesa:
         }
 
         # Should not bypass authorization
-        is_valid, message = await list_processor.validate_operation(
-            "delete", data, "user"
-        )
+        is_valid, message = await list_processor.validate_operation("delete", data, "user")
         assert not is_valid
 
     # ===== Test 7: Edge Cases and Boundary Conditions =====
@@ -450,9 +420,7 @@ class TestListProcessorAntiMesa:
     async def test_empty_list_name(self, list_processor):
         """Test operations with empty list names."""
         data = {"list_name": "", "items": ["item1"]}
-        is_valid, message = await list_processor.validate_operation(
-            "add_items", data, "user"
-        )
+        is_valid, message = await list_processor.validate_operation("add_items", data, "user")
 
         # Empty list name should be invalid
         assert not is_valid
@@ -512,9 +480,7 @@ class TestListProcessorAntiMesa:
     )
     @settings(max_examples=50, deadline=5000)
     @pytest.mark.asyncio
-    async def test_property_valid_data_always_validates(
-        self, list_name, items, operation
-    ):
+    async def test_property_valid_data_always_validates(self, list_name, items, operation):
         """Property: Valid data structures always pass validation."""
         processor = ListProcessor(MagicMock())
         data = {"list_name": list_name, "items": items}

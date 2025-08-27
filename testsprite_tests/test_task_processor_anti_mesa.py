@@ -169,9 +169,7 @@ class TestTaskProcessorAntiMesa:
             data = {"task_title": xss}
 
             # Validation should either sanitize or reject
-            is_valid, message = await task_processor.validate_operation(
-                "create", data, "user"
-            )
+            is_valid, message = await task_processor.validate_operation("create", data, "user")
 
             # If valid, ensure XSS is neutralized
             if is_valid:
@@ -213,9 +211,7 @@ class TestTaskProcessorAntiMesa:
         # Multiple completion attempts should yield same result
         results = []
         for _ in range(3):
-            result = await task_processor.validate_operation(
-                "complete", completion_data, "user"
-            )
+            result = await task_processor.validate_operation("complete", completion_data, "user")
             results.append(result)
 
         # All results should be identical
@@ -254,9 +250,7 @@ class TestTaskProcessorAntiMesa:
 
     @given(
         message=st.text(min_size=0, max_size=1000),
-        operation=st.sampled_from(
-            ["create", "complete", "reassign", "reschedule", "add_notes"]
-        ),
+        operation=st.sampled_from(["create", "complete", "reassign", "reschedule", "add_notes"]),
     )
     def test_property_confidence_boost_bounded(self, message, operation):
         """Property: confidence boost is always between 0 and 1."""
@@ -281,9 +275,7 @@ class TestTaskProcessorAntiMesa:
         base_boost = task_processor.get_confidence_boost_factors(base_message, "create")
 
         for perturbed in perturbations:
-            perturbed_boost = task_processor.get_confidence_boost_factors(
-                perturbed, "create"
-            )
+            perturbed_boost = task_processor.get_confidence_boost_factors(perturbed, "create")
             # Boosts should be very similar (within 0.05)
             assert abs(base_boost - perturbed_boost) < 0.05
 
@@ -303,33 +295,25 @@ class TestTaskProcessorAntiMesa:
     # ===== Test 6: Database Failure Injection =====
 
     @pytest.mark.asyncio
-    async def test_database_timeout_handling(
-        self, task_processor, mock_supabase_client
-    ):
+    async def test_database_timeout_handling(self, task_processor, mock_supabase_client):
         """Test behavior during database timeouts."""
         # Simulate timeout
         mock_supabase_client.execute.side_effect = TimeoutError("Database timeout")
 
         data = {"task_title": "Test", "assigned_to": "user"}
-        is_valid, message = await task_processor.validate_operation(
-            "create", data, "user"
-        )
+        is_valid, message = await task_processor.validate_operation("create", data, "user")
 
         assert not is_valid
         assert "database" in message.lower() or "timeout" in message.lower()
 
     @pytest.mark.asyncio
-    async def test_database_500_error_handling(
-        self, task_processor, mock_supabase_client
-    ):
+    async def test_database_500_error_handling(self, task_processor, mock_supabase_client):
         """Test behavior during database 500 errors."""
         # Simulate 500 error
         mock_supabase_client.execute.side_effect = Exception("Internal Server Error")
 
         data = {"task_title": "Test", "assigned_to": "user"}
-        is_valid, message = await task_processor.validate_operation(
-            "create", data, "user"
-        )
+        is_valid, message = await task_processor.validate_operation("create", data, "user")
 
         assert not is_valid
         assert "error" in message.lower() or "database" in message.lower()
@@ -435,9 +419,7 @@ class TestTaskProcessorAntiMesa:
         ]
 
         for operation, data in test_cases:
-            is_valid, message = await task_processor.validate_operation(
-                operation, data, "user"
-            )
+            is_valid, message = await task_processor.validate_operation(operation, data, "user")
             assert not is_valid
             assert "missing" in message.lower() or "required" in message.lower()
 
@@ -491,9 +473,7 @@ class TestTaskProcessorAntiMesa:
     # ===== Test 11: Retry and Backoff Behavior =====
 
     @pytest.mark.asyncio
-    async def test_retry_on_transient_failure(
-        self, task_processor, mock_supabase_client
-    ):
+    async def test_retry_on_transient_failure(self, task_processor, mock_supabase_client):
         """Test retry behavior on transient failures."""
         call_count = 0
 
@@ -566,9 +546,7 @@ class TaskProcessorStateMachine(RuleBasedStateMachine):
 
     @rule(
         message=st.text(min_size=1, max_size=100),
-        operation=st.sampled_from(
-            ["create", "complete", "reassign", "reschedule", "add_notes"]
-        ),
+        operation=st.sampled_from(["create", "complete", "reassign", "reschedule", "add_notes"]),
     )
     def calculate_confidence(self, message, operation):
         """Rule: Confidence calculation never fails for valid inputs."""

@@ -72,8 +72,9 @@ testsprite_tests/tmp/*.local.json
 htmlcov/
 .tox/
 .nox/
-tests/test_results/
-tests/reports/
+tests/test_results/*.json
+tests/reports/*.md
+tests/archive/
 test_results/
 test_review_report*.md
 latest*.json
@@ -81,6 +82,10 @@ latest*.json
 test_results.json
 report.json
 coverage.xml
+*.cover
+.hypothesis/
+.testmondata
+.testmondata.*
 testsprite_tests/tmp/
 testsprite_tests/screenshots/
 tests/temp/

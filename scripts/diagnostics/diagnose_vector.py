@@ -143,9 +143,7 @@ async def diagnose_vector_store():
     print("\n" + "=" * 60)
     print("Diagnostic Summary:")
     print(f"- Bot Version: {VERSION}")
-    print(
-        f"- Vector store connection: {'✅ Working' if test_results is not None else '❌ Failed'}"
-    )
+    print(f"- Vector store connection: {'✅ Working' if test_results is not None else '❌ Failed'}")
     print(f"- Documents found: {found_count > 0}")
     print("\nPossible issues:")
     if found_count == 0:

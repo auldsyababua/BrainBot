@@ -73,9 +73,7 @@ class ConfigValidator:
             self.errors.append("SUPABASE_URL should start with 'https://'")
 
         if url and ".supabase.co" not in url:
-            self.warnings.append(
-                "SUPABASE_URL doesn't look like a standard Supabase URL"
-            )
+            self.warnings.append("SUPABASE_URL doesn't look like a standard Supabase URL")
 
         # Check for test/placeholder values
         if "test" in url.lower() or "your_" in url.lower():
@@ -92,9 +90,7 @@ class ConfigValidator:
         try:
             username_list = json.loads(usernames) if usernames else []
             if not isinstance(username_list, list) or len(username_list) == 0:
-                self.errors.append(
-                    "AUTHORIZED_USERNAMES must be a non-empty JSON array"
-                )
+                self.errors.append("AUTHORIZED_USERNAMES must be a non-empty JSON array")
         except json.JSONDecodeError:
             self.errors.append("AUTHORIZED_USERNAMES is not valid JSON")
 
@@ -201,15 +197,9 @@ def main():
         elif sys.argv[1] == "--no-env":
             load_env_file = False
         elif sys.argv[1] == "--help":
-            print(
-                "Usage: python validate_config.py [--env-file FILE] [--no-env] [--help]"
-            )
-            print(
-                "  --env-file FILE  Load environment from specific file (default: .env)"
-            )
-            print(
-                "  --no-env         Don't load any .env file, use system environment only"
-            )
+            print("Usage: python validate_config.py [--env-file FILE] [--no-env] [--help]")
+            print("  --env-file FILE  Load environment from specific file (default: .env)")
+            print("  --no-env         Don't load any .env file, use system environment only")
             print("  --help           Show this help")
             sys.exit(0)
 

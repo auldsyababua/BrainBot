@@ -36,9 +36,7 @@ class MetricsExporter:
         Path(output_dir).mkdir(exist_ok=True)
 
         # Get current metrics
-        summary = self.monitor.get_performance_summary(
-            time_range_minutes=60 * 24  # Last 24 hours
-        )
+        summary = self.monitor.get_performance_summary(time_range_minutes=60 * 24)  # Last 24 hours
 
         # Create timestamped filename
         timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
