@@ -24,7 +24,7 @@ def test_memory_initialization():
 
     with patch.dict("sys.modules", {"neo4j": mock_neo4j, "langchain_neo4j": mock_langchain_neo4j}):
         try:
-            from src.core.memory import BotMemory
+            from brainbot.core.memory import BotMemory
 
             print("Environment variables:")
             print(f"  NEO4J_URL: {os.getenv('NEO4J_URL')}")
