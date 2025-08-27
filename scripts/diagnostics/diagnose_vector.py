@@ -47,7 +47,7 @@ async def diagnose_vector_store():
 
     # 3. Search for 10NetZero content
     print("\n3. Searching for 10NetZero Content:")
-    queries = ["10NetZero", "10NetZero company", "carbon emissions", "FLRTS"]
+    queries = ["10NetZero", "10NetZero company", "carbon emissions", "BrainBot"]
 
     for query in queries:
         print(f"\n   Query: '{query}'")

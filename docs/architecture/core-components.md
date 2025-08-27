@@ -175,7 +175,7 @@
 ### 5.1 Telegram Mini App
 - **Location**: `telegram-mini-app/`
 - **Technology**: React 18 + TypeScript + Vite
-- **Purpose**: Mobile-optimized interface for FLRTS operations
+- **Purpose**: Mobile-optimized interface forBrainBot operations
 
 #### Component Architecture
 ```

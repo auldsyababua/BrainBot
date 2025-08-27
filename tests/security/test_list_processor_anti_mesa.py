@@ -31,7 +31,7 @@ from hypothesis.stateful import (
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from flrts.rails.processors.list_processor import ListProcessor
+from brainbot.rails.processors.list_processor import ListProcessor
 
 # ============= Test Fixtures =============
 
@@ -550,9 +550,9 @@ class ListProcessorStateMachine(RuleBasedStateMachine):
     def __init__(self):
         super().__init__()
         self.processor = ListProcessor(MagicMock())
-        self.created_lists: set[str] = set()
-        self.list_items: dict[str, set[str]] = {}
-        self.deleted_lists: set[str] = set()
+        self.created_lists: Set[str] = set()
+        self.list_items: Dict[str, Set[str]] = {}
+        self.deleted_lists: Set[str] = set()
 
     @initialize()
     def setup(self):

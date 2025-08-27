@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script to add YAML frontmatter to agents that are missing it
 
-AGENTS_DIR="/Users/colinaulds/Desktop/projects/flrts/.claude/agents"
+AGENTS_DIR="/Users/colinaulds/Desktopprojects/BrainBot/.claude/agents"
 
 echo "Fixing agent frontmatter in $AGENTS_DIR"
 

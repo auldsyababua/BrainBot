@@ -9,8 +9,8 @@ import pytest
 from supabase import Client, create_client
 from supabase.lib.client_options import ClientOptions
 
-from flrts_bmad.rails.processors.list_processor import ListProcessor
-from flrts_bmad.rails.processors.task_processor import TaskProcessor
+from brainbot.rails.processors.list_processor import ListProcessor
+from brainbot.rails.processors.task_processor import TaskProcessor
 
 
 class TestDatabaseManager:
@@ -54,7 +54,7 @@ class TestDatabaseManager:
             except Exception as e:
                 print(f"Warning: Could not clean {table}: {e}")
 
-    async def create_test_site(self, name: str = None) -> dict[str, Any]:
+    async def create_test_site(self, name: str = None) -> Dict[str, Any]:
         """Create a test site for use in tests."""
         site_name = name or f"TEST_Site_{uuid.uuid4().hex[:8]}"
 
@@ -69,7 +69,7 @@ class TestDatabaseManager:
         result = self.client.table("sites").insert(site_data).execute()
         return result.data[0] if result.data else site_data
 
-    async def create_test_personnel(self, first_name: str = None) -> dict[str, Any]:
+    async def create_test_personnel(self, first_name: str = None) -> Dict[str, Any]:
         """Create test personnel for use in tests."""
         name = first_name or f"TEST_User_{uuid.uuid4().hex[:8]}"
 
@@ -85,7 +85,7 @@ class TestDatabaseManager:
         result = self.client.table("personnel").insert(personnel_data).execute()
         return result.data[0] if result.data else personnel_data
 
-    async def create_test_task(self, **overrides) -> dict[str, Any]:
+    async def create_test_task(self, **overrides) -> Dict[str, Any]:
         """Create a test task with optional overrides."""
         task_data = {
             "title": f"TEST_Task_{uuid.uuid4().hex[:8]}",
@@ -99,7 +99,7 @@ class TestDatabaseManager:
         result = self.client.table("tasks").insert(task_data).execute()
         return result.data[0] if result.data else task_data
 
-    async def create_test_list(self, **overrides) -> dict[str, Any]:
+    async def create_test_list(self, **overrides) -> Dict[str, Any]:
         """Create a test list with optional overrides."""
         list_data = {
             "name": f"TEST_List_{uuid.uuid4().hex[:8]}",
@@ -172,13 +172,13 @@ async def list_processor(supabase_test_client) -> ListProcessor:
 
 
 @pytest.fixture
-async def test_personnel(db_manager) -> dict[str, Any]:
+async def test_personnel(db_manager) -> Dict[str, Any]:
     """Create test personnel for use in tests."""
     return await db_manager.create_test_personnel("TestUser")
 
 
 @pytest.fixture
-async def test_site(db_manager) -> dict[str, Any]:
+async def test_site(db_manager) -> Dict[str, Any]:
     """Create test site for use in tests."""
     return await db_manager.create_test_site("TEST_Eagle_Lake")
 

@@ -15,7 +15,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 # from src.core.graph_memory_seeder import seed_graph_memory  # Module not found
-from flrts_bmad.core.memory import BotMemory
+from brainbot.core.memory import BotMemory
 
 pytest.skip(
     "Graph memory integration tests disabled - seeder module not found", allow_module_level=True

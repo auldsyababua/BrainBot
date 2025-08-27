@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Anti-Mesa Test Runner for FLRTS Processors
+Anti-Mesa Test Runner for BrainBot Processors
 
 This script runs all anti-mesa pattern tests with comprehensive reporting.
 """
@@ -21,7 +21,7 @@ def run_anti_mesa_tests():
     """Run all anti-mesa pattern tests with detailed reporting."""
 
     print("=" * 80)
-    print("FLRTS Anti-Mesa Pattern Test Suite")
+    print("BrainBot Anti-Mesa Pattern Test Suite")
     print("=" * 80)
     print(f"Started at: {datetime.now().isoformat()}")
     print()

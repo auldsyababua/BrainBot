@@ -18,8 +18,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from dotenv import load_dotenv  # noqa: E402
 
-from flrts_bmad.core.benchmarks import get_performance_monitor  # noqa: E402
-from flrts_bmad.storage.storage_service import StorageService  # noqa: E402
+from brainbot.core.benchmarks import get_performance_monitor  # noqa: E402
+from brainbot.storage.storage_service import StorageService  # noqa: E402
 
 load_dotenv()
 

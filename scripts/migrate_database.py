@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Database Migration Script for FLRTS-BMAD
+Database Migration Script for BrainBot-BMAD
 
 Simple migration system for small team deployments.
 Since Supabase handles most migrations automatically, this primarily
@@ -14,7 +14,7 @@ from typing import Any, Dict
 
 
 class DatabaseMigrator:
-    """Simple database migration and validation for FLRTS-BMAD."""
+    """Simple database migration and validation for BrainBot-BMAD."""
 
     def __init__(self):
         self.required_tables = [
@@ -113,7 +113,7 @@ class DatabaseMigrator:
     def print_migration_results(self, results: dict[str, Any]) -> None:
         """Print migration results."""
         print("\n" + "=" * 50)
-        print("🗄️  FLRTS-BMAD Database Migration Results")
+        print("🗄️  BrainBot-BMAD Database Migration Results")
         print("=" * 50)
 
         if results["success"]:
@@ -140,7 +140,7 @@ class DatabaseMigrator:
 
 async def main():
     """Run database migrations."""
-    print("🗄️  FLRTS-BMAD Database Migration Tool")
+    print("🗄️  BrainBot-BMAD Database Migration Tool")
     print("=" * 50)
 
     # Load environment

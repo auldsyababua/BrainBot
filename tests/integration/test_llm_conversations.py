@@ -26,9 +26,9 @@ import pytest_asyncio
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from flrts_bmad.core.llm import process_message
-from flrts_bmad.storage import vector_store
-from flrts_bmad.storage.redis_store import redis_store
+from brainbot.core.llm import process_message
+from brainbot.storage import vector_store
+from brainbot.storage.redis_store import redis_store
 
 # Load test fixtures
 FIXTURES_PATH = Path(__file__).parent.parent / "fixtures" / "pdf_content.json"
@@ -40,10 +40,10 @@ class ConversationContext:
     """Track entities and topics across conversation turns."""
 
     def __init__(self):
-        self.entities: dict[int, dict[str, set[str]]] = {}
-        self.topics: dict[int, str] = {}
+        self.entities: Dict[int, Dict[str, Set[str]]] = {}
+        self.topics: Dict[int, str] = {}
 
-    def extract_entities(self, response: str, turn: int) -> dict[str, set[str]]:
+    def extract_entities(self, response: str, turn: int) -> Dict[str, Set[str]]:
         """Extract document names, technical terms, and numbers."""
         entities = {
             "documents": set(re.findall(r"(Booth|IEEE \d+|GPSA|Breeze|Brantley)", response, re.I)),
@@ -74,7 +74,7 @@ def has_contextual_references(response: str) -> bool:
     return any(ref in response_lower for ref in pronouns + references + explicit_refs)
 
 
-def assert_contains_concepts(response: str, concepts: list[str], min_matches: int = None):
+def assert_contains_concepts(response: str, concepts: List[str], min_matches: int = None):
     """Flexible assertion for key concepts."""
     response_lower = response.lower()
     matches = sum(1 for concept in concepts if concept.lower() in response_lower)

@@ -1,7 +1,7 @@
 # Product Requirements Documentation (PRD)
 
 ## Purpose
-This directory contains all product planning, requirements, and future enhancement documentation for the FLRTS-BMAD project.
+This directory contains all product planning, requirements, and future enhancement documentation for the BrainBot project.
 
 ## Document Structure
 

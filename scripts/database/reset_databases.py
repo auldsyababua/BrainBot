@@ -19,9 +19,9 @@ from pathlib import Path
 # Add src to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../..", "src"))
 
-from flrts_bmad.core.chunking import chunk_markdown_document  # noqa: E402
-from flrts_bmad.storage.storage_service import DocumentStorage  # noqa: E402
-from flrts_bmad.storage.vector_store import vector_store  # noqa: E402
+from brainbot.core.chunking import chunk_markdown_document  # noqa: E402
+from brainbot.storage.storage_service import DocumentStorage  # noqa: E402
+from brainbot.storage.vector_store import vector_store  # noqa: E402
 
 # Initialize document storage
 document_storage = DocumentStorage()

@@ -7,7 +7,7 @@ from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-from flrts_bmad.storage.cloudflare_cache import CloudflareCache, CloudflareRedis
+from brainbot.storage.cloudflare_cache import CloudflareCache, CloudflareRedis
 
 
 @pytest.fixture

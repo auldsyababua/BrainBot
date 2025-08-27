@@ -1,13 +1,13 @@
-# BMAD Project Instructions
+# BrainBot Project Instructions
 
 ## Project Overview
 
-This is the BMAD (Battle-tested Method for AI Development) version of the FLRTS (Field List Report Task System) project. This repository represents a clean, production-ready implementation without development hooks or auxiliary systems.
+This is the BrainBot project, a comprehensive field operations management system with AI-powered capabilities. This repository represents a clean, production-ready implementation.
 
 ## Repository Purpose
 
 This repository contains:
-- Core FLRTS functionality for field operations management
+- Core BrainBot functionality for field operations management
 - Telegram bot integration for remote field communication
 - Vector search and document processing capabilities
 - Production-ready deployment configurations

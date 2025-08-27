@@ -2,7 +2,7 @@
 
 from unittest.mock import Mock
 
-from flrts_bmad.rails.router import ConfidenceScorer, KeywordRouter, SynonymLibrary
+from brainbot.rails.router import ConfidenceScorer, KeywordRouter, SynonymLibrary
 
 # Service Level Objective constants for router performance
 MIN_CONFIDENCE_THRESHOLD = 0.7

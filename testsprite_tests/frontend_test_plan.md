@@ -1,7 +1,7 @@
-# FLRTS Frontend (Telegram Mini App) Test Plan
+# BrainBot Frontend (Telegram Mini App) Test Plan
 
 ## Executive Summary
-This comprehensive test plan covers the FLRTS Telegram Mini App frontend, focusing on state management, SmartRails command execution, real-time synchronization, and UI component reliability. Special emphasis is placed on offline capabilities and anti-mesa pattern prevention in user interactions.
+This comprehensive test plan covers the BrainBot Telegram Mini App frontend, focusing on state management, SmartRails command execution, real-time synchronization, and UI component reliability. Special emphasis is placed on offline capabilities and anti-mesa pattern prevention in user interactions.
 
 ## Test Scope
 
@@ -507,4 +507,4 @@ jobs:
 
 ## Conclusion
 
-This comprehensive test plan ensures the FLRTS Telegram Mini App frontend is thoroughly tested for functionality, performance, security, and user experience. The focus on anti-mesa patterns ensures the system behaves as intended and prevents unintended or malicious behaviors. Regular maintenance and continuous improvement of the test suite will maintain high quality standards as the application evolves.
+This comprehensive test plan ensures the BrainBot Telegram Mini App frontend is thoroughly tested for functionality, performance, security, and user experience. The focus on anti-mesa patterns ensures the system behaves as intended and prevents unintended or malicious behaviors. Regular maintenance and continuous improvement of the test suite will maintain high quality standards as the application evolves.

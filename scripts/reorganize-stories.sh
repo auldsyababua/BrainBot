@@ -3,7 +3,7 @@
 # Story Reorganization Script for FLRTS Epic 2
 # This script reorganizes story files according to priority phases
 
-cd /Users/colinaulds/Desktop/projects/flrts/docs/stories
+cd /Users/colinaulds/Desktopprojects/BrainBot/docs/stories
 
 echo "📋 Starting Epic 2 Story Reorganization..."
 

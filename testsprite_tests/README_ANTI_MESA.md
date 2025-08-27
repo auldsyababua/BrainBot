@@ -1,8 +1,8 @@
-# Anti-Mesa Pattern Test Suite for FLRTS Processors
+# Anti-Mesa Pattern Test Suite for BrainBot Processors
 
 ## Overview
 
-This test suite implements comprehensive anti-mesa patterns for the FLRTS processor modules, ensuring robustness against adversarial inputs, maintaining idempotence, and validating system invariants.
+This test suite implements comprehensive anti-mesa patterns for the BrainBot processor modules, ensuring robustness against adversarial inputs, maintaining idempotence, and validating system invariants.
 
 ## Test Coverage
 

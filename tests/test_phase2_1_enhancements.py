@@ -11,12 +11,12 @@ import pytest
 # Add parent directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from flrts_bmad.rails.confidence_scoring import (
+from brainbot.rails.confidence_scoring import (
     ConfidenceFactors,
     EnhancedConfidenceScorer,
 )
-from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
-from flrts_bmad.rails.router import KeywordRouter
+from brainbot.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from brainbot.rails.router import KeywordRouter
 
 
 class TestDeterministicPreprocessing:

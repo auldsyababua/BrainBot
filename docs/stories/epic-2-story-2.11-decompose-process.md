@@ -25,7 +25,7 @@ The process_message() function was 359 lines long, making it difficult to unders
 4. Improved code readability and maintainability
 
 ## Files Modified
-- `src/flrts/core/llm.py` - Refactored process_message() function
+- `src/brainbot/core/llm.py` - Refactored process_message() function
 - `tests/unit/test_llm_refactored.py` - Added 13 test cases
 
 ## Test Coverage

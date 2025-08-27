@@ -1,7 +1,7 @@
-# FLRTS Testsprite Test Suite
+# BrainBot Testsprite Test Suite
 
 ## Overview
-This directory contains comprehensive test plans and implementations for the FLRTS project, with special focus on anti-mesa pattern detection and prevention.
+This directory contains comprehensive test plans and implementations for the BrainBot project, with special focus on anti-mesa pattern detection and prevention.
 
 ## Test Plans
 
@@ -206,4 +206,4 @@ For questions or issues with the test suite:
 
 ---
 
-**Note**: The anti-mesa pattern testing is critical for ensuring the FLRTS system behaves as intended and prevents exploitation or misalignment. These tests should be run before every deployment.
+**Note**: The anti-mesa pattern testing is critical for ensuring the BrainBot system behaves as intended and prevents exploitation or misalignment. These tests should be run before every deployment.

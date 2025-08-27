@@ -6,7 +6,7 @@ from unittest.mock import AsyncMock, Mock
 
 import pytest
 
-from flrts.rails.processors.list_processor import ListProcessor
+from brainbot.rails.processors.list_processor import ListProcessor
 
 
 @pytest.fixture

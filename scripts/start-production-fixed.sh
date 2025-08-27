@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# FLRTS-BMAD Production Startup Script (Fixed)
+# BrainBot Production Startup Script (Fixed)
 # Loads environment variables and starts the application
 
 set -e
@@ -11,7 +11,7 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-echo -e "${GREEN}🚀 Starting FLRTS-BMAD Production Server (Fixed)${NC}"
+echo -e "${GREEN}🚀 Starting BrainBot Production Server (Fixed)${NC}"
 
 # Check if .env file exists
 if [ ! -f .env ]; then

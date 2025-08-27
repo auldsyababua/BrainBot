@@ -35,7 +35,7 @@ REPOS = {
     },
     "bbui": {
         "path": "/Users/colinaulds/Desktop/projects/bbui",
-        "description": "Frontend interface for FLRTS system",
+        "description": "Frontend interface for BrainBot system",
         "github_url": "https://github.com/auldsyababua/bbui",
         "emoji": "🎨",
     },

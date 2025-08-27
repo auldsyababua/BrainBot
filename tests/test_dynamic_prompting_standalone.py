@@ -5,7 +5,7 @@ Tests the dynamic prompting module without requiring full system initialization.
 
 import pytest
 
-from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from brainbot.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
 
 
 class TestDynamicPromptGeneration:

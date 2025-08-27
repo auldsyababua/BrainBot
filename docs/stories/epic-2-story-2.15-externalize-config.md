@@ -12,7 +12,7 @@ Hardcoded values are scattered throughout the codebase, making it difficult to t
 
 ## Configuration to Create
 
-### New File: `src/flrts/config/defaults.py`
+### New File: `src/brainbot/config/defaults.py`
 ```python
 # Cache Configuration
 CACHE_TTL_DEFAULT = 300  # 5 minutes
@@ -46,7 +46,7 @@ ENABLE_DEBUG_LOGGING = False
 - `health_checks.py:34` - Use MAX_HEALTH_HISTORY from config
 
 ## Implementation Tasks
-1. Create `src/flrts/config/` directory
+1. Create `src/brainbot/config/` directory
 2. Create `defaults.py` with all configuration values
 3. Add `__init__.py` to make it a package
 4. Find all hardcoded values in codebase

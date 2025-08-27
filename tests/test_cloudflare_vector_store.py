@@ -7,7 +7,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 import pytest
 
 # Mock the performance monitor at module level to prevent Redis initialization
-pytest.register_assert_rewrite("flrts_bmad.core.benchmarks")
+pytest.register_assert_rewrite("brainbot.core.benchmarks")
 
 
 def mock_get_performance_monitor():
@@ -20,11 +20,11 @@ def mock_get_performance_monitor():
 
 # Patch at module level
 patch(
-    "flrts_bmad.core.benchmarks.get_performance_monitor",
+    "brainbot.core.benchmarks.get_performance_monitor",
     side_effect=mock_get_performance_monitor,
 ).start()
 
-from flrts_bmad.storage.cloudflare_vector_store import CloudflareVectorStore
+from brainbot.storage.cloudflare_vector_store import CloudflareVectorStore
 
 
 @pytest.fixture

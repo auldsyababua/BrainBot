@@ -1,7 +1,7 @@
 #!/bin/bash
-# Cleanup script for build artifacts and temporary files in FLRTS project
+# Cleanup script for build artifacts and temporary files in BrainBot project
 
-echo "🧹 FLRTS Build Artifacts Cleanup Script"
+echo "🧹 BrainBot Build Artifacts Cleanup Script"
 echo "========================================"
 
 # Get the project root (parent of scripts directory)
@@ -41,8 +41,8 @@ done
 echo ""
 echo "2️⃣ Package Build Artifacts"
 echo "------------------------"
-safe_remove "src/flrts_bmad.egg-info" "Development package info"
-safe_remove "src/flrts.egg-info" "Development package info (new name)"
+safe_remove "src/brainbot_bmad.egg-info" "Development package info"
+safe_remove "src/brainbot.egg-info" "Development package info (new name)"
 safe_remove "build" "Build directory"
 safe_remove "dist" "Distribution directory"
 safe_remove "*.egg-info" "Egg info files"

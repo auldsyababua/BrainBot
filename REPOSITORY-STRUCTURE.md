@@ -1,11 +1,11 @@
 # Repository Structure
 
-This document describes the organized structure of the FLRTS-BMAD repository following professional standards and best practices.
+This document describes the organized structure of theBrainBot repository following professional standards and best practices.
 
 ## Directory Layout
 
 ```
-flrts-bmad/
+brainbot/
 ├── src/                      # Source code
 │   ├── auth/                 # Authentication module
 │   ├── memory/               # Memory management

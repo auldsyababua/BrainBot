@@ -15,15 +15,15 @@ def fix_imports_in_file(filepath):
     # Replace various import patterns
     replacements = [
         # Direct module imports
-        (r"from src\.core\.", "from flrts.core."),
-        (r"from src\.storage\.", "from flrts.storage."),
-        (r"from src\.rails\.", "from flrts.rails."),
-        (r"from src\.flrts\.", "from flrts."),
+        (r"from src\.core\.", "from brainbot.core."),
+        (r"from src\.storage\.", "from brainbot.storage."),
+        (r"from src\.rails\.", "from brainbot.rails."),
+        (r"from src\.flrts\.", "from brainbot."),
         # Import statements
-        (r"import src\.core\.", "import flrts.core."),
-        (r"import src\.storage\.", "import flrts.storage."),
-        (r"import src\.rails\.", "import flrts.rails."),
-        (r"import src\.flrts\.", "import flrts."),
+        (r"import src\.core\.", "import brainbot.core."),
+        (r"import src\.storage\.", "import brainbot.storage."),
+        (r"import src\.rails\.", "import brainbot.rails."),
+        (r"import src\.flrts\.", "import brainbot."),
     ]
 
     for pattern, replacement in replacements:

@@ -8,8 +8,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from flrts_bmad.core.llm import process_message
-from flrts_bmad.rails.router import KeywordRouter
+from brainbot.core.llm import process_message
+from brainbot.rails.router import KeywordRouter
 
 
 @pytest.mark.integration

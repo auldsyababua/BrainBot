@@ -1,4 +1,4 @@
-# FLRTS-BMAD Canary Deployment Configuration
+#BrainBot Canary Deployment Configuration
 # For Small Team (5-20 users) Progressive Rollout
 
 name: canary-deployment

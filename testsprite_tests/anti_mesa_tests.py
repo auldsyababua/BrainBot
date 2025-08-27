@@ -1,5 +1,5 @@
 """
-Anti-Mesa Pattern Test Suite for FLRTS
+Anti-Mesa Pattern Test Suite for BrainBot
 Tests designed to detect and prevent unintended system behaviors
 """
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-🚀 FLRTS-BMAD - Main Entry Point
+🚀 BrainBot-BMAD - Main Entry Point
 
-This is the primary entry point for the FLRTS-BMAD application.
+This is the primary entry point for the BrainBot-BMAD application.
 
 Mode Selection:
 - For local development: Use `python scripts/local_dev.py` (interactive simulator)
@@ -31,12 +31,12 @@ if __name__ == "__main__" and not __package__:
 # These imports must come after the path setup
 import uvicorn  # noqa: E402
 
-from flrts_bmad.bot.webhook_bot import create_webhook_bot  # noqa: E402
-from flrts_bmad.core.config import (
+from brainbot.bot.webhook_bot import create_webhook_bot  # noqa: E402
+from brainbot.core.config import (
     TELEGRAM_BOT_TOKEN,  # noqa: E402
     TELEGRAM_WEBHOOK_SECRET,  # noqa: E402
 )
-from flrts_bmad.core.supabase_logger import setup_supabase_logging  # noqa: E402
+from brainbot.core.supabase_logger import setup_supabase_logging  # noqa: E402
 
 # Set up logging
 logging.basicConfig(

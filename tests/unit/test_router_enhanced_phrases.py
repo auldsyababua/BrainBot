@@ -2,7 +2,7 @@
 
 import pytest
 
-from flrts_bmad.rails.router import KeywordRouter
+from brainbot.rails.router import KeywordRouter
 
 
 class TestEnhancedPhrasingVariations:

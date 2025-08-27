@@ -10,16 +10,16 @@
 
 **Note:** Stories with `.story.md` extension use the BMad format with comprehensive dev context. Other stories use the simplified format.
 
-### Phase 1: Cleanup & Documentation 🧹 [PRIORITY: HIGH]
+### Phase 1: Cleanuflrts_bmadp & Documentation 🧹 [PRIORITY: HIGH]
 *Goal: Clean codebase and update all documentation before migrations*
 
 | Story | Title | Status | Points | PR |
 |-------|-------|--------|--------|-----|
 | 2.1 | [Cleanup Test Artifacts](./2.1.cleanup-test-artifacts.story.md) | ✅ Complete | 3 | - |
-| 2.2 | [Update Documentation](./2.2.update-documentation.story.md) | 🟢 Approved | 5 | - |
-| 2.3 | [Remove AWS/Upstash References](./epic-2-story-2.3-remove-aws-upstash.md) | 🔵 Ready | 5 | - |
-| 2.4 | [Remove Render References](./epic-2-story-2.4-remove-render.md) | 🔵 Ready | 3 | - |
-| 2.5 | [Node.js/NVM Configuration](./epic-2-story-2.5-nodejs-nvm-config.md) | 🔵 Ready | 2 | - |
+| 2.2 | [Complete BrainBot Rename](./2.2.complete-brainbot-rename.md) | 🔵 Ready | 4 | - |
+| 2.3 | [Update Documentation](./2.3.update-documentation.story.md) | 🟢 Approved | 5 | - |
+| 2.4 | [Update Cloudflare Documentation](./2.4.update-cloudflare-documentation.md) | 🔵 Ready | 3 | - |
+| 2.5 | [Remove Render References](./2.5.remove-render-references.story.md) | 🔵 Ready | 3 | - |
 
 ### Phase 2: Cloudflare Migration ☁️ [PRIORITY: HIGH]
 *Goal: Complete migration to Cloudflare services*

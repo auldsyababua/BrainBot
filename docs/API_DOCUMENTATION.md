@@ -1,8 +1,8 @@
-# FLRTS-BMAD API Documentation
+# BrainBot API Documentation
 
 ## Overview
 
-The FLRTS-BMAD system provides REST API endpoints for health monitoring, webhook processing, and Story 1.6 Direct Execution features. This documentation covers all available endpoints for production use.
+The BrainBot system provides REST API endpoints for health monitoring, webhook processing, and Story 1.6 Direct Execution features. This documentation covers all available endpoints for production use.
 
 ---
 

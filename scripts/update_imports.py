@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script to update all imports from old structure to new flrts_bmad package structure.
+Script to update all imports from old structure to new brainbot package structure.
 """
 
 import os
@@ -17,19 +17,19 @@ def update_imports_in_file(filepath):
 
     # Pattern replacements
     replacements = [
-        # from src.module.submodule -> from flrts_bmad.module.submodule
-        (r"^from src\.", "from flrts_bmad."),
-        (r"^import src\.", "import flrts_bmad."),
-        # from module.submodule -> from flrts_bmad.module.submodule (for core, bot, etc.)
-        (r"^from (core|bot|storage|rails|health|monitoring|migrations)\.", r"from flrts_bmad.\1."),
+        # from src.module.submodule -> from brainbot.module.submodule
+        (r"^from src\.", "from brainbot."),
+        (r"^import src\.", "import brainbot."),
+        # from module.submodule -> from brainbot.module.submodule (for core, bot, etc.)
+        (r"^from (core|bot|storage|rails|health|monitoring|migrations)\.", r"from brainbot.\1."),
         (
             r"^import (core|bot|storage|rails|health|monitoring|migrations)\.",
-            r"import flrts_bmad.\1.",
+            r"import brainbot.\1.",
         ),
         # Handle "from module import" patterns
         (
             r"^from (core|bot|storage|rails|health|monitoring|migrations) import",
-            r"from flrts_bmad.\1 import",
+            r"from brainbot.\1 import",
         ),
     ]
 
@@ -55,11 +55,11 @@ def update_imports_in_file(filepath):
 
 def main():
     """Update all Python files in the project."""
-    project_root = Path("/Users/colinaulds/Desktop/projects/flrts-bmad")
+    project_root = Path("/Users/colinaulds/Desktop/projects/BrainBot")
 
     # Directories to process
     directories = [
-        project_root / "src" / "flrts_bmad",
+        project_root / "src" / "brainbot",
         project_root / "tests",
         project_root / "scripts",
         project_root / "testsprite_tests",

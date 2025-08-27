@@ -5,9 +5,8 @@ This folder contains notes related to 10NetZero.
 ## 📄 Contents
 
 - [## 10NetZero Company Overview](## 10NetZero Company Overview.md)
-- [10NetZero-FLRTS LLM Implementation Guide](10NetZero-FLRTS LLM Implementation Guide.md)
+- [10NetZero-BrainBot LLM Implementation Guide](10NetZero-BrainBot LLM Implementation Guide.md)
 - [About 10NetZero](about-10netzero.md)
-- [persistent-note](persistent-note.md)
 - [User 2 different note - public info](user-2-different-note---public-info.md)
 - [User 2 meeting notes from standup](user-2-meeting-notes-from-standup.md)
 

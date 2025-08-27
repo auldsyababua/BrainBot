@@ -52,7 +52,7 @@ ignore = [
 inline-quotes = "double"
 
 [lint.isort]
-known-first-party = ["flrts", "flrts_bmad"]
+known-first-party = ["brainbot"]
 
 # Allow longer lines in comments and docstrings
 [lint.pycodestyle]

@@ -6,7 +6,7 @@ no conditional logic, and meaningful validation of actual values.
 
 import pytest
 
-from flrts.rails.router import KeywordRouter
+from brainbot.rails.router import KeywordRouter
 
 
 class TestDeterministicPreprocessing:

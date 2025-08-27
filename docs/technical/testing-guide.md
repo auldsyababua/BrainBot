@@ -1,8 +1,8 @@
-# FLRTS-BMAD Testing Guide
+# BrainBot Testing Guide
 
 ## Overview
 
-This guide covers all testing procedures for the FLRTS-BMAD project, including unit tests, integration tests, performance tests, and live bot testing.
+This guide covers all testing procedures for the BrainBot project, including unit tests, integration tests, performance tests, and live bot testing.
 
 ## Test Structure
 

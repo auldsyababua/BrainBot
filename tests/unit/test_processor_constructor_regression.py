@@ -13,10 +13,10 @@ Critical: This test MUST pass for the system to work correctly
 import inspect
 import unittest
 
-from flrts_bmad.rails.processors.list_processor import ListProcessor
+from brainbot.rails.processors.list_processor import ListProcessor
 
 # Import the processors we need to test
-from flrts_bmad.rails.processors.task_processor import TaskProcessor
+from brainbot.rails.processors.task_processor import TaskProcessor
 
 
 class TestProcessorConstructorRegression(unittest.TestCase):
@@ -156,7 +156,7 @@ class TestProcessorConstructorRegression(unittest.TestCase):
         Verify that all processors inherit from BaseProcessor correctly
         and don't override __init__ with different signatures.
         """
-        from flrts_bmad.rails.processors.base_processor import BaseProcessor
+        from brainbot.rails.processors.base_processor import BaseProcessor
 
         for processor_class, class_name in self.processors_to_test:
             with self.subTest(processor=class_name):
