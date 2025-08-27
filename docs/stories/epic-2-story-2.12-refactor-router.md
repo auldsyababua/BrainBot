@@ -25,7 +25,7 @@ The KeywordRouter.route() method was 264 lines long, containing complex routing 
 4. Improved code organization and readability
 
 ## Files Modified
-- `src/flrts/core/router.py` - Refactored KeywordRouter.route() method
+- `src/brainbot/core/router.py` - Refactored KeywordRouter.route() method
 - `tests/unit/test_router_refactored.py` - Added 20 test cases
 
 ## Test Coverage

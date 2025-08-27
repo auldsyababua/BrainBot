@@ -3,9 +3,9 @@ requires = ["setuptools>=64.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "flrts-bmad"
+name = "brainbot"
 version = "0.1.0"
-description = "Flask/Telegram Bot Application - FLRTS (Field List Report Task System)"
+description = "Flask/Telegram Bot Application - BrainBot (Field List Report Task System)"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
@@ -46,11 +46,11 @@ dev = [
 ]
 
 [project.scripts]
-flrts-bmad = "flrts_bmad.main:main"
+brainbot = "brainbot.main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["flrts_bmad*"]
+include = ["brainbot*"]
 namespaces = false
 
 [tool.setuptools.package-dir]
@@ -106,7 +106,7 @@ unfixable = []  # Don't prevent any auto-fixes
 [tool.isort]
 profile = "black"
 line_length = 100
-known_first_party = ["flrts_bmad"]
+known_first_party = ["brainbot"]
 default_section = "THIRDPARTY"
 skip_gitignore = true
 

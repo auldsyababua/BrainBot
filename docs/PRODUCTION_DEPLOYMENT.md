@@ -1,4 +1,4 @@
-# FLRTS-BMAD Production Deployment Guide
+#BrainBot Production Deployment Guide
 
 **For Small Teams (5-20 users) with Story 1.6 Direct Execution**
 
@@ -82,7 +82,7 @@ TEMPERATURE=0.1        # Consistent for direct execution
 ```bash
 # For small teams - single server deployment
 git clone your-repo
-cd flrts-bmad
+cd BrainBot
 cp .env.example.clean .env
 # Configure .env
 pip install -r requirements.txt

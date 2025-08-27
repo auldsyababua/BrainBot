@@ -124,7 +124,7 @@ async def run_diagnostics():
 
         # 5. Count documents
         print("\n5. Checking for 10NetZero documents:")
-        queries = ["10NetZero", "10 net zero", "10netzero", "FLRTS"]
+        queries = ["10NetZero", "10 net zero", "10netzero", "BrainBot"]
         total_found = 0
 
         for query in queries:

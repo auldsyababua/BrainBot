@@ -383,7 +383,7 @@ For detailed documentation, see:
 - ✅ Memory webhooks for real-time notifications
 - ✅ Authorization system with user ID-based access control
 - ✅ Production deployment on Render with webhook architecture
-- ✅ FLRTS structure (Field reports, Lists, Reminders, Tasks, Sub-tasks)
+- ✅ BrainBot structure - Field reports, Lists, Reminders, Tasks, Sub-tasks (or 'FLRTS' for short)
 - ✅ Document upload and PDF processing
 
 **Next Phase**:

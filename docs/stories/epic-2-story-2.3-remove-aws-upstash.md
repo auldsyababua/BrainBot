@@ -20,10 +20,10 @@ Draft
 
 ## Tasks / Subtasks
 - [ ] Task 1: Clean source code (AC: 1, 2, 3)
-  - [ ] Remove Upstash references from src/flrts/storage/
+  - [ ] Remove Upstash references from src/brainbot/storage/
   - [ ] Remove AWS references from media_storage.py
   - [ ] Update storage_service.py to remove legacy code
-  - [ ] Clean up migration scripts in src/flrts/migrations/
+  - [ ] Clean up migration scripts in src/brainbot/migrations/
 - [ ] Task 2: Clean test files (AC: 8)
   - [ ] Delete test_s3_connection.py
   - [ ] Update test_storage_integrations.py
@@ -51,12 +51,12 @@ Draft
 ### Files Identified for Cleanup
 
 **Source Code Files:**
-- `src/flrts/storage/media_storage.py` - Remove boto3/S3 code
-- `src/flrts/storage/redis_store.py` - Remove Upstash Redis references
-- `src/flrts/core/memory.py` - Check for Upstash references
-- `src/flrts/migrations/migrate_to_vector.py` - Archive or update
-- `src/flrts/storage/cloudflare_cache.py` - Remove Upstash mentions
-- `src/flrts/storage/storage_service.py` - Clean legacy code
+- `src/brainbot/storage/media_storage.py` - Remove boto3/S3 code
+- `src/brainbot/storage/redis_store.py` - Remove Upstash Redis references
+- `src/brainbot/core/memory.py` - Check for Upstash references
+- `src/brainbot/migrations/migrate_to_vector.py` - Archive or update
+- `src/brainbot/storage/cloudflare_cache.py` - Remove Upstash mentions
+- `src/brainbot/storage/storage_service.py` - Clean legacy code
 
 **Test Files:**
 - `tests/integration/test_s3_connection.py` - Delete entirely
@@ -84,7 +84,7 @@ Draft
 
 **Other Files:**
 - `web-bundles/expansion-packs/bmad-infrastructure-devops/agents/infra-devops-platform.txt`
-- `testsprite_tests/README_ANTI_MESA.md`
+- `tests/testsprite_tests/README_ANTI_MESA.md`
 
 ### Migration Archive Strategy
 1. Create `archive/migrations/` directory

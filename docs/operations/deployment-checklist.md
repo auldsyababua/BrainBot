@@ -97,7 +97,7 @@ curl https://brainbot-v76n.onrender.com/health
 - Confirm `/process` endpoint registered
 
 **GitHub Actions:**
-- Monitor deployment workflow: https://github.com/colinaulds/flrts/actions
+- Monitor deployment workflow: https://github.com/colinaulds/BrainBot/actions
 - Check health monitoring alerts
 
 ### 3. Test Bot Functionality
@@ -235,7 +235,7 @@ Phase 1 deployment is successful when:
 **Service URLs:**
 - Render Dashboard: https://dashboard.render.com
 - Cloudflare Dashboard: https://dash.cloudflare.com
-- GitHub Actions: https://github.com/colinaulds/flrts/actions
+- GitHub Actions: https://github.com/colinaulds/BrainBot/actions
 
 **Emergency Contacts:**
 - Render Support (if service issues)

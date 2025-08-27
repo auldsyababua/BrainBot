@@ -16,7 +16,7 @@ load_dotenv()  # Load main .env if it exists
 async def test_graph_memory():
     """Test graph memory functionality."""
     try:
-        from src.core.memory import BotMemory
+        from brainbot.core.memory import BotMemory
 
         print("🧠 Testing BotMemory initialization...")
         memory = BotMemory()

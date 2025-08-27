@@ -26,9 +26,9 @@ import pytest_asyncio
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from flrts_bmad.core.llm import process_message
-from flrts_bmad.storage import vector_store
-from flrts_bmad.storage.redis_store import redis_store
+from brainbot.core.llm import process_message
+from brainbot.storage import vector_store
+from brainbot.storage.redis_store import redis_store
 
 # Load test fixtures
 FIXTURES_PATH = Path(__file__).parent.parent / "fixtures" / "pdf_content.json"

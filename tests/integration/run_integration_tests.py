@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Integration Test Runner for FLRTS Processors
+Integration Test Runner for BrainBot Processors
 
 Usage:
     python run_integration_tests.py                    # Run all integration tests
@@ -50,7 +50,7 @@ def run_tests(test_files=None, include_performance=False, verbose=False):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run FLRTS integration tests")
+    parser = argparse.ArgumentParser(description="Run BrainBot integration tests")
 
     # Test selection options
     parser.add_argument("--task", action="store_true", help="Run TaskProcessor tests")

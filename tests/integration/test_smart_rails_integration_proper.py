@@ -8,8 +8,8 @@ import time
 
 import pytest
 
-from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
-from flrts_bmad.rails.router import KeywordRouter
+from brainbot.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from brainbot.rails.router import KeywordRouter
 
 
 class TestEndToEndMessageFlow:

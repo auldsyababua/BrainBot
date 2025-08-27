@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
-from flrts_bmad.core.chunking import chunk_markdown_document
+from brainbot.core.chunking import chunk_markdown_document
 
 
 class TestChunkingEdgeCases:

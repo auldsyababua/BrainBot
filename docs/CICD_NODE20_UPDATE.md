@@ -68,8 +68,8 @@ nvm use  # Automatically switches to 20.19.4
 
 3. **Docker Build**
 ```bash
-docker build -t flrts-frontend .
-docker run -p 8080:8080 flrts-frontend
+docker build -t brainbot-frontend .
+docker run -p 8080:8080 brainbot-frontend
 ```
 
 ## Rollback Plan

@@ -1,134 +1,154 @@
-# Repository Structure
+# BrainBot Repository Structure
 
-This document describes the organized structure of the FLRTS-BMAD repository following professional standards and best practices.
+## Project Overview
 
-## Directory Layout
+BrainBot (formerly FLRTS) is a comprehensive field operations management system with AI-powered capabilities, Telegram bot integration, and vector search functionality.
+
+## Directory Structure
 
 ```
-flrts-bmad/
-├── src/                      # Source code
-│   ├── auth/                 # Authentication module
-│   ├── memory/               # Memory management
-│   ├── rails/                # Rails integration
-│   └── utils/                # Utility functions
+BrainBot/
+├── 10nz_kb/                    # Knowledge base documents and site information
+│   ├── core-sites-kb/          # Core site knowledge documents
+│   ├── db_test_docs_do_not_modify/  # Test documents for database operations
+│   └── sites/                  # Site-specific documentation
+│       ├── Crockett/
+│       ├── Eagle Lake/
+│       └── Mathis/
 │
-├── docs/                     # Documentation
-│   ├── setup/                # Setup and installation guides
-│   │   └── CONTRIBUTING.md  # Contribution guidelines
-│   ├── technical/            # Technical documentation
-│   │   ├── design.md         # System design
-│   │   ├── requirements.md   # Technical requirements
-│   │   └── EPIC_TYPE_SAFETY.md  # Type safety documentation
-│   ├── operations/           # Operational guides
-│   ├── architecture/         # Architecture documentation
-│   └── prd/                  # Product requirement documents
+├── assets/                     # Static assets and resources
 │
-├── config/                   # Configuration files
-│   ├── mem0-config.json     # Memory configuration
-│   ├── docker-compose.test.yml  # Docker test configuration
-│   ├── render.yaml           # Render deployment config
-│   ├── .ruff.local.toml      # Ruff linter config
-│   ├── .black.local.toml     # Black formatter config
-│   ├── .coderabbit.yaml      # CodeRabbit CI config
-│   └── .coderabbit.yml       # CodeRabbit alternate config
+├── cf/                         # Cloudflare Workers
+│   ├── brainbot-consumer/      # Consumer worker for processing messages
+│   └── brainbot-webhook/       # Webhook handler worker
 │
-├── scripts/                  # Executable scripts
-│   └── [various scripts]     # Build, deploy, and utility scripts
+├── config/                     # Configuration files
+│   └── ARCHIVE_DEPRACATED_DO_NOT_OPEN_OR_REFERENCE/  # Archived configs
 │
-├── tests/                    # Test files
-│   ├── unit/                 # Unit tests
-│   └── test_*.py             # Test modules
+├── docs/                       # Documentation
+│   ├── architecture/           # System architecture documentation
+│   ├── ci/                     # CI/CD documentation
+│   ├── operations/             # Operational guides
+│   ├── prd/                    # Product requirement documents
+│   ├── qa/                     # QA documentation and gates
+│   ├── setup/                  # Setup and installation guides
+│   ├── stories/                # User stories and epics
+│   ├── technical/              # Technical documentation
+│   └── ARCHIVE_DEPRACATED_DO_NOT_OPEN_OR_REFERENCE/  # Archived docs
 │
-├── testsprite_tests/         # TestSprite testing framework
-│   ├── anti_mesa_tests.py   # Anti-MESA test suite
-│   ├── screenshots/          # UI test screenshots
-│   └── [test files]          # Various test files
+├── scripts/                    # Production utility scripts
+│   ├── database/               # Database management scripts
+│   ├── deployment/             # Deployment and monitoring scripts
+│   ├── development/            # Development utilities
+│   ├── diagnostics/            # Diagnostic and debugging tools
+│   ├── maintenance/            # Maintenance scripts
+│   └── ARCHIVE_DEPRACATED_DO_NOT_OPEN_OR_REFERENCE/  # Archived scripts
 │
-├── cf/                       # Cloudflare Workers
-│   ├── brainbot-consumer/    # Consumer service
-│   ├── brainbot-webhook/     # Webhook service
-│   └── README.md             # CF documentation
+├── src/                        # Source code
+│   ├── brainbot/               # Main application package
+│   │   ├── bot/                # Telegram bot handlers
+│   │   ├── core/               # Core functionality (auth, config, LLM, memory)
+│   │   ├── health/             # Health checks and endpoints
+│   │   ├── migrations/         # Database migrations
+│   │   ├── monitoring/         # Performance monitoring
+│   │   ├── rails/              # Smart Rails processing system
+│   │   │   ├── processors/     # Entity processors (lists, tasks)
+│   │   │   └── storage/        # Rails storage interfaces
+│   │   └── storage/            # Storage implementations (Cloudflare, Redis, Vector)
+│   └── ARCHIVE_DEPRACATED_DO_NOT_OPEN_OR_REFERENCE/  # Archived source
 │
-├── telegram-mini-app/        # Telegram Mini App
-│   └── [app files]           # Mini app implementation
+├── telegram-mini-app/          # Telegram Mini App frontend
+│   ├── public/                 # Public assets
+│   ├── src/                    # Source code
+│   │   ├── components/         # React components
+│   │   ├── config/             # App configuration
+│   │   ├── context/            # React context providers
+│   │   ├── services/           # API services
+│   │   ├── tests/              # Frontend tests
+│   │   ├── types/              # TypeScript types
+│   │   └── utils/              # Utility functions
+│   └── ARCHIVE_DEPRACATED_DO_NOT_OPEN_OR_REFERENCE/  # Archived frontend
 │
-├── web-bundles/              # Web bundle assets
-│   └── [bundle files]        # Compiled web assets
+├── tests/                      # Test suite
+│   ├── fixtures/               # Test fixtures and utilities
+│   ├── integration/            # Integration tests
+│   ├── manual/                 # Manual testing scripts
+│   ├── performance/            # Performance tests
+│   ├── security/               # Security and anti-mesa tests
+│   ├── system/                 # System tests
+│   ├── testsprite_tests/       # TestSprite test suite
+│   │   ├── screenshots/        # Test screenshots
+│   │   └── tmp/                # Temporary test files
+│   ├── unit/                   # Unit tests
+│   └── ARCHIVE_DEPRACATED_DO_NOT_OPEN_OR_REFERENCE/  # Archived tests
 │
-├── archive/                  # Archived files
-│   ├── backups/              # Backup files
-│   ├── deprecated/           # Deprecated code
-│   │   └── codebase.md       # Generated codebase documentation
-│   └── temp/                 # Temporary files
-│       ├── app.log           # Application log
-│       └── startup.log       # Startup log
+├── web-bundles/                # Web component bundles
+│   ├── agents/                 # Agent configurations
+│   ├── expansion-packs/        # BMAD expansion packs
+│   └── teams/                  # Team configurations
 │
-├── 10nz_kb/                  # Knowledge base
-│   └── [kb files]            # Knowledge base content
-│
-└── assets/                   # Static resources
-    └── [resource files]      # Images, icons, etc.
+└── ARCHIVE_DEPRACATED_DO_NOT_OPEN_OR_REFERENCE/  # Root-level archives
 ```
 
-## Hidden Directories (Preserved)
+## Key Files
 
-The following hidden directories are maintained in their original locations as they are framework/tool specific:
-
-- `.git/` - Version control
-- `.github/` - GitHub Actions and workflows
-- `.bmad-core/` - BMAD core files
-- `.bmad-infrastructure-devops/` - BMAD DevOps files
-- `.claude/` - Claude AI configuration
-- `.coderabbit/` - CodeRabbit CI files
-- `.gemini/` - Gemini configuration
-- `.qwen/` - Qwen configuration
-- `.superdesign/` - SuperDesign files
-- `.vscode/` - VS Code configuration
-- `.pytest_cache/` - Pytest cache
-- `.ruff_cache/` - Ruff linter cache
-- `.mypy_cache/` - MyPy type checker cache
-- `.githooks/` - Git hooks
-
-## Root Files
-
-Essential files kept in root:
-- `README.md` - Project overview
-- `REPOSITORY-STRUCTURE.md` - This file
-- `CLAUDE.md` - Claude AI instructions
+### Root Configuration
+- `.env.example` - Environment variables template
 - `pyproject.toml` - Python project configuration
 - `requirements.txt` - Python dependencies
-- `uv.lock` - UV package lock file
-- `main.py` - Main application entry point
-- `.gitignore` - Git ignore rules
-- `.semgrepignore` - Semgrep ignore rules
-- `.env.example` - Example environment variables
-- `.env.example.clean` - Clean env example
-- `.env.test` - Test environment
-- `.env.workhorse` - Workhorse environment
-- `.mcp.json` - MCP configuration
+- `main.py` - Application entry point
+- `CLAUDE.md` - Claude AI instructions
+- `.github/workflows/` - CI/CD workflows
 
-## Symlinks
+### Documentation
+- `README.md` - Project overview
+- `DEPLOYMENT_CHECKLIST.md` - Deployment procedures
+- `API_DOCUMENTATION.md` - API reference
 
-For backward compatibility, the following symlinks are created:
-- `docker-compose.test.yml` → `config/docker-compose.test.yml`
-- `render.yaml` → `config/render.yaml`
+## Package Structure
 
-## Organization Principles
+The main application package is `brainbot` located in `src/brainbot/`:
 
-1. **Documentation** - All docs organized by type in `/docs`
-2. **Configuration** - All config files centralized in `/config`
-3. **Source Code** - Production code in `/src`
-4. **Testing** - Test files in `/tests` and `/testsprite_tests`
-5. **Archives** - Old/temporary files in `/archive`
-6. **Hidden Dirs** - Framework-specific hidden directories preserved
-7. **Root Files** - Only essential files kept in root
+- **bot/** - Telegram bot integration
+- **core/** - Core services (auth, config, LLM, memory management)
+- **health/** - Health monitoring endpoints
+- **rails/** - Smart Rails processing system for command routing
+- **storage/** - Storage backends (Cloudflare KV, Vector, Redis)
+- **monitoring/** - Performance and alerting
 
-## Migration Notes
+## Test Organization
 
-Files were moved from root to organized directories:
-- Documentation → `/docs`
-- Config files → `/config`
-- Logs → `/archive/temp`
-- Generated docs → `/archive/deprecated`
+Tests are organized by type in the `/tests` directory:
 
-This structure follows industry best practices while maintaining framework requirements and CI/CD compatibility.
+- **unit/** - Isolated component tests
+- **integration/** - Component interaction tests
+- **performance/** - Load and performance tests
+- **security/** - Security and anti-mesa pattern tests
+- **testsprite_tests/** - Comprehensive test suite with UI verification
+
+## Archived Content
+
+Directories and files marked with `ARCHIVE_DEPRACATED_DO_NOT_OPEN_OR_REFERENCE` contain:
+- One-off migration scripts
+- Deprecated configurations
+- Old documentation
+- Temporary fixes
+
+**These should NOT be referenced or used in active development.**
+
+## Environment Setup
+
+1. Copy `.env.example` to `.env`
+2. Configure required services (Supabase, Telegram, Cloudflare)
+3. Install dependencies: `pip install -r requirements.txt`
+4. Run tests: `pytest`
+5. Start development: `python main.py`
+
+## Deployment
+
+- Production runs on Render.com
+- Cloudflare Workers handle webhook processing
+- Supabase provides database and authentication
+- Vector search powered by Cloudflare Vectorize
+
+See `docs/operations/deployment-checklist.md` for detailed deployment procedures.

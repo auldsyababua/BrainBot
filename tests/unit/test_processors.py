@@ -10,8 +10,8 @@ import pytest
 
 # Add parent directory to path before importing our modules
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-from flrts_bmad.rails.processors.list_processor import ListProcessor
-from flrts_bmad.rails.processors.task_processor import TaskProcessor
+from brainbot.rails.processors.list_processor import ListProcessor
+from brainbot.rails.processors.task_processor import TaskProcessor
 
 
 class TestListProcessor:

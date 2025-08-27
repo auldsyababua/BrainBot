@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from flrts.core.llm import (
+from brainbot.core.llm import (
     _build_llm_context,
     _execute_llm_chain,
     _extract_session_context,
@@ -51,9 +51,9 @@ class TestRouteMessage:
     """Test the _route_message method."""
 
     @pytest.mark.asyncio
-    @patch("flrts.core.llm.keyword_router")
-    @patch("flrts.core.llm.prompt_generator")
-    @patch("flrts.core.llm._process_rails_command")
+    @patch("brainbot.core.llm.keyword_router")
+    @patch("brainbot.core.llm.prompt_generator")
+    @patch("brainbot.core.llm._process_rails_command")
     async def test_direct_execution(self, mock_process_rails, mock_prompt_gen, mock_router):
         """Test direct execution path when confidence is high."""
         # Setup mocks
@@ -79,7 +79,7 @@ class TestRouteMessage:
         mock_process_rails.assert_called_once()
 
     @pytest.mark.asyncio
-    @patch("flrts.core.llm.keyword_router")
+    @patch("brainbot.core.llm.keyword_router")
     async def test_low_confidence_routing(self, mock_router):
         """Test routing when confidence is low."""
         mock_router.route.return_value = MagicMock(
@@ -96,7 +96,7 @@ class TestRouteMessage:
         assert result["user_message"] == "vague message"
 
     @pytest.mark.asyncio
-    @patch("flrts.core.llm.keyword_router", None)
+    @patch("brainbot.core.llm.keyword_router", None)
     async def test_no_router_available(self):
         """Test routing when keyword router is not available."""
         result = await _route_message("test message", {"chat_id": "test_789"})
@@ -110,12 +110,12 @@ class TestBuildLLMContext:
     """Test the _build_llm_context method."""
 
     @pytest.mark.asyncio
-    @patch("flrts.core.llm.get_performance_monitor")
-    @patch("flrts.core.llm.search_knowledge_base")
-    @patch("flrts.core.llm.bot_memory")
-    @patch("flrts.core.llm.get_conversation_history")
-    @patch("flrts.core.llm.add_to_conversation_history")
-    @patch("flrts.core.llm._get_optimized_functions")
+    @patch("brainbot.core.llm.get_performance_monitor")
+    @patch("brainbot.core.llm.search_knowledge_base")
+    @patch("brainbot.core.llm.bot_memory")
+    @patch("brainbot.core.llm.get_conversation_history")
+    @patch("brainbot.core.llm.add_to_conversation_history")
+    @patch("brainbot.core.llm._get_optimized_functions")
     async def test_context_building(
         self,
         mock_get_functions,
@@ -168,12 +168,12 @@ class TestBuildLLMContext:
         mock_memory.recall_context.assert_called_once()
 
     @pytest.mark.asyncio
-    @patch("flrts.core.llm.get_performance_monitor")
-    @patch("flrts.core.llm.search_knowledge_base")
-    @patch("flrts.core.llm.bot_memory")
-    @patch("flrts.core.llm.get_conversation_history")
-    @patch("flrts.core.llm.add_to_conversation_history")
-    @patch("flrts.core.llm._get_optimized_functions")
+    @patch("brainbot.core.llm.get_performance_monitor")
+    @patch("brainbot.core.llm.search_knowledge_base")
+    @patch("brainbot.core.llm.bot_memory")
+    @patch("brainbot.core.llm.get_conversation_history")
+    @patch("brainbot.core.llm.add_to_conversation_history")
+    @patch("brainbot.core.llm._get_optimized_functions")
     async def test_context_with_route_result(
         self,
         mock_get_functions,
@@ -219,10 +219,10 @@ class TestExecuteLLMChain:
     """Test the _execute_llm_chain method."""
 
     @pytest.mark.asyncio
-    @patch("flrts.core.llm.resilient_client")
-    @patch("flrts.core.llm.add_to_conversation_history")
-    @patch("flrts.core.llm.get_conversation_history")
-    @patch("flrts.core.llm.bot_memory")
+    @patch("brainbot.core.llm.resilient_client")
+    @patch("brainbot.core.llm.add_to_conversation_history")
+    @patch("brainbot.core.llm.get_conversation_history")
+    @patch("brainbot.core.llm.bot_memory")
     async def test_direct_response(
         self,
         mock_memory,
@@ -266,11 +266,11 @@ class TestExecuteLLMChain:
         mock_memory.remember_from_conversation.assert_called_once()
 
     @pytest.mark.asyncio
-    @patch("flrts.core.llm.resilient_client")
-    @patch("flrts.core.llm.execute_function")
-    @patch("flrts.core.llm.add_to_conversation_history")
-    @patch("flrts.core.llm.get_conversation_history")
-    @patch("flrts.core.llm.bot_memory")
+    @patch("brainbot.core.llm.resilient_client")
+    @patch("brainbot.core.llm.execute_function")
+    @patch("brainbot.core.llm.add_to_conversation_history")
+    @patch("brainbot.core.llm.get_conversation_history")
+    @patch("brainbot.core.llm.bot_memory")
     async def test_function_call_response(
         self,
         mock_memory,
@@ -333,10 +333,10 @@ class TestProcessMessage:
     """Test the refactored process_message function."""
 
     @pytest.mark.asyncio
-    @patch("flrts.core.llm._extract_session_context")
-    @patch("flrts.core.llm._route_message")
-    @patch("flrts.core.llm._build_llm_context")
-    @patch("flrts.core.llm._execute_llm_chain")
+    @patch("brainbot.core.llm._extract_session_context")
+    @patch("brainbot.core.llm._route_message")
+    @patch("brainbot.core.llm._build_llm_context")
+    @patch("brainbot.core.llm._execute_llm_chain")
     async def test_full_pipeline(
         self,
         mock_execute,
@@ -379,8 +379,8 @@ class TestProcessMessage:
         mock_execute.assert_called_once()
 
     @pytest.mark.asyncio
-    @patch("flrts.core.llm._extract_session_context")
-    @patch("flrts.core.llm._route_message")
+    @patch("brainbot.core.llm._extract_session_context")
+    @patch("brainbot.core.llm._route_message")
     async def test_direct_routing_response(self, mock_route, mock_extract):
         """Test when routing returns a direct response."""
         mock_extract.return_value = {
@@ -400,7 +400,7 @@ class TestProcessMessage:
         mock_route.assert_called_once()
 
     @pytest.mark.asyncio
-    @patch("flrts.core.llm._extract_session_context")
+    @patch("brainbot.core.llm._extract_session_context")
     async def test_error_handling(self, mock_extract):
         """Test error handling in process_message."""
         mock_extract.side_effect = Exception("Test error")

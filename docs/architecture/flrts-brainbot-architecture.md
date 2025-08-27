@@ -1,8 +1,8 @@
-# FLRTS BrainBot Architecture Document
+#BrainBot  Architecture Document
 
 ## System Overview
 
-The FLRTS BrainBot is a Python and React/TypeScript application designed for low-friction task, list, and note management via a Telegram bot. The system uses Supabase for its database, OpenAI for intelligence, and is in the process of migrating vector/caching services from Upstash to Cloudflare.
+TheBrainBot  is a Python and React/TypeScript application designed for low-friction task, list, and note management via a Telegram bot. The system uses Supabase for its database, OpenAI for intelligence, and is in the process of migrating vector/caching services from Upstash to Cloudflare.
 
 ## Core Architecture Components
 
@@ -25,7 +25,7 @@ The core innovation of the system is the "Smart Rails" system, which preprocesse
 ## Project Structure
 
 ```
-flrts-bmad/
+BrainBot/
 ├── src/
 │   ├── rails/           # Smart Rails routing system
 │   │   ├── router.py     # Main routing logic

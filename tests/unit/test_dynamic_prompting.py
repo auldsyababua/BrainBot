@@ -6,7 +6,7 @@ no conditional logic, and meaningful validation of actual prompt content.
 
 import pytest
 
-from flrts.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from brainbot.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
 
 
 class TestPromptGeneration:

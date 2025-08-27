@@ -21,12 +21,12 @@ from datetime import datetime
 # Add src to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
-from flrts_bmad.storage import vector_store
-from flrts_bmad.storage.media_storage import media_storage
+from brainbot.storage import vector_store
+from brainbot.storage.media_storage import media_storage
 
 # Import storage modules
-from flrts_bmad.storage.redis_store import redis_store
-from flrts_bmad.storage.storage_service import document_storage
+from brainbot.storage.redis_store import redis_store
+from brainbot.storage.storage_service import document_storage
 
 
 # Color codes for terminal output

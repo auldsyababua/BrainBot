@@ -1,4 +1,4 @@
-# CodeRabbit Configuration for FLRTS Project
+# CodeRabbit Configuration for brainbot Project
 # AI-powered code review and analysis for Field Logistics & Remote Telemetry System
 
 # Language version requirements
@@ -206,12 +206,12 @@ knowledge_base:
   
   # Project-specific context
   additional_context: |
-    FLRTS (Field Logistics & Remote Telemetry System) is a Telegram bot platform for:
+    BrainBot is a Telegram bot platform for users to create 'FLRTS' (Field Reports, Lists, Reminders, Tasks, and Sub-Tasks) for:
     - Field operations management
-    - Document and knowledge base storage
+    - Documentation and knowledge base storage
     - Task and list management
-    - Smart routing with AI processors
-    - Multi-site operations support (Eagle Lake, Crockett, Mathis)
+    - Smart routing of various kinds of 'FLRTS-items and CRUD events' with assistance from AI processors - OpenAI's completions API using GPT-4o model with guranteed structured output compliance 
+    - Multi-site operations support (Eagle Lake, Crockett, Mathis, and more)
     
     Tech Stack:
     - Backend: Python 3.9, Flask, python-telegram-bot

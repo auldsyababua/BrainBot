@@ -52,8 +52,8 @@ Draft
 
 ### Relevant Source Tree
 [Source: architecture/source-tree.md]
-- `src/flrts/storage/cloudflare_vector_store.py` - Existing CF vector implementation
-- `src/flrts/migrations/migrate_to_vector.py` - Migration script to update
+- `src/brainbot/storage/cloudflare_vector_store.py` - Existing CF vector implementation
+- `src/brainbot/migrations/migrate_to_vector.py` - Migration script to update
 - `tests/test_cloudflare_vector_store.py` - Update tests
 - `tests/integration/test_storage_integrations.py` - Integration tests
 

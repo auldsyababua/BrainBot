@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# FLRTS-BMAD Canary Deployment Script
+# BrainBot Canary Deployment Script
 # Progressive rollout for small teams with Story 1.6 validation
 
 set -e

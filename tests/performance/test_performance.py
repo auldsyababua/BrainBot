@@ -17,11 +17,11 @@ import time
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from flrts_bmad.core.api_client import RetryConfig, get_resilient_client  # noqa: E402
-from flrts_bmad.core.benchmarks import get_performance_monitor  # noqa: E402
-from flrts_bmad.core.llm import conversation_manager, process_message  # noqa: E402
-from flrts_bmad.storage import vector_store  # noqa: E402
-from flrts_bmad.storage.redis_store import redis_store  # noqa: E402
+from brainbot.core.api_client import RetryConfig, get_resilient_client  # noqa: E402
+from brainbot.core.benchmarks import get_performance_monitor  # noqa: E402
+from brainbot.core.llm import conversation_manager, process_message  # noqa: E402
+from brainbot.storage import vector_store  # noqa: E402
+from brainbot.storage.redis_store import redis_store  # noqa: E402
 
 
 async def test_vector_cache():

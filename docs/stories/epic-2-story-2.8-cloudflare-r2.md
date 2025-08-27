@@ -54,7 +54,7 @@ Draft
 
 ### Relevant Source Tree
 [Source: architecture/source-tree.md]
-- `src/flrts/storage/media_storage.py` - Primary file to modify
+- `src/brainbot/storage/media_storage.py` - Primary file to modify
 - `tests/integration/test_media_storage.py` - Update tests
 - `tests/integration/test_s3_connection.py` - Remove or update
 - `tests/system/test_all_storage.py` - Update integration

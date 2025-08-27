@@ -16,7 +16,7 @@
 ### ✅ COMPLETED STORIES
 
 #### Story 2.0: Remove Agent Selection Contamination (5 points) - COMPLETED
-- Deleted `src/flrts_bmad/core/agents.py` module
+- Deleted `src/brainbot/core/agents.py` module
 - Removed all agent-related imports and code from `llm.py`
 - Application now uses only GPT-4o directly
 
@@ -31,7 +31,7 @@
 - Performance maintained within requirements
 
 #### Story 2.3: Rename Project to Remove BMAD Confusion (8 points) - COMPLETED
-- Renamed package from `flrts_bmad` to `flrts`
+- Renamed package from `flrts_bmad` to `brainbot`
 - Updated all imports throughout codebase
 - Package installs and imports work correctly
 
@@ -85,7 +85,7 @@ tests/test_dynamic_prompting_standalone.py → tests/unit/test_dynamic_prompting
 **I want** hardcoded configuration values moved to a central config file,
 **so that** settings are easily manageable and environment-specific.
 
-**Create**: `src/flrts/config/defaults.py`
+**Create**: `src/BrainBot/config/defaults.py`
 ```python
 # Cache Configuration  
 CACHE_TTL_DEFAULT = 300  # 5 minutes

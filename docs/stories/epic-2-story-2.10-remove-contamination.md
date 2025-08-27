@@ -15,14 +15,14 @@ Agent selection code from development environment was contaminating production c
 - **Agent Model Used:** Unknown (completed before current sprint)
 
 ## Changes Made
-1. Deleted `src/flrts_bmad/core/agents.py` module
+1. Deleted `src/brainbot_bmad/core/agents.py` module
 2. Removed all agent-related imports from `llm.py`
 3. Removed all agent selection logic from codebase
 4. Application now uses GPT-4o directly without agent wrapper
 
 ## Files Modified
-- `src/flrts_bmad/core/agents.py` - DELETED
-- `src/flrts_bmad/core/llm.py` - Cleaned of agent imports and logic
+- `src/brainbot_bmad/core/agents.py` - DELETED
+- `src/brainbot_bmad/core/llm.py` - Cleaned of agent imports and logic
 - Various import statements across codebase
 
 ## Acceptance Criteria (COMPLETED)

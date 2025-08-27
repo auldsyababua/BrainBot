@@ -6,8 +6,8 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from flrts_bmad.core.llm import _process_rails_command, process_message
-from flrts_bmad.rails.router import KeywordRouter, RouteResult
+from brainbot.core.llm import _process_rails_command, process_message
+from brainbot.rails.router import KeywordRouter, RouteResult
 
 
 class TestRouterEdgeCases:
@@ -72,7 +72,7 @@ class TestRouterEdgeCases:
             # The module should handle initialization failure gracefully
             from importlib import reload
 
-            import src.flrts_bmad.core.llm as llm_module
+            import src.brainbot.core.llm as llm_module
 
             with patch("logging.Logger.error") as mock_logger:
                 reload(llm_module)

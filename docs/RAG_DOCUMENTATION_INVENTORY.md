@@ -1,7 +1,7 @@
-# FLRTS RAG Agent Documentation Inventory
+#BrainBot RAG Agent Documentation Inventory
 
 ## Purpose
-This document provides a comprehensive list of all technologies, libraries, frameworks, and services used in the FLRTS application, including their versions. This inventory is designed to help AI coding agents find the correct documentation when troubleshooting issues.
+This document provides a comprehensive list of all technologies, libraries, frameworks, and services used in theBrainBot application, including their versions. This inventory is designed to help AI coding agents find the correct documentation when troubleshooting issues.
 
 ---
 

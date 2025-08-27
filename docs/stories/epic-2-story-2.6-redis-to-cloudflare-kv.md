@@ -30,7 +30,7 @@ As a platform engineer, I need to migrate from Redis/Upstash to Cloudflare KV so
 5. Remove Redis/Upstash dependencies
 
 ### Implementation Checklist
-- [ ] Create `src/flrts/storage/kv_store.py` with KV client
+- [ ] Create `src/brainbot/storage/kv_store.py` with KV client
 - [ ] Implement all Redis operations in KV:
   - [ ] get/set operations
   - [ ] TTL/expiration support

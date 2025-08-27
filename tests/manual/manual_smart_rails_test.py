@@ -14,10 +14,10 @@ from datetime import datetime
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from flrts_bmad.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
+from brainbot.rails.dynamic_prompts import DynamicPromptGenerator, PromptContext
 
 # Import Smart Rails components
-from flrts_bmad.rails.router import KeywordRouter
+from brainbot.rails.router import KeywordRouter
 
 
 class SmartRailsQATester:

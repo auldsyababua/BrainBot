@@ -12,7 +12,7 @@ pytestmark = pytest.mark.skip(
     reason="Tests need to be updated to match current MemoryWebhookHandler implementation"
 )
 
-from flrts_bmad.core.memory_webhooks import (
+from brainbot.core.memory_webhooks import (
     MemoryWebhookEvent,
     MemoryWebhookHandler,
     WebhookConfig,

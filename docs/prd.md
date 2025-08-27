@@ -1,15 +1,15 @@
-# BrainBot FLRTS - Product Requirements Document
+# BrainBot - Product Requirements Document
 
 ## Product Overview
 
-**Product Name:** BrainBot FLRTS (Field Reports, Lists, Reminders, Tasks, Sub-tasks)  
+**Product Name:** BrainBot (Field Reports, Lists, Reminders, Tasks, Sub-tasks)  
 **Version:** 1.0  
 **Document Version:** v4  
 **Last Updated:** August 14, 2025
 
 ### Executive Summary
 
-BrainBot FLRTS is an intelligent Telegram bot that acts as a personal filing assistant using Creation Augmented Generation (CAG). It automatically organizes field operations information into structured categories (Field Reports, Lists, Reminders, Tasks, Sub-tasks) without requiring user questions, preserving all sources with comprehensive audit trails.
+BrainBot is an intelligent Telegram bot that acts as a personal filing assistant using Creation Augmented Generation (CAG). It automatically organizes field operations information into structured categories (Field Reports, Lists, Reminders, Tasks, Sub-tasks) without requiring user questions, preserving all sources with comprehensive audit trails.
 
 ### Business Objectives
 
@@ -74,7 +74,7 @@ BrainBot FLRTS is an intelligent Telegram bot that acts as a personal filing ass
 - **FR-2.3.2**: 80-99% confidence → Focused LLM (50-100 tokens)
 - **FR-2.3.3**: <80% confidence → Full LLM analysis (200-500 tokens)
 
-### Epic 3: FLRTS Entity Management
+### Epic 3:BrainBot Entity Management
 
 #### Epic 3.1: Field Reports
 - **FR-3.1.1**: System SHALL create structured field reports with metadata

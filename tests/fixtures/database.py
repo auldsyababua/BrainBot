@@ -9,8 +9,8 @@ import pytest
 from supabase import Client, create_client
 from supabase.lib.client_options import ClientOptions
 
-from flrts_bmad.rails.processors.list_processor import ListProcessor
-from flrts_bmad.rails.processors.task_processor import TaskProcessor
+from brainbot.rails.processors.list_processor import ListProcessor
+from brainbot.rails.processors.task_processor import TaskProcessor
 
 
 class TestDatabaseManager:

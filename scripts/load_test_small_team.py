@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Small Team Load Test for FLRTS-BMAD (5-20 users)
+Small Team Load Test for BrainBot (5-20 users)
 
 Tests the system under realistic load for a small team,
 with special focus on Story 1.6 direct execution performance.
@@ -335,7 +335,7 @@ class SmallTeamLoadTester:
     def print_results(self, results: dict[str, Any]) -> None:
         """Print formatted test results."""
         print("\n" + "=" * 60)
-        print("🧪 FLRTS-BMAD Small Team Load Test Results")
+        print("🧪 BrainBot Small Team Load Test Results")
         print("=" * 60)
 
         summary = results["load_test_summary"]
@@ -393,7 +393,7 @@ async def main():
 
 
 if __name__ == "__main__":
-    print("🧪 FLRTS-BMAD Small Team Load Test")
+    print("🧪 BrainBot Small Team Load Test")
     print("⚠️  Note: Ensure the application is running before starting the test")
     print("📍 Testing against: http://localhost:5000")
 
