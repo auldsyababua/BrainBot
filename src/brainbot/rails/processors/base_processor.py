@@ -16,7 +16,7 @@ class BaseProcessor:
         self._cache_timestamps = {}
         self.cache_ttl = 300  # 5 minutes
 
-    def _get_cached(self, key: str) -> Optional[Any]:
+    def _get_cached(self, key: str) -> Any | None:
         """Get cached value if still valid."""
         if key in self._cache:
             timestamp = self._cache_timestamps.get(key)

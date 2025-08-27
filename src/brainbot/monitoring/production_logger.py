@@ -25,7 +25,7 @@ class DirectExecutionMetrics:
     user_id: str
     bypassed_llm: bool
     timestamp: str
-    error: Optional[str] = None
+    error: str | None = None
 
 
 class ProductionLogger:
@@ -54,7 +54,7 @@ class ProductionLogger:
         success: bool,
         user_id: str,
         bypassed_llm: bool,
-        error: Optional[str] = None,
+        error: str | None = None,
     ) -> None:
         """Log Story 1.6 direct execution metrics."""
 
@@ -100,8 +100,8 @@ class ProductionLogger:
     def log_router_decision(
         self,
         message: str,
-        entity_type: Optional[str],
-        operation: Optional[str],
+        entity_type: str | None,
+        operation: str | None,
         confidence: float,
         use_direct_execution: bool,
         user_id: str,

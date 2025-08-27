@@ -42,7 +42,7 @@ class MemoryWebhookEvent(Enum):
 class WebhookConfig:
     """Configuration for webhook delivery."""
 
-    url: Optional[str] = None
+    url: str | None = None
     headers: dict[str, str] = None
     timeout: int = 30
     retry_attempts: int = 3
@@ -99,7 +99,7 @@ class MemoryWebhookHandler:
         event: MemoryWebhookEvent,
         user_id: str,
         data: Any = None,
-        metadata: Optional[Dict[str, Any]] = None,
+        metadata: dict[str, Any] | None = None,
     ) -> bool:
         """
         Send a webhook notification for a memory event.

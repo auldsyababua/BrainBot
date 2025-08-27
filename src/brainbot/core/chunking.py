@@ -18,8 +18,8 @@ class ChunkMetadata:
     total_chunks: int
     start_char: int
     end_char: int
-    title: Optional[str] = None
-    type: Optional[str] = None
+    title: str | None = None
+    type: str | None = None
 
 
 class DocumentChunker:
@@ -29,7 +29,7 @@ class DocumentChunker:
         self,
         chunk_size: int = 1000,
         chunk_overlap: int = 200,
-        separators: Optional[List[str]] = None,
+        separators: list[str] | None = None,
         keep_separator: bool = True,
     ):
         """
@@ -241,7 +241,7 @@ class DocumentChunker:
 def chunk_markdown_document(
     content: str,
     file_path: str,
-    metadata: Optional[dict] = None,
+    metadata: dict | None = None,
     chunk_size: int = 1000,
     chunk_overlap: int = 200,
 ) -> list[tuple[str, dict]]:

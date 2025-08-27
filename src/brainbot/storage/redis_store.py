@@ -22,7 +22,7 @@ class RedisStore:
         self.redis = CloudflareRedis()
         self.ttl_seconds = 86400  # 24 hours default TTL - matches ConversationManager default
 
-    async def get_conversation(self, chat_id: str) -> Optional[List[dict]]:
+    async def get_conversation(self, chat_id: str) -> list[dict] | None:
         """
         Retrieve conversation history for a given chat ID.
 
@@ -120,7 +120,7 @@ class RedisStore:
             print(f"Error getting active conversations: {e}")
             return []
 
-    async def get_conversation_metadata(self, chat_id: str) -> Optional[dict]:
+    async def get_conversation_metadata(self, chat_id: str) -> dict | None:
         """
         Get metadata about a conversation (TTL, size, etc).
 

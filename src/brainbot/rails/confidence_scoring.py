@@ -136,10 +136,10 @@ class EnhancedConfidenceScorer:
     def calculate_confidence(
         self,
         message: str,
-        entity_type: Optional[str],
-        operation: Optional[str],
+        entity_type: str | None,
+        operation: str | None,
         extracted_data: dict[str, Any],
-        keyword_match: Optional[re.Match] = None,
+        keyword_match: re.Match | None = None,
     ) -> tuple[float, ConfidenceFactors]:
         """Calculate confidence score with detailed factor analysis.
 
@@ -264,7 +264,9 @@ class EnhancedConfidenceScorer:
 
         return confidence, factors
 
-    def _get_required_fields(self, entity_type: Optional[str], operation: Optional[str]) -> list[str]:
+    def _get_required_fields(
+        self, entity_type: str | None, operation: str | None
+    ) -> list[str]:
         """Get required fields for an entity-operation pair."""
         requirements = {
             ("lists", "create"): ["list_name", "list_type"],

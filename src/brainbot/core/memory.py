@@ -187,7 +187,9 @@ class BotMemory:
             self.has_graph = False
             self.webhook_url = None
 
-    async def remember_from_conversation(self, messages: list[dict], user_id: str) -> Optional[dict]:
+    async def remember_from_conversation(
+        self, messages: list[dict], user_id: str
+    ) -> dict | None:
         """Extract and store important memories from a conversation.
 
         Args:
@@ -340,7 +342,7 @@ class BotMemory:
         except Exception as e:
             logger.error(f"Error storing correction: {e}")
 
-    async def get_all_memories(self, user_id: str, memory_type: Optional[str] = None) -> list[dict]:
+    async def get_all_memories(self, user_id: str, memory_type: str | None = None) -> list[dict]:
         """Retrieve all memories for a user, optionally filtered by type.
 
         Args:
@@ -372,7 +374,7 @@ class BotMemory:
             logger.error(f"Error getting all memories: {e}")
             return []
 
-    async def forget_memories(self, user_id: str, memory_ids: Optional[List[str]] = None):
+    async def forget_memories(self, user_id: str, memory_ids: list[str] | None = None):
         """Delete specific memories or all memories for a user.
 
         Args:
@@ -460,7 +462,7 @@ class BotMemory:
         return entities
 
     async def get_graph_relationships(
-        self, user_id: str, entity: Optional[str] = None
+        self, user_id: str, entity: str | None = None
     ) -> list[dict[str, Any]]:
         """Retrieve relationship data from graph memory.
 
@@ -502,8 +504,8 @@ class BotMemory:
         source_entity: str,
         relationship: str,
         target_entity: str,
-        metadata: Optional[Dict[str, Any]] = None,
-    ) -> Optional[dict]:
+        metadata: dict[str, Any] | None = None,
+    ) -> dict | None:
         """Store an explicit relationship between entities in the graph.
 
         Args:
@@ -569,7 +571,7 @@ class BotMemory:
         self,
         user_id: str,
         entity: str,
-        relationship_types: Optional[List[str]] = None,
+        relationship_types: list[str] | None = None,
         max_depth: int = 2,
     ) -> dict[str, list[dict[str, Any]]]:
         """Find entities related to a given entity through graph traversal.
@@ -748,7 +750,7 @@ class BotMemory:
             return []
 
     async def build_knowledge_graph(
-        self, user_id: str, entity_types: Optional[List[str]] = None
+        self, user_id: str, entity_types: list[str] | None = None
     ) -> dict[str, Any]:
         """Build a knowledge graph representation of the user's memory.
 

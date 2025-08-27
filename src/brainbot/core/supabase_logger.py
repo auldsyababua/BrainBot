@@ -18,7 +18,7 @@ class SupabaseLogHandler(logging.Handler):
 
     def __init__(
         self,
-        supabase_client: Optional[Client] = None,
+        supabase_client: Client | None = None,
         batch_size: int = 10,
         flush_interval: int = 5,
     ):

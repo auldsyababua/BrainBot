@@ -49,7 +49,7 @@ if env_user_ids:
         logger.error(f"Failed to parse AUTHORIZED_USER_IDS from environment: {e}")
 
 
-def is_user_authorized(username: Optional[str] = None, user_id: Optional[int] = None) -> bool:
+def is_user_authorized(username: str | None = None, user_id: int | None = None) -> bool:
     """Check if user is authorized to use the bot.
 
     Args:

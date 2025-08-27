@@ -64,7 +64,7 @@ class CloudflareVectorStore:
             return False
 
         # Initialize performance monitor
-        self.monitor: Optional[Any] = None
+        self.monitor: Any | None = None
 
         # OpenAI client for embeddings (Cloudflare Vectorize requires pre-computed embeddings)
         self._init_openai()
@@ -86,7 +86,7 @@ class CloudflareVectorStore:
             logger.error(f"Error generating embedding: {e}")
             raise
 
-    def _get_cache_key(self, query: str, top_k: int, filter: Optional[str] = None) -> str:
+    def _get_cache_key(self, query: str, top_k: int, filter: str | None = None) -> str:
         """Generate a cache key for a query."""
         key_parts = [query, str(top_k), filter or ""]
         key_string = "|".join(key_parts)
@@ -98,7 +98,7 @@ class CloudflareVectorStore:
         if self.monitor is None:
             self.monitor = get_performance_monitor()
 
-    async def invalidate_cache(self, pattern: Optional[str] = None):
+    async def invalidate_cache(self, pattern: str | None = None):
         """Invalidate cache entries (placeholder for Cloudflare KV implementation)."""
         # Will be implemented with Cloudflare KV in Story 1.3
         pass
@@ -107,8 +107,8 @@ class CloudflareVectorStore:
         self,
         document_id: str,
         content: str,
-        metadata: Optional[dict] = None,
-        namespace: Optional[str] = None,
+        metadata: dict | None = None,
+        namespace: str | None = None,
     ) -> bool:
         """
         Store a document with embedding generation via OpenAI and storage in Cloudflare.
@@ -171,10 +171,10 @@ class CloudflareVectorStore:
     async def search(
         self,
         query: str,
-        top_k: Optional[int] = None,
-        filter: Optional[str] = None,
+        top_k: int | None = None,
+        filter: str | None = None,
         include_metadata: bool = True,
-        namespace: Optional[str] = None,
+        namespace: str | None = None,
     ) -> list[dict]:
         """
         Search for documents using semantic similarity.
@@ -267,7 +267,7 @@ class CloudflareVectorStore:
             logger.error(f"Error searching for query '{query}': {e}")
             return []
 
-    async def delete_document(self, document_id: str, namespace: Optional[str] = None) -> bool:
+    async def delete_document(self, document_id: str, namespace: str | None = None) -> bool:
         """
         Delete a document from the vector store.
 
@@ -301,8 +301,8 @@ class CloudflareVectorStore:
 
     async def batch_embed_and_store(
         self,
-        documents: list[tuple[str, str, Optional[dict]]],
-        namespace: Optional[str] = None,
+        documents: list[tuple[str, str, dict | None]],
+        namespace: str | None = None,
     ) -> int:
         """
         Store multiple documents in batch for efficiency.
@@ -360,7 +360,7 @@ class CloudflareVectorStore:
             logger.error(f"Error in batch storage: {e}")
             return 0
 
-    async def fetch_document(self, document_id: str) -> Optional[dict]:
+    async def fetch_document(self, document_id: str) -> dict | None:
         """
         Fetch a specific document by ID.
 
@@ -438,7 +438,7 @@ class CloudflareVectorStore:
             logger.error(f"Error updating metadata for {document_id}: {e}")
             return False
 
-    async def list_documents(self, prefix: Optional[str] = None, limit: int = 100) -> list[str]:
+    async def list_documents(self, prefix: str | None = None, limit: int = 100) -> list[str]:
         """
         List document IDs in the vector store.
         Note: This requires a metadata search or separate tracking.
@@ -494,7 +494,7 @@ class CloudflareVectorStore:
             return False
 
     async def search_with_full_content(
-        self, query: str, top_k: Optional[int] = None, include_full_docs: bool = True
+        self, query: str, top_k: int | None = None, include_full_docs: bool = True
     ) -> list[dict]:
         """
         Search for documents and retrieve full content from Supabase.

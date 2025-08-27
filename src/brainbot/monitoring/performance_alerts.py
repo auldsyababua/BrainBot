@@ -58,7 +58,7 @@ class PerformanceMonitor:
         self.metric_history: list[PerformanceMetrics] = []
         self.alert_cooldown = {}  # Prevent alert spam
 
-    def check_health(self) -> Optional[dict]:
+    def check_health(self) -> dict | None:
         """Check system health endpoint."""
         try:
             response = requests.get(self.health_url, timeout=5)

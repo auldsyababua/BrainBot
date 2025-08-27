@@ -593,7 +593,7 @@ class ListProcessor(BaseProcessor):
             logger.error(f"Error deleting list: {e}")
             return {"success": False, "error": f"Failed to delete list: {str(e)}"}
 
-    async def _find_list_by_name(self, name: str) -> Optional[Dict[str, Any]]:
+    async def _find_list_by_name(self, name: str) -> dict[str, Any] | None:
         """Find a list by name (case-insensitive)."""
         if not name:
             return None

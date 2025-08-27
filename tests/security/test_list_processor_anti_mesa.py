@@ -550,9 +550,9 @@ class ListProcessorStateMachine(RuleBasedStateMachine):
     def __init__(self):
         super().__init__()
         self.processor = ListProcessor(MagicMock())
-        self.created_lists: Set[str] = set()
-        self.list_items: Dict[str, Set[str]] = {}
-        self.deleted_lists: Set[str] = set()
+        self.created_lists: set[str] = set()
+        self.list_items: dict[str, set[str]] = {}
+        self.deleted_lists: set[str] = set()
 
     @initialize()
     def setup(self):

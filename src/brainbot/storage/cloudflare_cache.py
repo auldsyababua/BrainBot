@@ -42,7 +42,7 @@ class CloudflareCache:
         # Default TTL (5 minutes)
         self.default_ttl = int(os.getenv("CACHE_DEFAULT_TTL", "300"))
 
-    async def get(self, key: str) -> Optional[Union[str, dict, list]]:
+    async def get(self, key: str) -> str | dict | list | None:
         """
         Get a value from cache.
 
@@ -72,7 +72,7 @@ class CloudflareCache:
             logger.error(f"Error getting cache key {key}: {e}")
             return None
 
-    async def set(self, key: str, value: Any, ttl: Optional[int] = None) -> bool:
+    async def set(self, key: str, value: Any, ttl: int | None = None) -> bool:
         """
         Set a value in cache with optional TTL.
 
@@ -251,7 +251,7 @@ class CloudflareCache:
             logger.error(f"Error setting hash field {name}.{key}: {e}")
             return False
 
-    async def hget(self, name: str, key: str) -> Optional[Any]:
+    async def hget(self, name: str, key: str) -> Any | None:
         """
         Get field from a hash (Redis compatibility).
 
@@ -448,10 +448,10 @@ class CloudflareRedis:
         self.cache = CloudflareCache()
 
     # Delegate all methods to CloudflareCache
-    async def get(self, key: str) -> Optional[Any]:
+    async def get(self, key: str) -> Any | None:
         return await self.cache.get(key)
 
-    async def set(self, key: str, value: Any, ex: Optional[int] = None) -> bool:
+    async def set(self, key: str, value: Any, ex: int | None = None) -> bool:
         return await self.cache.set(key, value, ttl=ex)
 
     async def setex(self, key: str, ttl: int, value: Any) -> bool:
@@ -472,7 +472,7 @@ class CloudflareRedis:
     async def hset(self, name: str, key: str, value: Any) -> bool:
         return await self.cache.hset(name, key, value)
 
-    async def hget(self, name: str, key: str) -> Optional[Any]:
+    async def hget(self, name: str, key: str) -> Any | None:
         return await self.cache.hget(name, key)
 
     async def hgetall(self, name: str) -> dict:

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-🚀 BrainBot-BMAD - Main Entry Point
+🚀 BrainBot - Main Entry Point
 
-This is the primary entry point for the BrainBot-BMAD application.
+This is the primary entry point for the BrainBot application.
 
 Mode Selection:
 - For local development: Use `python scripts/local_dev.py` (interactive simulator)

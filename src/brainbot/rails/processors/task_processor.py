@@ -616,7 +616,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error reading tasks: {e}")
             return {"success": False, "error": f"Failed to read tasks: {str(e)}"}
 
-    async def _find_task_by_title(self, title: str) -> Optional[Dict[str, Any]]:
+    async def _find_task_by_title(self, title: str) -> dict[str, Any] | None:
         """Find a task by title (case-insensitive)."""
         try:
             response = await self._safe_db_operation(
@@ -635,7 +635,7 @@ class TaskProcessor(BaseProcessor):
             logger.error(f"Error finding task: {e}")
             return None
 
-    async def _resolve_user_id(self, username: str) -> Optional[str]:
+    async def _resolve_user_id(self, username: str) -> str | None:
         """Resolve username or alias to user ID."""
         try:
             # Check cache first

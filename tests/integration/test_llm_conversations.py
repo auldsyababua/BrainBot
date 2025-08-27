@@ -40,10 +40,10 @@ class ConversationContext:
     """Track entities and topics across conversation turns."""
 
     def __init__(self):
-        self.entities: Dict[int, Dict[str, Set[str]]] = {}
-        self.topics: Dict[int, str] = {}
+        self.entities: dict[int, dict[str, set[str]]] = {}
+        self.topics: dict[int, str] = {}
 
-    def extract_entities(self, response: str, turn: int) -> Dict[str, Set[str]]:
+    def extract_entities(self, response: str, turn: int) -> dict[str, set[str]]:
         """Extract document names, technical terms, and numbers."""
         entities = {
             "documents": set(re.findall(r"(Booth|IEEE \d+|GPSA|Breeze|Brantley)", response, re.I)),
@@ -74,7 +74,7 @@ def has_contextual_references(response: str) -> bool:
     return any(ref in response_lower for ref in pronouns + references + explicit_refs)
 
 
-def assert_contains_concepts(response: str, concepts: List[str], min_matches: int = None):
+def assert_contains_concepts(response: str, concepts: list[str], min_matches: int = None):
     """Flexible assertion for key concepts."""
     response_lower = response.lower()
     matches = sum(1 for concept in concepts if concept.lower() in response_lower)

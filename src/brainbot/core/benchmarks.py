@@ -31,7 +31,7 @@ class PerformanceMonitor:
         self.redis = CloudflareRedis()
         self.ttl_seconds = 604800  # 7 days
 
-    def track_metric(self, metric_name: str, value: float, tags: Optional[Dict[str, str]] = None):
+    def track_metric(self, metric_name: str, value: float, tags: dict[str, str] | None = None):
         """Track a performance metric.
 
         Args:
@@ -127,7 +127,7 @@ class PerformanceMonitor:
         self.track_metric("conversation_size", message_count, {"chat_id": str(chat_id)})
 
     def get_performance_summary(
-        self, metric_names: Optional[List[str]] = None, time_range_minutes: int = 60
+        self, metric_names: list[str] | None = None, time_range_minutes: int = 60
     ) -> dict[str, Any]:
         """Get performance metrics summary.
 
@@ -145,7 +145,7 @@ class PerformanceMonitor:
                 "conversation_size",
             ]
 
-        summary: Dict[str, Any] = {}
+        summary: dict[str, Any] = {}
         cutoff_time = time.time() - (time_range_minutes * 60)
 
         for metric_name in metric_names:
@@ -207,7 +207,7 @@ class PerformanceMonitor:
 
 
 # Global performance monitor instance
-_performance_monitor: Optional[PerformanceMonitor] = None
+_performance_monitor: PerformanceMonitor | None = None
 
 
 def get_performance_monitor() -> PerformanceMonitor:

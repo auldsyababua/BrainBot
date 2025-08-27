@@ -16,8 +16,8 @@ logger = logging.getLogger(__name__)
 class PromptContext:
     """Context for dynamic prompt generation."""
 
-    entity_type: Optional[str] = None
-    operation: Optional[str] = None
+    entity_type: str | None = None
+    operation: str | None = None
     extracted_data: dict[str, Any] = None
     confidence_scores: dict[str, float] = None
     cleaned_message: str = ""
@@ -389,7 +389,7 @@ class DynamicPromptGenerator:
 
     def generate_smart_function_prompt(
         self, context: PromptContext
-    ) -> tuple[str, Optional[Dict[str, Any]]]:
+    ) -> tuple[str, dict[str, Any] | None]:
         """Generate smart function calling prompt with schema.
 
         T2.1.2: Returns both prompt and function schema for direct injection.

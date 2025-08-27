@@ -16,7 +16,7 @@ class IndexManager:
     def __init__(self):
         self.storage = document_storage
 
-    async def generate_index(self, category: str) -> Optional[str]:
+    async def generate_index(self, category: str) -> str | None:
         """Generate an index for a specific category.
 
         Args:
@@ -103,7 +103,7 @@ class IndexManager:
             logger.error(f"Failed to generate index for {category}: {e}")
             return None
 
-    async def update_index(self, category: str, telegram_chat_id: Optional[str] = None) -> bool:
+    async def update_index(self, category: str, telegram_chat_id: str | None = None) -> bool:
         """Update or create the index for a category.
 
         Args:
@@ -151,7 +151,7 @@ class IndexManager:
             logger.error(f"Failed to update index for {category}: {e}")
             return False
 
-    async def update_all_indexes(self, telegram_chat_id: Optional[str] = None) -> dict[str, bool]:
+    async def update_all_indexes(self, telegram_chat_id: str | None = None) -> dict[str, bool]:
         """Update all category indexes.
 
         Returns:

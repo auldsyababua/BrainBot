@@ -14,17 +14,17 @@ logger = logging.getLogger(__name__)
 class RouteResult:
     """Result of routing decision."""
 
-    entity_type: Optional[str]  # 'lists', 'field_reports', 'tasks', None
-    operation: Optional[str]  # Specific operation like 'add_items', 'complete', etc.
-    function_name: Optional[str]  # Function to restrict LLM to
+    entity_type: str | None  # 'lists', 'field_reports', 'tasks', None
+    operation: str | None  # Specific operation like 'add_items', 'complete', etc.
+    function_name: str | None  # Function to restrict LLM to
     confidence: float  # 0.0 to 1.0
     extracted_data: dict[str, Any] = field(default_factory=dict)
     use_direct_execution: bool = False  # Skip function calling for high confidence
     target_users: list[str] = field(default_factory=list)  # Extracted user assignments
     # Separate confidence scores for different aspects
-    entity_confidence: Optional[float] = None  # Confidence in entity type detection
-    operation_confidence: Optional[float] = None  # Confidence in operation detection
-    assignee_confidence: Optional[float] = None  # Confidence in assignee extraction
+    entity_confidence: float | None = None  # Confidence in entity type detection
+    operation_confidence: float | None = None  # Confidence in operation detection
+    assignee_confidence: float | None = None  # Confidence in assignee extraction
     _match_length: int = 0  # Internal field for tiebreaker comparisons
 
 
@@ -233,7 +233,7 @@ class SynonymLibrary:
         """Get all synonyms for a term."""
         return self.synonyms.get(term, [term])
 
-    def find_canonical_term(self, phrase: str) -> Optional[str]:
+    def find_canonical_term(self, phrase: str) -> str | None:
         """Find canonical term that matches phrase."""
         phrase_lower = phrase.lower()
 
@@ -925,7 +925,7 @@ class KeywordRouter:
 
         return cleaned_message, prefilled, confidences
 
-    def _check_cache(self, message_hash: int) -> Optional[RouteResult]:
+    def _check_cache(self, message_hash: int) -> RouteResult | None:
         """Check if routing result exists in cache."""
         # Clean expired cache entries
         self._cleanup_expired_cache()
@@ -1314,7 +1314,7 @@ class KeywordRouter:
         message: str,
         entity_type: str,
         operation: str,
-        message_lower: Optional[str] = None,
+        message_lower: str | None = None,
     ) -> dict[str, Any]:
         """Extract relevant data from message based on entity type and operation."""
         data = {}
